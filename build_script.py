@@ -69,7 +69,6 @@ def main():
         run("mkdir -p {}".format(build_dir))
 
     # Not incremental..
-    # run("{0} -emit-object {1}/XCTest.swift -module-name XCTest -parse-as-library -emit-module -emit-module-path {2}/XCTest.swiftmodule -o {2}/XCTest.o -force-single-frontend-invocation".format(swiftc, os.path.dirname(os.path.abspath(__file__)), build_dir))
     run("{0} -c -O -emit-object {1}/XCTest/XCTest.swift -module-name XCTest -parse-as-library -emit-module "
         "-emit-module-path {2}/XCTest.swiftmodule -o {2}/XCTest.o -force-single-frontend-invocation "
         "-module-link-name XCTest".format(swiftc, os.path.dirname(os.path.abspath(__file__)), build_dir))
