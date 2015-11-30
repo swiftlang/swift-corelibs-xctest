@@ -63,13 +63,12 @@ class TestNSURL : XCTestCase {
 }
 ```
 
-Also, this version of XCTest does not use the external test runner binary. Instead, create your own executable which links `libXCTest.so`. In your `main.swift`, list the test cases that you wish to run. For example:
+Also, this version of XCTest does not use the external test runner binary. Instead, create your own executable which links `libXCTest.so`. In your `main.swift`, invoke the `XCTMain` function with an array of instances of the test cases that you wish to run. For example:
 
 ```
-TestNSString().invokeTest()
-TestNSArray().invokeTest()
-TestNSDictionary().invokeTest()
-// ...
+XCTMain([TestNSString(), TestNSArray(), TestNSDictionary()])
 ```
+
+The `XCTMain` function does not return, and will cause your test app to exit with either `0` for success or `1` for failure.
 
 We are currently investigating ideas on how to make these additional steps for test discovery automatic when running on the Swift runtime.
