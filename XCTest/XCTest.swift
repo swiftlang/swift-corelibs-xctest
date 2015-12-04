@@ -17,6 +17,31 @@ import Glibc
 import Darwin
 #endif
 
+/// Not everyone wants to be notified of test results in the same way.
+///
+/// Some people prefer a concise view that fits on a single line, with
+/// dots indicating success and "F" to signify failure: ".....FF..F"
+///
+/// Some prefer a detailed view, containing data on how long each test took
+/// to run, etc.
+///
+/// Objects that conform to the reporter protocol are responsible for
+/// formatting output related to test execution.
+public protocol Reporter {
+    /// Sent when XCTest wishes to log arbitrary information regarding the
+    /// a test event.
+    ///
+    /// - Parameter message: The message to log.
+    func log(message: String)
+}
+
+/// This reporter simply prints each message it is given to stdout.
+private struct StdOutReporter: Reporter {
+    func log(message: String) {
+        print(message)
+    }
+}
+
 public protocol XCTestCaseProvider {
     // In the Objective-C version of XCTest, it is possible to discover all tests when the test is executed by asking the runtime for all methods and looking for the string "test". In Swift, we ask test providers to tell us the list of tests by implementing this property.
     var allTests : [(String, () -> ())] { get }
@@ -27,7 +52,6 @@ public protocol XCTestCase : XCTestCaseProvider {
 }
 
 extension XCTestCase {
-    
     public var continueAfterFailure: Bool {
         get {
             return true
@@ -45,7 +69,11 @@ extension XCTestCase {
             XCTCurrentTestCase = self
             let method = "\(self.dynamicType).\(name)"
             var duration: Double = 0.0
-            print("Test Case '\(method)' started.")
+
+            for reporter in XCTReporters {
+                reporter.log("Test Case '\(method)' started.")
+            }
+
             var tv = timeval()
             let start = withUnsafeMutablePointer(&tv, { (t: UnsafeMutablePointer<timeval>) -> Double in
                 gettimeofday(t, nil)
@@ -67,7 +95,11 @@ extension XCTestCase {
             if XCTCurrentFailures.count > 0 {
                 result = "failed"
             }
-            print("Test Case '\(method)' \(result) (\(round(duration * 1000.0) / 1000.0) seconds).")
+
+            for reporter in XCTReporters {
+                reporter.log("Test Case '\(method)' \(result) (\(round(duration * 1000.0) / 1000.0) seconds).")
+            }
+
             XCTAllRuns.append(XCTRun(duration: duration, method: method, passed: XCTCurrentFailures.count == 0, failures: XCTCurrentFailures))
             XCTCurrentFailures.removeAll()
             XCTCurrentTestCase = nil
@@ -82,8 +114,9 @@ extension XCTestCase {
         }
         let averageDuration = totalDuration / Double(tests.count)
 
-        
-        print("Executed \(tests.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (0 unexpected) in \(round(averageDuration * 1000.0) / 1000.0) (\(round(totalDuration * 1000.0) / 1000.0)) seconds")
+        for reporter in XCTReporters {
+            reporter.log("Executed \(tests.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (0 unexpected) in \(round(averageDuration * 1000.0) / 1000.0) (\(round(totalDuration * 1000.0) / 1000.0)) seconds")
+        }
     }
     
     // This function is for the use of XCTestCase only, but we must make it public or clients will get a link failure when using XCTest (23476006)
@@ -115,7 +148,10 @@ internal struct XCTRun {
 ///
 /// This function will not return. If the test cases pass, then it will call `exit(0)`. If there is a failure, then it will call `exit(1)`.
 /// - Parameter testCases: An array of test cases to run.
-@noreturn public func XCTMain(testCases: [XCTestCase]) {
+/// - Parameter reporters: An array of reporters. Each will be sent messages regarding the execution of the tests.
+@noreturn public func XCTMain(testCases: [XCTestCase], reporters: [Reporter] = [StdOutReporter()]) {
+    XCTReporters.appendContentsOf(reporters)
+
     for testCase in testCases {
         testCase.invokeTest()
     }
@@ -130,7 +166,11 @@ internal struct XCTRun {
         failureSuffix = ""
     }
     let averageDuration = totalDuration / Double(XCTAllRuns.count)
-    print("Total executed \(XCTAllRuns.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (0 unexpected) in \(round(averageDuration * 1000.0) / 1000.0) (\(round(totalDuration * 1000.0) / 1000.0)) seconds")
+
+    for reporter in XCTReporters {
+        reporter.log("Total executed \(XCTAllRuns.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (0 unexpected) in \(round(averageDuration * 1000.0) / 1000.0) (\(round(totalDuration * 1000.0) / 1000.0)) seconds")
+    }
+
     exit(totalFailures > 0 ? 1 : 0)
 }
 
@@ -140,13 +180,16 @@ struct XCTFailure {
     var line: UInt
     
     func emit(method: String) {
-        print("\(file):\(line): error: \(method) : \(message)")
+        for reporter in XCTReporters {
+            reporter.log("\(file):\(line): error: \(method) : \(message)")
+        }
     }
 }
 
 internal var XCTCurrentTestCase: XCTestCase?
 internal var XCTCurrentFailures = [XCTFailure]()
 internal var XCTAllRuns = [XCTRun]()
+internal var XCTReporters = [Reporter]()
 
 public func XCTAssert(@autoclosure expression: () -> BooleanType, _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
     if !expression().boolValue {
