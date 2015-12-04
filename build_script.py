@@ -29,18 +29,21 @@ def main():
                         metavar="PATH",
                         action="store",
                         dest="swiftc",
+                        required=True,
                         default=None)
     parser.add_argument("--build-dir",
                         help="path to the output build directory",
                         metavar="PATH",
                         action="store",
                         dest="build_dir",
+                        required=True,
                         default=None)
     parser.add_argument("--swift-build-dir",
                         help="path to the swift build directory",
                         metavar="PATH",
                         action="store",
                         dest="swift_build_dir",
+                        required=True,
                         default=None)
     parser.add_argument("--module-install-path",
                         help="location to install module files",
@@ -56,13 +59,8 @@ def main():
                         default=None)
     args = parser.parse_args()
 
-    assert args.swiftc is not None
     swiftc = os.path.abspath(args.swiftc)
-    
-    assert args.build_dir is not None
     build_dir = os.path.abspath(args.build_dir)
-    
-    assert args.swift_build_dir is not None
     swift_build_dir = os.path.abspath(args.swift_build_dir)
     
     if not os.path.exists(build_dir):
