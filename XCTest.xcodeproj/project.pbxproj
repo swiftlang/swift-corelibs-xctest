@@ -34,7 +34,9 @@
 				5B5D86DC1BBC74AD00234F36 /* Products */,
 				EA3E74BC1BF2B6D700635A73 /* Linux Build */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
 		};
 		5B5D86DC1BBC74AD00234F36 /* Products */ = {
 			isa = PBXGroup;
