@@ -177,7 +177,7 @@ public func XCTAssertEqual<T, U : Equatable>(@autoclosure expression1: () -> [T 
 }
 
 public func XCTAssertEqualWithAccuracy<T : FloatingPointType>(@autoclosure expression1: () -> T, @autoclosure _ expression2: () -> T, accuracy: T, _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
-    XCTAssert(expression1().distanceTo(expression2()) <= accuracy.distanceTo(T(0)), message, file: file, line: line)
+    XCTAssert(abs(expression1().distanceTo(expression2())) <= abs(accuracy.distanceTo(T(0))), message, file: file, line: line)
 }
 
 public func XCTAssertFalse(@autoclosure expression: () -> BooleanType, _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
@@ -225,7 +225,7 @@ public func XCTAssertNotEqual<T, U : Equatable>(@autoclosure expression1: () -> 
 }
 
 public func XCTAssertNotEqualWithAccuracy<T : FloatingPointType>(@autoclosure expression1: () -> T, @autoclosure _ expression2: () -> T, _ accuracy: T, _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
-    XCTAssert(expression1().distanceTo(expression2()) > accuracy.distanceTo(T(0)), message, file: file, line: line)
+    XCTAssert(abs(expression1().distanceTo(expression2())) > abs(accuracy.distanceTo(T(0))), message, file: file, line: line)
 }
 
 public func XCTAssertNotNil(@autoclosure expression: () -> Any?, _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
