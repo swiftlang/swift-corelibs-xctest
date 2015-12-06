@@ -239,3 +239,57 @@ public func XCTAssertTrue(@autoclosure expression: () -> BooleanType, _ message:
 public func XCTFail(message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
     XCTAssert(false, message, file: file, line: line)
 }
+
+public func XCTAssertNoThrows(@autoclosure expression: () throws -> Void, file: StaticString = __FILE__, line: UInt = __LINE__) {
+    do {
+        try expression()
+    } catch let error {
+        XCTFail("Expected no error, got \(error)", file: file, line: line)
+    }
+}
+
+public func XCTAssertNoThrowsSpecific<T: ErrorType>(@autoclosure expression: () throws -> Void, _ errorType: T.Type, file: StaticString = __FILE__, line: UInt = __LINE__) {
+    do {
+        try expression()
+    } catch {
+        XCTAssertFalse(error is T, "Expected not \(T.self), got \(T.self)", file: file, line: line)
+    }
+}
+
+public func XCTAssertNoThrowsSpecific<T where T: ErrorType, T: Equatable>(@autoclosure expression: () throws -> Void, @autoclosure _ expectedError: () -> T, file: StaticString = __FILE__, line: UInt = __LINE__) {
+    do {
+        try expression()
+    } catch let error as T {
+        XCTAssertNotEqual(error, expectedError())
+    } catch {
+        XCTFail("Incorrect error type thrown", file: file, line: line)
+    }
+}
+
+public func XCTAssertThrows(@autoclosure expression: () throws -> Void, file: StaticString = __FILE__, line: UInt = __LINE__) {
+    do {
+        try expression()
+        XCTFail("Expected error, none raised", file: file, line: line)
+    } catch {
+    }
+}
+
+public func XCTAssertThrowsSpecific<T where T: ErrorType>(@autoclosure expression: () throws -> Void, _ errorType: T.Type, file: StaticString = __FILE__, line: UInt = __LINE__) {
+    do {
+        try expression()
+        XCTFail("Expected error but none was thrown", file: file, line: line)
+    } catch let error {
+        XCTAssertTrue(error is T, "Expected \(T.self), got \(error)", file: file, line: line)
+    }
+}
+
+public func XCTAssertThrowsSpecific<T where T: ErrorType, T: Equatable>(@autoclosure expression: () throws -> Void, @autoclosure _ expectedError: () -> T, file: StaticString = __FILE__, line: UInt = __LINE__) {
+    do {
+        try expression()
+        XCTFail("Expected error but none was thrown", file: file, line: line)
+    } catch let error as T {
+        XCTAssertEqual(error, expectedError())
+    } catch {
+        XCTFail("Incorrect error type thrown", file: file, line: line)
+    }
+}
