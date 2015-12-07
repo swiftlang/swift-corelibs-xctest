@@ -1,2 +1,5 @@
 .DS_Store
 xcuserdata
+
+# Functional test suite places compiled executables in the source tree
+Tests/Fixtures/Products/*

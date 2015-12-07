@@ -6,12 +6,59 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		DA075A741C14DAAF000140C8 /* SwiftXCTestTests */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = DA075A751C14DAAF000140C8 /* Build configuration list for PBXAggregateTarget "SwiftXCTestTests" */;
+			buildPhases = (
+				DA075A7A1C14DABA000140C8 /* ShellScript */,
+			);
+			dependencies = (
+				DA075A7C1C14DAD4000140C8 /* PBXTargetDependency */,
+				DA075A791C14DAB6000140C8 /* PBXTargetDependency */,
+			);
+			name = SwiftXCTestTests;
+			productName = SwiftXCTestTests;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
+		DAA28A081C16017300DCBAB2 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA075A6F1C14B9BD000140C8 /* main.swift */; };
+		DAA28A0B1C16017A00DCBAB2 /* SwiftXCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B5D86DB1BBC74AD00234F36 /* SwiftXCTest.framework */; };
 		EA6E86BB1BDEA7DE007C0323 /* XCTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6E86BA1BDEA7DE007C0323 /* XCTest.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		DA075A781C14DAB6000140C8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5B5D86D21BBC74AD00234F36 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DAA28A001C16010900DCBAB2;
+			remoteInfo = SingleFailingTestCase;
+		};
+		DA075A7B1C14DAD4000140C8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5B5D86D21BBC74AD00234F36 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B5D86DA1BBC74AD00234F36;
+			remoteInfo = SwiftXCTest;
+		};
+		DAA28A091C16017700DCBAB2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5B5D86D21BBC74AD00234F36 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B5D86DA1BBC74AD00234F36;
+			remoteInfo = SwiftXCTest;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		5B5D86DB1BBC74AD00234F36 /* SwiftXCTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftXCTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA075A631C14B8EA000140C8 /* SingleFailingTestCase */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SingleFailingTestCase; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA075A6F1C14B9BD000140C8 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		DA075A721C14BB1B000140C8 /* Products */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Products; sourceTree = "<group>"; };
+		DA075A731C14C99A000140C8 /* test.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = test.py; sourceTree = "<group>"; };
+		DAA28A011C16010900DCBAB2 /* SingleFailingTestCase */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SingleFailingTestCase; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA3E74BB1BF2B6D500635A73 /* build_script.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = build_script.py; sourceTree = "<group>"; };
 		EA6E86BA1BDEA7DE007C0323 /* XCTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -24,6 +71,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DAA289FE1C16010900DCBAB2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DAA28A0B1C16017A00DCBAB2 /* SwiftXCTest.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -31,6 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				5B5D86DD1BBC74AD00234F36 /* XCTest */,
+				DA075A591C14B864000140C8 /* Tests */,
 				5B5D86DC1BBC74AD00234F36 /* Products */,
 				EA3E74BC1BF2B6D700635A73 /* Linux Build */,
 			);
@@ -42,6 +98,8 @@
 			isa = PBXGroup;
 			children = (
 				5B5D86DB1BBC74AD00234F36 /* SwiftXCTest.framework */,
+				DA075A631C14B8EA000140C8 /* SingleFailingTestCase */,
+				DAA28A011C16010900DCBAB2 /* SingleFailingTestCase */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -52,6 +110,40 @@
 				EA6E86BA1BDEA7DE007C0323 /* XCTest.swift */,
 			);
 			path = XCTest;
+			sourceTree = "<group>";
+		};
+		DA075A591C14B864000140C8 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				DA075A731C14C99A000140C8 /* test.py */,
+				DA075A5A1C14B864000140C8 /* Fixtures */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		DA075A5A1C14B864000140C8 /* Fixtures */ = {
+			isa = PBXGroup;
+			children = (
+				DA075A721C14BB1B000140C8 /* Products */,
+				DA075A5C1C14B864000140C8 /* Sources */,
+			);
+			path = Fixtures;
+			sourceTree = "<group>";
+		};
+		DA075A5C1C14B864000140C8 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				DA075A6E1C14B9BD000140C8 /* SingleFailingTestCase */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		DA075A6E1C14B9BD000140C8 /* SingleFailingTestCase */ = {
+			isa = PBXGroup;
+			children = (
+				DA075A6F1C14B9BD000140C8 /* main.swift */,
+			);
+			path = SingleFailingTestCase;
 			sourceTree = "<group>";
 		};
 		EA3E74BC1BF2B6D700635A73 /* Linux Build */ = {
@@ -93,6 +185,23 @@
 			productReference = 5B5D86DB1BBC74AD00234F36 /* SwiftXCTest.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		DAA28A001C16010900DCBAB2 /* SingleFailingTestCase */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DAA28A071C16010900DCBAB2 /* Build configuration list for PBXNativeTarget "SingleFailingTestCase" */;
+			buildPhases = (
+				DAA289FD1C16010900DCBAB2 /* Sources */,
+				DAA289FE1C16010900DCBAB2 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DAA28A0A1C16017700DCBAB2 /* PBXTargetDependency */,
+			);
+			name = SingleFailingTestCase;
+			productName = SingleFailingTestCase;
+			productReference = DAA28A011C16010900DCBAB2 /* SingleFailingTestCase */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -122,6 +231,8 @@
 			projectRoot = "";
 			targets = (
 				5B5D86DA1BBC74AD00234F36 /* SwiftXCTest */,
+				DAA28A001C16010900DCBAB2 /* SingleFailingTestCase */,
+				DA075A741C14DAAF000140C8 /* SwiftXCTestTests */,
 			);
 		};
 /* End PBXProject section */
@@ -136,6 +247,22 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		DA075A7A1C14DABA000140C8 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = $SRCROOT/Tests/test.py;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		5B5D86D61BBC74AD00234F36 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -145,7 +272,33 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DAA289FD1C16010900DCBAB2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DAA28A081C16017300DCBAB2 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DA075A791C14DAB6000140C8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DAA28A001C16010900DCBAB2 /* SingleFailingTestCase */;
+			targetProxy = DA075A781C14DAB6000140C8 /* PBXContainerItemProxy */;
+		};
+		DA075A7C1C14DAD4000140C8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B5D86DA1BBC74AD00234F36 /* SwiftXCTest */;
+			targetProxy = DA075A7B1C14DAD4000140C8 /* PBXContainerItemProxy */;
+		};
+		DAA28A0A1C16017700DCBAB2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B5D86DA1BBC74AD00234F36 /* SwiftXCTest */;
+			targetProxy = DAA28A091C16017700DCBAB2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		5B5D86E11BBC74AD00234F36 /* Debug */ = {
@@ -271,6 +424,44 @@
 			};
 			name = Release;
 		};
+		DA075A761C14DAAF000140C8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		DA075A771C14DAAF000140C8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		DAA28A051C16010900DCBAB2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = "$(SRCROOT)/Tests/Fixtures/Products/";
+				INSTALL_PATH = /;
+				LD_RUNPATH_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		DAA28A061C16010900DCBAB2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = "$(SRCROOT)/Tests/Fixtures/Products/";
+				INSTALL_PATH = /;
+				LD_RUNPATH_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -291,6 +482,23 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		DA075A751C14DAAF000140C8 /* Build configuration list for PBXAggregateTarget "SwiftXCTestTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA075A761C14DAAF000140C8 /* Debug */,
+				DA075A771C14DAAF000140C8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DAA28A071C16010900DCBAB2 /* Build configuration list for PBXNativeTarget "SingleFailingTestCase" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DAA28A051C16010900DCBAB2 /* Debug */,
+				DAA28A061C16010900DCBAB2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
