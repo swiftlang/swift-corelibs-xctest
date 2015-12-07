@@ -38,6 +38,20 @@ If your install of swift is located at `/swift` and you wish to install XCTest i
 ./build_script.py --swiftc="/swift/usr/bin/swiftc" --build-dir="/tmp/XCTest_build" --swift-build-dir="/swift/usr" --library-install-path="/swift/usr/lib/swift/linux" --module-install-path="/swift/usr/lib/swift/linux/x86_64"
 ```
 
+To run the tests, pass the `--test` option in combination with options to install XCTest in your active version of Swift:
+
+```sh
+./build_script.py --swiftc="/swift/usr/bin/swiftc" --build-dir="/tmp/XCTest_build" --swift-build-dir="/swift/usr" --library-install-path="/swift/usr/lib/swift/linux" --module-install-path="/swift/usr/lib/swift/linux/x86_64" --test
+```
+
+To add additional tests to XCTest:
+
+1. (Linux & OS X) Add a directory with the name of your test to the `Tests/Fixtures/Sources/` directory. For example, if your test is named "TwoFailingTestCases", make a directory named `Tests/Fixtures/Sources/TwoFailingTestCases`.
+1. (Linux & OS X) Add a `main.swift` file to the directory you added above. The file should contain comments, beginning with `// `. The test runner will verify that the output of `main.swift` matches your comments exactly. This is all you need to do to run tests on Linux--you may run the `build_script.py` example above to confirm the tests pass.
+1. (OS X) If you want your tests to run on OS X, open the `XCTest.xcodeproj` Xcode project and duplicate the `SingleFailingTestCase` target. Rename the target to match the name of your test. For example, if your test is named "TwoFailingTestCases", name the target `TwoFailingTestCases` as well.
+1. (OS X) In the "Compile Sources" build phase, set your `main.swift` file in place of the one in `SingleFailingTestCase`.
+1. (OS X) Add your new target to the "Target Dependencies" section of the `SwiftXCTestTests` aggregate build target's build phases. You may build the `SwiftXCTestTests` target to confirm the tests pass.
+
 ### Additional Considerations for Swift on Linux
 
 When running on the Objective-C runtime, XCTest is able to find all of your tests by simply asking the runtime for the subclasses of `XCTestCase`. It then finds the methods that start with the string `test`. This functionality is not currently present when running on the Swift runtime. Therefore, you must currently provide an additional property called `allTests` in your `XCTestCase` subclass. This method lists all of the tests in the test class. The rest of your test case subclass still contains your test methods.
