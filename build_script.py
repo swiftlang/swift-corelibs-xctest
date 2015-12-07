@@ -66,10 +66,15 @@ def main():
     if not os.path.exists(build_dir):
         run("mkdir -p {}".format(build_dir))
 
+    sourceFiles = ["XCTest.swift", "XCTestCaseProvider.swift", "XCTestCase.swift", "XCTAssert.swift"]
+    sourcePaths = []
+    for file in sourceFiles:
+        sourcePaths.append("{0}/XCTest/{1}".format(os.path.dirname(os.path.abspath(__file__)), file))
+
     # Not incremental..
-    run("{0} -c -O -emit-object {1}/XCTest/XCTest.swift -module-name XCTest -parse-as-library -emit-module "
+    run("{0} -c -O -emit-object {1} -module-name XCTest -parse-as-library -emit-module "
         "-emit-module-path {2}/XCTest.swiftmodule -o {2}/XCTest.o -force-single-frontend-invocation "
-        "-module-link-name XCTest".format(swiftc, os.path.dirname(os.path.abspath(__file__)), build_dir))
+        "-module-link-name XCTest".format(swiftc, " ".join(sourcePaths), build_dir))
 
     run("clang {0}/XCTest.o -shared -o {0}/libXCTest.so -Wl,--no-undefined -Wl,-soname,libXCTest.so -L{1}/lib/swift/linux/ -lswiftGlibc -lswiftCore -lm".format(build_dir, swift_build_dir))
 

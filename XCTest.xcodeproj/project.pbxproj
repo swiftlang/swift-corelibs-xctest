@@ -7,11 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B11FFA2A1C1603B6004297C2 /* XCTAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11FFA291C1603B6004297C2 /* XCTAssert.swift */; };
+		B11FFA2C1C160434004297C2 /* XCTestCaseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11FFA2B1C160434004297C2 /* XCTestCaseProvider.swift */; };
+		B11FFA2E1C16053C004297C2 /* XCTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11FFA2D1C16053C004297C2 /* XCTestCase.swift */; };
 		EA6E86BB1BDEA7DE007C0323 /* XCTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6E86BA1BDEA7DE007C0323 /* XCTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		5B5D86DB1BBC74AD00234F36 /* SwiftXCTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftXCTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B11FFA291C1603B6004297C2 /* XCTAssert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTAssert.swift; sourceTree = "<group>"; };
+		B11FFA2B1C160434004297C2 /* XCTestCaseProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestCaseProvider.swift; sourceTree = "<group>"; };
+		B11FFA2D1C16053C004297C2 /* XCTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestCase.swift; sourceTree = "<group>"; };
 		EA3E74BB1BF2B6D500635A73 /* build_script.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = build_script.py; sourceTree = "<group>"; };
 		EA6E86BA1BDEA7DE007C0323 /* XCTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -50,6 +56,9 @@
 			isa = PBXGroup;
 			children = (
 				EA6E86BA1BDEA7DE007C0323 /* XCTest.swift */,
+				B11FFA2D1C16053C004297C2 /* XCTestCase.swift */,
+				B11FFA2B1C160434004297C2 /* XCTestCaseProvider.swift */,
+				B11FFA291C1603B6004297C2 /* XCTAssert.swift */,
 			);
 			path = XCTest;
 			sourceTree = "<group>";
@@ -142,6 +151,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA6E86BB1BDEA7DE007C0323 /* XCTest.swift in Sources */,
+				B11FFA2C1C160434004297C2 /* XCTestCaseProvider.swift in Sources */,
+				B11FFA2E1C16053C004297C2 /* XCTestCase.swift in Sources */,
+				B11FFA2A1C1603B6004297C2 /* XCTAssert.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
