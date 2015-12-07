@@ -32,7 +32,7 @@ swift/utils/build-script --xctest
 
 If you want to build just XCTest, use the `build_script.py` script at the root of the project. The `master` version of XCTest must be built with the `master` version of Swift.
 
-If your install of swift is located at `/swift` and you wish to install XCTest into that same location, here is a sample invocation of the build script:
+If your install of Swift is located at `/swift` and you wish to install XCTest into that same location, here is a sample invocation of the build script:
 
 ```sh
 ./build_script.py --swiftc="/swift/usr/bin/swiftc" --build-dir="/tmp/XCTest_build" --swift-build-dir="/swift/usr" --library-install-path="/swift/usr/lib/swift/linux" --module-install-path="/swift/usr/lib/swift/linux/x86_64"
