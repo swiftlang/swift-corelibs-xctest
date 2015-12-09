@@ -13,6 +13,6 @@
 
 public protocol XCTestCaseProvider {
     // In the Objective-C version of XCTest, it is possible to discover all tests when the test is executed by asking the runtime for all methods and looking for the string "test". In Swift, we ask test providers to tell us the list of tests by implementing this property.
-    var allTests : [(String, () -> ())] { get }
+    var allTests : [(String, () -> Void)] { get }
 }
 
