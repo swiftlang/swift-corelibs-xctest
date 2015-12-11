@@ -12,7 +12,12 @@
 # Here is a nice way to invoke this script if you are building locally, and Swift is installed at /, and you want to install XCTest back there
 # sudo ./build_script.py --swiftc="/usr/bin/swiftc" --build-dir="/tmp/XCTest_build" --swift-build-dir="/usr" --library-install-path="/usr/lib/swift/linux" --module-install-path="/usr/lib/swift/linux/x86_64"
 
-import os, subprocess, argparse
+import argparse
+import glob
+import os
+import subprocess
+
+SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def note(msg):
     print("xctest-build: "+msg)
@@ -57,19 +62,33 @@ def main():
                         action="store",
                         dest="lib_path",
                         default=None)
+    parser.add_argument("--test",
+                        help="whether to run tests after building",
+                        action="store_true",
+                        dest="test",
+                        default=False)
+    parser.add_argument("--native-llvm-tools-path",
+                        help="location of built LLVM binaries, specifically FileCheck",
+                        metavar="PATH",
+                        action="store",
+                        dest="native_llvm_tools_path",
+                        default=None)
     args = parser.parse_args()
 
     swiftc = os.path.abspath(args.swiftc)
     build_dir = os.path.abspath(args.build_dir)
     swift_build_dir = os.path.abspath(args.swift_build_dir)
-    
+    if args.test:
+        assert args.native_llvm_tools_path is not None, \
+        '--native-llvm-tools-path must be specified when using --test'
+
     if not os.path.exists(build_dir):
         run("mkdir -p {}".format(build_dir))
 
     sourceFiles = ["XCTest.swift", "XCTestCaseProvider.swift", "XCTestCase.swift", "XCTAssert.swift"]
     sourcePaths = []
     for file in sourceFiles:
-        sourcePaths.append("{0}/XCTest/{1}".format(os.path.dirname(os.path.abspath(__file__)), file))
+        sourcePaths.append("{0}/XCTest/{1}".format(SOURCE_DIR, file))
 
     # Not incremental..
     run("{0} -c -O -emit-object {1} -module-name XCTest -parse-as-library -emit-module "
@@ -100,7 +119,29 @@ def main():
         cmd = ['cp', os.path.join(build_dir, install_mod_doc), os.path.join(module_path, install_mod_doc)]
         subprocess.check_call(cmd)
 
-    
+    if args.test:
+        # 1. We first compile every test fixture in Tests/Fixtures/Sources/.
+        #    The compiled executables are stored in Tests/Fixtures/Products/.
+        tests_dir = os.path.join(SOURCE_DIR, 'Tests')
+        fixtures_dir = os.path.join(tests_dir, 'Fixtures')
+        fixture_products_dir = os.path.join(fixtures_dir, 'Products')
+        fixture_sources_glob_dir = os.path.join(fixtures_dir, 'Sources', '*')
+        for fixture_source_dir in glob.glob(fixture_sources_glob_dir):
+            # Loop over every main.swift file in Tests/Fixtures/Sources/
+            # and compile it using swiftc. The executables are output to
+            # Tests/Fixtures/Products/.
+            fixture_source = os.path.join(fixture_source_dir, 'main.swift')
+            dest = os.path.join(
+                fixture_products_dir,
+                os.path.basename(fixture_source_dir))
+            run("{0} {1} -o {2}".format(swiftc, fixture_source, dest))
+
+        # 2. lit is used across all platforms. It runs each
+        #    executable in Tests/Fixtures/Products/, comparing their
+        #    output to the annotated main.swift files.
+        run("lit {0} -v --param native_llvm_tools_path={1}".format(
+            tests_dir, args.native_llvm_tools_path))
+
     note('Done.')
 
 if __name__ == '__main__':
