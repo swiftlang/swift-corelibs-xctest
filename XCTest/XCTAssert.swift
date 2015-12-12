@@ -8,9 +8,15 @@
 //
 //
 //  XCTAssert.swift
-//  Test assertion functions
 //
 
+/**
+The primitive assertion function for XCTest. All other XCTAssert* functions are implemented in terms of this. This function emits a test failure if the gneeral Bool expression passed to it evaluates to false.
+- Parameter expression: A boolean test. If it evaluates to false, the assertion fails and emits a test failure.
+- Parameter message: An optional message to use in the failure if the assetion fails. If no message is supplied a default message is used.
+- Parameter file: The file name to use in the error message if the assertion fails. Default is the file containing the call to this function. It is rare to provide this parameter when calling tbhis function.
+- Parameter line: The line number to use in the error message if the assertion fails. Default is the line number of the call to this function in the calling file. It is rare to provide this parameter when calling this function.
+*/
 public func XCTAssert(@autoclosure expression: () -> BooleanType, _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
     if !expression().boolValue {
         if let test = XCTCurrentTestCase {
