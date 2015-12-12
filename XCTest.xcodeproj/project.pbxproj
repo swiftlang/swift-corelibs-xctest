@@ -18,6 +18,9 @@
 		B11FFA291C1603B6004297C2 /* XCTAssert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTAssert.swift; sourceTree = "<group>"; };
 		B11FFA2B1C160434004297C2 /* XCTestCaseProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestCaseProvider.swift; sourceTree = "<group>"; };
 		B11FFA2D1C16053C004297C2 /* XCTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestCase.swift; sourceTree = "<group>"; };
+		B1384A411C1B3E8700EDF031 /* CONTRIBUTING.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CONTRIBUTING.md; sourceTree = "<group>"; };
+		B1384A421C1B3E8700EDF031 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		B1384A431C1B3E8700EDF031 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		EA3E74BB1BF2B6D500635A73 /* build_script.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = build_script.py; sourceTree = "<group>"; };
 		EA6E86BA1BDEA7DE007C0323 /* XCTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -39,6 +42,7 @@
 				5B5D86DD1BBC74AD00234F36 /* XCTest */,
 				5B5D86DC1BBC74AD00234F36 /* Products */,
 				EA3E74BC1BF2B6D700635A73 /* Linux Build */,
+				B1384A401C1B3E6A00EDF031 /* Documentation */,
 			);
 			indentWidth = 4;
 			sourceTree = "<group>";
@@ -61,6 +65,16 @@
 				B11FFA291C1603B6004297C2 /* XCTAssert.swift */,
 			);
 			path = XCTest;
+			sourceTree = "<group>";
+		};
+		B1384A401C1B3E6A00EDF031 /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+				B1384A411C1B3E8700EDF031 /* CONTRIBUTING.md */,
+				B1384A421C1B3E8700EDF031 /* LICENSE */,
+				B1384A431C1B3E8700EDF031 /* README.md */,
+			);
+			name = Documentation;
 			sourceTree = "<group>";
 		};
 		EA3E74BC1BF2B6D700635A73 /* Linux Build */ = {
