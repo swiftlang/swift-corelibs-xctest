@@ -57,6 +57,18 @@ def main():
                         action="store",
                         dest="lib_path",
                         default=None)
+    parser.add_argument("--release",
+                        help="builds for release",
+                        action="store_const",
+                        dest="build_style",
+                        const="release",
+                        default="debug")
+    parser.add_argument("--debug",
+                        help="builds for debug (the default)",
+                        action="store_const",
+                        dest="build_style",
+                        const="debug",
+                        default="debug")
     args = parser.parse_args()
 
     swiftc = os.path.abspath(args.swiftc)
@@ -71,11 +83,17 @@ def main():
     for file in sourceFiles:
         sourcePaths.append("{0}/XCTest/{1}".format(os.path.dirname(os.path.abspath(__file__)), file))
 
-    # Not incremental..
-    run("{0} -c -O -emit-object {1} -module-name XCTest -parse-as-library -emit-module "
-        "-emit-module-path {2}/XCTest.swiftmodule -o {2}/XCTest.o -force-single-frontend-invocation "
-        "-module-link-name XCTest".format(swiftc, " ".join(sourcePaths), build_dir))
 
+    if args.build_style == "debug":
+        style_options = "-g"
+    else:
+        style_options = "-O"
+
+    # Not incremental..
+    # Build library
+    run("{0} -c {1} -emit-object {2} -module-name XCTest -parse-as-library -emit-module "
+        "-emit-module-path {3}/XCTest.swiftmodule -o {3}/XCTest.o -force-single-frontend-invocation "
+        "-module-link-name XCTest".format(swiftc, style_options, " ".join(sourcePaths), build_dir))
     run("clang {0}/XCTest.o -shared -o {0}/libXCTest.so -Wl,--no-undefined -Wl,-soname,libXCTest.so -L{1}/lib/swift/linux/ -lswiftGlibc -lswiftCore -lm".format(build_dir, swift_build_dir))
 
     # If we were given an install directive, perform installation
