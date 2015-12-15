@@ -20,7 +20,7 @@ The primitive assertion function for XCTest. All other XCTAssert* functions are 
 public func XCTAssert(@autoclosure expression: () -> BooleanType, _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
     if !expression().boolValue {
         if let test = XCTCurrentTestCase {
-            test.testFailure(message, file: file, line: line)
+            test.testFailure(message, expected: true, file: file, line: line)
         }
     }
 }

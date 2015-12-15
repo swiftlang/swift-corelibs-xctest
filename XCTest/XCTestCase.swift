@@ -36,6 +36,7 @@ extension XCTestCase {
         let tests = self.allTests
         var totalDuration = 0.0
         var totalFailures = 0
+        var unexpectedFailures = 0
         for (name, test) in tests {
             XCTCurrentTestCase = self
             let method = "\(self.dynamicType).\(name)"
@@ -57,6 +58,9 @@ extension XCTestCase {
             for failure in XCTCurrentFailures {
                 failure.emit(method)
                 totalFailures++
+                if failure.expected == false {
+                    unexpectedFailures++
+                }
             }
             var result = "passed"
             if XCTCurrentFailures.count > 0 {
@@ -78,15 +82,15 @@ extension XCTestCase {
         let averageDuration = totalDuration / Double(tests.count)
         
         
-        print("Executed \(tests.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (0 unexpected) in \(round(averageDuration * 1000.0) / 1000.0) (\(round(totalDuration * 1000.0) / 1000.0)) seconds")
+        print("Executed \(tests.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) \(unexpectedFailures) unexpected) in \(round(averageDuration * 1000.0) / 1000.0) (\(round(totalDuration * 1000.0) / 1000.0)) seconds")
     }
     
     // This function is for the use of XCTestCase only, but we must make it public or clients will get a link failure when using XCTest (23476006)
-    public func testFailure(message: String, file: StaticString , line: UInt) {
+    public func testFailure(message: String, expected: Bool, file: StaticString , line: UInt) {
         if !continueAfterFailure {
             assert(false, message, file: file, line: line)
         } else {
-            XCTCurrentFailures.append(XCTFailure(message: message, file: file, line: line))
+            XCTCurrentFailures.append(XCTFailure(message: message, expected: expected, file: file, line: line))
         }
     }
     

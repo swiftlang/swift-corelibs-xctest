@@ -20,11 +20,12 @@ import Darwin
 
 struct XCTFailure {
     var message: String
+    var expected: Bool
     var file: StaticString
     var line: UInt
     
     func emit(method: String) {
-        print("\(file):\(line): error: \(method) : \(message)")
+        print("\(file):\(line): \(expected ? "" : "unexpected ")error: \(method) : \(message)")
     }
 }
 
@@ -33,6 +34,9 @@ internal struct XCTRun {
     var method: String
     var passed: Bool
     var failures: [XCTFailure]
+    var unexpectedFailures: [XCTFailure] {
+        get { return failures.filter({ failure -> Bool in failure.expected == false }) }
+    }
 }
 
 /// Starts a test run for the specified test cases.
@@ -43,7 +47,7 @@ internal struct XCTRun {
     for testCase in testCases {
         testCase.invokeTest()
     }
-    let (totalDuration, totalFailures) = XCTAllRuns.reduce((0.0, 0)) { ($0.0 + $1.duration, $0.1 + $1.failures.count) }
+    let (totalDuration, totalFailures, totalUnexpectedFailures) = XCTAllRuns.reduce((0.0, 0, 0)) { totals, run in (totals.0 + run.duration, totals.1 + run.failures.count, totals.2 + run.unexpectedFailures.count) }
     
     var testCountSuffix = "s"
     if XCTAllRuns.count == 1 {
@@ -54,7 +58,7 @@ internal struct XCTRun {
         failureSuffix = ""
     }
     let averageDuration = totalDuration / Double(XCTAllRuns.count)
-    print("Total executed \(XCTAllRuns.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (0 unexpected) in \(round(averageDuration * 1000.0) / 1000.0) (\(round(totalDuration * 1000.0) / 1000.0)) seconds")
+    print("Total executed \(XCTAllRuns.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (\(totalUnexpectedFailures) unexpected) in \(round(averageDuration * 1000.0) / 1000.0) (\(round(totalDuration * 1000.0) / 1000.0)) seconds")
     exit(totalFailures > 0 ? 1 : 0)
 }
 
