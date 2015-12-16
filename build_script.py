@@ -79,11 +79,11 @@ def main():
         run("mkdir -p {}".format(build_dir))
 
     sourceFiles = [
-                   "XCTest.swift",
+                   "XCTAssert.swift",
                    "XCTestCaseProvider.swift",
                    "XCTestCase.swift",
-                   "XCTAssert.swift",
                    "XCTimeUtilities.swift",
+                   "XCTestMain.swift",
                   ]
     sourcePaths = []
     for file in sourceFiles:

@@ -7,7 +7,7 @@
 // See http://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
 //
 //
-//  XCTest.swift
+//  XCTestMain.swift
 //  This is the main file for the framework. It provides the entry point function
 //  for running tests and some infrastructure for running them.
 //

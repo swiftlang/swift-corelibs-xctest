@@ -11,7 +11,7 @@
 		B11FFA2A1C1603B6004297C2 /* XCTAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11FFA291C1603B6004297C2 /* XCTAssert.swift */; };
 		B11FFA2C1C160434004297C2 /* XCTestCaseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11FFA2B1C160434004297C2 /* XCTestCaseProvider.swift */; };
 		B11FFA2E1C16053C004297C2 /* XCTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11FFA2D1C16053C004297C2 /* XCTestCase.swift */; };
-		EA6E86BB1BDEA7DE007C0323 /* XCTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6E86BA1BDEA7DE007C0323 /* XCTest.swift */; };
+		EA6E86BB1BDEA7DE007C0323 /* XCTestMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6E86BA1BDEA7DE007C0323 /* XCTestMain.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,7 +24,7 @@
 		B1384A421C1B3E8700EDF031 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		B1384A431C1B3E8700EDF031 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		EA3E74BB1BF2B6D500635A73 /* build_script.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = build_script.py; sourceTree = "<group>"; };
-		EA6E86BA1BDEA7DE007C0323 /* XCTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTest.swift; sourceTree = "<group>"; };
+		EA6E86BA1BDEA7DE007C0323 /* XCTestMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestMain.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,7 +61,7 @@
 		5B5D86DD1BBC74AD00234F36 /* XCTest */ = {
 			isa = PBXGroup;
 			children = (
-				EA6E86BA1BDEA7DE007C0323 /* XCTest.swift */,
+				EA6E86BA1BDEA7DE007C0323 /* XCTestMain.swift */,
 				B11FFA2D1C16053C004297C2 /* XCTestCase.swift */,
 				B11FFA2B1C160434004297C2 /* XCTestCaseProvider.swift */,
 				B11FFA291C1603B6004297C2 /* XCTAssert.swift */,
@@ -168,7 +168,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B108C2A71C20C15500F9F301 /* XCTimeUtilities.swift in Sources */,
-				EA6E86BB1BDEA7DE007C0323 /* XCTest.swift in Sources */,
+				EA6E86BB1BDEA7DE007C0323 /* XCTestMain.swift in Sources */,
 				B11FFA2C1C160434004297C2 /* XCTestCaseProvider.swift in Sources */,
 				B11FFA2E1C16053C004297C2 /* XCTestCase.swift in Sources */,
 				B11FFA2A1C1603B6004297C2 /* XCTAssert.swift in Sources */,
