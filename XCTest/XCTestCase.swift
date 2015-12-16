@@ -11,12 +11,6 @@
 //  Base protocol (and extension with default methods) for test cases
 //
 
-#if os(Linux)
-    import Glibc
-#else
-    import Darwin
-#endif
-
 public protocol XCTestCase : XCTestCaseProvider {
     
 }
@@ -42,17 +36,10 @@ extension XCTestCase {
             let method = "\(self.dynamicType).\(name)"
             var duration: Double = 0.0
             print("Test Case '\(method)' started.")
-            var tv = timeval()
-            let start = withUnsafeMutablePointer(&tv, { (t: UnsafeMutablePointer<timeval>) -> Double in
-                gettimeofday(t, nil)
-                return Double(t.memory.tv_sec) + Double(t.memory.tv_usec) / 1000000.0
-            })
+            let start = currentTimeIntervalSinceReferenceTime()
             
             test()
-            let end = withUnsafeMutablePointer(&tv, { (t: UnsafeMutablePointer<timeval>) -> Double in
-                gettimeofday(t, nil)
-                return Double(t.memory.tv_sec) + Double(t.memory.tv_usec) / 1000000.0
-            })
+            let end = currentTimeIntervalSinceReferenceTime()
             duration = end - start
             totalDuration += duration
             for failure in XCTCurrentFailures {
@@ -66,7 +53,7 @@ extension XCTestCase {
             if XCTCurrentFailures.count > 0 {
                 result = "failed"
             }
-            print("Test Case '\(method)' \(result) (\(round(duration * 1000.0) / 1000.0) seconds).")
+            print("Test Case '\(method)' \(result) (\(printableStringForTimeInterval(duration)) seconds).")
             XCTAllRuns.append(XCTRun(duration: duration, method: method, passed: XCTCurrentFailures.count == 0, failures: XCTCurrentFailures))
             XCTCurrentFailures.removeAll()
             XCTCurrentTestCase = nil
@@ -81,8 +68,7 @@ extension XCTestCase {
         }
         let averageDuration = totalDuration / Double(tests.count)
         
-        
-        print("Executed \(tests.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) \(unexpectedFailures) unexpected) in \(round(averageDuration * 1000.0) / 1000.0) (\(round(totalDuration * 1000.0) / 1000.0)) seconds")
+        print("Executed \(tests.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) \(unexpectedFailures) unexpected) in \(printableStringForTimeInterval(averageDuration)) (\(printableStringForTimeInterval(totalDuration))) seconds")
     }
     
     // This function is for the use of XCTestCase only, but we must make it public or clients will get a link failure when using XCTest (23476006)

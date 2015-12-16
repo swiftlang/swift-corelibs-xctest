@@ -78,7 +78,13 @@ def main():
     if not os.path.exists(build_dir):
         run("mkdir -p {}".format(build_dir))
 
-    sourceFiles = ["XCTest.swift", "XCTestCaseProvider.swift", "XCTestCase.swift", "XCTAssert.swift"]
+    sourceFiles = [
+                   "XCTest.swift",
+                   "XCTestCaseProvider.swift",
+                   "XCTestCase.swift",
+                   "XCTAssert.swift",
+                   "XCTimeUtilities.swift",
+                  ]
     sourcePaths = []
     for file in sourceFiles:
         sourcePaths.append("{0}/XCTest/{1}".format(os.path.dirname(os.path.abspath(__file__)), file))

@@ -58,7 +58,7 @@ internal struct XCTRun {
         failureSuffix = ""
     }
     let averageDuration = totalDuration / Double(XCTAllRuns.count)
-    print("Total executed \(XCTAllRuns.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (\(totalUnexpectedFailures) unexpected) in \(round(averageDuration * 1000.0) / 1000.0) (\(round(totalDuration * 1000.0) / 1000.0)) seconds")
+    print("Total executed \(XCTAllRuns.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (\(totalUnexpectedFailures) unexpected) in \(printableStringForTimeInterval(averageDuration)) (\(printableStringForTimeInterval(totalDuration))) seconds")
     exit(totalFailures > 0 ? 1 : 0)
 }
 
