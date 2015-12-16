@@ -58,7 +58,7 @@ extension XCTestCase {
             for failure in XCTCurrentFailures {
                 failure.emit(method)
                 totalFailures++
-                if failure.expected == false {
+                if !failure.expected {
                     unexpectedFailures++
                 }
             }
