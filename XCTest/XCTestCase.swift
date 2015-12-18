@@ -36,10 +36,15 @@ extension XCTestCase {
             let method = "\(self.dynamicType).\(name)"
             var duration: Double = 0.0
             print("Test Case '\(method)' started.")
-            let start = currentTimeIntervalSinceReferenceTime()
             
+            setUp()
+            
+            let start = currentTimeIntervalSinceReferenceTime()
             test()
             let end = currentTimeIntervalSinceReferenceTime()
+            
+            tearDown()
+            
             duration = end - start
             totalDuration += duration
             for failure in XCTCurrentFailures {
