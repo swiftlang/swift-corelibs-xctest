@@ -14,6 +14,16 @@
 		C265F6731C3AEB6A00520CF9 /* XCTimeUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F66D1C3AEB6A00520CF9 /* XCTimeUtilities.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		DAA333B91C267AF3000CC115 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5B5D86D21BBC74AD00234F36 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B5D86DA1BBC74AD00234F36;
+			remoteInfo = SwiftXCTest;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		5B5D86DB1BBC74AD00234F36 /* SwiftXCTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftXCTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1384A411C1B3E8700EDF031 /* CONTRIBUTING.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CONTRIBUTING.md; sourceTree = "<group>"; };
@@ -24,6 +34,16 @@
 		C265F66B1C3AEB6A00520CF9 /* XCTestCaseProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestCaseProvider.swift; sourceTree = "<group>"; };
 		C265F66C1C3AEB6A00520CF9 /* XCTestMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestMain.swift; sourceTree = "<group>"; };
 		C265F66D1C3AEB6A00520CF9 /* XCTimeUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTimeUtilities.swift; sourceTree = "<group>"; };
+		DA78F7E91C4039410082E15B /* lit.cfg */ = {isa = PBXFileReference; lastKnownFileType = text; path = lit.cfg; sourceTree = "<group>"; };
+		DA78F7EB1C4039410082E15B /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		DA78F7EE1C4039410082E15B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		DA78F7EF1C4039410082E15B /* setup.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = setup.py; sourceTree = "<group>"; };
+		DA78F7F11C4039410082E15B /* __init__.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		DA78F7F21C4039410082E15B /* test_compare.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = test_compare.py; sourceTree = "<group>"; };
+		DA78F7F41C4039410082E15B /* __init__.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		DA78F7F61C4039410082E15B /* compare.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = compare.py; sourceTree = "<group>"; };
+		DA78F7F81C4039410082E15B /* main.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = main.py; sourceTree = "<group>"; };
+		DA78F7FA1C4039410082E15B /* xctest_checker.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = xctest_checker.py; sourceTree = "<group>"; };
 		EA3E74BB1BF2B6D500635A73 /* build_script.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = build_script.py; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -42,6 +62,7 @@
 			isa = PBXGroup;
 			children = (
 				C265F6661C3AEB6A00520CF9 /* Sources */,
+				DA78F7E71C4039410082E15B /* Tests */,
 				5B5D86DC1BBC74AD00234F36 /* Products */,
 				EA3E74BC1BF2B6D700635A73 /* Linux Build */,
 				B1384A401C1B3E6A00EDF031 /* Documentation */,
@@ -88,6 +109,63 @@
 			path = XCTest;
 			sourceTree = "<group>";
 		};
+		DA78F7E71C4039410082E15B /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				DA78F7E81C4039410082E15B /* Functional */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		DA78F7E81C4039410082E15B /* Functional */ = {
+			isa = PBXGroup;
+			children = (
+				DA78F7E91C4039410082E15B /* lit.cfg */,
+				DA78F7EA1C4039410082E15B /* SingleFailingTestCase */,
+				DA78F7ED1C4039410082E15B /* xctest_checker */,
+			);
+			path = Functional;
+			sourceTree = "<group>";
+		};
+		DA78F7EA1C4039410082E15B /* SingleFailingTestCase */ = {
+			isa = PBXGroup;
+			children = (
+				DA78F7EB1C4039410082E15B /* main.swift */,
+			);
+			path = SingleFailingTestCase;
+			sourceTree = "<group>";
+		};
+		DA78F7ED1C4039410082E15B /* xctest_checker */ = {
+			isa = PBXGroup;
+			children = (
+				DA78F7EE1C4039410082E15B /* .gitignore */,
+				DA78F7EF1C4039410082E15B /* setup.py */,
+				DA78F7F01C4039410082E15B /* tests */,
+				DA78F7F31C4039410082E15B /* xctest_checker */,
+				DA78F7FA1C4039410082E15B /* xctest_checker.py */,
+			);
+			path = xctest_checker;
+			sourceTree = "<group>";
+		};
+		DA78F7F01C4039410082E15B /* tests */ = {
+			isa = PBXGroup;
+			children = (
+				DA78F7F11C4039410082E15B /* __init__.py */,
+				DA78F7F21C4039410082E15B /* test_compare.py */,
+			);
+			path = tests;
+			sourceTree = "<group>";
+		};
+		DA78F7F31C4039410082E15B /* xctest_checker */ = {
+			isa = PBXGroup;
+			children = (
+				DA78F7F41C4039410082E15B /* __init__.py */,
+				DA78F7F61C4039410082E15B /* compare.py */,
+				DA78F7F81C4039410082E15B /* main.py */,
+			);
+			path = xctest_checker;
+			sourceTree = "<group>";
+		};
 		EA3E74BC1BF2B6D700635A73 /* Linux Build */ = {
 			isa = PBXGroup;
 			children = (
@@ -107,6 +185,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
+
+/* Begin PBXLegacyTarget section */
+		DAA333B51C267AD6000CC115 /* SwiftXCTestFunctionalTests */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "-q Tests/Functional";
+			buildConfigurationList = DAA333B81C267AD6000CC115 /* Build configuration list for PBXLegacyTarget "SwiftXCTestFunctionalTests" */;
+			buildPhases = (
+			);
+			buildToolPath = "$(SRCROOT)/../llvm/utils/lit/lit.py";
+			buildWorkingDirectory = "";
+			dependencies = (
+				DAA333BA1C267AF3000CC115 /* PBXTargetDependency */,
+			);
+			name = SwiftXCTestFunctionalTests;
+			passBuildSettingsInEnvironment = 1;
+			productName = SwiftXCTestFunctionalTests;
+		};
+/* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
 		5B5D86DA1BBC74AD00234F36 /* SwiftXCTest */ = {
@@ -140,6 +236,9 @@
 					5B5D86DA1BBC74AD00234F36 = {
 						CreatedOnToolsVersion = 7.1;
 					};
+					DAA333B51C267AD6000CC115 = {
+						CreatedOnToolsVersion = 7.2;
+					};
 				};
 			};
 			buildConfigurationList = 5B5D86D51BBC74AD00234F36 /* Build configuration list for PBXProject "XCTest" */;
@@ -156,6 +255,7 @@
 			projectRoot = "";
 			targets = (
 				5B5D86DA1BBC74AD00234F36 /* SwiftXCTest */,
+				DAA333B51C267AD6000CC115 /* SwiftXCTestFunctionalTests */,
 			);
 		};
 /* End PBXProject section */
@@ -184,6 +284,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DAA333BA1C267AF3000CC115 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B5D86DA1BBC74AD00234F36 /* SwiftXCTest */;
+			targetProxy = DAA333B91C267AF3000CC115 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		5B5D86E11BBC74AD00234F36 /* Debug */ = {
@@ -309,6 +417,31 @@
 			};
 			name = Release;
 		};
+		DAA333B61C267AD6000CC115 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUGGING_SYMBOLS = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EXEC = "$(TOOLCHAIN_DIR)/usr/bin/swiftc";
+			};
+			name = Debug;
+		};
+		DAA333B71C267AD6000CC115 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EXEC = "$(TOOLCHAIN_DIR)/usr/bin/swiftc";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -326,6 +459,15 @@
 			buildConfigurations = (
 				5B5D86E41BBC74AD00234F36 /* Debug */,
 				5B5D86E51BBC74AD00234F36 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DAA333B81C267AD6000CC115 /* Build configuration list for PBXLegacyTarget "SwiftXCTestFunctionalTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DAA333B61C267AD6000CC115 /* Debug */,
+				DAA333B71C267AD6000CC115 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
