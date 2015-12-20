@@ -49,9 +49,9 @@ extension XCTestCase {
             totalDuration += duration
             for failure in XCTCurrentFailures {
                 failure.emit(method)
-                totalFailures++
+                totalFailures += 1
                 if !failure.expected {
-                    unexpectedFailures++
+                    unexpectedFailures += 1
                 }
             }
             var result = "passed"
