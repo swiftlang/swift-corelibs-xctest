@@ -73,7 +73,7 @@ extension XCTestCase {
         }
         let averageDuration = totalDuration / Double(tests.count)
         
-        print("Executed \(tests.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) \(unexpectedFailures) unexpected) in \(printableStringForTimeInterval(averageDuration)) (\(printableStringForTimeInterval(totalDuration))) seconds")
+        print("Executed \(tests.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (\(unexpectedFailures) unexpected) in \(printableStringForTimeInterval(averageDuration)) (\(printableStringForTimeInterval(totalDuration))) seconds")
     }
     
     // This function is for the use of XCTestCase only, but we must make it public or clients will get a link failure when using XCTest (23476006)
