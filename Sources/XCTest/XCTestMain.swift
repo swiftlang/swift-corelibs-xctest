@@ -66,7 +66,5 @@ internal struct XCTRun {
     exit(totalFailures > 0 ? 1 : 0)
 }
 
-internal var XCTCurrentTestCase: XCTestCase?
-internal var XCTCurrentFailures = [XCTFailure]()
+internal var XCTFailureHandler: (XCTFailure -> Void)?
 internal var XCTAllRuns = [XCTRun]()
-
