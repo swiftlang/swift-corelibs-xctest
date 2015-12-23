@@ -21,7 +21,7 @@ import Darwin
 struct XCTFailure {
     var message: String
     var expected: Bool
-    var file: StaticString
+    var file: String
     var line: UInt
     
     func emit(method: String) {
