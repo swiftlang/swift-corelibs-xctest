@@ -32,8 +32,18 @@ extension XCTestCase {
         var totalFailures = 0
         var unexpectedFailures = 0
         for (name, test) in tests {
-            XCTCurrentTestCase = self
             let method = "\(self.dynamicType).\(name)"
+
+            var failures = [XCTFailure]()
+            XCTFailureHandler = { failure in
+                if !self.continueAfterFailure {
+                    failure.emit(method)
+                    fatalError("Terminating execution due to test failure")
+                } else {
+                    failures.append(failure)
+                }
+            }
+
             var duration: Double = 0.0
             print("Test Case '\(method)' started.")
             
@@ -47,7 +57,7 @@ extension XCTestCase {
             
             duration = end - start
             totalDuration += duration
-            for failure in XCTCurrentFailures {
+            for failure in failures {
                 failure.emit(method)
                 totalFailures += 1
                 if !failure.expected {
@@ -55,13 +65,12 @@ extension XCTestCase {
                 }
             }
             var result = "passed"
-            if XCTCurrentFailures.count > 0 {
+            if failures.count > 0 {
                 result = "failed"
             }
             print("Test Case '\(method)' \(result) (\(printableStringForTimeInterval(duration)) seconds).")
-            XCTAllRuns.append(XCTRun(duration: duration, method: method, passed: XCTCurrentFailures.count == 0, failures: XCTCurrentFailures))
-            XCTCurrentFailures.removeAll()
-            XCTCurrentTestCase = nil
+            XCTAllRuns.append(XCTRun(duration: duration, method: method, passed: failures.count == 0, failures: failures))
+            XCTFailureHandler = nil
         }
         var testCountSuffix = "s"
         if tests.count == 1 {
@@ -75,16 +84,7 @@ extension XCTestCase {
         
         print("Executed \(tests.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (\(unexpectedFailures) unexpected) in \(printableStringForTimeInterval(averageDuration)) (\(printableStringForTimeInterval(totalDuration))) seconds")
     }
-    
-    // This function is for the use of XCTestCase only, but we must make it public or clients will get a link failure when using XCTest (23476006)
-    public func testFailure(message: String, expected: Bool, file: StaticString , line: UInt) {
-        if !continueAfterFailure {
-            assert(false, message, file: file, line: line)
-        } else {
-            XCTCurrentFailures.append(XCTFailure(message: message, expected: expected, file: file, line: line))
-        }
-    }
-    
+
     public func setUp() {
         
     }
