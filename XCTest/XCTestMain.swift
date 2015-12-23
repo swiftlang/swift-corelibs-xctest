@@ -30,7 +30,7 @@ struct XCTFailure {
 }
 
 internal struct XCTRun {
-    var duration: Double
+    var duration: TimeInterval
     var method: String
     var passed: Bool
     var failures: [XCTFailure]
@@ -44,9 +44,12 @@ internal struct XCTRun {
 /// This function will not return. If the test cases pass, then it will call `exit(0)`. If there is a failure, then it will call `exit(1)`.
 /// - Parameter testCases: An array of test cases to run.
 @noreturn public func XCTMain(testCases: [XCTestCase]) {
-    for testCase in testCases {
-        testCase.invokeTest()
+    let overallDuration = measureTimeExecutingBlock {
+        for testCase in testCases {
+            testCase.invokeTest()
+        }
     }
+
     let (totalDuration, totalFailures, totalUnexpectedFailures) = XCTAllRuns.reduce((0.0, 0, 0)) { totals, run in (totals.0 + run.duration, totals.1 + run.failures.count, totals.2 + run.unexpectedFailures.count) }
     
     var testCountSuffix = "s"
@@ -57,8 +60,8 @@ internal struct XCTRun {
     if totalFailures == 1 {
         failureSuffix = ""
     }
-    let averageDuration = totalDuration / Double(XCTAllRuns.count)
-    print("Total executed \(XCTAllRuns.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (\(totalUnexpectedFailures) unexpected) in \(printableStringForTimeInterval(averageDuration)) (\(printableStringForTimeInterval(totalDuration))) seconds")
+
+    print("Total executed \(XCTAllRuns.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (\(totalUnexpectedFailures) unexpected) in \(printableStringForTimeInterval(totalDuration)) (\(printableStringForTimeInterval(overallDuration))) seconds")
     exit(totalFailures > 0 ? 1 : 0)
 }
 

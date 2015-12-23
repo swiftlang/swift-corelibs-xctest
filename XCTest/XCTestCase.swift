@@ -31,38 +31,37 @@ extension XCTestCase {
         var totalDuration = 0.0
         var totalFailures = 0
         var unexpectedFailures = 0
-        for (name, test) in tests {
-            XCTCurrentTestCase = self
-            let method = "\(self.dynamicType).\(name)"
-            var duration: Double = 0.0
-            print("Test Case '\(method)' started.")
-            
-            setUp()
-            
-            let start = currentTimeIntervalSinceReferenceTime()
-            test()
-            let end = currentTimeIntervalSinceReferenceTime()
-            
-            tearDown()
-            
-            duration = end - start
-            totalDuration += duration
-            for failure in XCTCurrentFailures {
-                failure.emit(method)
-                totalFailures += 1
-                if !failure.expected {
-                    unexpectedFailures += 1
+        let overallDuration = measureTimeExecutingBlock {
+            for (name, test) in tests {
+                XCTCurrentTestCase = self
+                let method = "\(self.dynamicType).\(name)"
+                print("Test Case '\(method)' started.")
+
+                setUp()
+
+                let duration = measureTimeExecutingBlock(test)
+
+                tearDown()
+
+                totalDuration += duration
+                for failure in XCTCurrentFailures {
+                    failure.emit(method)
+                    totalFailures += 1
+                    if !failure.expected {
+                        unexpectedFailures += 1
+                    }
                 }
+                var result = "passed"
+                if XCTCurrentFailures.count > 0 {
+                    result = "failed"
+                }
+                print("Test Case '\(method)' \(result) (\(printableStringForTimeInterval(duration)) seconds).")
+                XCTAllRuns.append(XCTRun(duration: duration, method: method, passed: XCTCurrentFailures.count == 0, failures: XCTCurrentFailures))
+                XCTCurrentFailures.removeAll()
+                XCTCurrentTestCase = nil
             }
-            var result = "passed"
-            if XCTCurrentFailures.count > 0 {
-                result = "failed"
-            }
-            print("Test Case '\(method)' \(result) (\(printableStringForTimeInterval(duration)) seconds).")
-            XCTAllRuns.append(XCTRun(duration: duration, method: method, passed: XCTCurrentFailures.count == 0, failures: XCTCurrentFailures))
-            XCTCurrentFailures.removeAll()
-            XCTCurrentTestCase = nil
         }
+
         var testCountSuffix = "s"
         if tests.count == 1 {
             testCountSuffix = ""
@@ -71,9 +70,8 @@ extension XCTestCase {
         if totalFailures == 1 {
             failureSuffix = ""
         }
-        let averageDuration = totalDuration / Double(tests.count)
-        
-        print("Executed \(tests.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (\(unexpectedFailures) unexpected) in \(printableStringForTimeInterval(averageDuration)) (\(printableStringForTimeInterval(totalDuration))) seconds")
+
+        print("Executed \(tests.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (\(unexpectedFailures) unexpected) in \(printableStringForTimeInterval(totalDuration)) (\(printableStringForTimeInterval(overallDuration))) seconds")
     }
     
     // This function is for the use of XCTestCase only, but we must make it public or clients will get a link failure when using XCTest (23476006)

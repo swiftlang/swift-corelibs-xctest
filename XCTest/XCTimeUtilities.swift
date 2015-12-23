@@ -17,18 +17,28 @@
     import Darwin
 #endif
 
+internal typealias TimeInterval = Double
+
 /// Returns the number of seconds since the reference time as a Double.
-internal func currentTimeIntervalSinceReferenceTime() -> Double {
+private func currentTimeIntervalSinceReferenceTime() -> TimeInterval {
     var tv = timeval()
-    let currentTime = withUnsafeMutablePointer(&tv, { (t: UnsafeMutablePointer<timeval>) -> Double in
+    let currentTime = withUnsafeMutablePointer(&tv, { (t: UnsafeMutablePointer<timeval>) -> TimeInterval in
         gettimeofday(t, nil)
-        return Double(t.memory.tv_sec) + Double(t.memory.tv_usec) / 1000000.0
+        return TimeInterval(t.memory.tv_sec) + TimeInterval(t.memory.tv_usec) / 1000000.0
     })
     return currentTime
 }
 
-/// Returns a string version of the given time interval rounded to no more than 3 decimal places.
-internal func printableStringForTimeInterval(timeInterval: Double) -> String {
-    return String(round(timeInterval * 1000.0) / 1000.0)
+/// Execute the given block and return the time spent during execution
+internal func measureTimeExecutingBlock(@noescape block: () -> Void) -> TimeInterval {
+    let start = currentTimeIntervalSinceReferenceTime()
+    block()
+    let end = currentTimeIntervalSinceReferenceTime()
+
+    return end - start
 }
 
+/// Returns a string version of the given time interval rounded to no more than 3 decimal places.
+internal func printableStringForTimeInterval(timeInterval: TimeInterval) -> String {
+    return String(round(timeInterval * 1000.0) / 1000.0)
+}
