@@ -74,7 +74,7 @@ def main():
     swiftc = os.path.abspath(args.swiftc)
     build_dir = os.path.abspath(args.build_dir)
     swift_build_dir = os.path.abspath(args.swift_build_dir)
-    
+
     if not os.path.exists(build_dir):
         run("mkdir -p {}".format(build_dir))
 
@@ -87,7 +87,7 @@ def main():
                   ]
     sourcePaths = []
     for file in sourceFiles:
-        sourcePaths.append("{0}/XCTest/{1}".format(os.path.dirname(os.path.abspath(__file__)), file))
+        sourcePaths.append("{0}/Sources/XCTest/{1}".format(os.path.dirname(os.path.abspath(__file__)), file))
 
 
     if args.build_style == "debug":
@@ -124,7 +124,7 @@ def main():
         cmd = ['cp', os.path.join(build_dir, install_mod_doc), os.path.join(module_path, install_mod_doc)]
         subprocess.check_call(cmd)
 
-    
+
     note('Done.')
 
 if __name__ == '__main__':

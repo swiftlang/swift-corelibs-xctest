@@ -7,24 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B108C2A71C20C15500F9F301 /* XCTimeUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B108C2A61C20C15500F9F301 /* XCTimeUtilities.swift */; };
-		B11FFA2A1C1603B6004297C2 /* XCTAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11FFA291C1603B6004297C2 /* XCTAssert.swift */; };
-		B11FFA2C1C160434004297C2 /* XCTestCaseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11FFA2B1C160434004297C2 /* XCTestCaseProvider.swift */; };
-		B11FFA2E1C16053C004297C2 /* XCTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11FFA2D1C16053C004297C2 /* XCTestCase.swift */; };
-		EA6E86BB1BDEA7DE007C0323 /* XCTestMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6E86BA1BDEA7DE007C0323 /* XCTestMain.swift */; };
+		C265F66F1C3AEB6A00520CF9 /* XCTAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F6691C3AEB6A00520CF9 /* XCTAssert.swift */; };
+		C265F6701C3AEB6A00520CF9 /* XCTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F66A1C3AEB6A00520CF9 /* XCTestCase.swift */; };
+		C265F6711C3AEB6A00520CF9 /* XCTestCaseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F66B1C3AEB6A00520CF9 /* XCTestCaseProvider.swift */; };
+		C265F6721C3AEB6A00520CF9 /* XCTestMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F66C1C3AEB6A00520CF9 /* XCTestMain.swift */; };
+		C265F6731C3AEB6A00520CF9 /* XCTimeUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F66D1C3AEB6A00520CF9 /* XCTimeUtilities.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		5B5D86DB1BBC74AD00234F36 /* SwiftXCTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftXCTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B108C2A61C20C15500F9F301 /* XCTimeUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTimeUtilities.swift; sourceTree = "<group>"; };
-		B11FFA291C1603B6004297C2 /* XCTAssert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTAssert.swift; sourceTree = "<group>"; };
-		B11FFA2B1C160434004297C2 /* XCTestCaseProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestCaseProvider.swift; sourceTree = "<group>"; };
-		B11FFA2D1C16053C004297C2 /* XCTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestCase.swift; sourceTree = "<group>"; };
 		B1384A411C1B3E8700EDF031 /* CONTRIBUTING.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CONTRIBUTING.md; sourceTree = "<group>"; };
 		B1384A421C1B3E8700EDF031 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		B1384A431C1B3E8700EDF031 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		C265F6691C3AEB6A00520CF9 /* XCTAssert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTAssert.swift; sourceTree = "<group>"; };
+		C265F66A1C3AEB6A00520CF9 /* XCTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestCase.swift; sourceTree = "<group>"; };
+		C265F66B1C3AEB6A00520CF9 /* XCTestCaseProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestCaseProvider.swift; sourceTree = "<group>"; };
+		C265F66C1C3AEB6A00520CF9 /* XCTestMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestMain.swift; sourceTree = "<group>"; };
+		C265F66D1C3AEB6A00520CF9 /* XCTimeUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTimeUtilities.swift; sourceTree = "<group>"; };
 		EA3E74BB1BF2B6D500635A73 /* build_script.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = build_script.py; sourceTree = "<group>"; };
-		EA6E86BA1BDEA7DE007C0323 /* XCTestMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestMain.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,7 +41,7 @@
 		5B5D86D11BBC74AD00234F36 = {
 			isa = PBXGroup;
 			children = (
-				5B5D86DD1BBC74AD00234F36 /* XCTest */,
+				C265F6661C3AEB6A00520CF9 /* Sources */,
 				5B5D86DC1BBC74AD00234F36 /* Products */,
 				EA3E74BC1BF2B6D700635A73 /* Linux Build */,
 				B1384A401C1B3E6A00EDF031 /* Documentation */,
@@ -58,18 +58,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		5B5D86DD1BBC74AD00234F36 /* XCTest */ = {
-			isa = PBXGroup;
-			children = (
-				EA6E86BA1BDEA7DE007C0323 /* XCTestMain.swift */,
-				B11FFA2D1C16053C004297C2 /* XCTestCase.swift */,
-				B11FFA2B1C160434004297C2 /* XCTestCaseProvider.swift */,
-				B11FFA291C1603B6004297C2 /* XCTAssert.swift */,
-				B108C2A61C20C15500F9F301 /* XCTimeUtilities.swift */,
-			);
-			path = XCTest;
-			sourceTree = "<group>";
-		};
 		B1384A401C1B3E6A00EDF031 /* Documentation */ = {
 			isa = PBXGroup;
 			children = (
@@ -78,6 +66,26 @@
 				B1384A431C1B3E8700EDF031 /* README.md */,
 			);
 			name = Documentation;
+			sourceTree = "<group>";
+		};
+		C265F6661C3AEB6A00520CF9 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				C265F6671C3AEB6A00520CF9 /* XCTest */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		C265F6671C3AEB6A00520CF9 /* XCTest */ = {
+			isa = PBXGroup;
+			children = (
+				C265F6691C3AEB6A00520CF9 /* XCTAssert.swift */,
+				C265F66A1C3AEB6A00520CF9 /* XCTestCase.swift */,
+				C265F66B1C3AEB6A00520CF9 /* XCTestCaseProvider.swift */,
+				C265F66C1C3AEB6A00520CF9 /* XCTestMain.swift */,
+				C265F66D1C3AEB6A00520CF9 /* XCTimeUtilities.swift */,
+			);
+			path = XCTest;
 			sourceTree = "<group>";
 		};
 		EA3E74BC1BF2B6D700635A73 /* Linux Build */ = {
@@ -167,11 +175,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B108C2A71C20C15500F9F301 /* XCTimeUtilities.swift in Sources */,
-				EA6E86BB1BDEA7DE007C0323 /* XCTestMain.swift in Sources */,
-				B11FFA2C1C160434004297C2 /* XCTestCaseProvider.swift in Sources */,
-				B11FFA2E1C16053C004297C2 /* XCTestCase.swift in Sources */,
-				B11FFA2A1C1603B6004297C2 /* XCTAssert.swift in Sources */,
+				C265F6731C3AEB6A00520CF9 /* XCTimeUtilities.swift in Sources */,
+				C265F6701C3AEB6A00520CF9 /* XCTestCase.swift in Sources */,
+				C265F6711C3AEB6A00520CF9 /* XCTestCaseProvider.swift in Sources */,
+				C265F66F1C3AEB6A00520CF9 /* XCTAssert.swift in Sources */,
+				C265F6721C3AEB6A00520CF9 /* XCTestMain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
