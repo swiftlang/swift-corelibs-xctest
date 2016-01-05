@@ -12,7 +12,7 @@
 //  for running tests and some infrastructure for running them.
 //
 
-#if os(Linux)
+#if os(Linux) || os(FreeBSD)
 import Glibc
 #else
 import Darwin
