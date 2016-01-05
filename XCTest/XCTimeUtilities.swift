@@ -11,7 +11,7 @@
 //  Some simple functions for working with "time intervals".
 //
 
-#if os(Linux)
+#if os(Linux) || os(FreeBSD)
     import Glibc
 #else
     import Darwin
