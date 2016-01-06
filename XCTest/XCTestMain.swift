@@ -21,7 +21,7 @@ import Darwin
 struct XCTFailure {
     var message: String
     var expected: Bool
-    var file: StaticString
+    var file: String
     var line: UInt
     
     func emit(method: String) {
@@ -62,7 +62,5 @@ internal struct XCTRun {
     exit(totalFailures > 0 ? 1 : 0)
 }
 
-internal var XCTCurrentTestCase: XCTestCase?
-internal var XCTCurrentFailures = [XCTFailure]()
+internal var XCTFailureHandler: (XCTFailure -> Void)?
 internal var XCTAllRuns = [XCTRun]()
-
