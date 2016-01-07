@@ -76,11 +76,11 @@ extension XCTestCase {
     }
     
     // This function is for the use of XCTestCase only, but we must make it public or clients will get a link failure when using XCTest (23476006)
-    public func testFailure(message: String, expected: Bool, file: StaticString , line: UInt) {
+    public func testFailure(message: String, failureDescription: String, expected: Bool, file: StaticString, line: UInt) {
         if !continueAfterFailure {
             assert(false, message, file: file, line: line)
         } else {
-            XCTCurrentFailures.append(XCTFailure(message: message, expected: expected, file: file, line: line))
+            XCTCurrentFailures.append(XCTFailure(message: message, failureDescription: failureDescription, expected: expected, file: file, line: line))
         }
     }
     
