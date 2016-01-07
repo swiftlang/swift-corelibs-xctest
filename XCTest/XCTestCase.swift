@@ -71,7 +71,7 @@ extension XCTestCase {
         if totalFailures == 1 {
             failureSuffix = ""
         }
-        let averageDuration = totalDuration / Double(tests.count)
+        let averageDuration = totalDuration / Double(max(tests.count, 1))
         
         print("Executed \(tests.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (\(unexpectedFailures) unexpected) in \(printableStringForTimeInterval(averageDuration)) (\(printableStringForTimeInterval(totalDuration))) seconds")
     }
