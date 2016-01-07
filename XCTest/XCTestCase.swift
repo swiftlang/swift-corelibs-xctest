@@ -12,7 +12,8 @@
 //
 
 public protocol XCTestCase : XCTestCaseProvider {
-    
+    func setUp()
+    func tearDown()
 }
 
 extension XCTestCase {
