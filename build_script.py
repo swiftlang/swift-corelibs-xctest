@@ -71,9 +71,9 @@ def main():
                         default="debug")
     args = parser.parse_args()
 
-    swiftc = os.path.abspath(args.swiftc)
-    build_dir = os.path.abspath(args.build_dir)
-    swift_build_dir = os.path.abspath(args.swift_build_dir)
+    swiftc = os.path.abspath(os.path.expanduser(args.swiftc))
+    build_dir = os.path.abspath(os.path.expanduser(args.build_dir))
+    swift_build_dir = os.path.abspath(os.path.expanduser(args.swift_build_dir))
 
     if not os.path.exists(build_dir):
         run("mkdir -p {}".format(build_dir))
