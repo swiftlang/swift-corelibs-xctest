@@ -10,9 +10,88 @@
 //  XCTAssert.swift
 //
 
-/// The primitive assertion function for XCTest. All other XCTAssert* functions
-/// are implemented in terms of this. This function emits a test failure if the
-/// general Bool expression passed to it evaluates to false.
+private enum _XCTAssertion {
+    case Equal(Any, Any)
+    case EqualWithAccuracy(Any, Any, accuracy: Any)
+    case GreaterThan(Any, Any)
+    case GreaterThanOrEqual(Any, Any)
+    case LessThan(Any, Any)
+    case LessThanOrEqual(Any, Any)
+    case NotEqual(Any, Any)
+    case NotEqualWithAccuracy(Any, Any, accuracy: Any)
+    case Nil(Any)
+    case NotNil
+    case True
+    case False
+    case Fail
+
+    var name: String? {
+        switch(self) {
+        case .Equal: return "XCTAssertEqual"
+        case .EqualWithAccuracy: return "XCTAssertEqualWithAccuracy"
+        case .GreaterThan: return "XCTAssertGreaterThan"
+        case .GreaterThanOrEqual: return "XCTAssertGreaterThanOrEqual"
+        case .LessThan: return "XCTAssertLessThan"
+        case .LessThanOrEqual: return "XCTAssertLessThanOrEqual"
+        case .NotEqual: return "XCTAssertNotEqual"
+        case .NotEqualWithAccuracy: return "XCTAssertNotEqualWithAccuracy"
+        case .Nil: return "XCTAssertNil"
+        case .NotNil: return "XCTAssertNotNil"
+        case .True: return "XCTAssertTrue"
+        case .False: return "XCTAssertFalse"
+        case .Fail: return nil
+        }
+    }
+
+    var failureDetails: String? {
+        switch(self) {
+        case .Equal(let value1, let value2):
+            return "(\"\(value1)\") is not equal to (\"\(value2)\")"
+        case .EqualWithAccuracy(let value1, let value2, let accuracy):
+            return "(\"\(value1)\") is not equal to (\"\(value2)\") +/- (\"\(accuracy)\")"
+        case .GreaterThan(let value1, let value2):
+            return "(\"\(value1)\") is not greater than (\"\(value2)\")"
+        case .GreaterThanOrEqual(let value1, let value2):
+            return "(\"\(value1)\") is less than (\"\(value2)\")"
+        case .LessThan(let value1, let value2):
+            return "(\"\(value1)\") is not less than (\"\(value2)\")"
+        case .LessThanOrEqual(let value1, let value2):
+            return "(\"\(value1)\") is greater than (\"\(value2)\")"
+        case .NotEqual(let value1, let value2):
+            return "(\"\(value1)\") is equal to (\"\(value2)\")"
+        case .NotEqualWithAccuracy(let value1, let value2, let accuracy):
+            return "(\"\(value1)\") is equal to (\"\(value2)\") +/- (\"\(accuracy)\")"
+        case .Nil(let value):
+            return "\"\(value)\""
+        case .NotNil: return nil
+        case .True: return nil
+        case .False: return nil
+        case .Fail: return nil
+        }
+    }
+
+    var failureDescription: String {
+        switch (name, failureDetails) {
+        case let (name?, description?):
+            return "\(name) failed: \(description)"
+        case let (name?, _):
+            return "\(name) failed"
+        default:
+            return "failed"
+        }
+    }
+}
+
+private func _XCTAssert(@autoclosure expression: () -> BooleanType, @autoclosure assertion: () -> _XCTAssertion, _ message: String, file: StaticString, line: UInt) {
+    if !expression().boolValue {
+        if let test = XCTCurrentTestCase {
+            test.testFailure(message, failureDescription: assertion().failureDescription, expected: true, file: file, line: line)
+        }
+    }
+}
+
+/// This function emits a test failure if the general Bool expression passed
+/// to it evaluates to false.
 ///
 /// - Requires: This and all other XCTAssert* functions must be called from
 ///   within a test method, as indicated by `XCTestCaseProvider.allTests`.
@@ -67,93 +146,106 @@
 ///  Now calling failures in `AssertEmpty` will be reported in the file and on
 ///  the line that the assert function is *called*, not where it is defined.
 public func XCTAssert(@autoclosure expression: () -> BooleanType, _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
-    if !expression().boolValue {
-        if let test = XCTCurrentTestCase {
-            test.testFailure(message, expected: true, file: file, line: line)
-        }
-    }
+    XCTAssertTrue(expression, message, file: file, line: line)
 }
 
 public func XCTAssertEqual<T : Equatable>(@autoclosure expression1: () -> T?, @autoclosure _ expression2: () -> T?, _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
-    XCTAssert(expression1() == expression2(), message, file: file, line: line)
+    let (value1, value2) = (expression1(), expression2())
+    _XCTAssert(value1 == value2, assertion: .Equal(value1, value2), message, file: file, line: line)
 }
 
 public func XCTAssertEqual<T : Equatable>(@autoclosure expression1: () -> ArraySlice<T>, @autoclosure _ expression2: () -> ArraySlice<T>, _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
-    XCTAssert(expression1() == expression2(), message, file: file, line: line)
+    let (value1, value2) = (expression1(), expression2())
+    _XCTAssert(value1 == value2, assertion: .Equal(value1, value2), message, file: file, line: line)
 }
 
 public func XCTAssertEqual<T : Equatable>(@autoclosure expression1: () -> ContiguousArray<T>, @autoclosure _ expression2: () -> ContiguousArray<T>, _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
-    XCTAssert(expression1() == expression2(), message, file: file, line: line)
+    let (value1, value2) = (expression1(), expression2())
+    _XCTAssert(value1 == value2, assertion: .Equal(value1, value2), message, file: file, line: line)
 }
 
 public func XCTAssertEqual<T : Equatable>(@autoclosure expression1: () -> [T], @autoclosure _ expression2: () -> [T], _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
-    XCTAssert(expression1() == expression2(), message, file: file, line: line)
+    let (value1, value2) = (expression1(), expression2())
+    _XCTAssert(value1 == value2, assertion: .Equal(value1, value2), message, file: file, line: line)
 }
 
 public func XCTAssertEqual<T, U : Equatable>(@autoclosure expression1: () -> [T : U], @autoclosure _ expression2: () -> [T : U], _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
-    XCTAssert(expression1() == expression2(), message, file: file, line: line)
+    let (value1, value2) = (expression1(), expression2())
+    _XCTAssert(value1 == value2, assertion: .Equal(value1, value2), message, file: file, line: line)
 }
 
 public func XCTAssertEqualWithAccuracy<T : FloatingPointType>(@autoclosure expression1: () -> T, @autoclosure _ expression2: () -> T, accuracy: T, _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
-    XCTAssert(abs(expression1().distanceTo(expression2())) <= abs(accuracy.distanceTo(T(0))), message, file: file, line: line)
+    let (value1, value2) = (expression1(), expression2())
+    _XCTAssert(abs(value1.distanceTo(value2)) <= abs(accuracy.distanceTo(T(0))), assertion: .EqualWithAccuracy(value1, value2, accuracy: accuracy), message, file: file, line: line)
 }
 
 public func XCTAssertFalse(@autoclosure expression: () -> BooleanType, _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
-    XCTAssert(!expression().boolValue, message, file: file, line: line)
+    _XCTAssert(!expression().boolValue, assertion: .False, message, file: file, line: line)
 }
 
 public func XCTAssertGreaterThan<T : Comparable>(@autoclosure expression1: () -> T, @autoclosure _ expression2: () -> T, _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
-    XCTAssert(expression1() > expression2(), message, file: file, line: line)
+    let (value1, value2) = (expression1(), expression2())
+    _XCTAssert(value1 > value2, assertion: .GreaterThan(value1, value2), message, file: file, line: line)
 }
 
 public func XCTAssertGreaterThanOrEqual<T : Comparable>(@autoclosure expression1: () -> T, @autoclosure _ expression2: () -> T, _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
-    XCTAssert(expression1() >= expression2(), message, file: file, line: line)
+    let (value1, value2) = (expression1(), expression2())
+    _XCTAssert(value1 >= value2, assertion: .GreaterThanOrEqual(value1, value2), message, file: file, line: line)
 }
 
 public func XCTAssertLessThan<T : Comparable>(@autoclosure expression1: () -> T, @autoclosure _ expression2: () -> T, _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
-    XCTAssert(expression1() < expression2(), message, file: file, line: line)
+    let (value1, value2) = (expression1(), expression2())
+    _XCTAssert(value1 < value2, assertion: .LessThan(value1, value2), message, file: file, line: line)
 }
 
 public func XCTAssertLessThanOrEqual<T : Comparable>(@autoclosure expression1: () -> T, @autoclosure _ expression2: () -> T, _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
-    XCTAssert(expression1() <= expression2(), message, file: file, line: line)
+    let (value1, value2) = (expression1(), expression2())
+    _XCTAssert(value1 <= value2, assertion: .LessThanOrEqual(value1, value2), message, file: file, line: line)
 }
 
 public func XCTAssertNil(@autoclosure expression: () -> Any?, _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
-    XCTAssert(expression() == nil, message, file: file, line: line)
+    let value = expression()
+    _XCTAssert(value == nil, assertion: value == nil ? .Nil(()) : .Nil(value!), message, file: file, line: line)
 }
 
 public func XCTAssertNotEqual<T : Equatable>(@autoclosure expression1: () -> T?, @autoclosure _ expression2: () -> T?, _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
-    XCTAssert(expression1() != expression2(), message, file: file, line: line)
+    let (value1, value2) = (expression1(), expression2())
+    _XCTAssert(value1 != value2, assertion: .NotEqual(value1, value2), message, file: file, line: line)
 }
 
 public func XCTAssertNotEqual<T : Equatable>(@autoclosure expression1: () -> ContiguousArray<T>, @autoclosure _ expression2: () -> ContiguousArray<T>, _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
-    XCTAssert(expression1() != expression2(), message, file: file, line: line)
+    let (value1, value2) = (expression1(), expression2())
+    _XCTAssert(value1 != value2, assertion: .NotEqual(value1, value2), message, file: file, line: line)
 }
 
 public func XCTAssertNotEqual<T : Equatable>(@autoclosure expression1: () -> ArraySlice<T>, @autoclosure _ expression2: () -> ArraySlice<T>, _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
-    XCTAssert(expression1() != expression2(), message, file: file, line: line)
+    let (value1, value2) = (expression1(), expression2())
+    _XCTAssert(value1 != value2, assertion: .NotEqual(value1, value2), message, file: file, line: line)
 }
 
 public func XCTAssertNotEqual<T : Equatable>(@autoclosure expression1: () -> [T], @autoclosure _ expression2: () -> [T], _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
-    XCTAssert(expression1() != expression2(), message, file: file, line: line)
+    let (value1, value2) = (expression1(), expression2())
+    _XCTAssert(value1 != value2, assertion: .NotEqual(value1, value2), message, file: file, line: line)
 }
 
 public func XCTAssertNotEqual<T, U : Equatable>(@autoclosure expression1: () -> [T : U], @autoclosure _ expression2: () -> [T : U], _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
-    XCTAssert(expression1() != expression2(), message, file: file, line: line)
+    let (value1, value2) = (expression1(), expression2())
+    _XCTAssert(value1 != value2, assertion: .NotEqual(value1, value2), message, file: file, line: line)
 }
 
 public func XCTAssertNotEqualWithAccuracy<T : FloatingPointType>(@autoclosure expression1: () -> T, @autoclosure _ expression2: () -> T, _ accuracy: T, _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
-    XCTAssert(abs(expression1().distanceTo(expression2())) > abs(accuracy.distanceTo(T(0))), message, file: file, line: line)
+    let (value1, value2) = (expression1(), expression2())
+    _XCTAssert(abs(value1.distanceTo(value2)) > abs(accuracy.distanceTo(T(0))), assertion: .NotEqualWithAccuracy(value1, value2, accuracy: accuracy), message, file: file, line: line)
 }
 
 public func XCTAssertNotNil(@autoclosure expression: () -> Any?, _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
-    XCTAssert(expression() != nil, message, file: file, line: line)
+    _XCTAssert(expression() != nil, assertion: .NotNil, message, file: file, line: line)
 }
 
 public func XCTAssertTrue(@autoclosure expression: () -> BooleanType, _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
-    XCTAssert(expression().boolValue, message, file: file, line: line)
+    _XCTAssert(expression().boolValue, assertion: .True, message, file: file, line: line)
 }
 
 public func XCTFail(message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
-    XCTAssert(false, message, file: file, line: line)
+    _XCTAssert(false, assertion: .Fail, message, file: file, line: line)
 }

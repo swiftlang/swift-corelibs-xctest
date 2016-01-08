@@ -20,12 +20,13 @@ import Darwin
 
 struct XCTFailure {
     var message: String
+    var failureDescription: String
     var expected: Bool
     var file: StaticString
     var line: UInt
     
     func emit(method: String) {
-        print("\(file):\(line): \(expected ? "" : "unexpected ")error: \(method) : \(message)")
+        print("\(file):\(line): \(expected ? "" : "unexpected ")error: \(method) : \(failureDescription) - \(message)")
     }
 }
 
