@@ -14,6 +14,8 @@
 
 import os, subprocess, argparse
 
+SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 def note(msg):
     print("xctest-build: "+msg)
 
@@ -69,6 +71,16 @@ def main():
                         dest="build_style",
                         const="debug",
                         default="debug")
+    parser.add_argument("--test",
+                        help="Whether to run tests after building. "
+                             "Note that you must have cloned "
+                             "https://github.com/apple/swift-llvm "
+                             "at {} in order to run this command. ".format(
+                                 os.path.join(
+                                     os.path.dirname(SOURCE_DIR), 'llvm')),
+                        action="store_true",
+                        dest="test",
+                        default=False)
     args = parser.parse_args()
 
     swiftc = os.path.abspath(args.swiftc)
@@ -87,7 +99,7 @@ def main():
                   ]
     sourcePaths = []
     for file in sourceFiles:
-        sourcePaths.append("{0}/Sources/XCTest/{1}".format(os.path.dirname(os.path.abspath(__file__)), file))
+        sourcePaths.append("{0}/Sources/XCTest/{1}".format(SOURCE_DIR, file))
 
 
     if args.build_style == "debug":
@@ -124,6 +136,12 @@ def main():
         cmd = ['cp', os.path.join(build_dir, install_mod_doc), os.path.join(module_path, install_mod_doc)]
         subprocess.check_call(cmd)
 
+        if args.test:
+            lit_path = os.path.join(
+                os.path.dirname(SOURCE_DIR), 'llvm', 'utils', 'lit', 'lit.py')
+            tests_path = os.path.join(SOURCE_DIR, 'Tests', 'Functional')
+            run('SWIFT_EXEC={swiftc} {lit_path} {tests_path}'.format(
+                swiftc=swiftc, lit_path=lit_path, tests_path=tests_path))
 
     note('Done.')
 

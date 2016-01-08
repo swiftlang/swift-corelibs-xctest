@@ -38,6 +38,23 @@ If your install of Swift is located at `/swift` and you wish to install XCTest i
 ./build_script.py --swiftc="/swift/usr/bin/swiftc" --build-dir="/tmp/XCTest_build" --swift-build-dir="/swift/usr" --library-install-path="/swift/usr/lib/swift/linux" --module-install-path="/swift/usr/lib/swift/linux/x86_64"
 ```
 
+To run the tests on Linux, pass the `--test` option in combination with options to
+install XCTest in your active version of Swift:
+
+```sh
+./build_script.py \
+    --swiftc="/swift/usr/bin/swiftc" \
+    --build-dir="/tmp/XCTest_build" \
+    --swift-build-dir="/swift/usr" \
+    --library-install-path="/swift/usr/lib/swift/linux" \
+    --module-install-path="/swift/usr/lib/swift/linux/x86_64" \
+    --test
+```
+
+To run the tests on OS X, build and run the `SwiftXCTestFunctionalTests` target in the Xcode project.
+
+You may add tests for XCTest by including them in the `Tests/Functional/` directory. For an example, see `Tests/Functional/SingleFailingTestCase`.
+
 ### Additional Considerations for Swift on Linux
 
 When running on the Objective-C runtime, XCTest is able to find all of your tests by simply asking the runtime for the subclasses of `XCTestCase`. It then finds the methods that start with the string `test`. This functionality is not currently present when running on the Swift runtime. Therefore, you must currently provide an additional property called `allTests` in your `XCTestCase` subclass. This method lists all of the tests in the test class. The rest of your test case subclass still contains your test methods.
