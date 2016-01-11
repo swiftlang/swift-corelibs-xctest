@@ -12,7 +12,7 @@
 # Here is a nice way to invoke this script if you are building locally, and Swift is installed at /, and you want to install XCTest back there
 # sudo ./build_script.py --swiftc="/usr/bin/swiftc" --build-dir="/tmp/XCTest_build" --swift-build-dir="/usr" --library-install-path="/usr/lib/swift/linux" --module-install-path="/usr/lib/swift/linux/x86_64"
 
-import os, subprocess, argparse
+import os, shlex, subprocess, argparse, platform
 
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -109,10 +109,28 @@ def main():
 
     # Not incremental..
     # Build library
-    run("{0} -c {1} -emit-object {2} -module-name XCTest -parse-as-library -emit-module "
-        "-emit-module-path {3}/XCTest.swiftmodule -o {3}/XCTest.o -force-single-frontend-invocation "
-        "-module-link-name XCTest".format(swiftc, style_options, " ".join(sourcePaths), build_dir))
-    run("clang {0}/XCTest.o -shared -o {0}/libXCTest.so -Wl,--no-undefined -Wl,-soname,libXCTest.so -L{1}/lib/swift/linux/ -lswiftGlibc -lswiftCore -lm".format(build_dir, swift_build_dir))
+    if platform.system() == "Darwin":
+        sdkpath_cmd = shlex.split("xcrun --show-sdk-path --sdk macosx")
+        sdk, err = subprocess.Popen(sdkpath_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        print sdk
+        run("{swiftc} -sdk {sdkpath} -c {style_options} -emit-object {obj} -module-name XCTest -parse-as-library -emit-module "
+            "-emit-module-path {build_dir}/XCTest.swiftmodule -o {build_dir}/XCTest.o -force-single-frontend-invocation "
+            "-module-link-name XCTest".format(
+                swiftc=swiftc,
+                sdkpath=sdk.strip(),
+                style_options=style_options,
+                obj=" ".join(sourcePaths),
+                build_dir=build_dir)
+            )
+        run("clang {build_dir}/XCTest.o -shared -o {build_dir}/libXCTest.so -L{swift_build_dir}/lib/swift/macosx/ -lswiftCore -lm".format(
+            build_dir=build_dir,
+            swift_build_dir=swift_build_dir)
+        )
+    else:
+        run("{0} -c {1} -emit-object {2} -module-name XCTest -parse-as-library -emit-module "
+            "-emit-module-path {3}/XCTest.swiftmodule -o {3}/XCTest.o -force-single-frontend-invocation "
+            "-module-link-name XCTest".format(swiftc, style_options, " ".join(sourcePaths), build_dir))
+        run("clang {0}/XCTest.o -shared -o {0}/libXCTest.so -Wl,--no-undefined -Wl,-soname,libXCTest.so -L{1}/lib/swift/linux/ -lswiftGlibc -lswiftCore -lm".format(build_dir, swift_build_dir))
 
     # If we were given an install directive, perform installation
     if args.module_path is not None and args.lib_path is not None:

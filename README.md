@@ -51,7 +51,18 @@ install XCTest in your active version of Swift:
     --test
 ```
 
-To run the tests on OS X, build and run the `SwiftXCTestFunctionalTests` target in the Xcode project.
+Building and installing on OSX:
+
+```sh
+sudo ./build_script.py \
+    --swiftc="/Library/Developer/Toolchains/swift-latest.xctoolchain/usr/bin/swiftc" \
+    --build-dir="/tmp/XCTest_build" \
+    --swift-build-dir="/Library/Developer/Toolchains/swift-latest.xctoolchain/usr" \
+    --library-install-path="/Library/Developer/Toolchains/swift-latest.xctoolchain/usr/lib/swift/macosx" \
+    --module-install-path="/Library/Developer/Toolchains/swift-latest.xctoolchain/usr/lib/swift/macosx/x86_64"
+```
+
+To run the tests on OS X, build and run the `SwiftXCTestFunctionalTests` target in the Xcode project, the `--test` parameter for the build script will not work.
 
 You may add tests for XCTest by including them in the `Tests/Functional/` directory. For an example, see `Tests/Functional/SingleFailingTestCase`.
 
