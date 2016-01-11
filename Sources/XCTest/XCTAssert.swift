@@ -84,8 +84,8 @@ private enum _XCTAssertion {
 
 private func _XCTAssert(@autoclosure expression: () -> BooleanType, @autoclosure assertion: () -> _XCTAssertion, @autoclosure _ message: () -> String, file: StaticString, line: UInt) {
     if !expression().boolValue {
-        if let test = XCTCurrentTestCase {
-            test.testFailure(message(), failureDescription: assertion().failureDescription, expected: true, file: file, line: line)
+        if let handler = XCTFailureHandler {
+            handler(XCTFailure(message: message(), failureDescription: assertion().failureDescription, expected: true, file: file, line: line))
         }
     }
 }
