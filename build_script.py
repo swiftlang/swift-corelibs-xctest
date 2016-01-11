@@ -112,7 +112,6 @@ def main():
     if platform.system() == "Darwin":
         sdkpath_cmd = shlex.split("xcrun --show-sdk-path --sdk macosx")
         sdk, err = subprocess.Popen(sdkpath_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print sdk
         run("{swiftc} -sdk {sdkpath} -c {style_options} -emit-object {obj} -module-name XCTest -parse-as-library -emit-module "
             "-emit-module-path {build_dir}/XCTest.swiftmodule -o {build_dir}/XCTest.o -force-single-frontend-invocation "
             "-module-link-name XCTest".format(
