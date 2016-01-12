@@ -55,6 +55,8 @@ extension XCTestCase {
                 tearDown()
 
                 totalDuration += duration
+
+                var result = "passed"
                 for failure in failures {
                     failure.emit(method)
                     totalFailures += 1
@@ -62,11 +64,11 @@ extension XCTestCase {
                         unexpectedFailures += 1
                     }
 
-                    let result = failures.count > 0 ? "failed" : "passed"
-
-                    print("Test Case '\(method)' \(result) (\(printableStringForTimeInterval(duration)) seconds).")
+                    result = failures.count > 0 ? "failed" : "passed"
                     XCTAllRuns.append(XCTRun(duration: duration, method: method, passed: failures.count == 0, failures: failures))
                 }
+
+                print("Test Case '\(method)' \(result) (\(printableStringForTimeInterval(duration)) seconds).")
                 XCTFailureHandler = nil
             }
         }
