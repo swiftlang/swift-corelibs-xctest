@@ -44,8 +44,8 @@
 		DA78F7F61C4039410082E15B /* compare.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = compare.py; sourceTree = "<group>"; };
 		DA78F7F81C4039410082E15B /* main.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = main.py; sourceTree = "<group>"; };
 		DA78F7FA1C4039410082E15B /* xctest_checker.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = xctest_checker.py; sourceTree = "<group>"; };
-		DADB975E1C44BE8B005E68B6 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		DADB97581C406879005E68B6 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		DADB975E1C44BE8B005E68B6 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		EA3E74BB1BF2B6D500635A73 /* build_script.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = build_script.py; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -170,20 +170,20 @@
 			path = xctest_checker;
 			sourceTree = "<group>";
 		};
-		DADB975D1C44BE73005E68B6 /* FailingTestSuite */ = {
-			isa = PBXGroup;
-			children = (
-				DADB975E1C44BE8B005E68B6 /* main.swift */,
-			);
-			path = FailingTestSuite;
-			sourceTree = "<group>";
-		};
 		DADB97571C406879005E68B6 /* NegativeAccuracyTestCase */ = {
 			isa = PBXGroup;
 			children = (
 				DADB97581C406879005E68B6 /* main.swift */,
 			);
 			path = NegativeAccuracyTestCase;
+			sourceTree = "<group>";
+		};
+		DADB975D1C44BE73005E68B6 /* FailingTestSuite */ = {
+			isa = PBXGroup;
+			children = (
+				DADB975E1C44BE8B005E68B6 /* main.swift */,
+			);
+			path = FailingTestSuite;
 			sourceTree = "<group>";
 		};
 		EA3E74BC1BF2B6D700635A73 /* Linux Build */ = {
