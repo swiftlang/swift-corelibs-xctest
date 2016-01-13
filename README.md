@@ -51,7 +51,11 @@ install XCTest in your active version of Swift:
     --test
 ```
 
-To run the tests on OS X, build and run the `SwiftXCTestFunctionalTests` target in the Xcode project.
+To run the tests on OS X, build and run the `SwiftXCTestFunctionalTests` target in the Xcode project. You may also run them via the command line:
+
+```
+xcodebuild -project XCTest.xcodeproj -scheme SwiftXCTestFunctionalTests
+```
 
 You may add tests for XCTest by including them in the `Tests/Functional/` directory. For an example, see `Tests/Functional/SingleFailingTestCase`.
 
