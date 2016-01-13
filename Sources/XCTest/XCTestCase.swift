@@ -63,12 +63,11 @@ extension XCTestCase {
                     if !failure.expected {
                         unexpectedFailures += 1
                     }
-
                     result = failures.count > 0 ? "failed" : "passed"
-                    XCTAllRuns.append(XCTRun(duration: duration, method: method, passed: failures.count == 0, failures: failures))
                 }
 
                 print("Test Case '\(method)' \(result) (\(printableStringForTimeInterval(duration)) seconds).")
+                XCTAllRuns.append(XCTRun(duration: duration, method: method, passed: failures.count == 0, failures: failures))
                 XCTFailureHandler = nil
             }
         }
