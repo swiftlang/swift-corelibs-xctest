@@ -13,7 +13,7 @@
 // CHECK: .*/Tests/Functional/FailingTestSuite/main.swift:54: error: FailingTestCase.test_fails_with_message : XCTAssertTrue failed - Foo bar.
 // CHECK: Test Case 'FailingTestCase.test_fails_with_message' failed \(\d+\.\d+ seconds\).
 // CHECK: Executed 3 tests, with 2 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
-// CHECK: Total executed 2 tests, with 2 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: Total executed 4 tests, with 2 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
 #if os(Linux) || os(FreeBSD)
     import XCTest
