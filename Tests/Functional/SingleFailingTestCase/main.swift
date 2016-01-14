@@ -14,7 +14,7 @@
 #endif
 
 class SingleFailingTestCase: XCTestCase {
-    var allTests: [(String, () -> ())] {
+    var allTests: [(String, () throws -> ())] {
         return [
             ("test_fails", test_fails),
         ]

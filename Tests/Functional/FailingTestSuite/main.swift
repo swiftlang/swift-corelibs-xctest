@@ -22,7 +22,7 @@
 #endif
 
 class PassingTestCase: XCTestCase {
-    var allTests: [(String, () -> ())] {
+    var allTests: [(String, () throws -> ())] {
         return [
             ("test_passes", test_passes),
         ]
@@ -34,7 +34,7 @@ class PassingTestCase: XCTestCase {
 }
 
 class FailingTestCase: XCTestCase {
-    var allTests: [(String, () -> ())] {
+    var allTests: [(String, () throws -> ())] {
         return [
             ("test_passes", test_passes),
             ("test_fails", test_fails),
