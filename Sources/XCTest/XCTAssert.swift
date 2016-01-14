@@ -24,6 +24,7 @@ private enum _XCTAssertion {
     case True
     case False
     case Fail
+    case ThrowsError
 
     var name: String? {
         switch(self) {
@@ -39,6 +40,7 @@ private enum _XCTAssertion {
         case .NotNil: return "XCTAssertNotNil"
         case .True: return "XCTAssertTrue"
         case .False: return "XCTAssertFalse"
+        case .ThrowsError: return "XCTAssertThrowsError"
         case .Fail: return nil
         }
     }
@@ -363,5 +365,23 @@ public func XCTAssertTrue(@autoclosure expression: () -> BooleanType, @autoclosu
 public func XCTFail(message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__) {
     _XCTEvaluateAssertion(.Fail, message: message, file: file, line: line) {
         return .ExpectedFailure(nil)
+    }
+}
+
+public func XCTAssertThrowsError<T>(@autoclosure expression: () throws -> T, _ message: String = "", file: StaticString = __FILE__, line: UInt = __LINE__, _ errorHandler: (error: ErrorType) -> Void = { _ in }) {
+    _XCTEvaluateAssertion(.ThrowsError, message: message, file: file, line: line) {
+        var caughtErrorOptional: ErrorType?
+        do {
+            _ = try expression()
+        } catch {
+            caughtErrorOptional = error
+        }
+
+        if let caughtError = caughtErrorOptional {
+            errorHandler(error: caughtError)
+            return .Success
+        } else {
+            return .ExpectedFailure("did not throw error")
+        }
     }
 }
