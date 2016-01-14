@@ -286,7 +286,7 @@ public func XCTAssertNil(@autoclosure expression: () throws -> Any?, @autoclosur
         if value == nil {
             return .Success
         } else {
-            return .ExpectedFailure("\"\(value)\"")
+            return .ExpectedFailure("\"\(value!)\"")
         }
     }
 }
