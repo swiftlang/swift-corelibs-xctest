@@ -219,7 +219,7 @@
 /* Begin PBXLegacyTarget section */
 		DAA333B51C267AD6000CC115 /* SwiftXCTestFunctionalTests */ = {
 			isa = PBXLegacyTarget;
-			buildArgumentsString = "-q Tests/Functional";
+			buildArgumentsString = "-sv --no-progress-bar Tests/Functional";
 			buildConfigurationList = DAA333B81C267AD6000CC115 /* Build configuration list for PBXLegacyTarget "SwiftXCTestFunctionalTests" */;
 			buildPhases = (
 			);
