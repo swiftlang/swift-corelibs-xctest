@@ -52,12 +52,12 @@ private enum _XCTAssertionResult {
     case UnexpectedFailure(ErrorType)
     
     var expected: Bool {
-    switch (self) {
-    case .UnexpectedFailure(_):
-    return false
-    default:
-    return true
-    }
+        switch (self) {
+        case .UnexpectedFailure(_):
+            return false
+        default:
+            return true
+        }
     }
     
     func failureDescription(assertion: _XCTAssertion) -> String {
