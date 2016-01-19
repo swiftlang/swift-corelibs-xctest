@@ -25,6 +25,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		342A33611C470D91001AA02A /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		5B5D86DB1BBC74AD00234F36 /* SwiftXCTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftXCTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F320B0D1C4714EC00AB3456 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		B1384A411C1B3E8700EDF031 /* CONTRIBUTING.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CONTRIBUTING.md; sourceTree = "<group>"; };
@@ -61,6 +62,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		342A33601C470D1E001AA02A /* FailureMessagesTestCase */ = {
+			isa = PBXGroup;
+			children = (
+				342A33611C470D91001AA02A /* main.swift */,
+			);
+			path = FailureMessagesTestCase;
+			sourceTree = "<group>";
+		};
 		5B5D86D11BBC74AD00234F36 = {
 			isa = PBXGroup;
 			children = (
@@ -136,6 +145,7 @@
 				9F320B0C1C4714EC00AB3456 /* ErrorHandling */,
 				DADB975D1C44BE73005E68B6 /* FailingTestSuite */,
 				DADB97571C406879005E68B6 /* NegativeAccuracyTestCase */,
+				342A33601C470D1E001AA02A /* FailureMessagesTestCase */,
 				DA78F7ED1C4039410082E15B /* xctest_checker */,
 			);
 			path = Functional;
