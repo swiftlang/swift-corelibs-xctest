@@ -24,12 +24,14 @@ class SetUpTearDownTestCase: XCTestCase {
 
     var value = 0
 
-    func setUp() {
+    override func setUp() {
+        super.setUp()
         print("In \(__FUNCTION__)")
         value = 42
     }
 
-    func tearDown() {
+    override func tearDown() {
+        super.tearDown()
         print("In \(__FUNCTION__)")
     }
 
