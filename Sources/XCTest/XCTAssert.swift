@@ -104,7 +104,7 @@ private func _XCTEvaluateAssertion(assertion: _XCTAssertion, @autoclosure messag
 /// to it evaluates to false.
 ///
 /// - Requires: This and all other XCTAssert* functions must be called from
-///   within a test method, as indicated by `XCTestCaseProvider.allTests`.
+///   within a test method, as passed to `XCTMain`.
 ///   Assertion failures that occur outside of a test method will *not* be
 ///   reported as failures.
 ///

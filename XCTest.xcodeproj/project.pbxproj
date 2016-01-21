@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		C265F66F1C3AEB6A00520CF9 /* XCTAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F6691C3AEB6A00520CF9 /* XCTAssert.swift */; };
 		C265F6701C3AEB6A00520CF9 /* XCTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F66A1C3AEB6A00520CF9 /* XCTestCase.swift */; };
-		C265F6711C3AEB6A00520CF9 /* XCTestCaseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F66B1C3AEB6A00520CF9 /* XCTestCaseProvider.swift */; };
 		C265F6721C3AEB6A00520CF9 /* XCTestMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F66C1C3AEB6A00520CF9 /* XCTestMain.swift */; };
 		C265F6731C3AEB6A00520CF9 /* XCTimeUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F66D1C3AEB6A00520CF9 /* XCTimeUtilities.swift */; };
 /* End PBXBuildFile section */
@@ -34,7 +33,6 @@
 		B1384A431C1B3E8700EDF031 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		C265F6691C3AEB6A00520CF9 /* XCTAssert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTAssert.swift; sourceTree = "<group>"; };
 		C265F66A1C3AEB6A00520CF9 /* XCTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestCase.swift; sourceTree = "<group>"; };
-		C265F66B1C3AEB6A00520CF9 /* XCTestCaseProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestCaseProvider.swift; sourceTree = "<group>"; };
 		C265F66C1C3AEB6A00520CF9 /* XCTestMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestMain.swift; sourceTree = "<group>"; };
 		C265F66D1C3AEB6A00520CF9 /* XCTimeUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTimeUtilities.swift; sourceTree = "<group>"; };
 		DA78F7E91C4039410082E15B /* lit.cfg */ = {isa = PBXFileReference; lastKnownFileType = text; path = lit.cfg; sourceTree = "<group>"; };
@@ -131,7 +129,6 @@
 			children = (
 				C265F6691C3AEB6A00520CF9 /* XCTAssert.swift */,
 				C265F66A1C3AEB6A00520CF9 /* XCTestCase.swift */,
-				C265F66B1C3AEB6A00520CF9 /* XCTestCaseProvider.swift */,
 				C265F66C1C3AEB6A00520CF9 /* XCTestMain.swift */,
 				C265F66D1C3AEB6A00520CF9 /* XCTimeUtilities.swift */,
 			);
@@ -327,7 +324,6 @@
 			files = (
 				C265F6731C3AEB6A00520CF9 /* XCTimeUtilities.swift in Sources */,
 				C265F6701C3AEB6A00520CF9 /* XCTestCase.swift in Sources */,
-				C265F6711C3AEB6A00520CF9 /* XCTestCaseProvider.swift in Sources */,
 				C265F66F1C3AEB6A00520CF9 /* XCTAssert.swift in Sources */,
 				C265F6721C3AEB6A00520CF9 /* XCTestMain.swift in Sources */,
 			);
