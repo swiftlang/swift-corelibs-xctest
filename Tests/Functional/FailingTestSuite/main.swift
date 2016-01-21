@@ -22,7 +22,7 @@
 #endif
 
 class PassingTestCase: XCTestCase {
-    var allTests: [(String, () throws -> ())] {
+    static var allTests: [(String, PassingTestCase -> () throws -> Void)] {
         return [
             ("test_passes", test_passes),
         ]
@@ -34,7 +34,7 @@ class PassingTestCase: XCTestCase {
 }
 
 class FailingTestCase: XCTestCase {
-    var allTests: [(String, () throws -> ())] {
+    static var allTests: [(String, FailingTestCase -> () throws -> Void)] {
         return [
             ("test_passes", test_passes),
             ("test_fails", test_fails),
@@ -56,6 +56,6 @@ class FailingTestCase: XCTestCase {
 }
 
 XCTMain([
-    PassingTestCase(),
-    FailingTestCase(),
+    testCase(PassingTestCase.allTests),
+    testCase(FailingTestCase.allTests),
 ])

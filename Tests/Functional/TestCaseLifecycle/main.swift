@@ -21,7 +21,7 @@
 #endif
 
 class SetUpTearDownTestCase: XCTestCase {
-    var allTests: [(String, () throws -> Void)] {
+    static var allTests: [(String, SetUpTearDownTestCase -> () throws -> Void)] {
         return [
             ("test_hasValueFromSetUp", test_hasValueFromSetUp),
         ]
@@ -47,7 +47,7 @@ class SetUpTearDownTestCase: XCTestCase {
 }
 
 class NewInstanceForEachTestTestCase: XCTestCase {
-    var allTests: [(String, () throws -> Void)] {
+    static var allTests: [(String, NewInstanceForEachTestTestCase -> () throws -> Void)] {
         return [
             ("test_hasInitializedValue", test_hasInitializedValue),
             ("test_hasInitializedValueInAnotherTest", test_hasInitializedValueInAnotherTest),
@@ -67,6 +67,6 @@ class NewInstanceForEachTestTestCase: XCTestCase {
 }
 
 XCTMain([
-    SetUpTearDownTestCase(),
-    NewInstanceForEachTestTestCase()
+    testCase(SetUpTearDownTestCase.allTests),
+    testCase(NewInstanceForEachTestTestCase.allTests)
 ])

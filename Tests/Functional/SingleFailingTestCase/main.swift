@@ -14,9 +14,9 @@
 #endif
 
 class SingleFailingTestCase: XCTestCase {
-    var allTests: [(String, () throws -> ())] {
+    static var allTests: [(String, SingleFailingTestCase -> () throws -> Void)] {
         return [
-            ("test_fails", test_fails),
+            ("test_fails", test_fails)
         ]
     }
 
@@ -25,4 +25,4 @@ class SingleFailingTestCase: XCTestCase {
     }
 }
 
-XCTMain([SingleFailingTestCase()])
+XCTMain([testCase(SingleFailingTestCase.allTests)])

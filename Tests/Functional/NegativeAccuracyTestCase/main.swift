@@ -22,7 +22,7 @@
 
 // Regression test for https://github.com/apple/swift-corelibs-xctest/pull/7
 class NegativeAccuracyTestCase: XCTestCase {
-    var allTests: [(String, () throws -> ())] {
+    static var allTests: [(String, NegativeAccuracyTestCase -> () throws -> Void)] {
         return [
             ("test_equalWithAccuracy_passes", test_equalWithAccuracy_passes),
             ("test_equalWithAccuracy_fails", test_equalWithAccuracy_fails),
@@ -48,4 +48,4 @@ class NegativeAccuracyTestCase: XCTestCase {
     }
 }
 
-XCTMain([NegativeAccuracyTestCase()])
+XCTMain([testCase(NegativeAccuracyTestCase.allTests)])
