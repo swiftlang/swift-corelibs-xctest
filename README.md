@@ -24,13 +24,15 @@ The rest of this document will focus on how this version of XCTest differs from 
 
 ## Working on XCTest
 
+### On Linux
+
 XCTest can be built as part of the overall Swift package. When following [the instructions for building Swift](http://www.github.com/apple/swift), pass the `--xctest` option to the build script:
 
 ```sh
 swift/utils/build-script --xctest
 ```
 
-If you want to build just XCTest, use the `build_script.py` script at the root of the project. The `master` version of XCTest must be built with the `master` version of Swift.
+If you want to build just XCTest, use the `build_script.py` script at the root of the project. The `master` version of XCTest must be built with the `master` version of Swift. XCTest has a dependency upon Foundation, so you must have built the `master` version of that as well.
 
 If your install of Swift is located at `/swift` and you wish to install XCTest into that same location, here is a sample invocation of the build script:
 
@@ -38,6 +40,7 @@ If your install of Swift is located at `/swift` and you wish to install XCTest i
 ./build_script.py \
     --swiftc="/swift/usr/bin/swiftc" \
     --build-dir="/tmp/XCTest_build" \
+    --foundation-build-dir "/swift//usr/lib/swift/linux" \
     --library-install-path="/swift/usr/lib/swift/linux" \
     --module-install-path="/swift/usr/lib/swift/linux/x86_64"
 ```
@@ -45,8 +48,26 @@ If your install of Swift is located at `/swift` and you wish to install XCTest i
 To run the tests on Linux, use the `--test` option:
 
 ```sh
-./build_script.py --swiftc="/swift/usr/bin/swiftc" --test
+./build_script.py \
+    --swiftc="/swift/usr/bin/swiftc" \
+    --foundation-build-dir "/swift/usr/lib/swift/linux" \
+    --test
 ```
+
+You may add tests for XCTest by including them in the `Tests/Functional/` directory. For an example, see `Tests/Functional/SingleFailingTestCase`.
+
+### On OS X
+
+You may build XCTest via the "SwiftXCTest" scheme in `XCTest.xcworkspace`. The workspace assumes that Foundation and XCTest are checked out from GitHub in sibling directories. For example:
+
+```
+% cd Development
+% ls
+swift-corelibs-foundation swift-corelibs-xctest
+%
+```
+
+Unlike on Linux, you do not need to build Foundation prior to building XCTest. The "SwiftXCTest" Xcode scheme takes care of that for you.
 
 To run the tests on OS X, build and run the `SwiftXCTestFunctionalTests` target in the Xcode workspace. You may also run them via the command line:
 
@@ -54,7 +75,7 @@ To run the tests on OS X, build and run the `SwiftXCTestFunctionalTests` target 
 xcodebuild -workspace XCTest.xcworkspace -scheme SwiftXCTestFunctionalTests
 ```
 
-You may add tests for XCTest by including them in the `Tests/Functional/` directory. For an example, see `Tests/Functional/SingleFailingTestCase`.
+When adding tests to the `Tests/Functional` directory, make sure they can be opened in the `XCTest.xcworkspace` by adding references to them, but do not add them to any of the targets.
 
 ### Additional Considerations for Swift on Linux
 

@@ -4,4 +4,7 @@
    <FileRef
       location = "container:XCTest.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:../swift-corelibs-foundation/Foundation.xcodeproj">
+   </FileRef>
 </Workspace>

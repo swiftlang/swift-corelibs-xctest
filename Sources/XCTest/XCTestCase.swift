@@ -11,6 +11,12 @@
 //  Base class for test cases
 //
 
+#if os(Linux) || os(FreeBSD)
+    import Foundation
+#else
+    import SwiftFoundation
+#endif
+
 /// This is a compound type used by `XCTMain` to represent tests to run. It combines an
 /// `XCTestCase` subclass type with the list of test methods to invoke on the test case.
 /// This type is intended to be produced by the `testCase` helper function.
@@ -47,6 +53,12 @@ private func test<T: XCTestCase>(testFunc: T -> () throws -> Void) -> XCTestCase
         try testFunc(testCase)()
     }
 }
+
+// FIXME: Expectations should be stored in an instance variable defined on
+//        XCTestCase, but when so defined Linux tests fail with "hidden symbol
+//        isn't defined". Use a global for the time being, as this seems to
+//        appease the Linux compiler.
+private var XCTAllExpectations = [XCTestExpectation]()
 
 extension XCTestCase {
     
@@ -92,6 +104,8 @@ extension XCTestCase {
                 }
 
                 testCase.tearDown()
+                testCase.failIfExpectationsNotWaitedFor(XCTAllExpectations)
+                XCTAllExpectations = []
 
                 totalDuration += duration
 
@@ -121,5 +135,162 @@ extension XCTestCase {
         }
 
         XCTPrint("Executed \(tests.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (\(unexpectedFailures) unexpected) in \(printableStringForTimeInterval(totalDuration)) (\(printableStringForTimeInterval(overallDuration))) seconds")
+    }
+
+    /// It is an API violation to create expectations but not wait for them to
+    /// be completed. Notify the user of a mistake via a test failure.
+    private func failIfExpectationsNotWaitedFor(expectations: [XCTestExpectation]) {
+        if expectations.count > 0 {
+            let failure = XCTFailure(
+                message: "Failed due to unwaited expectations.",
+                failureDescription: "",
+                expected: false,
+                file: expectations.last!.file,
+                line: expectations.last!.line)
+            if let failureHandler = XCTFailureHandler {
+                failureHandler(failure)
+            }
+        }
+    }
+
+    /// Creates and returns an expectation associated with the test case.
+    ///
+    /// - Parameter description: This string will be displayed in the test log
+    ///   to help diagnose failures.
+    /// - Parameter file: The file name to use in the error message if
+    ///   this expectation is not waited for. Default is the file
+    ///   containing the call to this method. It is rare to provide this
+    ///   parameter when calling this method.
+    /// - Parameter line: The line number to use in the error message if the
+    ///   this expectation is not waited for. Default is the line
+    ///   number of the call to this method in the calling file. It is rare to
+    ///   provide this parameter when calling this method.
+    ///
+    /// - Note: Whereas Objective-C XCTest determines the file and line
+    ///   number of expectations that are created by using symbolication, this
+    ///   implementation opts to take `file` and `line` as parameters instead.
+    ///   As a result, the interface to these methods are not exactly identical
+    ///   between these environments. To ensure compatibility of tests between
+    ///   swift-corelibs-xctest and Apple XCTest, it is not recommended to pass
+    ///   explicit values for `file` and `line`.
+    public func expectationWithDescription(description: String, file: StaticString = #file, line: UInt = #line) -> XCTestExpectation {
+        let expectation = XCTestExpectation(
+            description: description,
+            file: file,
+            line: line,
+            testCase: self)
+        XCTAllExpectations.append(expectation)
+        return expectation
+    }
+
+    /// Creates a point of synchronization in the flow of a test. Only one
+    /// "wait" can be active at any given time, but multiple discrete sequences
+    /// of { expectations -> wait } can be chained together.
+    ///
+    /// - Parameter timeout: The amount of time within which all expectation
+    ///   must be fulfilled.
+    /// - Parameter file: The file name to use in the error message if
+    ///   expectations are not met before the given timeout. Default is the file
+    ///   containing the call to this method. It is rare to provide this
+    ///   parameter when calling this method.
+    /// - Parameter line: The line number to use in the error message if the
+    ///   expectations are not met before the given timeout. Default is the line
+    ///   number of the call to this method in the calling file. It is rare to
+    ///   provide this parameter when calling this method.
+    /// - Parameter handler: If provided, the handler will be invoked both on
+    ///   timeout or fulfillment of all expectations. Timeout is always treated
+    ///   as a test failure.
+    ///
+    /// - Note: Whereas Objective-C XCTest determines the file and line
+    ///   number of the "wait" call using symbolication, this implementation
+    ///   opts to take `file` and `line` as parameters instead. As a result,
+    ///   the interface to these methods are not exactly identical between
+    ///   these environments. To ensure compatibility of tests between
+    ///   swift-corelibs-xctest and Apple XCTest, it is not recommended to pass
+    ///   explicit values for `file` and `line`.
+    public func waitForExpectationsWithTimeout(timeout: NSTimeInterval, file: StaticString = #file, line: UInt = #line, handler: XCWaitCompletionHandler?) {
+        // Mirror Objective-C XCTest behavior; display an unexpected test
+        // failure when users wait without having first set expectations.
+        // FIXME: Objective-C XCTest raises an exception for most "API
+        //        violation" failures, including this one. Normally this causes
+        //        the test to stop cold. swift-corelibs-xctest does not stop,
+        //        and executes the rest of the test. This discrepancy should be
+        //        fixed.
+        if XCTAllExpectations.count == 0 {
+            let failure = XCTFailure(
+                message: "call made to wait without any expectations having been set.",
+                failureDescription: "API violation",
+                expected: false,
+                file: file,
+                line: line)
+            if let failureHandler = XCTFailureHandler {
+                failureHandler(failure)
+            }
+            return
+        }
+
+        // Objective-C XCTest outputs the descriptions of every unfulfilled
+        // expectation. We gather them into this array, which is also used
+        // to determine failure--a non-empty array meets expectations weren't
+        // met.
+        var unfulfilledDescriptions = [String]()
+
+        // We continue checking whether expectations have been fulfilled until
+        // the specified timeout has been reached.
+        // FIXME: Instead of polling the expectations to check whether they've
+        //        been fulfilled, it would be more efficient to use a runloop
+        //        source that can be signaled to wake up when an expectation is
+        //        fulfilled.
+        let runLoop = NSRunLoop.currentRunLoop()
+        let timeoutDate = NSDate(timeIntervalSinceNow: timeout)
+        repeat {
+            unfulfilledDescriptions = []
+            for expectation in XCTAllExpectations {
+                if !expectation.fulfilled {
+                    unfulfilledDescriptions.append(expectation.description)
+                }
+            }
+
+            // If we've met all expectations, then break out of the specified
+            // timeout loop early.
+            if unfulfilledDescriptions.count == 0 {
+                break
+            }
+
+            // Otherwise, wait another fraction of a second.
+            runLoop.runUntilDate(NSDate(timeIntervalSinceNow: 0.01))
+        } while NSDate().compare(timeoutDate) == NSComparisonResult.OrderedAscending
+
+        if unfulfilledDescriptions.count > 0 {
+            // Not all expectations were fulfilled. Append a failure
+            // to the array of expectation-based failures.
+            let descriptions = unfulfilledDescriptions.joinWithSeparator(", ")
+            let failure = XCTFailure(
+                message: "Exceeded timeout of \(timeout) seconds, with unfulfilled expectations: \(descriptions)",
+                failureDescription: "Asynchronous wait failed",
+                expected: true,
+                file: file,
+                line: line)
+            if let failureHandler = XCTFailureHandler {
+                failureHandler(failure)
+            }
+        }
+
+        // We've recorded all the failures; clear the expectations that
+        // were set for this test case.
+        XCTAllExpectations = []
+
+        // The handler is invoked regardless of whether the test passed.
+        if let completionHandler = handler {
+            var error: NSError? = nil
+            if unfulfilledDescriptions.count > 0 {
+                // If the test failed, send an error object.
+                error = NSError(
+                    domain: "org.swift.XCTestErrorDomain",
+                    code: 0,
+                    userInfo: [:])
+            }
+            completionHandler(error)
+        }
     }
 }

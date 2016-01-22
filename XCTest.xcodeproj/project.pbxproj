@@ -11,6 +11,9 @@
 		C265F6701C3AEB6A00520CF9 /* XCTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F66A1C3AEB6A00520CF9 /* XCTestCase.swift */; };
 		C265F6721C3AEB6A00520CF9 /* XCTestMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F66C1C3AEB6A00520CF9 /* XCTestMain.swift */; };
 		C265F6731C3AEB6A00520CF9 /* XCTimeUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F66D1C3AEB6A00520CF9 /* XCTimeUtilities.swift */; };
+		DA7805FA1C6704A2003C6636 /* SwiftFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7805F91C6704A2003C6636 /* SwiftFoundation.framework */; };
+		DACC94421C8B87B900EC85F5 /* XCWaitCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACC94411C8B87B900EC85F5 /* XCWaitCompletionHandler.swift */; };
+		DADB979C1C51BDA2005E68B6 /* XCTestExpectation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADB979B1C51BDA2005E68B6 /* XCTestExpectation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +36,9 @@
 		C265F66A1C3AEB6A00520CF9 /* XCTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestCase.swift; sourceTree = "<group>"; };
 		C265F66C1C3AEB6A00520CF9 /* XCTestMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestMain.swift; sourceTree = "<group>"; };
 		C265F66D1C3AEB6A00520CF9 /* XCTimeUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTimeUtilities.swift; sourceTree = "<group>"; };
+		DA7805F91C6704A2003C6636 /* SwiftFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftFoundation.framework; path = "../swift-corelibs-foundation/build/Debug/SwiftFoundation.framework"; sourceTree = "<group>"; };
+		DACC94411C8B87B900EC85F5 /* XCWaitCompletionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCWaitCompletionHandler.swift; sourceTree = "<group>"; };
+		DADB979B1C51BDA2005E68B6 /* XCTestExpectation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestExpectation.swift; sourceTree = "<group>"; };
 		EA3E74BB1BF2B6D500635A73 /* build_script.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = build_script.py; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -41,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA7805FA1C6704A2003C6636 /* SwiftFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,6 +60,7 @@
 				C265F6661C3AEB6A00520CF9 /* Sources */,
 				DA78F7E71C4039410082E15B /* Tests */,
 				5B5D86DC1BBC74AD00234F36 /* Products */,
+				DA7805FB1C6704CC003C6636 /* Linked Libraries */,
 				EA3E74BC1BF2B6D700635A73 /* Linux Build */,
 				B1384A401C1B3E6A00EDF031 /* Documentation */,
 			);
@@ -92,9 +100,19 @@
 				C265F6691C3AEB6A00520CF9 /* XCTAssert.swift */,
 				C265F66A1C3AEB6A00520CF9 /* XCTestCase.swift */,
 				C265F66C1C3AEB6A00520CF9 /* XCTestMain.swift */,
+				DADB979B1C51BDA2005E68B6 /* XCTestExpectation.swift */,
 				C265F66D1C3AEB6A00520CF9 /* XCTimeUtilities.swift */,
+				DACC94411C8B87B900EC85F5 /* XCWaitCompletionHandler.swift */,
 			);
 			path = XCTest;
+			sourceTree = "<group>";
+		};
+		DA7805FB1C6704CC003C6636 /* Linked Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				DA7805F91C6704A2003C6636 /* SwiftFoundation.framework */,
+			);
+			name = "Linked Libraries";
 			sourceTree = "<group>";
 		};
 		DA78F7E71C4039410082E15B /* Tests */ = {
@@ -214,8 +232,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DACC94421C8B87B900EC85F5 /* XCWaitCompletionHandler.swift in Sources */,
 				C265F6731C3AEB6A00520CF9 /* XCTimeUtilities.swift in Sources */,
 				C265F6701C3AEB6A00520CF9 /* XCTestCase.swift in Sources */,
+				DADB979C1C51BDA2005E68B6 /* XCTestExpectation.swift in Sources */,
 				C265F66F1C3AEB6A00520CF9 /* XCTAssert.swift in Sources */,
 				C265F6721C3AEB6A00520CF9 /* XCTestMain.swift in Sources */,
 			);
@@ -331,9 +351,11 @@
 				FRAMEWORK_VERSION = A;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_NAME = SwiftXCTest;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				USER_HEADER_SEARCH_PATHS = $BUILT_PRODUCTS_DIR/usr/local/include/CoreFoundation;
 			};
 			name = Debug;
 		};
@@ -350,8 +372,10 @@
 				FRAMEWORK_VERSION = A;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_NAME = SwiftXCTest;
 				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = $BUILT_PRODUCTS_DIR/usr/local/include/CoreFoundation;
 			};
 			name = Release;
 		};
@@ -362,6 +386,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -373,6 +398,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
