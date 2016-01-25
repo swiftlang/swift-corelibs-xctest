@@ -46,7 +46,7 @@ extension XCTestCase {
                     }
                 }
 
-                print("Test Case '\(method)' started.")
+                XCTPrint("Test Case '\(method)' started.")
 
                 setUp()
 
@@ -73,7 +73,7 @@ extension XCTestCase {
                     result = failures.count > 0 ? "failed" : "passed"
                 }
 
-                print("Test Case '\(method)' \(result) (\(printableStringForTimeInterval(duration)) seconds).")
+                XCTPrint("Test Case '\(method)' \(result) (\(printableStringForTimeInterval(duration)) seconds).")
                 XCTAllRuns.append(XCTRun(duration: duration, method: method, passed: failures.count == 0, failures: failures))
                 XCTFailureHandler = nil
             }
@@ -88,7 +88,7 @@ extension XCTestCase {
             failureSuffix = ""
         }
 
-        print("Executed \(tests.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (\(unexpectedFailures) unexpected) in \(printableStringForTimeInterval(totalDuration)) (\(printableStringForTimeInterval(overallDuration))) seconds")
+        XCTPrint("Executed \(tests.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (\(unexpectedFailures) unexpected) in \(printableStringForTimeInterval(totalDuration)) (\(printableStringForTimeInterval(overallDuration))) seconds")
     }
     
     public func setUp() {
