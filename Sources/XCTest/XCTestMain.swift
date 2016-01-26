@@ -18,6 +18,11 @@ import Glibc
 import Darwin
 #endif
 
+internal func XCTPrint(items: Any..., separator: String = " ", terminator: String = "\n") {
+    print(items, separator: separator, terminator: terminator)
+    fflush(stdout)
+}
+
 struct XCTFailure {
     var message: String
     var failureDescription: String
@@ -26,7 +31,7 @@ struct XCTFailure {
     var line: UInt
     
     func emit(method: String) {
-        print("\(file):\(line): \(expected ? "" : "unexpected ")error: \(method) : \(failureDescription) - \(message)")
+        XCTPrint("\(file):\(line): \(expected ? "" : "unexpected ")error: \(method) : \(failureDescription) - \(message)")
     }
 }
 
@@ -62,7 +67,7 @@ internal struct XCTRun {
         failureSuffix = ""
     }
 
-    print("Total executed \(XCTAllRuns.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (\(totalUnexpectedFailures) unexpected) in \(printableStringForTimeInterval(totalDuration)) (\(printableStringForTimeInterval(overallDuration))) seconds")
+    XCTPrint("Total executed \(XCTAllRuns.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (\(totalUnexpectedFailures) unexpected) in \(printableStringForTimeInterval(totalDuration)) (\(printableStringForTimeInterval(overallDuration))) seconds")
     exit(totalFailures > 0 ? 1 : 0)
 }
 
