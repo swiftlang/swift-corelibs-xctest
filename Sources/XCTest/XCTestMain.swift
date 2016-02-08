@@ -18,8 +18,8 @@ import Glibc
 import Darwin
 #endif
 
-internal func XCTPrint(items: Any..., separator: String = " ", terminator: String = "\n") {
-    print(items, separator: separator, terminator: terminator)
+internal func XCTPrint(message: String) {
+    print(message)
     fflush(stdout)
 }
 
