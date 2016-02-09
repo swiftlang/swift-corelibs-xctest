@@ -18,6 +18,11 @@ import Glibc
 import Darwin
 #endif
 
+internal func XCTPrint(message: String) {
+    print(message)
+    fflush(stdout)
+}
+
 struct XCTFailure {
     var message: String
     var failureDescription: String
@@ -26,7 +31,7 @@ struct XCTFailure {
     var line: UInt
     
     func emit(method: String) {
-        print("\(file):\(line): \(expected ? "" : "unexpected ")error: \(method) : \(failureDescription) - \(message)")
+        XCTPrint("\(file):\(line): \(expected ? "" : "unexpected ")error: \(method) : \(failureDescription) - \(message)")
     }
 }
 
@@ -62,11 +67,9 @@ internal struct XCTRun {
         failureSuffix = ""
     }
 
-    print("Total executed \(XCTAllRuns.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (\(totalUnexpectedFailures) unexpected) in \(printableStringForTimeInterval(totalDuration)) (\(printableStringForTimeInterval(overallDuration))) seconds")
+    XCTPrint("Total executed \(XCTAllRuns.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (\(totalUnexpectedFailures) unexpected) in \(printableStringForTimeInterval(totalDuration)) (\(printableStringForTimeInterval(overallDuration))) seconds")
     exit(totalFailures > 0 ? 1 : 0)
 }
 
-internal var XCTCurrentTestCase: XCTestCase?
-internal var XCTCurrentFailures = [XCTFailure]()
+internal var XCTFailureHandler: (XCTFailure -> Void)?
 internal var XCTAllRuns = [XCTRun]()
-

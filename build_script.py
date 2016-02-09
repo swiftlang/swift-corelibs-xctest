@@ -156,9 +156,13 @@ def main():
         if args.test:
             lit_path = os.path.join(
                 os.path.dirname(SOURCE_DIR), 'llvm', 'utils', 'lit', 'lit.py')
+            lit_flags = '-sv --no-progress-bar'
             tests_path = os.path.join(SOURCE_DIR, 'Tests', 'Functional')
-            run('SWIFT_EXEC={swiftc} {lit_path} {tests_path}'.format(
-                swiftc=swiftc, lit_path=lit_path, tests_path=tests_path))
+            run('SWIFT_EXEC={swiftc} {lit_path} {lit_flags} '
+                '{tests_path}'.format(swiftc=swiftc,
+                                      lit_path=lit_path,
+                                      lit_flags=lit_flags,
+                                      tests_path=tests_path))
 
     note('Done.')
 

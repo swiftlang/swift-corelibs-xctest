@@ -18,7 +18,7 @@ Only the most basic functionality is currently present. In the next year, we hav
 
 Your tests are organized into a simple hierarchy. Each `XCTestCase` subclass has a set of `test` methods, each of which should test one part of your code.
 
-You can find all kinds of useful information on using XCTest in [Apple's documenation](https://developer.apple.com/library/mac/documentation/DeveloperTools/Conceptual/testing_with_xcode/chapters/03-testing_basics.html).
+You can find all kinds of useful information on using XCTest in [Apple's documentation](https://developer.apple.com/library/mac/documentation/DeveloperTools/Conceptual/testing_with_xcode/chapters/03-testing_basics.html).
 
 The rest of this document will focus on how this version of XCTest differs from the one shipped with Xcode.
 
@@ -52,7 +52,6 @@ install XCTest in your active version of Swift:
 ```
 
 Building and installing on OSX:
-
 ```sh
 sudo ./build_script.py \
     --swiftc="/Library/Developer/Toolchains/swift-latest.xctoolchain/usr/bin/swiftc" \

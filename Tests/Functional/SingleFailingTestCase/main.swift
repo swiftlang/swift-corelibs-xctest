@@ -1,6 +1,6 @@
 // RUN: %{swiftc} %s -o %{built_tests_dir}/SingleFailingTestCase
-// RUN: %{built_tests_dir}/SingleFailingTestCase > %{test_output} || true
-// RUN: %{xctest_checker} %{test_output} %s
+// RUN: %{built_tests_dir}/SingleFailingTestCase > %t || true
+// RUN: %{xctest_checker} %t %s
 // CHECK: Test Case 'SingleFailingTestCase.test_fails' started.
 // CHECK: .*/Tests/Functional/SingleFailingTestCase/main.swift:24: error: SingleFailingTestCase.test_fails : XCTAssertTrue failed - 
 // CHECK: Test Case 'SingleFailingTestCase.test_fails' failed \(\d+\.\d+ seconds\).
@@ -14,7 +14,7 @@
 #endif
 
 class SingleFailingTestCase: XCTestCase {
-    var allTests: [(String, () -> ())] {
+    var allTests: [(String, () throws -> ())] {
         return [
             ("test_fails", test_fails),
         ]
