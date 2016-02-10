@@ -136,16 +136,19 @@ def main():
         cmd = ['cp', os.path.join(build_dir, install_mod_doc), os.path.join(module_path, install_mod_doc)]
         subprocess.check_call(cmd)
 
-        if args.test:
-            lit_path = os.path.join(
-                os.path.dirname(SOURCE_DIR), 'llvm', 'utils', 'lit', 'lit.py')
-            lit_flags = '-sv --no-progress-bar'
-            tests_path = os.path.join(SOURCE_DIR, 'Tests', 'Functional')
-            run('SWIFT_EXEC={swiftc} {lit_path} {lit_flags} '
-                '{tests_path}'.format(swiftc=swiftc,
-                                      lit_path=lit_path,
-                                      lit_flags=lit_flags,
-                                      tests_path=tests_path))
+    if args.test:
+        lit_path = os.path.join(
+            os.path.dirname(SOURCE_DIR), 'llvm', 'utils', 'lit', 'lit.py')
+        lit_flags = '-sv --no-progress-bar'
+        tests_path = os.path.join(SOURCE_DIR, 'Tests', 'Functional')
+        run('SWIFT_EXEC={swiftc} '
+            'BUILT_PRODUCTS_DIR={built_products_dir} '
+            '{lit_path} {lit_flags} '
+            '{tests_path}'.format(swiftc=swiftc,
+                                  built_products_dir=build_dir,
+                                  lit_path=lit_path,
+                                  lit_flags=lit_flags,
+                                  tests_path=tests_path))
 
     note('Done.')
 
