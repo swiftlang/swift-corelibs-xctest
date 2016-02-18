@@ -81,11 +81,17 @@ def main():
                         action="store_true",
                         dest="test",
                         default=False)
+    parser.add_argument("--arch",
+                        help="target architecture",
+                        action="store",
+                        dest="arch",
+                        default=None)
     args = parser.parse_args()
 
     swiftc = os.path.abspath(args.swiftc)
     build_dir = os.path.abspath(args.build_dir)
     swift_build_dir = os.path.abspath(args.swift_build_dir)
+    arch = args.arch
 
     if not os.path.exists(build_dir):
         run("mkdir -p {}".format(build_dir))
@@ -112,7 +118,7 @@ def main():
     run("{0} -c {1} -emit-object {2} -module-name XCTest -parse-as-library -emit-module "
         "-emit-module-path {3}/XCTest.swiftmodule -o {3}/XCTest.o -force-single-frontend-invocation "
         "-module-link-name XCTest".format(swiftc, style_options, " ".join(sourcePaths), build_dir))
-    run("clang {0}/XCTest.o -shared -o {0}/libXCTest.so -Wl,--no-undefined -Wl,-soname,libXCTest.so -L{1}/lib/swift/linux/ -lswiftGlibc -lswiftCore -lm".format(build_dir, swift_build_dir))
+    run("clang {1}/lib/swift/linux/{2}/swift_begin.o {0}/XCTest.o {1}/lib/swift/linux/{2}/swift_end.o -shared -o {0}/libXCTest.so -Wl,--no-undefined -Wl,-soname,libXCTest.so -L{1}/lib/swift/linux/ -lswiftGlibc -lswiftCore -lm".format(build_dir, swift_build_dir, arch))
 
     # If we were given an install directive, perform installation
     if args.module_path is not None and args.lib_path is not None:
