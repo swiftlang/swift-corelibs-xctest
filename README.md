@@ -35,7 +35,13 @@ If you want to build just XCTest, use the `build_script.py` script at the root o
 If your install of Swift is located at `/swift` and you wish to install XCTest into that same location, here is a sample invocation of the build script:
 
 ```sh
-./build_script.py --swiftc="/swift/usr/bin/swiftc" --build-dir="/tmp/XCTest_build" --swift-build-dir="/swift/usr" --library-install-path="/swift/usr/lib/swift/linux" --module-install-path="/swift/usr/lib/swift/linux/x86_64"
+./build_script.py \
+    --swiftc="/swift/usr/bin/swiftc" \
+    --build-dir="/tmp/XCTest_build" \
+    --swift-build-dir="/swift/usr" \
+    --arch="x86_64" \
+    --library-install-path="/swift/usr/lib/swift/linux" \
+    --module-install-path="/swift/usr/lib/swift/linux/x86_64"
 ```
 
 To run the tests on Linux, use the `--test` option:
@@ -45,6 +51,7 @@ To run the tests on Linux, use the `--test` option:
     --swiftc="/swift/usr/bin/swiftc" \
     --build-dir="/tmp/XCTest_build" \
     --swift-build-dir="/swift/usr" \
+    --arch="x86_64" \
     --test
 ```
 
