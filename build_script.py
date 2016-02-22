@@ -100,7 +100,7 @@ def main():
     run("{0} -c {1} -emit-object {2} -module-name XCTest -parse-as-library -emit-module "
         "-emit-module-path {3}/XCTest.swiftmodule -o {3}/XCTest.o -force-single-frontend-invocation "
         "-module-link-name XCTest".format(swiftc, style_options, " ".join(sourcePaths), build_dir))
-    run("clang {1}/lib/swift/linux/{2}/swift_begin.o {0}/XCTest.o {1}/lib/swift/linux/{2}/swift_end.o -shared -o {0}/libXCTest.so -Wl,--no-undefined -Wl,-soname,libXCTest.so -L{1}/lib/swift/linux/ -lswiftGlibc -lswiftCore -lm".format(build_dir, swift_build_dir, args.arch))
+    run("{0} -emit-library {1}/XCTest.o -o {1}/libXCTest.so -lswiftGlibc -lswiftCore -lm".format(swiftc, build_dir))
 
     # If we were given an install directive, perform installation
     if args.module_path is not None and args.lib_path is not None:
