@@ -24,41 +24,31 @@ def run(command):
     subprocess.check_call(command, shell=True)
 
 def main():
-    parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
-                                     description="""Builds XCTest using a swift compiler.""")
+    parser = argparse.ArgumentParser(
+        description="Builds XCTest using a Swift compiler.")
     parser.add_argument("--swiftc",
                         help="path to the swift compiler",
                         metavar="PATH",
-                        action="store",
-                        dest="swiftc",
-                        required=True,
-                        default=None)
+                        required=True)
     parser.add_argument("--build-dir",
                         help="path to the output build directory",
                         metavar="PATH",
-                        action="store",
-                        dest="build_dir",
-                        required=True,
-                        default=None)
+                        required=True)
     parser.add_argument("--swift-build-dir",
                         help="path to the swift build directory",
                         metavar="PATH",
-                        action="store",
-                        dest="swift_build_dir",
-                        required=True,
-                        default=None)
+                        required=True)
+    parser.add_argument("--arch",
+                        help="target architecture",
+                        required=True)
     parser.add_argument("--module-install-path",
                         help="location to install module files",
                         metavar="PATH",
-                        action="store",
-                        dest="module_path",
-                        default=None)
+                        dest="module_path")
     parser.add_argument("--library-install-path",
                         help="location to install shared library files",
                         metavar="PATH",
-                        action="store",
-                        dest="lib_path",
-                        default=None)
+                        dest="lib_path")
     parser.add_argument("--release",
                         help="builds for release",
                         action="store_const",
@@ -78,20 +68,12 @@ def main():
                              "at {} in order to run this command. ".format(
                                  os.path.join(
                                      os.path.dirname(SOURCE_DIR), 'llvm')),
-                        action="store_true",
-                        dest="test",
-                        default=False)
-    parser.add_argument("--arch",
-                        help="target architecture",
-                        action="store",
-                        dest="arch",
-                        default=None)
+                        action="store_true")
     args = parser.parse_args()
 
     swiftc = os.path.abspath(args.swiftc)
     build_dir = os.path.abspath(args.build_dir)
     swift_build_dir = os.path.abspath(args.swift_build_dir)
-    arch = args.arch
 
     if not os.path.exists(build_dir):
         run("mkdir -p {}".format(build_dir))
@@ -118,7 +100,7 @@ def main():
     run("{0} -c {1} -emit-object {2} -module-name XCTest -parse-as-library -emit-module "
         "-emit-module-path {3}/XCTest.swiftmodule -o {3}/XCTest.o -force-single-frontend-invocation "
         "-module-link-name XCTest".format(swiftc, style_options, " ".join(sourcePaths), build_dir))
-    run("clang {1}/lib/swift/linux/{2}/swift_begin.o {0}/XCTest.o {1}/lib/swift/linux/{2}/swift_end.o -shared -o {0}/libXCTest.so -Wl,--no-undefined -Wl,-soname,libXCTest.so -L{1}/lib/swift/linux/ -lswiftGlibc -lswiftCore -lm".format(build_dir, swift_build_dir, arch))
+    run("clang {1}/lib/swift/linux/{2}/swift_begin.o {0}/XCTest.o {1}/lib/swift/linux/{2}/swift_end.o -shared -o {0}/libXCTest.so -Wl,--no-undefined -Wl,-soname,libXCTest.so -L{1}/lib/swift/linux/ -lswiftGlibc -lswiftCore -lm".format(build_dir, swift_build_dir, args.arch))
 
     # If we were given an install directive, perform installation
     if args.module_path is not None and args.lib_path is not None:
