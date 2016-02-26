@@ -45,10 +45,7 @@ If your install of Swift is located at `/swift` and you wish to install XCTest i
 To run the tests on Linux, use the `--test` option:
 
 ```sh
-./build_script.py \
-    --swiftc="/swift/usr/bin/swiftc" \
-    --build-dir="/tmp/XCTest_build" \
-    --test
+./build_script.py --swiftc="/swift/usr/bin/swiftc" --test
 ```
 
 To run the tests on OS X, build and run the `SwiftXCTestFunctionalTests` target in the Xcode project. You may also run them via the command line:

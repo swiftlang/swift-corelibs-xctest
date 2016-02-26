@@ -9,7 +9,10 @@
 # See http://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
 #
 
-import os, subprocess, argparse
+import argparse
+import os
+import subprocess
+import tempfile
 
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -28,9 +31,10 @@ def main():
                         metavar="PATH",
                         required=True)
     parser.add_argument("--build-dir",
-                        help="path to the output build directory",
+                        help="path to the output build directory. If not "
+                             "specified, a temporary directory is used",
                         metavar="PATH",
-                        required=True)
+                        default=tempfile.mkdtemp())
     parser.add_argument("--swift-build-dir", help="deprecated, do not use")
     parser.add_argument("--arch", help="deprecated, do not use")
     parser.add_argument("--module-install-path",
