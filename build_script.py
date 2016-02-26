@@ -9,9 +9,6 @@
 # See http://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
 #
 
-# Here is a nice way to invoke this script if you are building locally, and Swift is installed at /, and you want to install XCTest back there
-# sudo ./build_script.py --swiftc="/usr/bin/swiftc" --build-dir="/tmp/XCTest_build" --swift-build-dir="/usr" --library-install-path="/usr/lib/swift/linux" --module-install-path="/usr/lib/swift/linux/x86_64"
-
 import os, subprocess, argparse
 
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -34,13 +31,8 @@ def main():
                         help="path to the output build directory",
                         metavar="PATH",
                         required=True)
-    parser.add_argument("--swift-build-dir",
-                        help="path to the swift build directory",
-                        metavar="PATH",
-                        required=True)
-    parser.add_argument("--arch",
-                        help="target architecture",
-                        required=True)
+    parser.add_argument("--swift-build-dir", help="deprecated, do not use")
+    parser.add_argument("--arch", help="deprecated, do not use")
     parser.add_argument("--module-install-path",
                         help="location to install module files",
                         metavar="PATH",
@@ -73,7 +65,6 @@ def main():
 
     swiftc = os.path.abspath(args.swiftc)
     build_dir = os.path.abspath(args.build_dir)
-    swift_build_dir = os.path.abspath(args.swift_build_dir)
 
     if not os.path.exists(build_dir):
         run("mkdir -p {}".format(build_dir))
