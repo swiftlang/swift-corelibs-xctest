@@ -26,6 +26,14 @@ def run(command):
     subprocess.check_call(command, shell=True)
 
 
+def _mkdirp(path):
+    """
+    Creates a directory at the given path if it doesn't already exist.
+    """
+    if not os.path.exists(path):
+        run("mkdir -p {}".format(path))
+
+
 def _build(args):
     """
     Build XCTest and place the built products in the given 'build_dir'.
@@ -33,9 +41,7 @@ def _build(args):
     """
     swiftc = os.path.abspath(args.swiftc)
     build_dir = os.path.abspath(args.build_dir)
-
-    if not os.path.exists(build_dir):
-        run("mkdir -p {}".format(build_dir))
+    _mkdirp(build_dir)
 
     sourcePaths = glob.glob(os.path.join(
         SOURCE_DIR, 'Sources', 'XCTest', '*.swift'))
@@ -52,31 +58,17 @@ def _build(args):
         "-module-link-name XCTest".format(swiftc, style_options, " ".join(sourcePaths), build_dir))
     run("{0} -emit-library {1}/XCTest.o -o {1}/libXCTest.so -lswiftGlibc -lswiftCore -lm".format(swiftc, build_dir))
 
-    # If we were given an install directive, perform installation
-    if args.module_path is not None and args.lib_path is not None:
-        module_path = os.path.abspath(args.module_path)
-        lib_path = os.path.abspath(args.lib_path)
-        run("mkdir -p {}".format(module_path))
-        run("mkdir -p {}".format(lib_path))
-
-        note("Performing installation into {} and {}".format(module_path, lib_path))
-
-        install_lib = "libXCTest.so"
-        install_mod_doc = "XCTest.swiftdoc"
-        install_mod = "XCTest.swiftmodule"
-
-        # These paths should have been created for us, unless we need to create new substructure.
-        cmd = ['cp', os.path.join(build_dir, install_lib), os.path.join(lib_path, install_lib)]
-        subprocess.check_call(cmd)
-
-        cmd = ['cp', os.path.join(build_dir, install_mod), os.path.join(module_path, install_mod)]
-        subprocess.check_call(cmd)
-        cmd = ['cp', os.path.join(build_dir, install_mod_doc), os.path.join(module_path, install_mod_doc)]
-        subprocess.check_call(cmd)
-
     if args.test:
         # Execute main() using the arguments necessary to run the tests.
         main(args=["test", "--swiftc", swiftc, build_dir])
+
+    # If --module-install-path and --library-install-path were specified,
+    # we also install the built XCTest products.
+    if args.module_path is not None and args.lib_path is not None:
+        # Execute main() using the arguments necessary for installation.
+        main(args=["install", build_dir,
+                   "--module-install-path", args.module_path,
+                   "--library-install-path", args.lib_path])
 
     note('Done.')
 
@@ -101,6 +93,34 @@ def _test(args):
                               lit_path=lit_path,
                               lit_flags=lit_flags,
                               tests_path=tests_path))
+
+
+def _install(args):
+    """
+    Install the XCTest.so, XCTest.swiftmodule, and XCTest.swiftdoc build
+    products into the given module and library paths.
+    """
+    build_dir = os.path.abspath(args.build_dir)
+    module_install_path = os.path.abspath(args.module_install_path)
+    library_install_path = os.path.abspath(args.library_install_path)
+
+    _mkdirp(module_install_path)
+    _mkdirp(library_install_path)
+
+    xctest_so = "libXCTest.so"
+    run("cp {} {}".format(
+        os.path.join(build_dir, xctest_so),
+        os.path.join(library_install_path, xctest_so)))
+
+    xctest_swiftmodule = "XCTest.swiftmodule"
+    run("cp {} {}".format(
+        os.path.join(build_dir, xctest_swiftmodule),
+        os.path.join(module_install_path, xctest_swiftmodule)))
+
+    xctest_swiftdoc = "XCTest.swiftdoc"
+    run("cp {} {}".format(
+        os.path.join(build_dir, xctest_swiftdoc),
+        os.path.join(module_install_path, xctest_swiftdoc)))
 
 
 def main(args=sys.argv[1:]):
@@ -189,11 +209,32 @@ def main(args=sys.argv[1:]):
         help="Path to the 'swiftc' compiler used to build and run the tests.",
         required=True)
 
+    install_parser = subparsers.add_parser(
+        "install",
+        description="Installs a built XCTest framework.")
+    install_parser.set_defaults(func=_install)
+    install_parser.add_argument(
+        "build_dir",
+        help="An absolute path to a directory containing a built XCTest.so, "
+             "XCTest.swiftmodule, and XCTest.swiftdoc.",
+        metavar="PATH")
+    install_parser.add_argument(
+        "-m", "--module-install-path",
+        help="Location at which to install XCTest.swiftmodule and "
+             "XCTest.swiftdoc. This directory will be created if it doesn't "
+             "already exist.",
+        metavar="PATH")
+    install_parser.add_argument(
+        "-l", "--library-install-path",
+        help="Location at which to install XCTest.so. This directory will be "
+             "created if it doesn't already exist.",
+        metavar="PATH")
+
     # Many versions of Python require a subcommand must be specified.
     # We handle this here: if no known subcommand (or none of the help options)
     # is included in the arguments, then insert the default subcommand
-    # argument.
-    if any([a in ["build", "test", "-h", "--help"] for a in args]):
+    # argument: 'build'.
+    if any([a in ["build", "test", "install", "-h", "--help"] for a in args]):
         parsed_args = parser.parse_args(args=args)
     else:
         parsed_args = parser.parse_args(args=["build"] + args)
