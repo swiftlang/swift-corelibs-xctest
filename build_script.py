@@ -10,6 +10,7 @@
 #
 
 import argparse
+import glob
 import os
 import subprocess
 import tempfile
@@ -73,17 +74,8 @@ def main():
     if not os.path.exists(build_dir):
         run("mkdir -p {}".format(build_dir))
 
-    sourceFiles = [
-                   "XCTAssert.swift",
-                   "XCTestCaseProvider.swift",
-                   "XCTestCase.swift",
-                   "XCTimeUtilities.swift",
-                   "XCTestMain.swift",
-                  ]
-    sourcePaths = []
-    for file in sourceFiles:
-        sourcePaths.append("{0}/Sources/XCTest/{1}".format(SOURCE_DIR, file))
-
+    sourcePaths = glob.glob(os.path.join(
+        SOURCE_DIR, 'Sources', 'XCTest', '*.swift'))
 
     if args.build_style == "debug":
         style_options = "-g"
