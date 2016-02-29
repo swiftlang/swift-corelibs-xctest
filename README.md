@@ -8,7 +8,7 @@ This version of XCTest uses the same API as the XCTest you are familiar with fro
 
 This project is the very earliest stages of development. It is scheduled to be part of the Swift 3 release.
 
-Only the most basic functionality is currently present. In the next year, we have the following goals for the project:
+Only the most basic functionality is currently present. This year, we have the following goals for the project:
 
 * Finish implementing support for the most important non-UI testing APIs present in XCTest for Xcode
 * Develop an effective solution to the problem of test discoverability without the Objective-C runtime.
