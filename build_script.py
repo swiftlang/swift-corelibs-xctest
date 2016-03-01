@@ -25,6 +25,11 @@ def run(command):
     note(command)
     subprocess.check_call(command, shell=True)
 
+def library_sources():
+    return glob.glob(os.path.join(SOURCE_DIR, 'Sources', 'XCTest', '*.swift'))
+
+def unit_test_sources():
+    return glob.glob(os.path.join(SOURCE_DIR, 'Tests', 'Unit', '*.swift'))
 
 def _build(args):
     """
@@ -37,9 +42,6 @@ def _build(args):
     if not os.path.exists(build_dir):
         run("mkdir -p {}".format(build_dir))
 
-    sourcePaths = glob.glob(os.path.join(
-        SOURCE_DIR, 'Sources', 'XCTest', '*.swift'))
-
     if args.build_style == "debug":
         style_options = "-g"
     else:
@@ -49,7 +51,7 @@ def _build(args):
     # Build library
     run("{0} -c {1} -emit-object {2} -module-name XCTest -parse-as-library -emit-module "
         "-emit-module-path {3}/XCTest.swiftmodule -o {3}/XCTest.o -force-single-frontend-invocation "
-        "-module-link-name XCTest".format(swiftc, style_options, " ".join(sourcePaths), build_dir))
+        "-module-link-name XCTest".format(swiftc, style_options, " ".join(library_sources()), build_dir))
     run("{0} -emit-library {1}/XCTest.o -o {1}/libXCTest.so -lswiftGlibc -lswiftCore -lm".format(swiftc, build_dir))
 
     # If we were given an install directive, perform installation
@@ -81,11 +83,22 @@ def _build(args):
     note('Done.')
 
 
-def _test(args):
-    """
-    Test the built XCTest.so library at the given 'build_dir', using the
-    given 'swiftc' compiler.
-    """
+def run_unit_tests(args):
+    note('Building unit tests')
+    # FIXME: This rebuilds the library sources into the unit test executable instead
+    #        of using the pre-built library in the build_dir, because the unit tests
+    #        need access to internal symbols, but the library isn't compiled with testability
+    run("{swiftc} -o {build_dir}/SwiftXCTestUnitTests "
+        "{sources}".format(swiftc=os.path.abspath(args.swiftc),
+                           build_dir=os.path.abspath(args.build_dir),
+                           sources=" ".join(unit_test_sources()+library_sources())))
+
+    note('Running unit tests')
+    run("{0}/SwiftXCTestUnitTests".format(args.build_dir))
+
+def run_functional_tests(args):
+    note('Running functional tests')
+
     # FIXME: Allow path to lit to be specified as an option, with this
     #        path as a default.
     lit_path = os.path.join(
@@ -102,6 +115,13 @@ def _test(args):
                               lit_flags=lit_flags,
                               tests_path=tests_path))
 
+def _test(args):
+    """
+    Build and run unit tests, and run functional tests against the built XCTest.so
+    library at the given 'build_dir', using the given 'swiftc' compiler.
+    """
+    run_unit_tests(args)
+    run_functional_tests(args)
 
 def main(args=sys.argv[1:]):
     """
