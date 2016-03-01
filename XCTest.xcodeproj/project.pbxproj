@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AE1569EF1C85CB8200A97839 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1569EE1C85CB8200A97839 /* main.swift */; };
+		AE1569F11C85CCF600A97839 /* TestAssertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1569F01C85CCF600A97839 /* TestAssertions.swift */; };
+		AE1569F21C863C9E00A97839 /* XCTAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F6691C3AEB6A00520CF9 /* XCTAssert.swift */; };
+		AE1569F31C863C9E00A97839 /* XCTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F66A1C3AEB6A00520CF9 /* XCTestCase.swift */; };
+		AE1569F41C863C9E00A97839 /* XCTestCaseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F66B1C3AEB6A00520CF9 /* XCTestCaseProvider.swift */; };
+		AE1569F51C863C9E00A97839 /* XCTestMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F66C1C3AEB6A00520CF9 /* XCTestMain.swift */; };
+		AE1569F61C863C9E00A97839 /* XCTimeUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F66D1C3AEB6A00520CF9 /* XCTimeUtilities.swift */; };
 		C265F66F1C3AEB6A00520CF9 /* XCTAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F6691C3AEB6A00520CF9 /* XCTAssert.swift */; };
 		C265F6701C3AEB6A00520CF9 /* XCTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F66A1C3AEB6A00520CF9 /* XCTestCase.swift */; };
 		C265F6711C3AEB6A00520CF9 /* XCTestCaseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F66B1C3AEB6A00520CF9 /* XCTestCaseProvider.swift */; };
@@ -15,6 +22,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		AE1569EC1C85CB6500A97839 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5B5D86D21BBC74AD00234F36 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B5D86DA1BBC74AD00234F36;
+			remoteInfo = SwiftXCTest;
+		};
 		DAA333B91C267AF3000CC115 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5B5D86D21BBC74AD00234F36 /* Project object */;
@@ -28,6 +42,10 @@
 		342A33611C470D91001AA02A /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		5B5D86DB1BBC74AD00234F36 /* SwiftXCTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftXCTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F320B0D1C4714EC00AB3456 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		AE1569DB1C85C9E100A97839 /* SwiftXCTestUnitTests.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftXCTestUnitTests.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE1569EA1C85CB0100A97839 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AE1569EE1C85CB8200A97839 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		AE1569F01C85CCF600A97839 /* TestAssertions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestAssertions.swift; sourceTree = "<group>"; };
 		B1384A411C1B3E8700EDF031 /* CONTRIBUTING.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CONTRIBUTING.md; sourceTree = "<group>"; };
 		B1384A421C1B3E8700EDF031 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		B1384A431C1B3E8700EDF031 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -87,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				5B5D86DB1BBC74AD00234F36 /* SwiftXCTest.framework */,
+				AE1569DB1C85C9E100A97839 /* SwiftXCTestUnitTests.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -97,6 +116,24 @@
 				9F320B0D1C4714EC00AB3456 /* main.swift */,
 			);
 			path = ErrorHandling;
+			sourceTree = "<group>";
+		};
+		AE1569E81C85CA3A00A97839 /* Unit */ = {
+			isa = PBXGroup;
+			children = (
+				AE1569EE1C85CB8200A97839 /* main.swift */,
+				AE1569F01C85CCF600A97839 /* TestAssertions.swift */,
+				AE1569E91C85CAE700A97839 /* Resources */,
+			);
+			path = Unit;
+			sourceTree = "<group>";
+		};
+		AE1569E91C85CAE700A97839 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				AE1569EA1C85CB0100A97839 /* Info.plist */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		B1384A401C1B3E6A00EDF031 /* Documentation */ = {
@@ -133,6 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				DA78F7E81C4039410082E15B /* Functional */,
+				AE1569E81C85CA3A00A97839 /* Unit */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -263,18 +301,37 @@
 			productReference = 5B5D86DB1BBC74AD00234F36 /* SwiftXCTest.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		AE1569DA1C85C9E100A97839 /* SwiftXCTestUnitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AE1569E71C85C9E100A97839 /* Build configuration list for PBXNativeTarget "SwiftXCTestUnitTests" */;
+			buildPhases = (
+				AE1569D71C85C9E100A97839 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AE1569ED1C85CB6500A97839 /* PBXTargetDependency */,
+			);
+			name = SwiftXCTestUnitTests;
+			productName = SwiftXCTestUnitTests;
+			productReference = AE1569DB1C85C9E100A97839 /* SwiftXCTestUnitTests.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		5B5D86D21BBC74AD00234F36 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0710;
+				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = Apple;
 				TargetAttributes = {
 					5B5D86DA1BBC74AD00234F36 = {
 						CreatedOnToolsVersion = 7.1;
+					};
+					AE1569DA1C85C9E100A97839 = {
+						CreatedOnToolsVersion = 7.3;
 					};
 					DAA333B51C267AD6000CC115 = {
 						CreatedOnToolsVersion = 7.2;
@@ -296,6 +353,7 @@
 			targets = (
 				5B5D86DA1BBC74AD00234F36 /* SwiftXCTest */,
 				DAA333B51C267AD6000CC115 /* SwiftXCTestFunctionalTests */,
+				AE1569DA1C85C9E100A97839 /* SwiftXCTestUnitTests */,
 			);
 		};
 /* End PBXProject section */
@@ -323,9 +381,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AE1569D71C85C9E100A97839 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE1569F11C85CCF600A97839 /* TestAssertions.swift in Sources */,
+				AE1569F51C863C9E00A97839 /* XCTestMain.swift in Sources */,
+				AE1569F61C863C9E00A97839 /* XCTimeUtilities.swift in Sources */,
+				AE1569F41C863C9E00A97839 /* XCTestCaseProvider.swift in Sources */,
+				AE1569F21C863C9E00A97839 /* XCTAssert.swift in Sources */,
+				AE1569F31C863C9E00A97839 /* XCTestCase.swift in Sources */,
+				AE1569EF1C85CB8200A97839 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		AE1569ED1C85CB6500A97839 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B5D86DA1BBC74AD00234F36 /* SwiftXCTest */;
+			targetProxy = AE1569EC1C85CB6500A97839 /* PBXContainerItemProxy */;
+		};
 		DAA333BA1C267AF3000CC115 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 5B5D86DA1BBC74AD00234F36 /* SwiftXCTest */;
@@ -457,6 +534,33 @@
 			};
 			name = Release;
 		};
+		AE1569E51C85C9E100A97839 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Tests/Unit/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.swift.SwiftXCTestUnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		AE1569E61C85C9E100A97839 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Tests/Unit/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.swift.SwiftXCTestUnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		DAA333B61C267AD6000CC115 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -499,6 +603,15 @@
 			buildConfigurations = (
 				5B5D86E41BBC74AD00234F36 /* Debug */,
 				5B5D86E51BBC74AD00234F36 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AE1569E71C85C9E100A97839 /* Build configuration list for PBXNativeTarget "SwiftXCTestUnitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE1569E51C85C9E100A97839 /* Debug */,
+				AE1569E61C85C9E100A97839 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
