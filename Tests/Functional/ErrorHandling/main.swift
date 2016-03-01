@@ -28,7 +28,7 @@ class ErrorHandling: XCTestCase {
     func functionThatDoesNotThrowError() throws {
     }
     
-    enum SomeError: ErrorType {
+    enum SomeError: ErrorProtocol {
         case AnError(String)
     }
     

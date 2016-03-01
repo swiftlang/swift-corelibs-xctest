@@ -24,7 +24,7 @@ private func currentTimeIntervalSinceReferenceTime() -> TimeInterval {
     var tv = timeval()
     let currentTime = withUnsafeMutablePointer(&tv, { (t: UnsafeMutablePointer<timeval>) -> TimeInterval in
         gettimeofday(t, nil)
-        return TimeInterval(t.memory.tv_sec) + TimeInterval(t.memory.tv_usec) / 1000000.0
+        return TimeInterval(t.pointee.tv_sec) + TimeInterval(t.pointee.tv_usec) / 1000000.0
     })
     return currentTime
 }
