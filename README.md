@@ -48,13 +48,13 @@ To run the tests on Linux, use the `--test` option:
 ./build_script.py --swiftc="/swift/usr/bin/swiftc" --test
 ```
 
-To run the tests on OS X, build and run the `SwiftXCTestFunctionalTests` target in the Xcode project. You may also run them via the command line:
+To run the tests on OS X, build and run the `SwiftXCTestUnitTests` and `SwiftXCTestFunctionalTests` targets in the Xcode project. You may also run the functional tests via the command line:
 
 ```
 xcodebuild -project XCTest.xcodeproj -scheme SwiftXCTestFunctionalTests
 ```
 
-You may add tests for XCTest by including them in the `Tests/Functional/` directory. For an example, see `Tests/Functional/SingleFailingTestCase`.
+You may add functional tests for XCTest by including them in the `Tests/Functional/` directory. For an example, see `Tests/Functional/SingleFailingTestCase`. Unit tests should be placed in the `Tests/Unit/` directory, and then referenced in `Tests/Unit/main.swift`.
 
 ### Additional Considerations for Swift on Linux
 
