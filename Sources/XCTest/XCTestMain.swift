@@ -67,11 +67,18 @@ internal struct XCTRun {
 ///
 ///     XCTMain([ testCase(TestFoo.allTests) ])
 ///
+/// Command line arguments can be used to select a particular test or test case to execute. For example:
+///
+///     ./FooTests FooTestCase/testFoo  # Run a single test method
+///     ./FooTests FooTestCase          # Run all the tests in FooTestCase
+///
 /// - Parameter testCases: An array of test cases run, each produced by a call to the `testCase` function
 /// - seealso: `testCase`
 @noreturn public func XCTMain(testCases: [XCTestCaseEntry]) {
+    let filter = TestFiltering()
+
     let overallDuration = measureTimeExecutingBlock {
-        for (testCase, tests) in testCases {
+        for (testCase, tests) in TestFiltering.filterTests(testCases, filter: filter.selectedTestFilter) {
             testCase.invokeTests(tests)
         }
     }
