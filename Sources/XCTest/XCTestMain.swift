@@ -48,11 +48,31 @@ internal struct XCTRun {
 /// Starts a test run for the specified test cases.
 ///
 /// This function will not return. If the test cases pass, then it will call `exit(0)`. If there is a failure, then it will call `exit(1)`.
-/// - Parameter testCases: An array of test cases to run.
-@noreturn public func XCTMain(testCases: [XCTestCase]) {
+/// Example usage:
+///
+///     class TestFoo: XCTestCase {
+///         static var allTests : [(String, TestFoo -> () throws -> Void)] {
+///             return [
+///                 ("test_foo", test_foo),
+///                 ("test_bar", test_bar),
+///             ]
+///         }
+///
+///         func test_foo() {
+///             // Test things...
+///         }
+///
+///         // etc...
+///     }
+///
+///     XCTMain([ testCase(TestFoo.allTests) ])
+///
+/// - Parameter testCases: An array of test cases run, each produced by a call to the `testCase` function
+/// - seealso: `testCase`
+@noreturn public func XCTMain(testCases: [XCTestCaseEntry]) {
     let overallDuration = measureTimeExecutingBlock {
-        for testCase in testCases {
-            testCase.invokeTest()
+        for (testCase, tests) in testCases {
+            testCase.invokeTests(tests)
         }
     }
 

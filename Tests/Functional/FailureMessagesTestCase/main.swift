@@ -78,7 +78,7 @@
 
 // Regression test for https://github.com/apple/swift-corelibs-xctest/pull/22
 class FailureMessagesTestCase: XCTestCase {
-    var allTests : [(String, () throws -> Void)] {
+    static var allTests: [(String, FailureMessagesTestCase -> () throws -> Void)] {
         return [
             ("testAssert", testAssert),
             ("testAssertEqualOptionals", testAssertEqualOptionals),
@@ -194,4 +194,4 @@ class FailureMessagesTestCase: XCTestCase {
     }
 }
 
-XCTMain([FailureMessagesTestCase()])
+XCTMain([testCase(FailureMessagesTestCase.allTests)])

@@ -27,7 +27,7 @@
 #endif
 
 class ErrorHandling: XCTestCase {
-    var allTests: [(String, () throws -> ())] {
+    static var allTests: [(String, ErrorHandling -> () throws -> Void)] {
         return [
             // Tests for XCTAssertThrowsError
             ("test_shouldButDoesNotThrowErrorInAssertion", test_shouldButDoesNotThrowErrorInAssertion),
@@ -39,7 +39,7 @@ class ErrorHandling: XCTestCase {
             ("test_canButDoesNotThrowErrorFromTestMethod", test_canButDoesNotThrowErrorFromTestMethod),
             
             // Tests for throwing assertion expressions
-            ("test_assertionExpressionCanThrow", test_assertionExpressionCanThrow), 
+            ("test_assertionExpressionCanThrow", test_assertionExpressionCanThrow),
         ]
     }
     
@@ -103,4 +103,4 @@ class ErrorHandling: XCTestCase {
     }
 }
 
-XCTMain([ErrorHandling()])
+XCTMain([testCase(ErrorHandling.allTests)])

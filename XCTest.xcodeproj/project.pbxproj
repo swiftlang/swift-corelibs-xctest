@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		C265F66F1C3AEB6A00520CF9 /* XCTAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F6691C3AEB6A00520CF9 /* XCTAssert.swift */; };
 		C265F6701C3AEB6A00520CF9 /* XCTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F66A1C3AEB6A00520CF9 /* XCTestCase.swift */; };
-		C265F6711C3AEB6A00520CF9 /* XCTestCaseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F66B1C3AEB6A00520CF9 /* XCTestCaseProvider.swift */; };
 		C265F6721C3AEB6A00520CF9 /* XCTestMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F66C1C3AEB6A00520CF9 /* XCTestMain.swift */; };
 		C265F6731C3AEB6A00520CF9 /* XCTimeUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F66D1C3AEB6A00520CF9 /* XCTimeUtilities.swift */; };
 /* End PBXBuildFile section */
@@ -26,6 +25,7 @@
 
 /* Begin PBXFileReference section */
 		342A33611C470D91001AA02A /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		342A33631C47383E001AA02A /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		5B5D86DB1BBC74AD00234F36 /* SwiftXCTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftXCTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F320B0D1C4714EC00AB3456 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		B1384A411C1B3E8700EDF031 /* CONTRIBUTING.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CONTRIBUTING.md; sourceTree = "<group>"; };
@@ -33,7 +33,6 @@
 		B1384A431C1B3E8700EDF031 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		C265F6691C3AEB6A00520CF9 /* XCTAssert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTAssert.swift; sourceTree = "<group>"; };
 		C265F66A1C3AEB6A00520CF9 /* XCTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestCase.swift; sourceTree = "<group>"; };
-		C265F66B1C3AEB6A00520CF9 /* XCTestCaseProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestCaseProvider.swift; sourceTree = "<group>"; };
 		C265F66C1C3AEB6A00520CF9 /* XCTestMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestMain.swift; sourceTree = "<group>"; };
 		C265F66D1C3AEB6A00520CF9 /* XCTimeUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTimeUtilities.swift; sourceTree = "<group>"; };
 		DA78F7E91C4039410082E15B /* lit.cfg */ = {isa = PBXFileReference; lastKnownFileType = text; path = lit.cfg; sourceTree = "<group>"; };
@@ -68,6 +67,14 @@
 				342A33611C470D91001AA02A /* main.swift */,
 			);
 			path = FailureMessagesTestCase;
+			sourceTree = "<group>";
+		};
+		342A33621C47343C001AA02A /* TestCaseLifecycle */ = {
+			isa = PBXGroup;
+			children = (
+				342A33631C47383E001AA02A /* main.swift */,
+			);
+			path = TestCaseLifecycle;
 			sourceTree = "<group>";
 		};
 		5B5D86D11BBC74AD00234F36 = {
@@ -122,7 +129,6 @@
 			children = (
 				C265F6691C3AEB6A00520CF9 /* XCTAssert.swift */,
 				C265F66A1C3AEB6A00520CF9 /* XCTestCase.swift */,
-				C265F66B1C3AEB6A00520CF9 /* XCTestCaseProvider.swift */,
 				C265F66C1C3AEB6A00520CF9 /* XCTestMain.swift */,
 				C265F66D1C3AEB6A00520CF9 /* XCTimeUtilities.swift */,
 			);
@@ -146,6 +152,7 @@
 				DADB975D1C44BE73005E68B6 /* FailingTestSuite */,
 				DADB97571C406879005E68B6 /* NegativeAccuracyTestCase */,
 				342A33601C470D1E001AA02A /* FailureMessagesTestCase */,
+				342A33621C47343C001AA02A /* TestCaseLifecycle */,
 				DA78F7ED1C4039410082E15B /* xctest_checker */,
 			);
 			path = Functional;
@@ -317,7 +324,6 @@
 			files = (
 				C265F6731C3AEB6A00520CF9 /* XCTimeUtilities.swift in Sources */,
 				C265F6701C3AEB6A00520CF9 /* XCTestCase.swift in Sources */,
-				C265F6711C3AEB6A00520CF9 /* XCTestCaseProvider.swift in Sources */,
 				C265F66F1C3AEB6A00520CF9 /* XCTAssert.swift in Sources */,
 				C265F6721C3AEB6A00520CF9 /* XCTestMain.swift in Sources */,
 			);
