@@ -159,6 +159,12 @@ def main(args=sys.argv[1:]):
              "temporary directory is used",
         metavar="PATH",
         default=tempfile.mkdtemp())
+    build_parser.add_argument(
+        "--foundation-build-dir",
+        help="Path to swift-corelibs-foundation build products, which "
+             "the built XCTest.so will be linked against.",
+        metavar="PATH",
+        required=False)
     build_parser.add_argument("--swift-build-dir",
                               help="deprecated, do not use")
     build_parser.add_argument("--arch", help="deprecated, do not use")
@@ -208,6 +214,12 @@ def main(args=sys.argv[1:]):
         "--swiftc",
         help="Path to the 'swiftc' compiler used to build and run the tests.",
         required=True)
+    test_parser.add_argument(
+        "--foundation-build-dir",
+        help="Path to swift-corelibs-foundation build products, which the "
+             "tests will be linked against.",
+        metavar="PATH",
+        required=False)
 
     install_parser = subparsers.add_parser(
         "install",
