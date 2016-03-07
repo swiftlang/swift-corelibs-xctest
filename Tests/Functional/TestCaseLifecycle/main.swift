@@ -19,13 +19,13 @@ class SetUpTearDownTestCase: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        print("In \(__FUNCTION__)")
+        print("In \(#function)")
         value = 42
     }
 
     override func tearDown() {
         super.tearDown()
-        print("In \(__FUNCTION__)")
+        print("In \(#function)")
     }
 
 // CHECK: Test Case 'SetUpTearDownTestCase.test_hasValueFromSetUp' started.
@@ -34,7 +34,7 @@ class SetUpTearDownTestCase: XCTestCase {
 // CHECK: In tearDown\(\)
 // CHECK: Test Case 'SetUpTearDownTestCase.test_hasValueFromSetUp' passed \(\d+\.\d+ seconds\).
     func test_hasValueFromSetUp() {
-        print("In \(__FUNCTION__)")
+        print("In \(#function)")
         XCTAssertEqual(value, 42)
     }
 }
