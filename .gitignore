@@ -1,4 +1,5 @@
 .DS_Store
 xcuserdata
+*.xcscmblueprint
 .build/
 Output/
