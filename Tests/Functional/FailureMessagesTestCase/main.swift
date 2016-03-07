@@ -171,7 +171,7 @@ class FailureMessagesTestCase: XCTestCase {
     }
 
 // CHECK: Test Case 'FailureMessagesTestCase.testAssertNotNil' started.
-// CHECK: test.swift:177: error: FailureMessagesTestCase.testAssertNotNil : XCTAssertNil failed - message
+// CHECK: test.swift:177: error: FailureMessagesTestCase.testAssertNotNil : XCTAssertNotNil failed - message
 // CHECK: Test Case 'FailureMessagesTestCase.testAssertNotNil' failed \(\d+\.\d+ seconds\).
     func testAssertNotNil() {
         XCTAssertNotNil(nil, "message", file: "test.swift")

@@ -358,7 +358,7 @@ public func XCTAssertNotEqualWithAccuracy<T: FloatingPoint>(@autoclosure express
 }
 
 public func XCTAssertNotNil(@autoclosure expression: () throws -> Any?, @autoclosure _ message: () -> String = "", file: StaticString = #file, line: UInt = #line) {
-    _XCTEvaluateAssertion(.Nil, message: message, file: file, line: line) {
+    _XCTEvaluateAssertion(.NotNil, message: message, file: file, line: line) {
         let value = try expression()
         if value != nil {
             return .Success
