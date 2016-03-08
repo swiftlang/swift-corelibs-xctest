@@ -54,5 +54,15 @@ class CompareTestCase(unittest.TestCase):
 
         self.assertIn("{}:{}:".format(expected, 2), cm.exception.message)
 
+    def test_matching_ignores_leading_and_trailing_whitespace(self):
+        actual = _tmpfile('foo\nbar\nbaz\n')
+        expected = _tmpfile('c:  foo\nc: bar \nc: baz\n')
+        compare.compare(actual, expected, check_prefix='c:')
+
+    def test_can_explicitly_match_leading_and_trailing_whitespace(self):
+        actual = _tmpfile('foo\n bar\nbaz \n')
+        expected = _tmpfile('c: foo\nc: ^ bar \nc: baz $\n')
+        compare.compare(actual, expected, check_prefix='c:')
+
 if __name__ == "__main__":
     unittest.main()
