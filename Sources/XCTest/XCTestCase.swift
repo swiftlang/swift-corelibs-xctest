@@ -79,6 +79,8 @@ extension XCTestCase {
     }
 
     internal static func invokeTests(tests: [(String, XCTestCase throws -> Void)]) {
+        let observationCenter = XCTestObservationCenter.sharedTestObservationCenter()
+
         var totalDuration = 0.0
         var totalFailures = 0
         var unexpectedFailures = 0
@@ -89,6 +91,11 @@ extension XCTestCase {
 
                 var failures = [XCTFailure]()
                 XCTFailureHandler = { failure in
+                    observationCenter.testCase(testCase,
+                                               didFailWithDescription: failure.failureMessage,
+                                               inFile: String(failure.file),
+                                               atLine: failure.line)
+
                     if !testCase.continueAfterFailure {
                         failure.emit(testCase.name)
                         fatalError("Terminating execution due to test failure", file: failure.file, line: failure.line)
@@ -98,6 +105,8 @@ extension XCTestCase {
                 }
 
                 XCTPrint("Test Case '\(testCase.name)' started.")
+
+                observationCenter.testCaseWillStart(testCase)
 
                 testCase.setUp()
 
@@ -113,6 +122,8 @@ extension XCTestCase {
                 testCase.tearDown()
                 testCase.failIfExpectationsNotWaitedFor(XCTAllExpectations)
                 XCTAllExpectations = []
+
+                observationCenter.testCaseDidFinish(testCase)
 
                 totalDuration += duration
 

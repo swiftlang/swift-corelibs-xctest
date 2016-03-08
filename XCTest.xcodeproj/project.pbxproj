@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		AE7DD6091C8E81A0006FC722 /* ArgumentParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7DD6071C8E81A0006FC722 /* ArgumentParser.swift */; };
 		AE7DD60A1C8E81A0006FC722 /* TestFiltering.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7DD6081C8E81A0006FC722 /* TestFiltering.swift */; };
+		AE7DD60C1C8F0513006FC722 /* XCTestObservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7DD60B1C8F0513006FC722 /* XCTestObservation.swift */; };
+		AE9596DF1C96911F001A9EF0 /* ObjectWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE9596DE1C96911F001A9EF0 /* ObjectWrapper.swift */; };
+		AE9596E11C9692B8001A9EF0 /* XCTestObservationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE9596E01C9692B8001A9EF0 /* XCTestObservationCenter.swift */; };
 		C265F66F1C3AEB6A00520CF9 /* XCTAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F6691C3AEB6A00520CF9 /* XCTAssert.swift */; };
 		C265F6701C3AEB6A00520CF9 /* XCTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F66A1C3AEB6A00520CF9 /* XCTestCase.swift */; };
 		C265F6721C3AEB6A00520CF9 /* XCTestMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F66C1C3AEB6A00520CF9 /* XCTestMain.swift */; };
@@ -33,6 +36,9 @@
 		AE7DD6061C8DC6C0006FC722 /* Functional */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Functional; sourceTree = "<group>"; };
 		AE7DD6071C8E81A0006FC722 /* ArgumentParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArgumentParser.swift; sourceTree = "<group>"; };
 		AE7DD6081C8E81A0006FC722 /* TestFiltering.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestFiltering.swift; sourceTree = "<group>"; };
+		AE7DD60B1C8F0513006FC722 /* XCTestObservation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestObservation.swift; sourceTree = "<group>"; };
+		AE9596DE1C96911F001A9EF0 /* ObjectWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectWrapper.swift; sourceTree = "<group>"; };
+		AE9596E01C9692B8001A9EF0 /* XCTestObservationCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestObservationCenter.swift; sourceTree = "<group>"; };
 		B1384A411C1B3E8700EDF031 /* CONTRIBUTING.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CONTRIBUTING.md; sourceTree = "<group>"; };
 		B1384A421C1B3E8700EDF031 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		B1384A431C1B3E8700EDF031 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -102,11 +108,14 @@
 			isa = PBXGroup;
 			children = (
 				AE7DD6071C8E81A0006FC722 /* ArgumentParser.swift */,
+				AE9596DE1C96911F001A9EF0 /* ObjectWrapper.swift */,
 				AE7DD6081C8E81A0006FC722 /* TestFiltering.swift */,
 				C265F6691C3AEB6A00520CF9 /* XCTAssert.swift */,
 				C265F66A1C3AEB6A00520CF9 /* XCTestCase.swift */,
-				C265F66C1C3AEB6A00520CF9 /* XCTestMain.swift */,
 				DADB979B1C51BDA2005E68B6 /* XCTestExpectation.swift */,
+				C265F66C1C3AEB6A00520CF9 /* XCTestMain.swift */,
+				AE7DD60B1C8F0513006FC722 /* XCTestObservation.swift */,
+				AE9596E01C9692B8001A9EF0 /* XCTestObservationCenter.swift */,
 				C265F66D1C3AEB6A00520CF9 /* XCTimeUtilities.swift */,
 				DACC94411C8B87B900EC85F5 /* XCWaitCompletionHandler.swift */,
 			);
@@ -241,11 +250,14 @@
 			files = (
 				DACC94421C8B87B900EC85F5 /* XCWaitCompletionHandler.swift in Sources */,
 				C265F6731C3AEB6A00520CF9 /* XCTimeUtilities.swift in Sources */,
+				AE7DD60C1C8F0513006FC722 /* XCTestObservation.swift in Sources */,
 				C265F6701C3AEB6A00520CF9 /* XCTestCase.swift in Sources */,
 				DADB979C1C51BDA2005E68B6 /* XCTestExpectation.swift in Sources */,
 				AE7DD60A1C8E81A0006FC722 /* TestFiltering.swift in Sources */,
 				AE7DD6091C8E81A0006FC722 /* ArgumentParser.swift in Sources */,
+				AE9596E11C9692B8001A9EF0 /* XCTestObservationCenter.swift in Sources */,
 				C265F66F1C3AEB6A00520CF9 /* XCTAssert.swift in Sources */,
+				AE9596DF1C96911F001A9EF0 /* ObjectWrapper.swift in Sources */,
 				C265F6721C3AEB6A00520CF9 /* XCTestMain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
