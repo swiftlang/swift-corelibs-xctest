@@ -24,10 +24,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		342A33611C470D91001AA02A /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		342A33631C47383E001AA02A /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		5B5D86DB1BBC74AD00234F36 /* SwiftXCTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftXCTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9F320B0D1C4714EC00AB3456 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		AE7DD6061C8DC6C0006FC722 /* Functional */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Functional; sourceTree = "<group>"; };
 		B1384A411C1B3E8700EDF031 /* CONTRIBUTING.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CONTRIBUTING.md; sourceTree = "<group>"; };
 		B1384A421C1B3E8700EDF031 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		B1384A431C1B3E8700EDF031 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -35,18 +33,6 @@
 		C265F66A1C3AEB6A00520CF9 /* XCTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestCase.swift; sourceTree = "<group>"; };
 		C265F66C1C3AEB6A00520CF9 /* XCTestMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestMain.swift; sourceTree = "<group>"; };
 		C265F66D1C3AEB6A00520CF9 /* XCTimeUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTimeUtilities.swift; sourceTree = "<group>"; };
-		DA78F7E91C4039410082E15B /* lit.cfg */ = {isa = PBXFileReference; lastKnownFileType = text; path = lit.cfg; sourceTree = "<group>"; };
-		DA78F7EB1C4039410082E15B /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		DA78F7EE1C4039410082E15B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		DA78F7EF1C4039410082E15B /* setup.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = setup.py; sourceTree = "<group>"; };
-		DA78F7F11C4039410082E15B /* __init__.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
-		DA78F7F21C4039410082E15B /* test_compare.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = test_compare.py; sourceTree = "<group>"; };
-		DA78F7F41C4039410082E15B /* __init__.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
-		DA78F7F61C4039410082E15B /* compare.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = compare.py; sourceTree = "<group>"; };
-		DA78F7F81C4039410082E15B /* main.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = main.py; sourceTree = "<group>"; };
-		DA78F7FA1C4039410082E15B /* xctest_checker.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = xctest_checker.py; sourceTree = "<group>"; };
-		DADB97581C406879005E68B6 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		DADB975E1C44BE8B005E68B6 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		EA3E74BB1BF2B6D500635A73 /* build_script.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = build_script.py; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -61,22 +47,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		342A33601C470D1E001AA02A /* FailureMessagesTestCase */ = {
-			isa = PBXGroup;
-			children = (
-				342A33611C470D91001AA02A /* main.swift */,
-			);
-			path = FailureMessagesTestCase;
-			sourceTree = "<group>";
-		};
-		342A33621C47343C001AA02A /* TestCaseLifecycle */ = {
-			isa = PBXGroup;
-			children = (
-				342A33631C47383E001AA02A /* main.swift */,
-			);
-			path = TestCaseLifecycle;
-			sourceTree = "<group>";
-		};
 		5B5D86D11BBC74AD00234F36 = {
 			isa = PBXGroup;
 			children = (
@@ -96,14 +66,6 @@
 				5B5D86DB1BBC74AD00234F36 /* SwiftXCTest.framework */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		9F320B0C1C4714EC00AB3456 /* ErrorHandling */ = {
-			isa = PBXGroup;
-			children = (
-				9F320B0D1C4714EC00AB3456 /* main.swift */,
-			);
-			path = ErrorHandling;
 			sourceTree = "<group>";
 		};
 		B1384A401C1B3E6A00EDF031 /* Documentation */ = {
@@ -138,79 +100,9 @@
 		DA78F7E71C4039410082E15B /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				DA78F7E81C4039410082E15B /* Functional */,
+				AE7DD6061C8DC6C0006FC722 /* Functional */,
 			);
 			path = Tests;
-			sourceTree = "<group>";
-		};
-		DA78F7E81C4039410082E15B /* Functional */ = {
-			isa = PBXGroup;
-			children = (
-				DA78F7E91C4039410082E15B /* lit.cfg */,
-				DA78F7EA1C4039410082E15B /* SingleFailingTestCase */,
-				9F320B0C1C4714EC00AB3456 /* ErrorHandling */,
-				DADB975D1C44BE73005E68B6 /* FailingTestSuite */,
-				DADB97571C406879005E68B6 /* NegativeAccuracyTestCase */,
-				342A33601C470D1E001AA02A /* FailureMessagesTestCase */,
-				342A33621C47343C001AA02A /* TestCaseLifecycle */,
-				DA78F7ED1C4039410082E15B /* xctest_checker */,
-			);
-			path = Functional;
-			sourceTree = "<group>";
-		};
-		DA78F7EA1C4039410082E15B /* SingleFailingTestCase */ = {
-			isa = PBXGroup;
-			children = (
-				DA78F7EB1C4039410082E15B /* main.swift */,
-			);
-			path = SingleFailingTestCase;
-			sourceTree = "<group>";
-		};
-		DA78F7ED1C4039410082E15B /* xctest_checker */ = {
-			isa = PBXGroup;
-			children = (
-				DA78F7EE1C4039410082E15B /* .gitignore */,
-				DA78F7EF1C4039410082E15B /* setup.py */,
-				DA78F7F01C4039410082E15B /* tests */,
-				DA78F7F31C4039410082E15B /* xctest_checker */,
-				DA78F7FA1C4039410082E15B /* xctest_checker.py */,
-			);
-			path = xctest_checker;
-			sourceTree = "<group>";
-		};
-		DA78F7F01C4039410082E15B /* tests */ = {
-			isa = PBXGroup;
-			children = (
-				DA78F7F11C4039410082E15B /* __init__.py */,
-				DA78F7F21C4039410082E15B /* test_compare.py */,
-			);
-			path = tests;
-			sourceTree = "<group>";
-		};
-		DA78F7F31C4039410082E15B /* xctest_checker */ = {
-			isa = PBXGroup;
-			children = (
-				DA78F7F41C4039410082E15B /* __init__.py */,
-				DA78F7F61C4039410082E15B /* compare.py */,
-				DA78F7F81C4039410082E15B /* main.py */,
-			);
-			path = xctest_checker;
-			sourceTree = "<group>";
-		};
-		DADB97571C406879005E68B6 /* NegativeAccuracyTestCase */ = {
-			isa = PBXGroup;
-			children = (
-				DADB97581C406879005E68B6 /* main.swift */,
-			);
-			path = NegativeAccuracyTestCase;
-			sourceTree = "<group>";
-		};
-		DADB975D1C44BE73005E68B6 /* FailingTestSuite */ = {
-			isa = PBXGroup;
-			children = (
-				DADB975E1C44BE8B005E68B6 /* main.swift */,
-			);
-			path = FailingTestSuite;
 			sourceTree = "<group>";
 		};
 		EA3E74BC1BF2B6D700635A73 /* Linux Build */ = {
