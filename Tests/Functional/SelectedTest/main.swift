@@ -2,9 +2,9 @@
 // RUN: %{built_tests_dir}/SelectedTest SelectedTest.ExecutedTestCase/test_foo > %T/one_test_method || true
 // RUN: %{built_tests_dir}/SelectedTest SelectedTest.ExecutedTestCase > %T/one_test_case || true
 // RUN: %{built_tests_dir}/SelectedTest > %T/all || true
-// RUN: %{xctest_checker} -p "// CHECK-METHOD:   " %T/one_test_method %s
-// RUN: %{xctest_checker} -p "// CHECK-TESTCASE: " %T/one_test_case %s
-// RUN: %{xctest_checker} -p "// CHECK-ALL:      " %T/all %s
+// RUN: %{xctest_checker} -p "// CHECK-METHOD:" %T/one_test_method %s
+// RUN: %{xctest_checker} -p "// CHECK-TESTCASE:" %T/one_test_case %s
+// RUN: %{xctest_checker} -p "// CHECK-ALL:" %T/all %s
 
 #if os(Linux) || os(FreeBSD)
     import XCTest
@@ -44,11 +44,11 @@ class SkippedTestCase: XCTestCase {
         return [("test_baz", test_baz)]
     }
 
-// CHECK-ALL:      Test Case 'SkippedTestCase.test_baz' started.
-// CHECK-ALL:      Test Case 'SkippedTestCase.test_baz' passed \(\d+\.\d+ seconds\).
+// CHECK-ALL: Test Case 'SkippedTestCase.test_baz' started.
+// CHECK-ALL: Test Case 'SkippedTestCase.test_baz' passed \(\d+\.\d+ seconds\).
     func test_baz() {}
 }
-// CHECK-ALL:      Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK-ALL: Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
 XCTMain([
     testCase(ExecutedTestCase.allTests),
