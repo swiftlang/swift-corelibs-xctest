@@ -34,6 +34,20 @@ def _mkdirp(path):
         run("mkdir -p {}".format(path))
 
 
+def _core_foundation_build_dir(foundation_build_dir):
+    """
+    Given the path to a swift-corelibs-foundation built product directory,
+    return the path to CoreFoundation built products.
+
+    When specifying a built Foundation dir such as
+    '/build/foundation-linux-x86_64/Foundation', CoreFoundation dependencies
+    are placed in 'usr/lib/swift'. Note that it's technically not necessary to
+    include this extra path when linking the installed Swift's
+    'usr/lib/swift/linux/libFoundation.so'.
+    """
+    return os.path.join(foundation_build_dir, 'usr', 'lib', 'swift')
+
+
 def _build(args):
     """
     Build XCTest and place the built products in the given 'build_dir'.
@@ -41,6 +55,10 @@ def _build(args):
     """
     swiftc = os.path.abspath(args.swiftc)
     build_dir = os.path.abspath(args.build_dir)
+    foundation_build_dir = os.path.abspath(args.foundation_build_dir)
+    core_foundation_build_dir = _core_foundation_build_dir(
+        foundation_build_dir)
+
     _mkdirp(build_dir)
 
     sourcePaths = glob.glob(os.path.join(
@@ -53,14 +71,31 @@ def _build(args):
 
     # Not incremental..
     # Build library
-    run("{0} -c {1} -emit-object {2} -module-name XCTest -parse-as-library -emit-module "
-        "-emit-module-path {3}/XCTest.swiftmodule -o {3}/XCTest.o -force-single-frontend-invocation "
-        "-module-link-name XCTest".format(swiftc, style_options, " ".join(sourcePaths), build_dir))
-    run("{0} -emit-library {1}/XCTest.o -o {1}/libXCTest.so -lswiftGlibc -lswiftCore -lm".format(swiftc, build_dir))
+    run("{swiftc} -c {style_options} -emit-object -emit-module "
+        "-module-name XCTest -module-link-name XCTest -parse-as-library "
+        "-emit-module-path {build_dir}/XCTest.swiftmodule "
+        "-force-single-frontend-invocation "
+        "-I {foundation_build_dir} -I {core_foundation_build_dir} "
+        "{source_paths} -o {build_dir}/XCTest.o".format(
+            swiftc=swiftc,
+            style_options=style_options,
+            build_dir=build_dir,
+            foundation_build_dir=foundation_build_dir,
+            core_foundation_build_dir=core_foundation_build_dir,
+            source_paths=" ".join(sourcePaths)))
+    run("{swiftc} -emit-library {build_dir}/XCTest.o "
+        "-L {foundation_build_dir} -lswiftGlibc -lswiftCore -lFoundation -lm "
+        "-o {build_dir}/libXCTest.so".format(
+            swiftc=swiftc,
+            build_dir=build_dir,
+            foundation_build_dir=foundation_build_dir))
 
     if args.test:
         # Execute main() using the arguments necessary to run the tests.
-        main(args=["test", "--swiftc", swiftc, build_dir])
+        main(args=["test",
+                   "--swiftc", swiftc,
+                   "--foundation-build-dir", foundation_build_dir,
+                   build_dir])
 
     # If --module-install-path and --library-install-path were specified,
     # we also install the built XCTest products.
@@ -85,14 +120,22 @@ def _test(args):
     # FIXME: Allow these to be specified by the Swift build script.
     lit_flags = "-sv --no-progress-bar"
     tests_path = os.path.join(SOURCE_DIR, "Tests", "Functional")
-    run("SWIFT_EXEC={swiftc} "
-        "BUILT_PRODUCTS_DIR={build_dir} "
-        "{lit_path} {lit_flags} "
-        "{tests_path}".format(swiftc=args.swiftc,
-                              build_dir=args.build_dir,
-                              lit_path=lit_path,
-                              lit_flags=lit_flags,
-                              tests_path=tests_path))
+    core_foundation_build_dir = _core_foundation_build_dir(
+        args.foundation_build_dir)
+
+    run('SWIFT_EXEC={swiftc} '
+        'BUILT_PRODUCTS_DIR={built_products_dir} '
+        'FOUNDATION_BUILT_PRODUCTS_DIR={foundation_build_dir} '
+        'CORE_FOUNDATION_BUILT_PRODUCTS_DIR={core_foundation_build_dir} '
+        '{lit_path} {lit_flags} '
+        '{tests_path}'.format(
+            swiftc=args.swiftc,
+            built_products_dir=args.build_dir,
+            foundation_build_dir=args.foundation_build_dir,
+            core_foundation_build_dir=core_foundation_build_dir,
+            lit_path=lit_path,
+            lit_flags=lit_flags,
+            tests_path=tests_path))
 
 
 def _install(args):
@@ -164,7 +207,7 @@ def main(args=sys.argv[1:]):
         help="Path to swift-corelibs-foundation build products, which "
              "the built XCTest.so will be linked against.",
         metavar="PATH",
-        required=False)
+        required=True)
     build_parser.add_argument("--swift-build-dir",
                               help="deprecated, do not use")
     build_parser.add_argument("--arch", help="deprecated, do not use")
@@ -219,7 +262,7 @@ def main(args=sys.argv[1:]):
         help="Path to swift-corelibs-foundation build products, which the "
              "tests will be linked against.",
         metavar="PATH",
-        required=False)
+        required=True)
 
     install_parser = subparsers.add_parser(
         "install",
