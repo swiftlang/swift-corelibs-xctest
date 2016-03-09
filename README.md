@@ -40,7 +40,7 @@ If your install of Swift is located at `/swift` and you wish to install XCTest i
 ./build_script.py \
     --swiftc="/swift/usr/bin/swiftc" \
     --build-dir="/tmp/XCTest_build" \
-    --foundation-build-dir "/swift//usr/lib/swift/linux" \
+    --foundation-build-dir "/swift/usr/lib/swift/linux" \
     --library-install-path="/swift/usr/lib/swift/linux" \
     --module-install-path="/swift/usr/lib/swift/linux/x86_64"
 ```
