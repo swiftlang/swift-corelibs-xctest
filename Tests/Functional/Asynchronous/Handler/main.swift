@@ -12,7 +12,7 @@
 
 class HandlerTestCase: XCTestCase {
     // CHECK: Test Case 'HandlerTestCase.test_whenExpectationsAreNotFulfilled_handlerCalled_andFails' started.
-    // CHECK: .*/Asynchronous/Handler/main.swift:21: error: HandlerTestCase.test_whenExpectationsAreNotFulfilled_handlerCalled_andFails : Asynchronous wait failed - Exceeded timeout of 0.2 seconds, with unfulfilled expectations: fog
+    // CHECK: .*/Asynchronous/Handler/main.swift:[[@LINE+6]]: error: HandlerTestCase.test_whenExpectationsAreNotFulfilled_handlerCalled_andFails : Asynchronous wait failed - Exceeded timeout of 0.2 seconds, with unfulfilled expectations: fog
     // CHECK: Test Case 'HandlerTestCase.test_whenExpectationsAreNotFulfilled_handlerCalled_andFails' failed \(\d+\.\d+ seconds\).
     func test_whenExpectationsAreNotFulfilled_handlerCalled_andFails() {
         self.expectationWithDescription("fog")
