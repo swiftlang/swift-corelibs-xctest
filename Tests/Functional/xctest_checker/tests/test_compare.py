@@ -46,6 +46,17 @@ class CompareTestCase(unittest.TestCase):
         expected = _tmpfile('c: foo\nc: bar\nc: baz\n')
         compare.compare(actual, expected, check_prefix='c: ')
 
+    def test_match_with_inline_check_does_not_raise(self):
+        actual = _tmpfile('bling\nblong\n')
+        expected = _tmpfile('meep meep // c: bling\nmeep\n// c: blong\n')
+        compare.compare(actual, expected, check_prefix='// c: ')
+
+    def test_check_prefix_twice_in_the_same_line_raises(self):
+        actual = _tmpfile('blorp\n')
+        expected = _tmpfile('c: blorp c: blammo\n')
+        with self.assertRaises(ValueError):
+            compare.compare(actual, expected, check_prefix='c: ')
+
 
 if __name__ == "__main__":
     unittest.main()

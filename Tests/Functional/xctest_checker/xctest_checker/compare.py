@@ -27,8 +27,13 @@ def _expected_lines(path, check_prefix):
     """
     with open(path) as f:
         for line in f:
-            if line.startswith(check_prefix):
-                yield line[len(check_prefix):]
+            components = line.split(check_prefix)
+            if len(components) == 2:
+                yield components[1]
+            elif len(components) > 2:
+                raise ValueError(
+                    'Usage violation: prefix "{}" appears twice in the same '
+                    'line.'.format(check_prefix))
 
 
 def compare(actual, expected, check_prefix):

@@ -25,10 +25,9 @@ def main():
     parser.add_argument('-p', '--check-prefix',
                         default='// CHECK: ',
                         help='%(prog)s checks actual output against expected '
-                             'output. By default, %(prog)s only checks lines '
-                             'that are prefixed with "%(default)s". This '
-                             'option can be used to change that '
-                             'prefix.')
+                             'output. By default, %(prog)s only checks the '
+                             'the text that follows the prefix "%(default)s". '
+                             'This option can be used to change that prefix.')
     args = parser.parse_args()
     compare.compare(args.actual, args.expected, args.check_prefix)
 
