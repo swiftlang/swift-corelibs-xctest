@@ -264,7 +264,7 @@ extension XCTestCase {
         if unfulfilledDescriptions.count > 0 {
             // Not all expectations were fulfilled. Append a failure
             // to the array of expectation-based failures.
-            let descriptions = unfulfilledDescriptions.joinWithSeparator(", ")
+            let descriptions = unfulfilledDescriptions.joined(separator: ", ")
             let failure = XCTFailure(
                 message: "Exceeded timeout of \(timeout) seconds, with unfulfilled expectations: \(descriptions)",
                 failureDescription: "Asynchronous wait failed",
