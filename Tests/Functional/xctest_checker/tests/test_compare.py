@@ -36,6 +36,13 @@ class CompareTestCase(unittest.TestCase):
         expected = _tmpfile('c: foo\nc: bar\nc: baz\n')
         compare.compare(actual, expected, check_prefix='c: ')
 
+    def test_includes_file_name_and_line_of_expected_in_error(self):
+        actual = _tmpfile('foo\nbar\nbaz\n')
+        expected = _tmpfile('c: foo\nc: baz\nc: bar\n')
+        with self.assertRaises(AssertionError) as cm:
+            compare.compare(actual, expected, check_prefix='c: ')
+
+        self.assertIn("{}:{}:".format(expected, 2), cm.exception.message)
 
 if __name__ == "__main__":
     unittest.main()
