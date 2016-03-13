@@ -24,11 +24,10 @@ def main():
                                          'expected output of an XCTest run.')
     parser.add_argument('-p', '--check-prefix',
                         default='// CHECK: ',
-                        help='{prog} checks actual output against expected '
-                             'output. By default, {prog} only checks lines '
-                             'that are prefixed with "// CHECK: ". This '
-                             'option can be used to change that '
-                             'prefix.'.format(prog=parser.prog))
+                        help='%(prog)s checks actual output against expected '
+                             'output. By default, %(prog)s only checks the '
+                             'the text that follows the prefix "%(default)s". '
+                             'This option can be used to change that prefix.')
     args = parser.parse_args()
     compare.compare(args.actual, args.expected, args.check_prefix)
 
