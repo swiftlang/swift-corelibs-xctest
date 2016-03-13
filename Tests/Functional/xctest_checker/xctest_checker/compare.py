@@ -20,15 +20,15 @@ def _actual_lines(path):
             yield line
 
 
-def _expected_lines(path, check_prefix):
+def _expected_lines_and_line_numbers(path, check_prefix):
     """
     Returns a generator that yields each line in the file at the given path
     that begins with the given prefix.
     """
     with open(path) as f:
-        for line in f:
+        for line_number, line in enumerate(f):
             if line.startswith(check_prefix):
-                yield line[len(check_prefix):]
+                yield line[len(check_prefix):], line_number+1
 
 
 def compare(actual, expected, check_prefix):
@@ -38,19 +38,23 @@ def compare(actual, expected, check_prefix):
     file, raises an AssertionError. Also raises an AssertionError if the number
     of lines in the two files differ.
     """
-    for actual_line, expected_line in map(
+    for actual_line, expected_line_and_line_number in map(
             None,
             _actual_lines(actual),
-            _expected_lines(expected, check_prefix)):
+            _expected_lines_and_line_numbers(expected, check_prefix)):
+
         if actual_line is None:
             raise AssertionError('There were more lines expected to appear '
                                  'than there were lines in the actual input.')
-        if expected_line is None:
+        if expected_line_and_line_number is None:
             raise AssertionError('There were more lines than expected to '
                                  'appear.')
+
+        (expected_line, expectation_source_line_number) = expected_line_and_line_number
+
         if not re.match(expected_line, actual_line):
             raise AssertionError('Actual line did not match the expected '
                                  'regular expression.\n'
-                                 'Actual: {}\n'
+                                 '{}:{}: Actual: {}\n'
                                  'Expected: {}\n'.format(
-                                     repr(actual_line), repr(expected_line)))
+                                     expected, expectation_source_line_number, repr(actual_line), repr(expected_line)))
