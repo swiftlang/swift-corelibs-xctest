@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import xctest_checker
+import xctest_checker.main
 
 if __name__ == '__main__':
-    xctest_checker.main()
+    xctest_checker.main.main()
