@@ -14,8 +14,10 @@
 
 #if os(Linux) || os(FreeBSD)
 import Glibc
+import Foundation
 #else
 import Darwin
+import SwiftFoundation
 #endif
 
 internal func XCTPrint(message: String) {
@@ -36,7 +38,7 @@ struct XCTFailure {
 }
 
 internal struct XCTRun {
-    var duration: TimeInterval
+    var duration: NSTimeInterval
     var method: String
     var passed: Bool
     var failures: [XCTFailure]
