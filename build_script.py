@@ -18,8 +18,10 @@ import tempfile
 
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+
 def note(msg):
     print("xctest-build: "+msg)
+
 
 def run(command):
     note(command)
