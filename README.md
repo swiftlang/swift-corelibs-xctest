@@ -108,6 +108,11 @@ Also, this version of XCTest does not use the external test runner binary. Inste
 XCTMain([testCase(TestNSString.allTests), testCase(TestNSArray.allTests), testCase(TestNSDictionary.allTests)])
 ```
 
-The `XCTMain` function does not return, and will cause your test app to exit with either `0` for success or `1` for failure.
+The `XCTMain` function does not return, and will cause your test app to exit with either `0` for success or `1` for failure. Command line arguments given to the executable can be used to select a particular test or test case to execute. For example:
+
+```sh
+./FooTests FooTestCase/testFoo  # Run a single test method
+./FooTests FooTestCase          # Run all the tests in FooTestCase
+```
 
 We are currently investigating ideas on how to make these additional steps for test discovery automatic when running on the Swift runtime.
