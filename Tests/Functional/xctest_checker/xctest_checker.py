@@ -9,7 +9,7 @@
 # See http://swift.org/LICENSE.txt for license information
 # See http://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
 
-import xctest_checker
+import xctest_checker.main
 
 if __name__ == '__main__':
-    xctest_checker.main()
+    xctest_checker.main.main()
