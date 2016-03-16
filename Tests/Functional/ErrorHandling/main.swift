@@ -37,7 +37,7 @@ class ErrorHandling: XCTestCase {
     }
 
 // CHECK: Test Case 'ErrorHandling.test_shouldButDoesNotThrowErrorInAssertion' started.
-// CHECK: .*/ErrorHandling/main.swift:\d+: error: ErrorHandling.test_shouldButDoesNotThrowErrorInAssertion : XCTAssertThrowsError failed: did not throw error - 
+// CHECK: .*/ErrorHandling/main.swift:\d+: error: ErrorHandling.test_shouldButDoesNotThrowErrorInAssertion : XCTAssertThrowsError failed: did not throw error -
 // CHECK: Test Case 'ErrorHandling.test_shouldButDoesNotThrowErrorInAssertion' failed \(\d+\.\d+ seconds\).
     func test_shouldButDoesNotThrowErrorInAssertion() {
         XCTAssertThrowsError(try functionThatDoesNotThrowError())
@@ -60,7 +60,7 @@ class ErrorHandling: XCTestCase {
     }
     
 // CHECK: Test Case 'ErrorHandling.test_throwsErrorInAssertionButFailsWhenCheckingError' started.
-// CHECK: .*/ErrorHandling/main.swift:\d+: error: ErrorHandling.test_throwsErrorInAssertionButFailsWhenCheckingError : XCTAssertEqual failed: \("Optional\("an error message"\)"\) is not equal to \("Optional\(""\)"\) - 
+// CHECK: .*/ErrorHandling/main.swift:\d+: error: ErrorHandling.test_throwsErrorInAssertionButFailsWhenCheckingError : XCTAssertEqual failed: \("Optional\("an error message"\)"\) is not equal to \("Optional\(""\)"\) -
 // CHECK: Test Case 'ErrorHandling.test_throwsErrorInAssertionButFailsWhenCheckingError' failed \(\d+\.\d+ seconds\).
     func test_throwsErrorInAssertionButFailsWhenCheckingError() {
         XCTAssertThrowsError(try functionThatDoesThrowError()) { error in
@@ -77,7 +77,7 @@ class ErrorHandling: XCTestCase {
     }
     
 // CHECK: Test Case 'ErrorHandling.test_canAndDoesThrowErrorFromTestMethod' started.
-// CHECK: \<EXPR\>:0: unexpected error: ErrorHandling.test_canAndDoesThrowErrorFromTestMethod : threw error "AnError\("an error message"\)" - 
+// CHECK: \<EXPR\>:0: unexpected error: ErrorHandling.test_canAndDoesThrowErrorFromTestMethod : threw error "AnError\("an error message"\)" -
 // CHECK: Test Case 'ErrorHandling.test_canAndDoesThrowErrorFromTestMethod' failed \(\d+\.\d+ seconds\).
     func test_canAndDoesThrowErrorFromTestMethod() throws {
         try functionThatDoesThrowError()
@@ -94,7 +94,7 @@ class ErrorHandling: XCTestCase {
     }
     
 // CHECK: Test Case 'ErrorHandling.test_assertionExpressionCanThrow' started.
-// CHECK: .*/ErrorHandling/main.swift:\d+: unexpected error: ErrorHandling.test_assertionExpressionCanThrow : XCTAssertEqual threw error "AnError\("did not actually return"\)" - 
+// CHECK: .*/ErrorHandling/main.swift:\d+: unexpected error: ErrorHandling.test_assertionExpressionCanThrow : XCTAssertEqual threw error "AnError\("did not actually return"\)" -
 // CHECK: Test Case 'ErrorHandling.test_assertionExpressionCanThrow' failed \(\d+\.\d+ seconds\).
     func test_assertionExpressionCanThrow() {
         XCTAssertEqual(try functionThatShouldReturnButThrows(), 1)

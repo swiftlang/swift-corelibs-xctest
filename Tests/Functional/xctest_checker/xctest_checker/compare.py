@@ -28,8 +28,10 @@ def _expected_lines_and_line_numbers(path, check_prefix):
     with open(path) as f:
         for line_number, line in enumerate(f):
             if line.startswith(check_prefix):
-                yield line[len(check_prefix):], line_number+1
+                yield line[len(check_prefix):].strip(), line_number+1
 
+def _add_whitespace_leniency(original_regex):
+    return "^ *" + original_regex + " *$"
 
 def compare(actual, expected, check_prefix):
     """
@@ -52,7 +54,7 @@ def compare(actual, expected, check_prefix):
 
         (expected_line, expectation_source_line_number) = expected_line_and_line_number
 
-        if not re.match(expected_line, actual_line):
+        if not re.match(_add_whitespace_leniency(expected_line), actual_line):
             raise AssertionError('Actual line did not match the expected '
                                  'regular expression.\n'
                                  '{}:{}: Actual: {}\n'
