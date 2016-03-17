@@ -26,7 +26,14 @@ public typealias XCTestCaseEntry = (testCaseClass: XCTestCase.Type, allTests: [(
 
 public class XCTestCase {
 
+    /// The name of the test case, consisting of its class name and the method name it will run.
+    /// - Note: FIXME: This property should be readonly, but currently has to be publicly settable due to a
+    ///         toolchain bug on Linux. To ensure compatibility of tests between
+    ///         swift-corelibs-xctest and Apple XCTest, this property should not be modified.
+    public var name: String
+
     public required init() {
+        name = "\(self.dynamicType).<unknown>"
     }
 
     public func setUp() {
@@ -72,25 +79,34 @@ extension XCTestCase {
     }
 
     internal static func invokeTests(tests: [(String, XCTestCase throws -> Void)]) {
+        let observationCenter = XCTestObservationCenter.sharedTestObservationCenter()
+
         var totalDuration = 0.0
         var totalFailures = 0
         var unexpectedFailures = 0
         let overallDuration = measureTimeExecutingBlock {
             for (name, test) in tests {
                 let testCase = self.init()
-                let fullName = "\(testCase.dynamicType).\(name)"
+                testCase.name = "\(testCase.dynamicType).\(name)"
 
                 var failures = [XCTFailure]()
                 XCTFailureHandler = { failure in
+                    observationCenter.testCase(testCase,
+                                               didFailWithDescription: failure.failureMessage,
+                                               inFile: String(failure.file),
+                                               atLine: failure.line)
+
                     if !testCase.continueAfterFailure {
-                        failure.emit(fullName)
+                        failure.emit(testCase.name)
                         fatalError("Terminating execution due to test failure", file: failure.file, line: failure.line)
                     } else {
                         failures.append(failure)
                     }
                 }
 
-                XCTPrint("Test Case '\(fullName)' started.")
+                XCTPrint("Test Case '\(testCase.name)' started.")
+
+                observationCenter.testCaseWillStart(testCase)
 
                 testCase.setUp()
 
@@ -107,11 +123,13 @@ extension XCTestCase {
                 testCase.failIfExpectationsNotWaitedFor(XCTAllExpectations)
                 XCTAllExpectations = []
 
+                observationCenter.testCaseDidFinish(testCase)
+
                 totalDuration += duration
 
                 var result = "passed"
                 for failure in failures {
-                    failure.emit(fullName)
+                    failure.emit(testCase.name)
                     totalFailures += 1
                     if !failure.expected {
                         unexpectedFailures += 1
@@ -119,8 +137,8 @@ extension XCTestCase {
                     result = failures.count > 0 ? "failed" : "passed"
                 }
 
-                XCTPrint("Test Case '\(fullName)' \(result) (\(printableStringForTimeInterval(duration)) seconds).")
-                XCTAllRuns.append(XCTRun(duration: duration, method: fullName, passed: failures.count == 0, failures: failures))
+                XCTPrint("Test Case '\(testCase.name)' \(result) (\(printableStringForTimeInterval(duration)) seconds).")
+                XCTAllRuns.append(XCTRun(duration: duration, method: testCase.name, passed: failures.count == 0, failures: failures))
                 XCTFailureHandler = nil
             }
         }

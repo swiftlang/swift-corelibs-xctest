@@ -31,9 +31,11 @@ struct XCTFailure {
     var expected: Bool
     var file: StaticString
     var line: UInt
-    
+
+    var failureMessage: String { return "\(failureDescription) - \(message)" }
+
     func emit(method: String) {
-        XCTPrint("\(file):\(line): \(expected ? "" : "unexpected ")error: \(method) : \(failureDescription) - \(message)")
+        XCTPrint("\(file):\(line): \(expected ? "" : "unexpected ")error: \(method) : \(failureMessage)")
     }
 }
 
