@@ -15,6 +15,7 @@ import os
 import subprocess
 import sys
 import tempfile
+import textwrap
 
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -184,20 +185,43 @@ def main(args=sys.argv[1:]):
     function.
     """
     parser = argparse.ArgumentParser(
-        description="Builds, tests, and installs XCTest.")
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=textwrap.dedent("""
+            Build, test, and install XCTest.
+
+            WARNING: This script is only meant to be used on Linux
+            environments, and in general should not be invoked directly. The
+            recommended way to build and test XCTest is via the Swift build
+            script. See this project's README for details.
+
+            The Swift build script invokes this %(prog)s script to build,
+            test, and install this project on Linux. Assuming you are on a
+            Linux environment, you may invoke it in the same way to build this
+            project directly. For example, If your install of Swift is located
+            at "/swift" and you wish to install XCTest into that same location,
+            here is a sample invocation of the build script:
+
+            $ %(prog)s \\
+                --swiftc="/swift/usr/bin/swiftc" \\
+                --build-dir="/tmp/XCTest_build" \\
+                --foundation-build-dir "/swift/usr/lib/swift/linux" \\
+                --library-install-path="/swift/usr/lib/swift/linux" \\
+                --module-install-path="/swift/usr/lib/swift/linux/x86_64"
+            """))
     subparsers = parser.add_subparsers(
-        description="Use one of these to specify whether to build, test, "
-                    "or install XCTest. If you don't specify any of these, "
-                    "'build' is executed as a default. You may also use "
-                    "'build' to also test and install the built products. "
-                    "Pass the -h or --help option to any of the subcommands "
-                    "for more information.")
+        description=textwrap.dedent("""
+            Use one of these to specify whether to build, test, or install
+            XCTest. If you don't specify any of these, 'build' is executed as a
+            default. You may also use 'build' to also test and install the
+            built products. Pass the -h or --help option to any of the
+            subcommands for more information."""))
 
     build_parser = subparsers.add_parser(
         "build",
-        description="Build XCTest.so, XCTest.swiftmodule, and XCTest.swiftdoc "
-                    "using the given Swift compiler. This command may also "
-                    "test and install the built products.")
+        description=textwrap.dedent("""
+            Build XCTest.so, XCTest.swiftmodule, and XCTest.swiftdoc using the
+            given Swift compiler. This command may also test and install the
+            built products."""))
     build_parser.set_defaults(func=_build)
     build_parser.add_argument(
         "--swiftc",
@@ -205,19 +229,16 @@ def main(args=sys.argv[1:]):
              "XCTest.so, XCTest.swiftmodule, and XCTest.swiftdoc. This will "
              "also be used to build the tests for those built products if the "
              "--test option is specified.",
-        metavar="PATH",
         required=True)
     build_parser.add_argument(
         "--build-dir",
         help="Path to the output build directory. If not specified, a "
              "temporary directory is used",
-        metavar="PATH",
         default=tempfile.mkdtemp())
     build_parser.add_argument(
         "--foundation-build-dir",
         help="Path to swift-corelibs-foundation build products, which "
              "the built XCTest.so will be linked against.",
-        metavar="PATH",
         required=True)
     build_parser.add_argument("--swift-build-dir",
                               help="deprecated, do not use")
@@ -262,8 +283,7 @@ def main(args=sys.argv[1:]):
     test_parser.add_argument(
         "build_dir",
         help="An absolute path to a directory containing the built XCTest.so "
-             "library.",
-        metavar="PATH")
+             "library.")
     test_parser.add_argument(
         "--swiftc",
         help="Path to the 'swiftc' compiler used to build and run the tests.",
@@ -278,7 +298,6 @@ def main(args=sys.argv[1:]):
         "--foundation-build-dir",
         help="Path to swift-corelibs-foundation build products, which the "
              "tests will be linked against.",
-        metavar="PATH",
         required=True)
 
     install_parser = subparsers.add_parser(
@@ -288,19 +307,16 @@ def main(args=sys.argv[1:]):
     install_parser.add_argument(
         "build_dir",
         help="An absolute path to a directory containing a built XCTest.so, "
-             "XCTest.swiftmodule, and XCTest.swiftdoc.",
-        metavar="PATH")
+             "XCTest.swiftmodule, and XCTest.swiftdoc.")
     install_parser.add_argument(
         "-m", "--module-install-path",
         help="Location at which to install XCTest.swiftmodule and "
              "XCTest.swiftdoc. This directory will be created if it doesn't "
-             "already exist.",
-        metavar="PATH")
+             "already exist.")
     install_parser.add_argument(
         "-l", "--library-install-path",
         help="Location at which to install XCTest.so. This directory will be "
-             "created if it doesn't already exist.",
-        metavar="PATH")
+             "created if it doesn't already exist.")
 
     # Many versions of Python require a subcommand must be specified.
     # We handle this here: if no known subcommand (or none of the help options)
