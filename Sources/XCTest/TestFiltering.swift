@@ -68,7 +68,8 @@ private extension SelectedTest {
         case 2:
             testCaseName = components[0]
             testName = components[1]
-        default: return nil
+        default:
+            return nil
         }
     }
 
