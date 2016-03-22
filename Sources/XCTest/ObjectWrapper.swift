@@ -8,7 +8,7 @@
 //
 //
 //  ObjectWrapper.swift
-//  Utility type for adapting implementors of a `class` protocol to Hashable
+//  Utility type for adapting implementors of a `class` protocol to `Hashable`
 //
 
 /// A `Hashable` representation of an object and its `ObjectIdentifier`. This is
