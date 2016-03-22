@@ -11,7 +11,7 @@
 //  Utility type for adapting implementors of a `class` protocol to Hashable
 //
 
-/// A `Hashable` representation of an object and its ObjectIdentifier. This is
+/// A `Hashable` representation of an object and its `ObjectIdentifier`. This is
 /// useful because Swift classes aren't implicitly hashable based on identity.
 internal struct ObjectWrapper<T>: Hashable {
     let object: T
