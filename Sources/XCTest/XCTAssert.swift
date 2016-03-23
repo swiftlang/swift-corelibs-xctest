@@ -100,15 +100,15 @@ private func _XCTEvaluateAssertion(assertion: _XCTAssertion, @autoclosure messag
     }
 }
 
-/// This function emits a test failure if the general Bool expression passed
-/// to it evaluates to false.
+/// This function emits a test failure if the general `Boolean` expression passed
+/// to it evaluates to `false`.
 ///
 /// - Requires: This and all other XCTAssert* functions must be called from
 ///   within a test method, as passed to `XCTMain`.
 ///   Assertion failures that occur outside of a test method will *not* be
 ///   reported as failures.
 ///
-/// - Parameter expression: A boolean test. If it evaluates to false, the
+/// - Parameter expression: A boolean test. If it evaluates to `false`, the
 ///   assertion fails and emits a test failure.
 /// - Parameter message: An optional message to use in the failure if the
 ///   assertion fails. If no message is supplied a default message is used.
