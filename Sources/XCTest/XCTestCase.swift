@@ -47,13 +47,13 @@ public class XCTestCase {
 /// the signature required by `XCTMain`
 /// - seealso: `XCTMain`
 public func testCase<T: XCTestCase>(allTests: [(String, T -> () throws -> Void)]) -> XCTestCaseEntry {
-    let tests: [(String, XCTestCase throws -> Void)] = allTests.map({ ($0.0, test($0.1)) })
+    let tests: [(String, XCTestCase throws -> Void)] = allTests.map { ($0.0, test($0.1)) }
     return (T.self, tests)
 }
 
 private func test<T: XCTestCase>(testFunc: T -> () throws -> Void) -> XCTestCase throws -> Void {
     return { testCaseType in
-        guard let testCase: T = testCaseType as? T else {
+        guard let testCase = testCaseType as? T else {
             fatalError("Attempt to invoke test on class \(T.self) with incompatible instance type \(testCaseType.dynamicType)")
         }
 
@@ -62,7 +62,7 @@ private func test<T: XCTestCase>(testFunc: T -> () throws -> Void) -> XCTestCase
 }
 
 // FIXME: Expectations should be stored in an instance variable defined on
-//        XCTestCase, but when so defined Linux tests fail with "hidden symbol
+//        `XCTestCase`, but when so defined Linux tests fail with "hidden symbol
 //        isn't defined". Use a global for the time being, as this seems to
 //        appease the Linux compiler.
 private var XCTAllExpectations = [XCTestExpectation]()
@@ -74,7 +74,10 @@ extension XCTestCase {
             return true
         }
         set {
-            // TODO: When using the Objective-C runtime, XCTest is able to throw an exception from an assert and then catch it at the frame above the test method. This enables the framework to effectively stop all execution in the current test. There is no such facility in Swift. Until we figure out how to get a compatible behavior, we have decided to hard-code the value of 'true' for continue after failure.
+            // TODO: When using the Objective-C runtime, XCTest is able to throw an exception from an assert and then catch it at the frame above the test method.
+            //      This enables the framework to effectively stop all execution in the current test.
+            //      There is no such facility in Swift. Until we figure out how to get a compatible behavior,
+            //      we have decided to hard-code the value of 'true' for continue after failure.
         }
     }
 
@@ -143,14 +146,8 @@ extension XCTestCase {
             }
         }
 
-        var testCountSuffix = "s"
-        if tests.count == 1 {
-            testCountSuffix = ""
-        }
-        var failureSuffix = "s"
-        if totalFailures == 1 {
-            failureSuffix = ""
-        }
+        let testCountSuffix = (tests.count == 1) ? "" : "s"
+        let failureSuffix = (totalFailures == 1) ? "": "s"
 
         XCTPrint("Executed \(tests.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (\(unexpectedFailures) unexpected) in \(printableStringForTimeInterval(totalDuration)) (\(printableStringForTimeInterval(overallDuration))) seconds")
     }
