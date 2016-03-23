@@ -147,7 +147,7 @@ extension XCTestCase {
         }
 
         let testCountSuffix = (tests.count == 1) ? "" : "s"
-        let failureSuffix = (totalFailures == 1) ? "": "s"
+        let failureSuffix = (totalFailures == 1) ? "" : "s"
 
         XCTPrint("Executed \(tests.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (\(unexpectedFailures) unexpected) in \(printableStringForTimeInterval(totalDuration)) (\(printableStringForTimeInterval(overallDuration))) seconds")
     }
