@@ -52,25 +52,19 @@ private enum _XCTAssertionResult {
     case UnexpectedFailure(ErrorProtocol)
 
     var expected: Bool {
-        switch (self) {
-        case .UnexpectedFailure(_):
-            return false
-        default:
-            return true
+        switch self {
+        case .UnexpectedFailure(_): return false
+        default: return true
         }
     }
 
     func failureDescription(assertion: _XCTAssertion) -> String {
         let explanation: String
-        switch (self) {
-        case .Success:
-            explanation = "passed"
-        case .ExpectedFailure(let details?):
-            explanation = "failed: \(details)"
-        case .ExpectedFailure(_):
-            explanation = "failed"
-        case .UnexpectedFailure(let error):
-            explanation = "threw error \"\(error)\""
+        switch self {
+        case .Success: explanation = "passed"
+        case .ExpectedFailure(let details?): explanation = "failed: \(details)"
+        case .ExpectedFailure(_): explanation = "failed"
+        case .UnexpectedFailure(let error): explanation = "threw error \"\(error)\""
         }
 
         if let name = assertion.name {
@@ -92,7 +86,6 @@ private func _XCTEvaluateAssertion(assertion: _XCTAssertion, @autoclosure messag
     switch result {
     case .Success:
         return
-
     default:
         if let handler = XCTFailureHandler {
             handler(XCTFailure(message: message(), failureDescription: result.failureDescription(assertion), expected: result.expected, file: file, line: line))
