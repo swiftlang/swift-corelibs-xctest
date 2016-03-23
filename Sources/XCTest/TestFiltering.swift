@@ -23,7 +23,7 @@ internal struct TestFiltering {
     var selectedTestFilter: TestFilter {
         guard let selectedTestName = selectedTestName else { return includeAllFilter() }
         guard let selectedTest = SelectedTest(selectedTestName: selectedTestName) else { return excludeAllFilter() }
-        
+
         return selectedTest.matches
     }
 
@@ -37,12 +37,12 @@ internal struct TestFiltering {
 
     static func filterTests(entries: [XCTestCaseEntry], filter: TestFilter) -> [XCTestCaseEntry] {
         return entries
-            .map({ testCase, tests in
-                return (testCase, tests.filter({ filter(testCase, $0.0) }))
-            })
-            .filter({ testCase, tests in
+            .map { testCase, tests in
+                return (testCase, tests.filter { filter(testCase, $0.0) } )
+            }
+            .filter { testCase, tests in
                 return !tests.isEmpty
-            })
+            }
     }
 }
 
