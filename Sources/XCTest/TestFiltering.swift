@@ -21,15 +21,10 @@ internal struct TestFiltering {
     }
 
     var selectedTestFilter: TestFilter {
-        if let selectedTestName = selectedTestName {
-            if let selectedTest = SelectedTest(selectedTestName: selectedTestName) {
-                return selectedTest.matches
-            } else {
-                return excludeAllFilter()
-            }
-        } else {
-            return includeAllFilter()
-        }
+        guard let selectedTestName = selectedTestName else { return includeAllFilter() }
+        guard let selectedTest = SelectedTest(selectedTestName: selectedTestName) else { return excludeAllFilter() }
+        
+        return selectedTest.matches
     }
 
     private func excludeAllFilter() -> TestFilter {
