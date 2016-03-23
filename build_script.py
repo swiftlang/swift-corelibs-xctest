@@ -115,10 +115,19 @@ def _test(args):
     Test the built XCTest.so library at the given 'build_dir', using the
     given 'swiftc' compiler.
     """
-    # FIXME: Allow path to lit to be specified as an option, with this
-    #        path as a default.
-    lit_path = os.path.join(
-        os.path.dirname(SOURCE_DIR), "llvm", "utils", "lit", "lit.py")
+    lit_path = os.path.abspath(args.lit)
+    if not os.path.exists(lit_path):
+        raise IOError(
+            'Could not find lit tester tool at path: "{}". This tool is '
+            'requred to run the test suite. Unless you specified a custom '
+            'path to the tool using the "--lit" option, the lit tool will be '
+            'found in the LLVM source tree, which is expected to be checked '
+            'out in the same directory as swift-corelibs-xctest. If you do '
+            'not have LLVM checked out at this path, you may follow the '
+            'instructions for "Getting Sources for Swift and Related '
+            'Projects" from the Swift project README in order to fix this '
+            'error.'.format(lit_path))
+
     # FIXME: Allow these to be specified by the Swift build script.
     lit_flags = "-sv --no-progress-bar"
     tests_path = os.path.join(SOURCE_DIR, "Tests", "Functional")
@@ -259,6 +268,12 @@ def main(args=sys.argv[1:]):
         "--swiftc",
         help="Path to the 'swiftc' compiler used to build and run the tests.",
         required=True)
+    test_parser.add_argument(
+        "--lit",
+        help="Path to the 'lit' tester tool used to run the test suite. "
+             "'%(default)s' by default.",
+        default=os.path.join(os.path.dirname(SOURCE_DIR),
+                             "llvm", "utils", "lit", "lit.py"))
     test_parser.add_argument(
         "--foundation-build-dir",
         help="Path to swift-corelibs-foundation build products, which the "
