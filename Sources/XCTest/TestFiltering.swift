@@ -8,7 +8,7 @@
 //
 //
 //  XCTestFiltering.swift
-//  This provides utilities for executing only a subset of the tests provided to XCTMain
+//  This provides utilities for executing only a subset of the tests provided to `XCTMain`
 //
 
 internal typealias TestFilter = (XCTestCase.Type, String) -> Bool
