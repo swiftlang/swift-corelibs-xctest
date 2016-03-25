@@ -4,14 +4,22 @@
 
 #if os(Linux) || os(FreeBSD)
     import XCTest
+    import Foundation
 #else
     import SwiftXCTest
+    import SwiftFoundation
 #endif
 
 class Observer: XCTestObservation {
+    var startedBundlePaths = [String]()
     var startedTestCaseNames = [String]()
     var failureDescriptions = [String]()
     var finishedTestCaseNames = [String]()
+    var finishedBundlePaths = [String]()
+
+    func testBundleWillStart(testBundle: NSBundle) {
+        startedBundlePaths.append(testBundle.bundlePath)
+    }
 
     func testCaseWillStart(testCase: XCTestCase) {
         startedTestCaseNames.append(testCase.name)
@@ -24,9 +32,14 @@ class Observer: XCTestObservation {
     func testCaseDidFinish(testCase: XCTestCase) {
         finishedTestCaseNames.append(testCase.name)
     }
+
+    func testBundleDidFinish(testBundle: NSBundle) {
+        print("In \(#function)")
+    }
 }
 
 let observer = Observer()
+XCTestObservationCenter.sharedTestObservationCenter().addTestObserver(observer)
 
 class Observation: XCTestCase {
     static var allTests: [(String, Observation -> () throws -> Void)] {
@@ -38,24 +51,26 @@ class Observation: XCTestCase {
     }
 
 // CHECK: Test Case 'Observation.test_one' started.
-// CHECK: Test Case 'Observation.test_one' passed \(\d+\.\d+ seconds\).
+// CHECK: .*/Observation/main.swift:\d+: error: Observation.test_one : failed - fail!
+// CHECK: Test Case 'Observation.test_one' failed \(\d+\.\d+ seconds\).
     func test_one() {
-        XCTAssertEqual(observer.startedTestCaseNames, [])
+        XCTAssertEqual(observer.startedBundlePaths.count, 1)
+        XCTAssertEqual(observer.startedTestCaseNames, ["Observation.test_one"])
         XCTAssertEqual(observer.failureDescriptions, [])
         XCTAssertEqual(observer.finishedTestCaseNames, [])
-
-        XCTestObservationCenter.sharedTestObservationCenter().addTestObserver(observer)
-    }
-
-// CHECK: Test Case 'Observation.test_two' started.
-// CHECK: .*/Observation/main.swift:\d+: error: Observation.test_two : failed - fail!
-// CHECK: Test Case 'Observation.test_two' failed \(\d+\.\d+ seconds\).
-    func test_two() {
-        XCTAssertEqual(observer.startedTestCaseNames, ["Observation.test_two"])
-        XCTAssertEqual(observer.finishedTestCaseNames,["Observation.test_one"])
+        XCTAssertEqual(observer.finishedBundlePaths.count, 0)
 
         XCTFail("fail!")
         XCTAssertEqual(observer.failureDescriptions, ["failed - fail!"])
+    }
+
+// CHECK: Test Case 'Observation.test_two' started.
+// CHECK: Test Case 'Observation.test_two' passed \(\d+\.\d+ seconds\).
+    func test_two() {
+        XCTAssertEqual(observer.startedBundlePaths.count, 1)
+        XCTAssertEqual(observer.startedTestCaseNames, ["Observation.test_one", "Observation.test_two"])
+        XCTAssertEqual(observer.finishedTestCaseNames,["Observation.test_one"])
+        XCTAssertEqual(observer.finishedBundlePaths.count, 0)
 
         XCTestObservationCenter.sharedTestObservationCenter().removeTestObserver(observer)
     }
@@ -63,8 +78,12 @@ class Observation: XCTestCase {
 // CHECK: Test Case 'Observation.test_three' started.
 // CHECK: Test Case 'Observation.test_three' passed \(\d+\.\d+ seconds\).
     func test_three() {
-        XCTAssertEqual(observer.startedTestCaseNames, ["Observation.test_two"])
+        XCTAssertEqual(observer.startedBundlePaths.count, 1)
+        XCTAssertEqual(observer.startedTestCaseNames, ["Observation.test_one", "Observation.test_two"])
         XCTAssertEqual(observer.finishedTestCaseNames,["Observation.test_one"])
+        XCTAssertEqual(observer.finishedBundlePaths.count, 0)
+
+        XCTestObservationCenter.sharedTestObservationCenter().addTestObserver(observer)
     }
 }
 
@@ -72,3 +91,4 @@ XCTMain([testCase(Observation.allTests)])
 
 // CHECK: Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 // CHECK: Total executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: In testBundleDidFinish

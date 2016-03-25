@@ -79,6 +79,10 @@ internal struct XCTRun {
 /// - Parameter testCases: An array of test cases run, each produced by a call to the `testCase` function
 /// - seealso: `testCase`
 @noreturn public func XCTMain(testCases: [XCTestCaseEntry]) {
+    let observationCenter = XCTestObservationCenter.sharedTestObservationCenter()
+    let testBundle = NSBundle.mainBundle()
+    observationCenter.testBundleWillStart(testBundle)
+
     let filter = TestFiltering()
 
     let overallDuration = measureTimeExecutingBlock {
@@ -99,6 +103,7 @@ internal struct XCTRun {
     }
 
     XCTPrint("Total executed \(XCTAllRuns.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (\(totalUnexpectedFailures) unexpected) in \(printableStringForTimeInterval(totalDuration)) (\(printableStringForTimeInterval(overallDuration))) seconds")
+    observationCenter.testBundleDidFinish(testBundle)
     exit(totalFailures > 0 ? 1 : 0)
 }
 
