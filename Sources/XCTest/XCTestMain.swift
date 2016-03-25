@@ -83,11 +83,47 @@ internal struct XCTRun {
     let testBundle = NSBundle.mainBundle()
     observationCenter.testBundleWillStart(testBundle)
 
-    let filter = TestFiltering()
+    // Apple XCTest behaves differently if tests have been filtered:
+    // - The root `XCTestSuite` is named "Selected tests" instead of
+    //   "All tests".
+    // - An `XCTestSuite` representing the .xctest test bundle is not included.
+    let selectedTestName = ArgumentParser().selectedTestName
+    var rootTestSuites = [XCTestSuite]()
+    if selectedTestName == nil {
+        rootTestSuites.append(XCTestSuite(name: "All tests"))
+        rootTestSuites.append(XCTestSuite(name: "\(testBundle.bundlePath.lastPathComponent).xctest"))
+    } else {
+        rootTestSuites.append(XCTestSuite(name: "Selected tests"))
+    }
+
+    let filter = TestFiltering(selectedTestName: selectedTestName)
+    let filteredTestCases = TestFiltering.filterTests(testCases, filter: filter.selectedTestFilter)
+
+    // When `XCTestSuite` objects are announced, they need to already include
+    // the correct tests.
+    for (testCase, _) in filteredTestCases {
+        let testCaseSuite = XCTestSuite(name: "\(testCase.init().dynamicType)")
+        rootTestSuites.last!.addTest(testCaseSuite)
+    }
+
+    for suite in rootTestSuites {
+        observationCenter.testSuiteWillStart(suite)
+    }
 
     let overallDuration = measureTimeExecutingBlock {
-        for (testCase, tests) in TestFiltering.filterTests(testCases, filter: filter.selectedTestFilter) {
+        // FIXME: This was the simplest implementation that didn't involve
+        //        changing how swift-corelibs-xctest builds up and executes a
+        //        collection of test cases. However, instead of using an index
+        //        to enumerate both the `XCTestSuite` and the test cases at
+        //        once, we should enumerate the test cases in the `XCTestSuite`.
+        //        `XCTestSuite` should be responsible for representing the
+        //        collection of tests we execute here.
+        for (index, test) in filteredTestCases.enumerated() {
+            let (testCase, tests) = test
+            let testSuite = rootTestSuites.last!.tests[index] as! XCTestSuite
+            observationCenter.testSuiteWillStart(testSuite)
             testCase.invokeTests(tests)
+            observationCenter.testSuiteDidFinish(testSuite)
         }
     }
 
@@ -100,6 +136,10 @@ internal struct XCTRun {
     var failureSuffix = "s"
     if totalFailures == 1 {
         failureSuffix = ""
+    }
+
+    for suite in rootTestSuites.reversed() {
+        observationCenter.testSuiteDidFinish(suite)
     }
 
     XCTPrint("Total executed \(XCTAllRuns.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (\(totalUnexpectedFailures) unexpected) in \(printableStringForTimeInterval(totalDuration)) (\(printableStringForTimeInterval(overallDuration))) seconds")

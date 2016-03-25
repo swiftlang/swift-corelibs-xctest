@@ -1,5 +1,5 @@
-// RUN: %{swiftc} %s -o %{built_tests_dir}/Observation
-// RUN: %{built_tests_dir}/Observation > %t || true
+// RUN: %{swiftc} %s -o %{built_tests_dir}/All
+// RUN: %{built_tests_dir}/All > %t || true
 // RUN: %{xctest_checker} %t %s
 
 #if os(Linux) || os(FreeBSD)
@@ -12,13 +12,19 @@
 
 class Observer: XCTestObservation {
     var startedBundlePaths = [String]()
+    var startedTestSuites = [XCTestSuite]()
     var startedTestCaseNames = [String]()
     var failureDescriptions = [String]()
     var finishedTestCaseNames = [String]()
+    var finishedTestSuites = [XCTestSuite]()
     var finishedBundlePaths = [String]()
 
     func testBundleWillStart(testBundle: NSBundle) {
         startedBundlePaths.append(testBundle.bundlePath)
+    }
+
+    func testSuiteWillStart(testSuite: XCTestSuite) {
+        startedTestSuites.append(testSuite)
     }
 
     func testCaseWillStart(testCase: XCTestCase) {
@@ -31,6 +37,10 @@ class Observer: XCTestObservation {
 
     func testCaseDidFinish(testCase: XCTestCase) {
         finishedTestCaseNames.append(testCase.name)
+    }
+
+    func testSuiteDidFinish(testSuite: XCTestSuite) {
+        print("In \(#function): \(testSuite.name)")
     }
 
     func testBundleDidFinish(testBundle: NSBundle) {
@@ -51,10 +61,13 @@ class Observation: XCTestCase {
     }
 
 // CHECK: Test Case 'Observation.test_one' started.
-// CHECK: .*/Observation/main.swift:\d+: error: Observation.test_one : failed - fail!
+// CHECK: .*/Observation/All/main.swift:\d+: error: Observation.test_one : failed - fail!
 // CHECK: Test Case 'Observation.test_one' failed \(\d+\.\d+ seconds\).
     func test_one() {
         XCTAssertEqual(observer.startedBundlePaths.count, 1)
+        XCTAssertEqual(
+            observer.startedTestSuites.count, 3,
+            "Three test suites should have started: 'All tests', 'tmp.xctest', and 'Observation'.")
         XCTAssertEqual(observer.startedTestCaseNames, ["Observation.test_one"])
         XCTAssertEqual(observer.failureDescriptions, [])
         XCTAssertEqual(observer.finishedTestCaseNames, [])
@@ -68,6 +81,9 @@ class Observation: XCTestCase {
 // CHECK: Test Case 'Observation.test_two' passed \(\d+\.\d+ seconds\).
     func test_two() {
         XCTAssertEqual(observer.startedBundlePaths.count, 1)
+        XCTAssertEqual(
+            observer.startedTestSuites.count, 3,
+            "Three test suites should have started: 'All tests', 'tmp.xctest', and 'Observation'.")
         XCTAssertEqual(observer.startedTestCaseNames, ["Observation.test_one", "Observation.test_two"])
         XCTAssertEqual(observer.finishedTestCaseNames,["Observation.test_one"])
         XCTAssertEqual(observer.finishedBundlePaths.count, 0)
@@ -90,5 +106,8 @@ class Observation: XCTestCase {
 XCTMain([testCase(Observation.allTests)])
 
 // CHECK: Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: In testSuiteDidFinish: Observation
+// CHECK: In testSuiteDidFinish: .*\.xctest
+// CHECK: In testSuiteDidFinish: All tests
 // CHECK: Total executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 // CHECK: In testBundleDidFinish

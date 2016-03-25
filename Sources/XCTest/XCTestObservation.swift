@@ -27,6 +27,11 @@ public protocol XCTestObservation: class {
     ///   executed.
     func testBundleWillStart(testBundle: NSBundle)
 
+    /// Sent when a test suite starts executing.
+    /// - Parameter testSuite: The test suite that started. Additional
+    ///   information can be retrieved from the associated XCTestRun.
+    func testSuiteWillStart(testSuite: XCTestSuite)
+
     /// Called just before a test begins executing.
     /// - Parameter testCase: The test case that is about to start. Its `name`
     ///   property can be used to identify it.
@@ -47,6 +52,11 @@ public protocol XCTestObservation: class {
     ///   can be used to identify it.
     func testCaseDidFinish(testCase: XCTestCase)
 
+    /// Sent when a test suite finishes executing.
+    /// - Parameter testSuite: The test suite that finished. Additional
+    ///   information can be retrieved from the associated XCTestRun.
+    func testSuiteDidFinish(testSuite: XCTestSuite)
+
     /// Sent immediately after all tests have finished as a hook for any
     /// post-testing activity. The test process will generally exit after this
     /// method returns, so if there is long running and/or asynchronous work to
@@ -59,7 +69,11 @@ public protocol XCTestObservation: class {
 
 // All `XCTestObservation` methods are optional, so empty default implementations are provided
 public extension XCTestObservation {
+    func testBundleWillStart(testBundle: NSBundle) {}
+    func testSuiteWillStart(testSuite: XCTestSuite) {}
     func testCaseWillStart(testCase: XCTestCase) {}
     func testCase(testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {}
     func testCaseDidFinish(testCase: XCTestCase) {}
+    func testSuiteDidFinish(testSuite: XCTestSuite) {}
+    func testBundleDidFinish(testBundle: NSBundle) {}
 }
