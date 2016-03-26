@@ -10,9 +10,7 @@
 
 class PassingTestCase: XCTestCase {
     static var allTests: [(String, PassingTestCase -> () throws -> Void)] {
-        return [
-            ("test_passes", test_passes),
-        ]
+        return [("test_passes", test_passes)]
     }
 
 // CHECK: Test Case 'PassingTestCase.test_passes' started.
@@ -29,7 +27,7 @@ class FailingTestCase: XCTestCase {
         return [
             ("test_passes", test_passes),
             ("test_fails", test_fails),
-            ("test_fails_with_message", test_fails_with_message),
+            ("test_fails_with_message", test_fails_with_message)
         ]
     }
 
@@ -58,7 +56,7 @@ class FailingTestCase: XCTestCase {
 
 XCTMain([
     testCase(PassingTestCase.allTests),
-    testCase(FailingTestCase.allTests),
+    testCase(FailingTestCase.allTests)
 ])
 
 // CHECK: Total executed 4 tests, with 2 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
