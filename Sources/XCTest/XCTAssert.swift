@@ -27,7 +27,7 @@ private enum _XCTAssertion {
     case ThrowsError
 
     var name: String? {
-        switch(self) {
+        switch self {
         case .Equal: return "XCTAssertEqual"
         case .EqualWithAccuracy: return "XCTAssertEqualWithAccuracy"
         case .GreaterThan: return "XCTAssertGreaterThan"
@@ -353,22 +353,14 @@ public func XCTAssertNotEqualWithAccuracy<T: FloatingPoint>(@autoclosure express
 public func XCTAssertNotNil(@autoclosure expression: () throws -> Any?, @autoclosure _ message: () -> String = "", file: StaticString = #file, line: UInt = #line) {
     _XCTEvaluateAssertion(.NotNil, message: message, file: file, line: line) {
         let value = try expression()
-        if value != nil {
-            return .Success
-        } else {
-            return .ExpectedFailure(nil)
-        }
+        return value != nil ? .Success : ExpectedFailure(nil)
     }
 }
 
 public func XCTAssertTrue(@autoclosure expression: () throws -> Boolean, @autoclosure _ message: () -> String = "", file: StaticString = #file, line: UInt = #line) {
     _XCTEvaluateAssertion(.True, message: message, file: file, line: line) {
         let value = try expression()
-        if value.boolValue {
-            return .Success
-        } else {
-            return .ExpectedFailure(nil)
-        }
+        return value.boolValue ? .Success : .ExpectedFailure(nil)
     }
 }
 
