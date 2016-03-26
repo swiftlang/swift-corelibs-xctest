@@ -15,7 +15,7 @@ class NegativeAccuracyTestCase: XCTestCase {
             ("test_equalWithAccuracy_passes", test_equalWithAccuracy_passes),
             ("test_equalWithAccuracy_fails", test_equalWithAccuracy_fails),
             ("test_notEqualWithAccuracy_passes", test_notEqualWithAccuracy_passes),
-            ("test_notEqualWithAccuracy_fails", test_notEqualWithAccuracy_fails),
+            ("test_notEqualWithAccuracy_fails", test_notEqualWithAccuracy_fails)
         ]
     }
 
