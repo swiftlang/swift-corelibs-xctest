@@ -13,11 +13,11 @@
 //
 
 #if os(Linux) || os(FreeBSD)
-import Glibc
-import Foundation
+    import Glibc
+    import Foundation
 #else
-import Darwin
-import SwiftFoundation
+    import Darwin
+    import SwiftFoundation
 #endif
 
 internal func XCTPrint(message: String) {

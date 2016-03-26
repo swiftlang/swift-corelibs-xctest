@@ -52,25 +52,19 @@ private enum _XCTAssertionResult {
     case UnexpectedFailure(ErrorProtocol)
 
     var expected: Bool {
-        switch (self) {
-        case .UnexpectedFailure(_):
-            return false
-        default:
-            return true
+        switch self {
+        case .UnexpectedFailure(_): return false
+        default: return true
         }
     }
 
     func failureDescription(assertion: _XCTAssertion) -> String {
         let explanation: String
-        switch (self) {
-        case .Success:
-            explanation = "passed"
-        case .ExpectedFailure(let details?):
-            explanation = "failed: \(details)"
-        case .ExpectedFailure(_):
-            explanation = "failed"
-        case .UnexpectedFailure(let error):
-            explanation = "threw error \"\(error)\""
+        switch self {
+        case .Success: explanation = "passed"
+        case .ExpectedFailure(let details?): explanation = "failed: \(details)"
+        case .ExpectedFailure(_): explanation = "failed"
+        case .UnexpectedFailure(let error): explanation = "threw error \"\(error)\""
         }
 
         if let name = assertion.name {
@@ -92,7 +86,6 @@ private func _XCTEvaluateAssertion(assertion: _XCTAssertion, @autoclosure messag
     switch result {
     case .Success:
         return
-
     default:
         if let handler = XCTFailureHandler {
             handler(XCTFailure(message: message(), failureDescription: result.failureDescription(assertion), expected: result.expected, file: file, line: line))
@@ -100,15 +93,15 @@ private func _XCTEvaluateAssertion(assertion: _XCTAssertion, @autoclosure messag
     }
 }
 
-/// This function emits a test failure if the general Bool expression passed
-/// to it evaluates to false.
+/// This function emits a test failure if the general `Boolean` expression passed
+/// to it evaluates to `false`.
 ///
 /// - Requires: This and all other XCTAssert* functions must be called from
 ///   within a test method, as passed to `XCTMain`.
 ///   Assertion failures that occur outside of a test method will *not* be
 ///   reported as failures.
 ///
-/// - Parameter expression: A boolean test. If it evaluates to false, the
+/// - Parameter expression: A boolean test. If it evaluates to `false`, the
 ///   assertion fails and emits a test failure.
 /// - Parameter message: An optional message to use in the failure if the
 ///   assertion fails. If no message is supplied a default message is used.

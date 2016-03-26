@@ -8,7 +8,7 @@
 //
 //
 //  XCTestFiltering.swift
-//  This provides utilities for executing only a subset of the tests provided to XCTMain
+//  This provides utilities for executing only a subset of the tests provided to `XCTMain`
 //
 
 internal typealias TestFilter = (XCTestCase.Type, String) -> Bool
@@ -21,15 +21,10 @@ internal struct TestFiltering {
     }
 
     var selectedTestFilter: TestFilter {
-        if let selectedTestName = selectedTestName {
-            if let selectedTest = SelectedTest(selectedTestName: selectedTestName) {
-                return selectedTest.matches
-            } else {
-                return excludeAllFilter()
-            }
-        } else {
-            return includeAllFilter()
-        }
+        guard let selectedTestName = selectedTestName else { return includeAllFilter() }
+        guard let selectedTest = SelectedTest(selectedTestName: selectedTestName) else { return excludeAllFilter() }
+
+        return selectedTest.matches
     }
 
     private func excludeAllFilter() -> TestFilter {
@@ -42,12 +37,12 @@ internal struct TestFiltering {
 
     static func filterTests(entries: [XCTestCaseEntry], filter: TestFilter) -> [XCTestCaseEntry] {
         return entries
-            .map({ testCase, tests in
-                return (testCase, tests.filter({ filter(testCase, $0.0) }))
-            })
-            .filter({ testCase, tests in
+            .map { testCase, tests in
+                return (testCase, tests.filter { filter(testCase, $0.0) } )
+            }
+            .filter { testCase, tests in
                 return !tests.isEmpty
-            })
+            }
     }
 }
 
