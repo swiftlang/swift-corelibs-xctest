@@ -27,7 +27,7 @@ public class XCTestObservationCenter {
     private var observers = Set<ObjectWrapper<XCTestObservation>>()
 
     /// Registration should be performed on this shared instance
-    public class func sharedTestObservationCenter() -> XCTestObservationCenter {
+    public class func shared() -> XCTestObservationCenter {
         return center
     }
 

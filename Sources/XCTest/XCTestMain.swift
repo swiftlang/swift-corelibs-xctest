@@ -79,7 +79,7 @@ internal struct XCTRun {
 /// - Parameter testCases: An array of test cases run, each produced by a call to the `testCase` function
 /// - seealso: `testCase`
 @noreturn public func XCTMain(testCases: [XCTestCaseEntry]) {
-    let observationCenter = XCTestObservationCenter.sharedTestObservationCenter()
+    let observationCenter = XCTestObservationCenter.shared()
     let testBundle = NSBundle.mainBundle()
     observationCenter.testBundleWillStart(testBundle)
 
