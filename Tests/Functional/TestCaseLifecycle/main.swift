@@ -10,9 +10,7 @@
 
 class SetUpTearDownTestCase: XCTestCase {
     static var allTests: [(String, SetUpTearDownTestCase -> () throws -> Void)] {
-        return [
-            ("test_hasValueFromSetUp", test_hasValueFromSetUp),
-        ]
+        return [("test_hasValueFromSetUp", test_hasValueFromSetUp)]
     }
 
     var value = 0
@@ -45,7 +43,7 @@ class NewInstanceForEachTestTestCase: XCTestCase {
     static var allTests: [(String, NewInstanceForEachTestTestCase -> () throws -> Void)] {
         return [
             ("test_hasInitializedValue", test_hasInitializedValue),
-            ("test_hasInitializedValueInAnotherTest", test_hasInitializedValueInAnotherTest),
+            ("test_hasInitializedValueInAnotherTest", test_hasInitializedValueInAnotherTest)
         ]
     }
 
