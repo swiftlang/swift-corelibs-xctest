@@ -33,7 +33,7 @@ class FailureMessagesTestCase: XCTestCase {
             ("testAssertNotEqualWithAccuracy", testAssertNotEqualWithAccuracy),
             ("testAssertNotNil", testAssertNotNil),
             ("testAssertTrue", testAssertTrue),
-            ("testFail", testFail),
+            ("testFail", testFail)
         ]
     }
 
@@ -76,7 +76,7 @@ class FailureMessagesTestCase: XCTestCase {
 // CHECK: test.swift:79: error: FailureMessagesTestCase.testAssertEqualDictionaries : XCTAssertEqual failed: \("\[1: 2\]"\) is not equal to \("\[3: 4\]"\) - message
 // CHECK: Test Case 'FailureMessagesTestCase.testAssertEqualDictionaries' failed \(\d+\.\d+ seconds\).
     func testAssertEqualDictionaries() {
-        XCTAssertEqual([1:2], [3:4], "message", file: "test.swift")
+        XCTAssertEqual([1: 2], [3: 4], "message", file: "test.swift")
     }
 
 // CHECK: Test Case 'FailureMessagesTestCase.testAssertEqualWithAccuracy' started.
@@ -160,7 +160,7 @@ class FailureMessagesTestCase: XCTestCase {
 // CHECK: test.swift:163: error: FailureMessagesTestCase.testAssertNotEqualDictionaries : XCTAssertNotEqual failed: \("\[1: 1\]"\) is equal to \("\[1: 1\]"\) - message
 // CHECK: Test Case 'FailureMessagesTestCase.testAssertNotEqualDictionaries' failed \(\d+\.\d+ seconds\).
     func testAssertNotEqualDictionaries() {
-        XCTAssertNotEqual([1:1], [1:1], "message", file: "test.swift")
+        XCTAssertNotEqual([1: 1], [1: 1], "message", file: "test.swift")
     }
 
 // CHECK: Test Case 'FailureMessagesTestCase.testAssertNotEqualWithAccuracy' started.
