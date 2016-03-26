@@ -11,11 +11,11 @@
 #endif
 
 class Observer: XCTestObservation {
-    var startedBundlePaths = [String]()
-    var startedTestCaseNames = [String]()
-    var failureDescriptions = [String]()
-    var finishedTestCaseNames = [String]()
-    var finishedBundlePaths = [String]()
+    var startedBundlePaths: [String] = []
+    var startedTestCaseNames: [String] = []
+    var failureDescriptions: [String] = []
+    var finishedTestCaseNames: [String] = []
+    var finishedBundlePaths: [String] = []
 
     func testBundleWillStart(testBundle: NSBundle) {
         startedBundlePaths.append(testBundle.bundlePath)
@@ -46,7 +46,7 @@ class Observation: XCTestCase {
         return [
             ("test_one", test_one),
             ("test_two", test_two),
-            ("test_three", test_three),
+            ("test_three", test_three)
         ]
     }
 
