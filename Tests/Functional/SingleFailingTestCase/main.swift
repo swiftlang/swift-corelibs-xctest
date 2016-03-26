@@ -10,9 +10,7 @@
 
 class SingleFailingTestCase: XCTestCase {
     static var allTests: [(String, SingleFailingTestCase -> () throws -> Void)] {
-        return [
-            ("test_fails", test_fails)
-        ]
+        return [("test_fails", test_fails)]
     }
 
 // CHECK: Test Case 'SingleFailingTestCase.test_fails' started.
