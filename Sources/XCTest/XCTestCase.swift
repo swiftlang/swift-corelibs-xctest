@@ -92,7 +92,7 @@ extension XCTestCase {
                 let testCase = self.init()
                 testCase.name = "\(testCase.dynamicType).\(name)"
 
-                var failures = [XCTFailure]()
+                var failures: [XCTFailure] = []
                 XCTFailureHandler = { failure in
                     observationCenter.testCase(testCase,
                                                didFailWithDescription: failure.failureMessage,
@@ -146,8 +146,8 @@ extension XCTestCase {
             }
         }
 
-        let testCountSuffix = (tests.count == 1) ? "" : "s"
-        let failureSuffix = (totalFailures == 1) ? "" : "s"
+        let testCountSuffix = tests.count == 1 ? "" : "s"
+        let failureSuffix = totalFailures == 1 ? "" : "s"
 
         XCTPrint("Executed \(tests.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (\(unexpectedFailures) unexpected) in \(printableStringForTimeInterval(totalDuration)) (\(printableStringForTimeInterval(overallDuration))) seconds")
     }
@@ -155,16 +155,16 @@ extension XCTestCase {
     /// It is an API violation to create expectations but not wait for them to
     /// be completed. Notify the user of a mistake via a test failure.
     private func failIfExpectationsNotWaitedFor(expectations: [XCTestExpectation]) {
-        if expectations.count > 0 {
-            let failure = XCTFailure(
-                message: "Failed due to unwaited expectations.",
-                failureDescription: "",
-                expected: false,
-                file: expectations.last!.file,
-                line: expectations.last!.line)
-            if let failureHandler = XCTFailureHandler {
-                failureHandler(failure)
-            }
+        guard expectations.count > 0 else { return }
+        
+        let failure = XCTFailure(
+            message: "Failed due to unwaited expectations.",
+            failureDescription: "",
+            expected: false,
+            file: expectations.last!.file,
+            line: expectations.last!.line)
+        if let failureHandler = XCTFailureHandler {
+            failureHandler(failure)
         }
     }
 
@@ -248,7 +248,7 @@ extension XCTestCase {
         // expectation. We gather them into this array, which is also used
         // to determine failure--a non-empty array meets expectations weren't
         // met.
-        var unfulfilledDescriptions = [String]()
+        var unfulfilledDescriptions: [String] = []
 
         // We continue checking whether expectations have been fulfilled until
         // the specified timeout has been reached.
