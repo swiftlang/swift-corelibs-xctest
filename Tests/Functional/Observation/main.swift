@@ -39,7 +39,7 @@ class Observer: XCTestObservation {
 }
 
 let observer = Observer()
-XCTestObservationCenter.sharedTestObservationCenter().addTestObserver(observer)
+XCTestObservationCenter.shared().addTestObserver(observer)
 
 class Observation: XCTestCase {
     static var allTests: [(String, Observation -> () throws -> Void)] {
@@ -72,7 +72,7 @@ class Observation: XCTestCase {
         XCTAssertEqual(observer.finishedTestCaseNames,["Observation.test_one"])
         XCTAssertEqual(observer.finishedBundlePaths.count, 0)
 
-        XCTestObservationCenter.sharedTestObservationCenter().removeTestObserver(observer)
+        XCTestObservationCenter.shared().removeTestObserver(observer)
     }
 
 // CHECK: Test Case 'Observation.test_three' started.
@@ -83,7 +83,7 @@ class Observation: XCTestCase {
         XCTAssertEqual(observer.finishedTestCaseNames,["Observation.test_one"])
         XCTAssertEqual(observer.finishedBundlePaths.count, 0)
 
-        XCTestObservationCenter.sharedTestObservationCenter().addTestObserver(observer)
+        XCTestObservationCenter.shared().addTestObserver(observer)
     }
 }
 

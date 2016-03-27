@@ -82,7 +82,7 @@ extension XCTestCase {
     }
 
     internal static func invokeTests(tests: [(String, XCTestCase throws -> Void)]) {
-        let observationCenter = XCTestObservationCenter.sharedTestObservationCenter()
+        let observationCenter = XCTestObservationCenter.shared()
 
         var totalDuration = 0.0
         var totalFailures = 0
