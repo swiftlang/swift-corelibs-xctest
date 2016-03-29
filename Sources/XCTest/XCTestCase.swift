@@ -308,4 +308,49 @@ extension XCTestCase {
             completionHandler(error)
         }
     }
+    
+    /// Creates and returns an expectation for a notification.
+    ///
+    /// - Parameter notificationName: The name of the notification the
+    ///   expectation observes.
+    /// - Parameter object: The object whose notifications the expectation will
+    ///   receive; that is, only notifications with this object are observed by
+    ///   the test case. If you pass nil, the expectation doesn't use
+    ///   a notification's object to decide whether it is fulfilled.
+    /// - Parameter handler: If provided, the handler will be invoked when the
+    ///   notification is observed. It will not be invoked on timeout. Use the
+    ///   handler to further investigate if the notification fulfills the 
+    ///   expectation.
+    public func expectationForNotification(notificationName: String, object objectToObserve: AnyObject?, handler: XCNotificationExpectationHandler?) -> XCTestExpectation {
+        let objectDescription = objectToObserve == nil ? "any object" : "\(objectToObserve!)"
+        let expectation = self.expectationWithDescription("Expect notification '\(notificationName)' from " + objectDescription)
+        // Start observing the notification with specified name and object.
+        var observer: NSObjectProtocol? = nil
+        observer = NSNotificationCenter
+            .defaultCenter()
+            .addObserverForName(notificationName,
+                                object: objectToObserve,
+                                queue: nil,
+                                usingBlock: {
+                                    notification in
+                                    // If the handler is invoked, the test will
+                                    // only pass if true is returned.
+                                    if let handler = handler {
+                                        if handler(notification) {
+                                            expectation.fulfill()
+                                            if let observer = observer as? AnyObject {
+                                                NSNotificationCenter.defaultCenter().removeObserver(observer)
+                                            }
+                                        }
+                                    } else {
+                                        expectation.fulfill()
+                                        if let observer = observer as? AnyObject {
+                                            NSNotificationCenter.defaultCenter().removeObserver(observer)
+                                        }
+                                    }
+                })
+        
+        return expectation
+    }
+
 }
