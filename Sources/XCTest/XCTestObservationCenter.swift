@@ -47,6 +47,10 @@ public class XCTestObservationCenter {
         forEachObserver { $0.testBundleWillStart(testBundle) }
     }
 
+    internal func testSuiteWillStart(testSuite: XCTestSuite) {
+        forEachObserver { $0.testSuiteWillStart(testSuite) }
+    }
+
     internal func testCaseWillStart(testCase: XCTestCase) {
         forEachObserver { $0.testCaseWillStart(testCase) }
     }
@@ -57,6 +61,10 @@ public class XCTestObservationCenter {
 
     internal func testCaseDidFinish(testCase: XCTestCase) {
         forEachObserver { $0.testCaseDidFinish(testCase) }
+    }
+
+    internal func testSuiteDidFinish(testSuite: XCTestSuite) {
+        forEachObserver { $0.testSuiteDidFinish(testSuite) }
     }
 
     internal func testBundleDidFinish(testBundle: NSBundle) {

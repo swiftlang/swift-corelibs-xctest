@@ -24,23 +24,23 @@
 /// - seealso: `XCTMain`
 public typealias XCTestCaseEntry = (testCaseClass: XCTestCase.Type, allTests: [(String, XCTestCase throws -> Void)])
 
-public class XCTestCase {
+public class XCTestCase: XCTest {
 
-    /// The name of the test case, consisting of its class name and the method name it will run.
-    /// - Note: FIXME: This property should be readonly, but currently has to be publicly settable due to a
-    ///         toolchain bug on Linux. To ensure compatibility of tests between
-    ///         swift-corelibs-xctest and Apple XCTest, this property should not be modified.
-    ///         See https://bugs.swift.org/browse/SR-1129 for details.
-    public var name: String
-
-    public required init() {
-        name = "\(self.dynamicType).<unknown>"
+    /// The name of the test case, consisting of its class name and the method
+    /// name it will run.
+    public override var name: String {
+        return _name
     }
+    /// A private setter for the name of this test case.
+    /// - Note: FIXME: This property should be readonly, but currently has to
+    ///   be publicly settable due to a Swift compiler bug on Linux. To ensure
+    ///   compatibility of tests between swift-corelibs-xctest and Apple XCTest,
+    ///   this property should not be modified. See
+    ///   https://bugs.swift.org/browse/SR-1129 for details.
+    public var _name: String
 
-    public func setUp() {
-    }
-
-    public func tearDown() {
+    public required override init() {
+        _name = "\(self.dynamicType).<unknown>"
     }
 }
 
@@ -91,7 +91,7 @@ extension XCTestCase {
         let overallDuration = measureTimeExecutingBlock {
             for (name, test) in tests {
                 let testCase = self.init()
-                testCase.name = "\(testCase.dynamicType).\(name)"
+                testCase._name = "\(testCase.dynamicType).\(name)"
 
                 var failures = [XCTFailure]()
                 XCTFailureHandler = { failure in
