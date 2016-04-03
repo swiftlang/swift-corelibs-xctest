@@ -30,6 +30,7 @@ public class XCTestCase {
     /// - Note: FIXME: This property should be readonly, but currently has to be publicly settable due to a
     ///         toolchain bug on Linux. To ensure compatibility of tests between
     ///         swift-corelibs-xctest and Apple XCTest, this property should not be modified.
+    ///         See https://bugs.swift.org/browse/SR-1129 for details.
     public var name: String
 
     public required init() {
