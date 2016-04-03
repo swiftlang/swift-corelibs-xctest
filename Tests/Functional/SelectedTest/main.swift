@@ -16,7 +16,7 @@ class ExecutedTestCase: XCTestCase {
     static var allTests: [(String, ExecutedTestCase -> () throws -> Void)] {
         return [
             ("test_bar", test_bar),
-            ("test_foo", test_foo),
+            ("test_foo", test_foo)
         ]
     }
 
@@ -26,18 +26,19 @@ class ExecutedTestCase: XCTestCase {
 // CHECK-TESTCASE: Test Case 'ExecutedTestCase.test_bar' passed \(\d+\.\d+ seconds\).
 // CHECK-ALL:      Test Case 'ExecutedTestCase.test_bar' started.
 // CHECK-ALL:      Test Case 'ExecutedTestCase.test_bar' passed \(\d+\.\d+ seconds\).
-    func test_bar() {}
+    func test_bar() {
+    }
 
 // CHECK-TESTCASE: Test Case 'ExecutedTestCase.test_foo' started.
 // CHECK-TESTCASE: Test Case 'ExecutedTestCase.test_foo' passed \(\d+\.\d+ seconds\).
 // CHECK-ALL:      Test Case 'ExecutedTestCase.test_foo' started.
 // CHECK-ALL:      Test Case 'ExecutedTestCase.test_foo' passed \(\d+\.\d+ seconds\).
-    func test_foo() {}
+    func test_foo() {
+    }
 }
 // CHECK-METHOD:   Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 // CHECK-TESTCASE: Executed 2 tests, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 // CHECK-ALL:      Executed 2 tests, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
-
 
 class SkippedTestCase: XCTestCase {
     static var allTests: [(String, SkippedTestCase -> () throws -> Void)] {
@@ -46,13 +47,14 @@ class SkippedTestCase: XCTestCase {
 
 // CHECK-ALL: Test Case 'SkippedTestCase.test_baz' started.
 // CHECK-ALL: Test Case 'SkippedTestCase.test_baz' passed \(\d+\.\d+ seconds\).
-    func test_baz() {}
+    func test_baz() {
+    }
 }
 // CHECK-ALL: Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
 XCTMain([
     testCase(ExecutedTestCase.allTests),
-    testCase(SkippedTestCase.allTests),
+    testCase(SkippedTestCase.allTests)
 ])
 
 // CHECK-METHOD:   Total executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds

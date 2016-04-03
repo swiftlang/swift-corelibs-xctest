@@ -40,7 +40,7 @@ internal struct TestFiltering {
             .map { testCase, tests in
                 return (testCase, tests.filter { filter(testCase, $0.0) } )
             }
-            .filter { testCase, tests in
+            .filter { _, tests in
                 return !tests.isEmpty
             }
     }

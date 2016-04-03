@@ -45,7 +45,7 @@ internal struct XCTRun {
     var passed: Bool
     var failures: [XCTFailure]
     var unexpectedFailures: [XCTFailure] {
-        get { return failures.filter({ failure -> Bool in failure.expected == false }) }
+        return failures.filter { failure -> Bool in failure.expected == false }
     }
 }
 
@@ -93,14 +93,8 @@ internal struct XCTRun {
 
     let (totalDuration, totalFailures, totalUnexpectedFailures) = XCTAllRuns.reduce((0.0, 0, 0)) { totals, run in (totals.0 + run.duration, totals.1 + run.failures.count, totals.2 + run.unexpectedFailures.count) }
     
-    var testCountSuffix = "s"
-    if XCTAllRuns.count == 1 {
-        testCountSuffix = ""
-    }
-    var failureSuffix = "s"
-    if totalFailures == 1 {
-        failureSuffix = ""
-    }
+    let testCountSuffix = XCTAllRuns.count == 1 ? "" : "s"
+    let failureSuffix = totalFailures == 1 ? "" : "s"
 
     XCTPrint("Total executed \(XCTAllRuns.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (\(totalUnexpectedFailures) unexpected) in \(printableStringForTimeInterval(totalDuration)) (\(printableStringForTimeInterval(overallDuration))) seconds")
     observationCenter.testBundleDidFinish(testBundle)
@@ -108,4 +102,4 @@ internal struct XCTRun {
 }
 
 internal var XCTFailureHandler: (XCTFailure -> Void)?
-internal var XCTAllRuns = [XCTRun]()
+internal var XCTAllRuns: [XCTRun] = []
