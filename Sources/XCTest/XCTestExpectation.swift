@@ -17,7 +17,7 @@ public class XCTestExpectation {
     internal let file: StaticString
     internal let line: UInt
 
-    internal var fulfilled = false
+    internal var isFulfilled = false
     internal weak var testCase: XCTestCase?
 
     internal init(description: String, file: StaticString, line: UInt, testCase: XCTestCase) {
@@ -52,7 +52,7 @@ public class XCTestExpectation {
         //        fulfilled after the test cases that generated those
         //        expectations have completed. Similarly, this should cause an
         //        error as well.
-        if fulfilled {
+        if isFulfilled {
             // Mirror Objective-C XCTest behavior: treat multiple calls to
             // fulfill() as an unexpected failure.
             let failure = XCTFailure(
@@ -65,7 +65,7 @@ public class XCTestExpectation {
                 failureHandler(failure)
             }
         } else {
-            fulfilled = true
+            isFulfilled = true
         }
     }
 }

@@ -29,11 +29,11 @@ class ErrorHandling: XCTestCase {
     }
     
     enum SomeError: ErrorProtocol {
-        case AnError(String)
+        case anError(String)
     }
     
     func functionThatDoesThrowError() throws {
-        throw SomeError.AnError("an error message")
+        throw SomeError.anError("an error message")
     }
 
 // CHECK: Test Case 'ErrorHandling.test_shouldButDoesNotThrowErrorInAssertion' started.
@@ -53,7 +53,7 @@ class ErrorHandling: XCTestCase {
             }
             
             switch thrownError {
-            case .AnError(let message):
+            case .anError(let message):
                 XCTAssertEqual(message, "an error message")
             }
         }
@@ -70,14 +70,14 @@ class ErrorHandling: XCTestCase {
             }
             
             switch thrownError {
-            case .AnError(let message):
+            case .anError(let message):
                 XCTAssertEqual(message, "")
             }
         }
     }
     
 // CHECK: Test Case 'ErrorHandling.test_canAndDoesThrowErrorFromTestMethod' started.
-// CHECK: \<EXPR\>:0: unexpected error: ErrorHandling.test_canAndDoesThrowErrorFromTestMethod : threw error "AnError\("an error message"\)" -
+// CHECK: \<EXPR\>:0: unexpected error: ErrorHandling.test_canAndDoesThrowErrorFromTestMethod : threw error "anError\("an error message"\)" -
 // CHECK: Test Case 'ErrorHandling.test_canAndDoesThrowErrorFromTestMethod' failed \(\d+\.\d+ seconds\).
     func test_canAndDoesThrowErrorFromTestMethod() throws {
         try functionThatDoesThrowError()
@@ -90,11 +90,11 @@ class ErrorHandling: XCTestCase {
     }
     
     func functionThatShouldReturnButThrows() throws -> Int {
-        throw SomeError.AnError("did not actually return")
+        throw SomeError.anError("did not actually return")
     }
     
 // CHECK: Test Case 'ErrorHandling.test_assertionExpressionCanThrow' started.
-// CHECK: .*/ErrorHandling/main.swift:\d+: unexpected error: ErrorHandling.test_assertionExpressionCanThrow : XCTAssertEqual threw error "AnError\("did not actually return"\)" -
+// CHECK: .*/ErrorHandling/main.swift:\d+: unexpected error: ErrorHandling.test_assertionExpressionCanThrow : XCTAssertEqual threw error "anError\("did not actually return"\)" -
 // CHECK: Test Case 'ErrorHandling.test_assertionExpressionCanThrow' failed \(\d+\.\d+ seconds\).
     func test_assertionExpressionCanThrow() {
         XCTAssertEqual(try functionThatShouldReturnButThrows(), 1)

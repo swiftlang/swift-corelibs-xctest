@@ -263,7 +263,7 @@ extension XCTestCase {
         repeat {
             unfulfilledDescriptions = []
             for expectation in _allExpectations {
-                if !expectation.fulfilled {
+                if !expectation.isFulfilled {
                     unfulfilledDescriptions.append(expectation.description)
                 }
             }
