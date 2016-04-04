@@ -33,16 +33,29 @@ class NotificationHandlerTestCase: XCTestCase {
         NSNotificationCenter.defaultCenter().postNotificationName("returnTrue", object: nil)
         waitForExpectationsWithTimeout(0.1, handler: nil)
     }
+
+// CHECK: Test Case 'NotificationHandlerTestCase.test_notificationNameIsObservedAfterTimeout_handlerIsNotCalled' started.
+// CHECK: .*/Tests/Functional/Asynchronous/Notifications/Handler/main.swift:\d+: error: NotificationHandlerTestCase.test_notificationNameIsObservedAfterTimeout_handlerIsNotCalled : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: Expect notification 'note' from any object
+// CHECK: Test Case 'NotificationHandlerTestCase.test_notificationNameIsObservedAfterTimeout_handlerIsNotCalled' failed \(\d+\.\d+ seconds\).
+    func test_notificationNameIsObservedAfterTimeout_handlerIsNotCalled() {
+        expectationForNotification("note", object: nil, handler: { _ in
+            XCTFail("Should not call the notification expectation handler")
+            return true
+        })
+        waitForExpectationsWithTimeout(0.1, handler: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName("note", object: nil)
+    }
     
     static var allTests: [(String, NotificationHandlerTestCase -> () throws -> Void)] {
         return [
                    ("test_notificationNameIsObserved_handlerReturnsFalse_andFails", test_notificationNameIsObserved_handlerReturnsFalse_andFails),
                    ("test_notificationNameIsObserved_handlerReturnsTrue_andPasses", test_notificationNameIsObserved_handlerReturnsTrue_andPasses),
+                   ("test_notificationNameIsObservedAfterTimeout_handlerIsNotCalled", test_notificationNameIsObservedAfterTimeout_handlerIsNotCalled),
         ]
     }
 }
 
 XCTMain([testCase(NotificationHandlerTestCase.allTests)])
 
-// CHECK: Executed 2 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
-// CHECK: Total executed 2 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: Executed 3 tests, with 2 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: Total executed 3 tests, with 2 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
