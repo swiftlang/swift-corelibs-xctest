@@ -39,6 +39,14 @@ public class XCTestCase: XCTest {
     ///   https://bugs.swift.org/browse/SR-1129 for details.
     public var _name: String
 
+    /// The set of expectations made upon this test case.
+    /// - Note: FIXME: This is meant to be a `private var`, but is marked as
+    ///   `public` here to work around a Swift compiler bug on Linux. To ensure
+    ///   compatibility of tests between swift-corelibs-xctest and Apple XCTest,
+    ///   this property should not be modified. See
+    ///   https://bugs.swift.org/browse/SR-1129 for details.
+    public var _allExpectations = [XCTestExpectation]()
+
     public required override init() {
         _name = "\(self.dynamicType).<unknown>"
     }
@@ -61,12 +69,6 @@ private func test<T: XCTestCase>(testFunc: T -> () throws -> Void) -> XCTestCase
         try testFunc(testCase)()
     }
 }
-
-// FIXME: Expectations should be stored in an instance variable defined on
-//        `XCTestCase`, but when so defined Linux tests fail with "hidden symbol
-//        isn't defined". Use a global for the time being, as this seems to
-//        appease the Linux compiler.
-private var XCTAllExpectations = [XCTestExpectation]()
 
 extension XCTestCase {
     
@@ -124,8 +126,7 @@ extension XCTestCase {
                 }
 
                 testCase.tearDown()
-                testCase.failIfExpectationsNotWaitedFor(XCTAllExpectations)
-                XCTAllExpectations = []
+                testCase.failIfExpectationsNotWaitedFor(testCase._allExpectations)
 
                 observationCenter.testCaseDidFinish(testCase)
 
@@ -195,7 +196,7 @@ extension XCTestCase {
             file: file,
             line: line,
             testCase: self)
-        XCTAllExpectations.append(expectation)
+        _allExpectations.append(expectation)
         return expectation
     }
 
@@ -232,7 +233,7 @@ extension XCTestCase {
         //        the test to stop cold. swift-corelibs-xctest does not stop,
         //        and executes the rest of the test. This discrepancy should be
         //        fixed.
-        if XCTAllExpectations.count == 0 {
+        if _allExpectations.count == 0 {
             let failure = XCTFailure(
                 message: "call made to wait without any expectations having been set.",
                 failureDescription: "API violation",
@@ -261,7 +262,7 @@ extension XCTestCase {
         let timeoutDate = NSDate(timeIntervalSinceNow: timeout)
         repeat {
             unfulfilledDescriptions = []
-            for expectation in XCTAllExpectations {
+            for expectation in _allExpectations {
                 if !expectation.fulfilled {
                     unfulfilledDescriptions.append(expectation.description)
                 }
@@ -294,7 +295,7 @@ extension XCTestCase {
 
         // We've recorded all the failures; clear the expectations that
         // were set for this test case.
-        XCTAllExpectations = []
+        _allExpectations = []
 
         // The handler is invoked regardless of whether the test passed.
         if let completionHandler = handler {
