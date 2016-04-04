@@ -16,7 +16,7 @@ class ExpectationsTestCase: XCTestCase {
 // CHECK: Test Case 'ExpectationsTestCase.test_waitingForAnUnfulfilledExpectation_fails' failed \(\d+\.\d+ seconds\).
     func test_waitingForAnUnfulfilledExpectation_fails() {
         expectation(withDescription: "foo")
-        waitForExpectations(withTimeout: 0.2, handler: nil)
+        waitForExpectations(withTimeout: 0.2)
     }
 
 // CHECK: Test Case 'ExpectationsTestCase.test_waitingForUnfulfilledExpectations_outputsAllExpectations_andFails' started.
@@ -25,7 +25,7 @@ class ExpectationsTestCase: XCTestCase {
     func test_waitingForUnfulfilledExpectations_outputsAllExpectations_andFails() {
         expectation(withDescription: "bar")
         expectation(withDescription: "baz")
-        waitForExpectations(withTimeout: 0.2, handler: nil)
+        waitForExpectations(withTimeout: 0.2)
     }
 
 // CHECK: Test Case 'ExpectationsTestCase.test_waitingForAnImmediatelyFulfilledExpectation_passes' started.
@@ -33,7 +33,7 @@ class ExpectationsTestCase: XCTestCase {
     func test_waitingForAnImmediatelyFulfilledExpectation_passes() {
         let expectation = self.expectation(withDescription: "flim")
         expectation.fulfill()
-        waitForExpectations(withTimeout: 0.2, handler: nil)
+        waitForExpectations(withTimeout: 0.2)
     }
 
 // CHECK: Test Case 'ExpectationsTestCase.test_waitingForAnEventuallyFulfilledExpectation_passes' started.
@@ -44,7 +44,7 @@ class ExpectationsTestCase: XCTestCase {
             expectation.fulfill()
         }
         NSRunLoop.currentRunLoop().addTimer(timer, forMode: NSDefaultRunLoopMode)
-        waitForExpectations(withTimeout: 1.0, handler: nil)
+        waitForExpectations(withTimeout: 1.0)
     }
 
 // CHECK: Test Case 'ExpectationsTestCase.test_waitingForAnExpectationFulfilledAfterTheTimeout_fails' started.
@@ -56,7 +56,7 @@ class ExpectationsTestCase: XCTestCase {
             expectation.fulfill()
         }
         NSRunLoop.currentRunLoop().addTimer(timer, forMode: NSDefaultRunLoopMode)
-        waitForExpectations(withTimeout: 0.1, handler: nil)
+        waitForExpectations(withTimeout: 0.1)
     }
 
 // CHECK: Test Case 'ExpectationsTestCase.test_whenTimeoutIsImmediate_andAllExpectationsAreFulfilled_passes' started.
@@ -64,7 +64,7 @@ class ExpectationsTestCase: XCTestCase {
     func test_whenTimeoutIsImmediate_andAllExpectationsAreFulfilled_passes() {
         let expectation = self.expectation(withDescription: "smog")
         expectation.fulfill()
-        waitForExpectations(withTimeout: 0.0, handler: nil)
+        waitForExpectations(withTimeout: 0.0)
     }
 
 // CHECK: Test Case 'ExpectationsTestCase.test_whenTimeoutIsImmediate_butNotAllExpectationsAreFulfilled_fails' started.
@@ -72,7 +72,7 @@ class ExpectationsTestCase: XCTestCase {
 // CHECK: Test Case 'ExpectationsTestCase.test_whenTimeoutIsImmediate_butNotAllExpectationsAreFulfilled_fails' failed \(\d+\.\d+ seconds\).
     func test_whenTimeoutIsImmediate_butNotAllExpectationsAreFulfilled_fails() {
         expectation(withDescription: "dog")
-        waitForExpectations(withTimeout: -1.0, handler: nil)
+        waitForExpectations(withTimeout: -1.0)
     }
 
     static var allTests: [(String, ExpectationsTestCase -> () throws -> Void)] {

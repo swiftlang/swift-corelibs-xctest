@@ -225,7 +225,7 @@ extension XCTestCase {
     ///   these environments. To ensure compatibility of tests between
     ///   swift-corelibs-xctest and Apple XCTest, it is not recommended to pass
     ///   explicit values for `file` and `line`.
-    public func waitForExpectations(withTimeout timeout: NSTimeInterval, file: StaticString = #file, line: UInt = #line, handler: XCWaitCompletionHandler?) {
+    public func waitForExpectations(withTimeout timeout: NSTimeInterval, file: StaticString = #file, line: UInt = #line, handler: XCWaitCompletionHandler? = nil) {
         // Mirror Objective-C XCTest behavior; display an unexpected test
         // failure when users wait without having first set expectations.
         // FIXME: Objective-C XCTest raises an exception for most "API
@@ -323,7 +323,7 @@ extension XCTestCase {
     ///   notification is observed. It will not be invoked on timeout. Use the
     ///   handler to further investigate if the notification fulfills the 
     ///   expectation.
-    public func expectation(forNotification notificationName: String, object objectToObserve: AnyObject?, handler: XCNotificationExpectationHandler?) -> XCTestExpectation {
+    public func expectation(forNotification notificationName: String, object objectToObserve: AnyObject?, handler: XCNotificationExpectationHandler? = nil) -> XCTestExpectation {
         let objectDescription = objectToObserve == nil ? "any object" : "\(objectToObserve!)"
         let expectation = self.expectation(withDescription: "Expect notification '\(notificationName)' from " + objectDescription)
         // Start observing the notification with specified name and object.

@@ -21,7 +21,7 @@ class MisuseTestCase: XCTestCase {
 // CHECK: .*/Tests/Functional/Asynchronous/Misuse/main.swift:24: unexpected error: MisuseTestCase.test_whenNoExpectationsAreMade_butTheyAreWaitedFor_fails : API violation - call made to wait without any expectations having been set.
 // CHECK: Test Case 'MisuseTestCase.test_whenNoExpectationsAreMade_butTheyAreWaitedFor_fails' failed \(\d+\.\d+ seconds\).
     func test_whenNoExpectationsAreMade_butTheyAreWaitedFor_fails() {
-        self.waitForExpectations(withTimeout: 0.1, handler: nil)
+        self.waitForExpectations(withTimeout: 0.1)
     }
 
 // CHECK: Test Case 'MisuseTestCase.test_whenExpectationIsFulfilledMultipleTimes_fails' started.
@@ -42,7 +42,7 @@ class MisuseTestCase: XCTestCase {
         //        highlights both the lines above and below as failures.
         //        This should be fixed such that the behavior is identical.
         expectation.fulfill()
-        self.waitForExpectations(withTimeout: 0.1, handler: nil)
+        self.waitForExpectations(withTimeout: 0.1)
     }
 
     static var allTests: [(String, MisuseTestCase -> () throws -> Void)] {
