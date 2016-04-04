@@ -190,7 +190,7 @@ extension XCTestCase {
     ///   between these environments. To ensure compatibility of tests between
     ///   swift-corelibs-xctest and Apple XCTest, it is not recommended to pass
     ///   explicit values for `file` and `line`.
-    public func expectationWithDescription(description: String, file: StaticString = #file, line: UInt = #line) -> XCTestExpectation {
+    public func expectation(withDescription description: String, file: StaticString = #file, line: UInt = #line) -> XCTestExpectation {
         let expectation = XCTestExpectation(
             description: description,
             file: file,
@@ -225,7 +225,7 @@ extension XCTestCase {
     ///   these environments. To ensure compatibility of tests between
     ///   swift-corelibs-xctest and Apple XCTest, it is not recommended to pass
     ///   explicit values for `file` and `line`.
-    public func waitForExpectationsWithTimeout(timeout: NSTimeInterval, file: StaticString = #file, line: UInt = #line, handler: XCWaitCompletionHandler?) {
+    public func waitForExpectations(withTimeout timeout: NSTimeInterval, file: StaticString = #file, line: UInt = #line, handler: XCWaitCompletionHandler?) {
         // Mirror Objective-C XCTest behavior; display an unexpected test
         // failure when users wait without having first set expectations.
         // FIXME: Objective-C XCTest raises an exception for most "API
@@ -323,9 +323,9 @@ extension XCTestCase {
     ///   notification is observed. It will not be invoked on timeout. Use the
     ///   handler to further investigate if the notification fulfills the 
     ///   expectation.
-    public func expectationForNotification(notificationName: String, object objectToObserve: AnyObject?, handler: XCNotificationExpectationHandler?) -> XCTestExpectation {
+    public func expectation(forNotification notificationName: String, object objectToObserve: AnyObject?, handler: XCNotificationExpectationHandler?) -> XCTestExpectation {
         let objectDescription = objectToObserve == nil ? "any object" : "\(objectToObserve!)"
-        let expectation = self.expectationWithDescription("Expect notification '\(notificationName)' from " + objectDescription)
+        let expectation = self.expectation(withDescription: "Expect notification '\(notificationName)' from " + objectDescription)
         // Start observing the notification with specified name and object.
         var observer: NSObjectProtocol? = nil
         func removeObserver() {
