@@ -328,6 +328,13 @@ extension XCTestCase {
         let expectation = self.expectationWithDescription("Expect notification '\(notificationName)' from " + objectDescription)
         // Start observing the notification with specified name and object.
         var observer: NSObjectProtocol? = nil
+        func removeObserver() {
+            if let observer = observer as? AnyObject {
+                NSNotificationCenter.defaultCenter().removeObserver(observer)
+            }
+        }
+
+        weak var weakExpectation = expectation
         observer = NSNotificationCenter
             .defaultCenter()
             .addObserverForName(notificationName,
@@ -335,20 +342,21 @@ extension XCTestCase {
                                 queue: nil,
                                 usingBlock: {
                                     notification in
+                                    guard let expectation = weakExpectation else {
+                                        removeObserver()
+                                        return
+                                    }
+
                                     // If the handler is invoked, the test will
                                     // only pass if true is returned.
                                     if let handler = handler {
                                         if handler(notification) {
                                             expectation.fulfill()
-                                            if let observer = observer as? AnyObject {
-                                                NSNotificationCenter.defaultCenter().removeObserver(observer)
-                                            }
+                                            removeObserver()
                                         }
                                     } else {
                                         expectation.fulfill()
-                                        if let observer = observer as? AnyObject {
-                                            NSNotificationCenter.defaultCenter().removeObserver(observer)
-                                        }
+                                        removeObserver()
                                     }
                 })
         
