@@ -25,17 +25,17 @@ public protocol XCTestObservation: class {
     /// Sent immediately before tests begin as a hook for any pre-testing setup.
     /// - Parameter testBundle: The bundle containing the tests that were
     ///   executed.
-    func testBundleWillStart(testBundle: NSBundle)
+    func testBundleWillStart(_ testBundle: NSBundle)
 
     /// Sent when a test suite starts executing.
     /// - Parameter testSuite: The test suite that started. Additional
     ///   information can be retrieved from the associated XCTestRun.
-    func testSuiteWillStart(testSuite: XCTestSuite)
+    func testSuiteWillStart(_ testSuite: XCTestSuite)
 
     /// Called just before a test begins executing.
     /// - Parameter testCase: The test case that is about to start. Its `name`
     ///   property can be used to identify it.
-    func testCaseWillStart(testCase: XCTestCase)
+    func testCaseWillStart(_ testCase: XCTestCase)
 
     /// Called when a test failure is reported.
     /// - Parameter testCase: The test case that failed. Its `name` property 
@@ -45,17 +45,17 @@ public protocol XCTestObservation: class {
     ///   was reported, if available.
     /// - Parameter lineNumber: The line number in the source file where the
     ///   failure was reported.
-    func testCase(testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt)
+    func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt)
 
     /// Called just after a test finishes executing.
     /// - Parameter testCase: The test case that finished. Its `name` property 
     ///   can be used to identify it.
-    func testCaseDidFinish(testCase: XCTestCase)
+    func testCaseDidFinish(_ testCase: XCTestCase)
 
     /// Sent when a test suite finishes executing.
     /// - Parameter testSuite: The test suite that finished. Additional
     ///   information can be retrieved from the associated XCTestRun.
-    func testSuiteDidFinish(testSuite: XCTestSuite)
+    func testSuiteDidFinish(_ testSuite: XCTestSuite)
 
     /// Sent immediately after all tests have finished as a hook for any
     /// post-testing activity. The test process will generally exit after this
@@ -64,16 +64,16 @@ public protocol XCTestObservation: class {
     /// it blocks until all such activity is complete.
     /// - Parameter testBundle: The bundle containing the tests that were
     ///   executed.
-    func testBundleDidFinish(testBundle: NSBundle)
+    func testBundleDidFinish(_ testBundle: NSBundle)
 }
 
 // All `XCTestObservation` methods are optional, so empty default implementations are provided
 public extension XCTestObservation {
-    func testBundleWillStart(testBundle: NSBundle) {}
-    func testSuiteWillStart(testSuite: XCTestSuite) {}
-    func testCaseWillStart(testCase: XCTestCase) {}
-    func testCase(testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {}
-    func testCaseDidFinish(testCase: XCTestCase) {}
-    func testSuiteDidFinish(testSuite: XCTestSuite) {}
-    func testBundleDidFinish(testBundle: NSBundle) {}
+    func testBundleWillStart(_ testBundle: NSBundle) {}
+    func testSuiteWillStart(_ testSuite: XCTestSuite) {}
+    func testCaseWillStart(_ testCase: XCTestCase) {}
+    func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {}
+    func testCaseDidFinish(_ testCase: XCTestCase) {}
+    func testSuiteDidFinish(_ testSuite: XCTestSuite) {}
+    func testBundleDidFinish(_ testBundle: NSBundle) {}
 }

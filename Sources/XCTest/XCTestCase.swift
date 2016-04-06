@@ -55,12 +55,12 @@ public class XCTestCase: XCTest {
 /// Wrapper function allowing an array of static test case methods to fit
 /// the signature required by `XCTMain`
 /// - seealso: `XCTMain`
-public func testCase<T: XCTestCase>(allTests: [(String, T -> () throws -> Void)]) -> XCTestCaseEntry {
+public func testCase<T: XCTestCase>(_ allTests: [(String, T -> () throws -> Void)]) -> XCTestCaseEntry {
     let tests: [(String, XCTestCase throws -> Void)] = allTests.map { ($0.0, test($0.1)) }
     return (T.self, tests)
 }
 
-private func test<T: XCTestCase>(testFunc: T -> () throws -> Void) -> XCTestCase throws -> Void {
+private func test<T: XCTestCase>(_ testFunc: T -> () throws -> Void) -> XCTestCase throws -> Void {
     return { testCaseType in
         guard let testCase = testCaseType as? T else {
             fatalError("Attempt to invoke test on class \(T.self) with incompatible instance type \(testCaseType.dynamicType)")
@@ -84,7 +84,7 @@ extension XCTestCase {
         }
     }
 
-    internal static func invokeTests(tests: [(String, XCTestCase throws -> Void)]) {
+    internal static func invokeTests(_ tests: [(String, XCTestCase throws -> Void)]) {
         let observationCenter = XCTestObservationCenter.shared()
 
         var totalDuration = 0.0
@@ -156,7 +156,7 @@ extension XCTestCase {
 
     /// It is an API violation to create expectations but not wait for them to
     /// be completed. Notify the user of a mistake via a test failure.
-    private func failIfExpectationsNotWaitedFor(expectations: [XCTestExpectation]) {
+    private func failIfExpectationsNotWaitedFor(_ expectations: [XCTestExpectation]) {
         if expectations.count > 0 {
             let failure = XCTFailure(
                 message: "Failed due to unwaited expectations.",

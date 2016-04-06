@@ -14,21 +14,21 @@ class Observer: XCTestObservation {
     var startedTestSuites = [XCTestSuite]()
     var finishedTestSuites = [XCTestSuite]()
 
-    func testBundleWillStart(testBundle: NSBundle) {}
+    func testBundleWillStart(_ testBundle: NSBundle) {}
 
-    func testSuiteWillStart(testSuite: XCTestSuite) {
+    func testSuiteWillStart(_ testSuite: XCTestSuite) {
         startedTestSuites.append(testSuite)
     }
 
-    func testCaseWillStart(testCase: XCTestCase) {}
-    func testCase(testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {}
-    func testCaseDidFinish(testCase: XCTestCase) {}
+    func testCaseWillStart(_ testCase: XCTestCase) {}
+    func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {}
+    func testCaseDidFinish(_ testCase: XCTestCase) {}
 
-    func testSuiteDidFinish(testSuite: XCTestSuite) {
+    func testSuiteDidFinish(_ testSuite: XCTestSuite) {
         print("In \(#function): \(testSuite.name)")
     }
 
-    func testBundleDidFinish(testBundle: NSBundle) {}
+    func testBundleDidFinish(_ testBundle: NSBundle) {}
 }
 
 let observer = Observer()

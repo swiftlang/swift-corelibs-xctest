@@ -30,7 +30,7 @@ private func currentTimeIntervalSinceReferenceTime() -> NSTimeInterval {
 }
 
 /// Execute the given block and return the time spent during execution
-internal func measureTimeExecutingBlock(@noescape block: () -> Void) -> NSTimeInterval {
+internal func measureTimeExecutingBlock(@noescape _ block: () -> Void) -> NSTimeInterval {
     let start = currentTimeIntervalSinceReferenceTime()
     block()
     let end = currentTimeIntervalSinceReferenceTime()
@@ -39,6 +39,6 @@ internal func measureTimeExecutingBlock(@noescape block: () -> Void) -> NSTimeIn
 }
 
 /// Returns a string version of the given time interval rounded to no more than 3 decimal places.
-internal func printableStringForTimeInterval(timeInterval: NSTimeInterval) -> String {
+internal func printableStringForTimeInterval(_ timeInterval: NSTimeInterval) -> String {
     return String(round(timeInterval * 1000.0) / 1000.0)
 }

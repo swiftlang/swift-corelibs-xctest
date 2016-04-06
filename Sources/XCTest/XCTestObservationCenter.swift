@@ -33,45 +33,45 @@ public class XCTestObservationCenter {
 
     /// Register an observer to receive future events during a test run. The order
     /// in which individual observers are notified about events is undefined.
-    public func addTestObserver(testObserver: XCTestObservation) {
+    public func addTestObserver(_ testObserver: XCTestObservation) {
         observers.insert(testObserver.wrapper)
     }
 
     /// Remove a previously-registered observer so that it will no longer receive
     /// event callbacks.
-    public func removeTestObserver(testObserver: XCTestObservation) {
+    public func removeTestObserver(_ testObserver: XCTestObservation) {
         observers.remove(testObserver.wrapper)
     }
 
-    internal func testBundleWillStart(testBundle: NSBundle) {
+    internal func testBundleWillStart(_ testBundle: NSBundle) {
         forEachObserver { $0.testBundleWillStart(testBundle) }
     }
 
-    internal func testSuiteWillStart(testSuite: XCTestSuite) {
+    internal func testSuiteWillStart(_ testSuite: XCTestSuite) {
         forEachObserver { $0.testSuiteWillStart(testSuite) }
     }
 
-    internal func testCaseWillStart(testCase: XCTestCase) {
+    internal func testCaseWillStart(_ testCase: XCTestCase) {
         forEachObserver { $0.testCaseWillStart(testCase) }
     }
 
-    internal func testCase(testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {
+    internal func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {
         forEachObserver { $0.testCase(testCase, didFailWithDescription: description, inFile: filePath, atLine: lineNumber) }
     }
 
-    internal func testCaseDidFinish(testCase: XCTestCase) {
+    internal func testCaseDidFinish(_ testCase: XCTestCase) {
         forEachObserver { $0.testCaseDidFinish(testCase) }
     }
 
-    internal func testSuiteDidFinish(testSuite: XCTestSuite) {
+    internal func testSuiteDidFinish(_ testSuite: XCTestSuite) {
         forEachObserver { $0.testSuiteDidFinish(testSuite) }
     }
 
-    internal func testBundleDidFinish(testBundle: NSBundle) {
+    internal func testBundleDidFinish(_ testBundle: NSBundle) {
         forEachObserver { $0.testBundleDidFinish(testBundle) }
     }
 
-    private func forEachObserver(@noescape body: XCTestObservation -> Void) {
+    private func forEachObserver(@noescape _ body: XCTestObservation -> Void) {
         for observer in observers {
             body(observer.object)
         }

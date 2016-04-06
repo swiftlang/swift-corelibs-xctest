@@ -35,7 +35,7 @@ internal struct TestFiltering {
         return { _ in true }
     }
 
-    static func filterTests(entries: [XCTestCaseEntry], filter: TestFilter) -> [XCTestCaseEntry] {
+    static func filterTests(_ entries: [XCTestCaseEntry], filter: TestFilter) -> [XCTestCaseEntry] {
         return entries
             .map { testCase, tests in
                 return (testCase, tests.filter { filter(testCase, $0.0) } )
@@ -68,7 +68,7 @@ private extension SelectedTest {
         }
     }
 
-    func matches(testCase testCase: XCTestCase.Type, testName: String) -> Bool {
+    func matches(testCase: XCTestCase.Type, testName: String) -> Bool {
         return String(reflecting: testCase) == testCaseName && (self.testName == nil || testName == self.testName)
     }
 }
