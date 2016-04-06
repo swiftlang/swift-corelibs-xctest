@@ -20,35 +20,6 @@
     import SwiftFoundation
 #endif
 
-internal func XCTPrint(_ message: String) {
-    print(message)
-    fflush(stdout)
-}
-
-struct XCTFailure {
-    var message: String
-    var failureDescription: String
-    var expected: Bool
-    var file: StaticString
-    var line: UInt
-
-    var failureMessage: String { return "\(failureDescription) - \(message)" }
-
-    func emit(_ method: String) {
-        XCTPrint("\(file):\(line): \(expected ? "" : "unexpected ")error: \(method) : \(failureMessage)")
-    }
-}
-
-internal struct XCTRun {
-    var duration: NSTimeInterval
-    var method: String
-    var passed: Bool
-    var failures: [XCTFailure]
-    var unexpectedFailures: [XCTFailure] {
-        get { return failures.filter({ failure -> Bool in failure.expected == false }) }
-    }
-}
-
 /// Starts a test run for the specified test cases.
 ///
 /// This function will not return. If the test cases pass, then it will call `exit(0)`. If there is a failure, then it will call `exit(1)`.
@@ -79,7 +50,11 @@ internal struct XCTRun {
 /// - Parameter testCases: An array of test cases run, each produced by a call to the `testCase` function
 /// - seealso: `testCase`
 @noreturn public func XCTMain(_ testCases: [XCTestCaseEntry]) {
+    // Add a test observer that prints test progress to stdout.
     let observationCenter = XCTestObservationCenter.shared()
+    observationCenter.addTestObserver(PrintObserver())
+
+    // Announce that the test bundle will start executing.
     let testBundle = NSBundle.mainBundle()
     observationCenter.testBundleWillStart(testBundle)
 
@@ -88,64 +63,29 @@ internal struct XCTRun {
     //   "All tests".
     // - An `XCTestSuite` representing the .xctest test bundle is not included.
     let selectedTestName = ArgumentParser().selectedTestName
-    var rootTestSuites = [XCTestSuite]()
+    let rootTestSuite: XCTestSuite
+    let currentTestSuite: XCTestSuite
     if selectedTestName == nil {
-        rootTestSuites.append(XCTestSuite(name: "All tests"))
-        rootTestSuites.append(XCTestSuite(name: "\(testBundle.bundlePath.lastPathComponent).xctest"))
+        rootTestSuite = XCTestSuite(name: "All tests")
+        currentTestSuite = XCTestSuite(name: "\(testBundle.bundlePath.lastPathComponent).xctest")
+        rootTestSuite.addTest(currentTestSuite)
     } else {
-        rootTestSuites.append(XCTestSuite(name: "Selected tests"))
+        rootTestSuite = XCTestSuite(name: "Selected tests")
+        currentTestSuite = rootTestSuite
     }
 
     let filter = TestFiltering(selectedTestName: selectedTestName)
-    let filteredTestCases = TestFiltering.filterTests(testCases, filter: filter.selectedTestFilter)
-
-    // When `XCTestSuite` objects are announced, they need to already include
-    // the correct tests.
-    for (testCase, _) in filteredTestCases {
-        let testCaseSuite = XCTestSuite(name: "\(testCase.init().dynamicType)")
-        rootTestSuites.last!.addTest(testCaseSuite)
-    }
-
-    for suite in rootTestSuites {
-        observationCenter.testSuiteWillStart(suite)
-    }
-
-    let overallDuration = measureTimeExecutingBlock {
-        // FIXME: This was the simplest implementation that didn't involve
-        //        changing how swift-corelibs-xctest builds up and executes a
-        //        collection of test cases. However, instead of using an index
-        //        to enumerate both the `XCTestSuite` and the test cases at
-        //        once, we should enumerate the test cases in the `XCTestSuite`.
-        //        `XCTestSuite` should be responsible for representing the
-        //        collection of tests we execute here.
-        for (index, test) in filteredTestCases.enumerated() {
-            let (testCase, tests) = test
-            let testSuite = rootTestSuites.last!.tests[index] as! XCTestSuite
-            observationCenter.testSuiteWillStart(testSuite)
-            testCase.invokeTests(tests)
-            observationCenter.testSuiteDidFinish(testSuite)
+    for (testCaseType, tests) in TestFiltering.filterTests(testCases, filter: filter.selectedTestFilter) {
+        let testCaseSuite = XCTestSuite(name: "\(testCaseType)")
+        for (testName, testClosure) in tests {
+            let testCase = testCaseType.init(name: testName, testClosure: testClosure)
+            testCaseSuite.addTest(testCase)
         }
+        currentTestSuite.addTest(testCaseSuite)
     }
 
-    let (totalDuration, totalFailures, totalUnexpectedFailures) = XCTAllRuns.reduce((0.0, 0, 0)) { totals, run in (totals.0 + run.duration, totals.1 + run.failures.count, totals.2 + run.unexpectedFailures.count) }
-    
-    var testCountSuffix = "s"
-    if XCTAllRuns.count == 1 {
-        testCountSuffix = ""
-    }
-    var failureSuffix = "s"
-    if totalFailures == 1 {
-        failureSuffix = ""
-    }
+    rootTestSuite.run()
 
-    for suite in rootTestSuites.reversed() {
-        observationCenter.testSuiteDidFinish(suite)
-    }
-
-    XCTPrint("Total executed \(XCTAllRuns.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (\(totalUnexpectedFailures) unexpected) in \(printableStringForTimeInterval(totalDuration)) (\(printableStringForTimeInterval(overallDuration))) seconds")
     observationCenter.testBundleDidFinish(testBundle)
-    exit(totalFailures > 0 ? 1 : 0)
+    exit(rootTestSuite.testRun!.totalFailureCount == 0 ? 0 : 1)
 }
-
-internal var XCTFailureHandler: (XCTFailure -> Void)?
-internal var XCTAllRuns = [XCTRun]()

@@ -10,9 +10,13 @@
     import SwiftFoundation
 #endif
 
+// CHECK: Test Suite 'All tests' started at \d+:\d+:\d+\.\d+
+// CHECK: Test Suite '.*\.xctest' started at \d+:\d+:\d+\.\d+
+
+// CHECK: Test Suite 'HandlerTestCase' started at \d+:\d+:\d+\.\d+
 class HandlerTestCase: XCTestCase {
-// CHECK: Test Case 'HandlerTestCase.test_whenExpectationsAreNotFulfilled_handlerCalled_andFails' started.
-// CHECK: .*/Tests/Functional/Asynchronous/Handler/main.swift:21: error: HandlerTestCase.test_whenExpectationsAreNotFulfilled_handlerCalled_andFails : Asynchronous wait failed - Exceeded timeout of 0.2 seconds, with unfulfilled expectations: fog
+// CHECK: Test Case 'HandlerTestCase.test_whenExpectationsAreNotFulfilled_handlerCalled_andFails' started at \d+:\d+:\d+\.\d+
+// CHECK: .*/Tests/Functional/Asynchronous/Handler/main.swift:25: error: HandlerTestCase.test_whenExpectationsAreNotFulfilled_handlerCalled_andFails : Asynchronous wait failed - Exceeded timeout of 0.2 seconds, with unfulfilled expectations: fog
 // CHECK: Test Case 'HandlerTestCase.test_whenExpectationsAreNotFulfilled_handlerCalled_andFails' failed \(\d+\.\d+ seconds\).
     func test_whenExpectationsAreNotFulfilled_handlerCalled_andFails() {
         self.expectation(withDescription: "fog")
@@ -27,7 +31,7 @@ class HandlerTestCase: XCTestCase {
         XCTAssertTrue(handlerWasCalled)
     }
 
-// CHECK: Test Case 'HandlerTestCase.test_whenExpectationsAreFulfilled_handlerCalled_andPasses' started.
+// CHECK: Test Case 'HandlerTestCase.test_whenExpectationsAreFulfilled_handlerCalled_andPasses' started at \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'HandlerTestCase.test_whenExpectationsAreFulfilled_handlerCalled_andPasses' passed \(\d+\.\d+ seconds\).
     func test_whenExpectationsAreFulfilled_handlerCalled_andPasses() {
         let expectation = self.expectation(withDescription: "bog")
@@ -48,8 +52,12 @@ class HandlerTestCase: XCTestCase {
         ]
     }
 }
+// CHECK: Test Suite 'HandlerTestCase' failed at \d+:\d+:\d+\.\d+
+// CHECK: \t Executed 2 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
 XCTMain([testCase(HandlerTestCase.allTests)])
 
-// CHECK: Executed 2 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
-// CHECK: Total executed 2 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: Test Suite '.*\.xctest' failed at \d+:\d+:\d+\.\d+
+// CHECK: \t Executed 2 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: Test Suite 'All tests' failed at \d+:\d+:\d+\.\d+
+// CHECK: \t Executed 2 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds

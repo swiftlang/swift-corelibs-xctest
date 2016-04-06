@@ -24,7 +24,12 @@
 /// - seealso: `XCTMain`
 public typealias XCTestCaseEntry = (testCaseClass: XCTestCase.Type, allTests: [(String, XCTestCase throws -> Void)])
 
+// A global pointer to the currently running test case. This is required in
+// order for XCTAssert functions to report failures.
+internal var XCTCurrentTestCase: XCTestCase?
+
 public class XCTestCase: XCTest {
+    private let testClosure: XCTestCase throws -> Void
 
     /// The name of the test case, consisting of its class name and the method
     /// name it will run.
@@ -39,6 +44,10 @@ public class XCTestCase: XCTest {
     ///   https://bugs.swift.org/browse/SR-1129 for details.
     public var _name: String
 
+    public override var testCaseCount: UInt {
+        return 1
+    }
+
     /// The set of expectations made upon this test case.
     /// - Note: FIXME: This is meant to be a `private var`, but is marked as
     ///   `public` here to work around a Swift compiler bug on Linux. To ensure
@@ -47,8 +56,74 @@ public class XCTestCase: XCTest {
     ///   https://bugs.swift.org/browse/SR-1129 for details.
     public var _allExpectations = [XCTestExpectation]()
 
-    public required override init() {
-        _name = "\(self.dynamicType).<unknown>"
+    public override var testRunClass: AnyClass? {
+        return XCTestCaseRun.self
+    }
+
+    public override func perform(_ run: XCTestRun) {
+        guard let testRun = run as? XCTestCaseRun else {
+            fatalError("Wrong XCTestRun class.")
+        }
+
+        XCTCurrentTestCase = self
+        testRun.start()
+        invokeTest()
+        failIfExpectationsNotWaitedFor(_allExpectations)
+        testRun.stop()
+        XCTCurrentTestCase = nil
+    }
+
+    /// The designated initializer for SwiftXCTest's XCTestCase.
+    /// - Note: Like the designated initializer for Apple XCTest's XCTestCase,
+    ///   `-[XCTestCase initWithInvocation:]`, it's rare for anyone outside of
+    ///   XCTest itself to call this initializer.
+    public required init(name: String, testClosure: XCTestCase throws -> Void) {
+        _name = "\(self.dynamicType).\(name)"
+        self.testClosure = testClosure
+    }
+
+    /// Invoking a test performs its setUp, invocation, and tearDown. In
+    /// general this should not be called directly.
+    public func invokeTest() {
+        setUp()
+        do {
+            try testClosure(self)
+        } catch {
+            recordFailure(
+                withDescription: "threw error \"\(error)\"",
+                inFile: "<EXPR>",
+                atLine: 0,
+                expected: false)
+        }
+        tearDown()
+    }
+
+    /// Records a failure in the execution of the test and is used by all test
+    /// assertions.
+    /// - Parameter description: The description of the failure being reported.
+    /// - Parameter filePath: The file path to the source file where the failure
+    ///   being reported was encountered.
+    /// - Parameter lineNumber: The line number in the source file at filePath
+    ///   where the failure being reported was encountered.
+    /// - Parameter expected: `true` if the failure being reported was the
+    ///   result of a failed assertion, `false` if it was the result of an
+    ///   uncaught exception.
+    public func recordFailure(withDescription description: String, inFile filePath: String, atLine lineNumber: UInt, expected: Bool) {
+        testRun?.recordFailure(
+            withDescription: description,
+            inFile: filePath,
+            atLine: lineNumber,
+            expected: expected)
+
+        // FIXME: Apple XCTest does not throw a fatal error and crash the test
+        //        process, it merely prevents the remainder of a testClosure
+        //        from execting after it's been determined that it has already
+        //        failed. The following behavior is incorrect.
+        // FIXME: No regression tests exist for this feature. We may break it
+        //        without ever realizing.
+        if !continueAfterFailure {
+            fatalError("Terminating execution due to test failure")
+        }
     }
 }
 
@@ -84,89 +159,15 @@ extension XCTestCase {
         }
     }
 
-    internal static func invokeTests(_ tests: [(String, XCTestCase throws -> Void)]) {
-        let observationCenter = XCTestObservationCenter.shared()
-
-        var totalDuration = 0.0
-        var totalFailures = 0
-        var unexpectedFailures = 0
-        let overallDuration = measureTimeExecutingBlock {
-            for (name, test) in tests {
-                let testCase = self.init()
-                testCase._name = "\(testCase.dynamicType).\(name)"
-
-                var failures = [XCTFailure]()
-                XCTFailureHandler = { failure in
-                    observationCenter.testCase(testCase,
-                                               didFailWithDescription: failure.failureMessage,
-                                               inFile: String(failure.file),
-                                               atLine: failure.line)
-
-                    if !testCase.continueAfterFailure {
-                        failure.emit(testCase.name)
-                        fatalError("Terminating execution due to test failure", file: failure.file, line: failure.line)
-                    } else {
-                        failures.append(failure)
-                    }
-                }
-
-                XCTPrint("Test Case '\(testCase.name)' started.")
-
-                observationCenter.testCaseWillStart(testCase)
-
-                testCase.setUp()
-
-                let duration = measureTimeExecutingBlock {
-                    do {
-                        try test(testCase)
-                    } catch {
-                        let unexpectedFailure = XCTFailure(message: "", failureDescription: "threw error \"\(error)\"", expected: false, file: "<EXPR>", line: 0)
-                        XCTFailureHandler!(unexpectedFailure)
-                    }
-                }
-
-                testCase.tearDown()
-                testCase.failIfExpectationsNotWaitedFor(testCase._allExpectations)
-
-                observationCenter.testCaseDidFinish(testCase)
-
-                totalDuration += duration
-
-                var result = "passed"
-                for failure in failures {
-                    failure.emit(testCase.name)
-                    totalFailures += 1
-                    if !failure.expected {
-                        unexpectedFailures += 1
-                    }
-                    result = failures.count > 0 ? "failed" : "passed"
-                }
-
-                XCTPrint("Test Case '\(testCase.name)' \(result) (\(printableStringForTimeInterval(duration)) seconds).")
-                XCTAllRuns.append(XCTRun(duration: duration, method: testCase.name, passed: failures.count == 0, failures: failures))
-                XCTFailureHandler = nil
-            }
-        }
-
-        let testCountSuffix = (tests.count == 1) ? "" : "s"
-        let failureSuffix = (totalFailures == 1) ? "" : "s"
-
-        XCTPrint("Executed \(tests.count) test\(testCountSuffix), with \(totalFailures) failure\(failureSuffix) (\(unexpectedFailures) unexpected) in \(printableStringForTimeInterval(totalDuration)) (\(printableStringForTimeInterval(overallDuration))) seconds")
-    }
-
     /// It is an API violation to create expectations but not wait for them to
     /// be completed. Notify the user of a mistake via a test failure.
     private func failIfExpectationsNotWaitedFor(_ expectations: [XCTestExpectation]) {
         if expectations.count > 0 {
-            let failure = XCTFailure(
-                message: "Failed due to unwaited expectations.",
-                failureDescription: "",
-                expected: false,
-                file: expectations.last!.file,
-                line: expectations.last!.line)
-            if let failureHandler = XCTFailureHandler {
-                failureHandler(failure)
-            }
+            recordFailure(
+                withDescription: "Failed due to unwaited expectations.",
+                inFile: String(expectations.last!.file),
+                atLine: expectations.last!.line,
+                expected: false)
         }
     }
 
@@ -234,15 +235,11 @@ extension XCTestCase {
         //        and executes the rest of the test. This discrepancy should be
         //        fixed.
         if _allExpectations.count == 0 {
-            let failure = XCTFailure(
-                message: "call made to wait without any expectations having been set.",
-                failureDescription: "API violation",
-                expected: false,
-                file: file,
-                line: line)
-            if let failureHandler = XCTFailureHandler {
-                failureHandler(failure)
-            }
+            recordFailure(
+                withDescription: "API violation - call made to wait without any expectations having been set.",
+                inFile: String(file),
+                atLine: line,
+                expected: false)
             return
         }
 
@@ -282,15 +279,11 @@ extension XCTestCase {
             // Not all expectations were fulfilled. Append a failure
             // to the array of expectation-based failures.
             let descriptions = unfulfilledDescriptions.joined(separator: ", ")
-            let failure = XCTFailure(
-                message: "Exceeded timeout of \(timeout) seconds, with unfulfilled expectations: \(descriptions)",
-                failureDescription: "Asynchronous wait failed",
-                expected: true,
-                file: file,
-                line: line)
-            if let failureHandler = XCTFailureHandler {
-                failureHandler(failure)
-            }
+            recordFailure(
+                withDescription: "Asynchronous wait failed - Exceeded timeout of \(timeout) seconds, with unfulfilled expectations: \(descriptions)",
+                inFile: String(file),
+                atLine: line,
+                expected: true)
         }
 
         // We've recorded all the failures; clear the expectations that

@@ -39,11 +39,36 @@ public class XCTestSuite: XCTest {
     override public var name: String {
         return _name
     }
-    private let _name: String
+    /// A private setter for the name of this test suite.
+    /// - Note: FIXME: This property should be readonly, but currently has to
+    ///   be publicly settable due to a Swift compiler bug on Linux. To ensure
+    ///   compatibility of tests between swift-corelibs-xctest and Apple XCTest,
+    ///   this property should not be modified. See
+    ///   https://bugs.swift.org/browse/SR-1129 for details.
+    public let _name: String
 
     /// The number of test cases in this suite.
     public override var testCaseCount: UInt {
-        return UInt(tests.count)
+        return tests.reduce(0) { $0 + $1.testCaseCount }
+    }
+
+    public override var testRunClass: AnyClass? {
+        return XCTestSuiteRun.self
+    }
+
+    public override func perform(_ run: XCTestRun) {
+        guard let testRun = run as? XCTestSuiteRun else {
+            fatalError("Wrong XCTestRun class.")
+        }
+
+        run.start()
+        setUp()
+        for test in tests {
+            test.run()
+            testRun.addTest(test.testRun!)
+        }
+        tearDown()
+        run.stop()
     }
 
     public init(name: String) {
