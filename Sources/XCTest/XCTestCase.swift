@@ -296,8 +296,8 @@ extension XCTestCase {
             if unfulfilledDescriptions.count > 0 {
                 // If the test failed, send an error object.
                 error = NSError(
-                    domain: "org.swift.XCTestErrorDomain",
-                    code: 0,
+                    domain: XCTestErrorDomain,
+                    code: XCTestErrorCode.timeoutWhileWaiting.rawValue,
                     userInfo: [:])
             }
             completionHandler(error)
