@@ -19,31 +19,31 @@ class Observer: XCTestObservation {
     var finishedTestSuites = [XCTestSuite]()
     var finishedBundlePaths = [String]()
 
-    func testBundleWillStart(testBundle: NSBundle) {
+    func testBundleWillStart(_ testBundle: NSBundle) {
         startedBundlePaths.append(testBundle.bundlePath)
     }
 
-    func testSuiteWillStart(testSuite: XCTestSuite) {
+    func testSuiteWillStart(_ testSuite: XCTestSuite) {
         startedTestSuites.append(testSuite)
     }
 
-    func testCaseWillStart(testCase: XCTestCase) {
+    func testCaseWillStart(_ testCase: XCTestCase) {
         startedTestCaseNames.append(testCase.name)
     }
 
-    func testCase(testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {
+    func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {
         failureDescriptions.append(description)
     }
 
-    func testCaseDidFinish(testCase: XCTestCase) {
+    func testCaseDidFinish(_ testCase: XCTestCase) {
         finishedTestCaseNames.append(testCase.name)
     }
 
-    func testSuiteDidFinish(testSuite: XCTestSuite) {
+    func testSuiteDidFinish(_ testSuite: XCTestSuite) {
         print("In \(#function): \(testSuite.name)")
     }
 
-    func testBundleDidFinish(testBundle: NSBundle) {
+    func testBundleDidFinish(_ testBundle: NSBundle) {
         print("In \(#function)")
     }
 }

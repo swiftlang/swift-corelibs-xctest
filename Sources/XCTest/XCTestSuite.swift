@@ -52,7 +52,7 @@ public class XCTestSuite: XCTest {
 
     /// Adds a test (either an `XCTestSuite` or an `XCTestCase` to this
     /// collection.
-    public func addTest(test: XCTest) {
+    public func addTest(_ test: XCTest) {
         tests.append(test)
     }
 }

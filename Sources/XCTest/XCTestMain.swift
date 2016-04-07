@@ -20,7 +20,7 @@
     import SwiftFoundation
 #endif
 
-internal func XCTPrint(message: String) {
+internal func XCTPrint(_ message: String) {
     print(message)
     fflush(stdout)
 }
@@ -34,7 +34,7 @@ struct XCTFailure {
 
     var failureMessage: String { return "\(failureDescription) - \(message)" }
 
-    func emit(method: String) {
+    func emit(_ method: String) {
         XCTPrint("\(file):\(line): \(expected ? "" : "unexpected ")error: \(method) : \(failureMessage)")
     }
 }
@@ -78,7 +78,7 @@ internal struct XCTRun {
 ///
 /// - Parameter testCases: An array of test cases run, each produced by a call to the `testCase` function
 /// - seealso: `testCase`
-@noreturn public func XCTMain(testCases: [XCTestCaseEntry]) {
+@noreturn public func XCTMain(_ testCases: [XCTestCaseEntry]) {
     let observationCenter = XCTestObservationCenter.shared()
     let testBundle = NSBundle.mainBundle()
     observationCenter.testBundleWillStart(testBundle)

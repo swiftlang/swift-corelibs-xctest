@@ -47,7 +47,7 @@ public class XCTestExpectation {
     ///   between these environments. To ensure compatibility of tests between
     ///   swift-corelibs-xctest and Apple XCTest, it is not recommended to pass
     ///   explicit values for `file` and `line`.
-    public func fulfill(file: StaticString = #file, line: UInt = #line) {
+    public func fulfill(_ file: StaticString = #file, line: UInt = #line) {
         // FIXME: Objective-C XCTest emits failures when expectations are
         //        fulfilled after the test cases that generated those
         //        expectations have completed. Similarly, this should cause an
