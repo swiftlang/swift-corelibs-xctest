@@ -8,6 +8,10 @@
     import SwiftXCTest
 #endif
 
+// CHECK: Test Suite 'All tests' started at \d+:\d+:\d+\.\d+
+// CHECK: Test Suite '.*\.xctest' started at \d+:\d+:\d+\.\d+
+
+// CHECK: Test Suite 'PassingTestCase' started at \d+:\d+:\d+\.\d+
 class PassingTestCase: XCTestCase {
     static var allTests: [(String, PassingTestCase -> () throws -> Void)] {
         return [
@@ -15,15 +19,16 @@ class PassingTestCase: XCTestCase {
         ]
     }
 
-// CHECK: Test Case 'PassingTestCase.test_passes' started.
+// CHECK: Test Case 'PassingTestCase.test_passes' started at \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'PassingTestCase.test_passes' passed \(\d+\.\d+ seconds\).
     func test_passes() {
         XCTAssert(true)
     }
 }
-// CHECK: Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: Test Suite 'PassingTestCase' passed at \d+:\d+:\d+\.\d+
+// CHECK: \t Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
-
+// CHECK: Test Suite 'FailingTestCase' started at \d+:\d+:\d+\.\d+
 class FailingTestCase: XCTestCase {
     static var allTests: [(String, FailingTestCase -> () throws -> Void)] {
         return [
@@ -33,32 +38,35 @@ class FailingTestCase: XCTestCase {
         ]
     }
 
-// CHECK: Test Case 'FailingTestCase.test_passes' started.
+// CHECK: Test Case 'FailingTestCase.test_passes' started at \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'FailingTestCase.test_passes' passed \(\d+\.\d+ seconds\).
     func test_passes() {
         XCTAssert(true)
     }
 
-// CHECK: Test Case 'FailingTestCase.test_fails' started.
+// CHECK: Test Case 'FailingTestCase.test_fails' started at \d+:\d+:\d+\.\d+
 // CHECK: .*/FailingTestSuite/main.swift:\d+: error: FailingTestCase.test_fails : XCTAssertTrue failed - $
 // CHECK: Test Case 'FailingTestCase.test_fails' failed \(\d+\.\d+ seconds\).
     func test_fails() {
         XCTAssert(false)
     }
 
-// CHECK: Test Case 'FailingTestCase.test_fails_with_message' started.
+// CHECK: Test Case 'FailingTestCase.test_fails_with_message' started at \d+:\d+:\d+\.\d+
 // CHECK: .*/FailingTestSuite/main.swift:\d+: error: FailingTestCase.test_fails_with_message : XCTAssertTrue failed - Foo bar.
 // CHECK: Test Case 'FailingTestCase.test_fails_with_message' failed \(\d+\.\d+ seconds\).
     func test_fails_with_message() {
         XCTAssert(false, "Foo bar.")
     }
 }
-// CHECK: Executed 3 tests, with 2 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
-
+// CHECK: Test Suite 'FailingTestCase' failed at \d+:\d+:\d+\.\d+
+// CHECK: \t Executed 3 tests, with 2 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
 XCTMain([
     testCase(PassingTestCase.allTests),
     testCase(FailingTestCase.allTests),
 ])
 
-// CHECK: Total executed 4 tests, with 2 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: Test Suite '.*\.xctest' failed at \d+:\d+:\d+\.\d+
+// CHECK: \t Executed 4 tests, with 2 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: Test Suite 'All tests' failed at \d+:\d+:\d+\.\d+
+// CHECK: \t Executed 4 tests, with 2 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds

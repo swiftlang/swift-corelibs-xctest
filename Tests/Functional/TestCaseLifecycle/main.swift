@@ -8,6 +8,10 @@
     import SwiftXCTest
 #endif
 
+// CHECK: Test Suite 'All tests' started at \d+:\d+:\d+\.\d+
+// CHECK: Test Suite '.*\.xctest' started at \d+:\d+:\d+\.\d+
+
+// CHECK: Test Suite 'SetUpTearDownTestCase' started at \d+:\d+:\d+\.\d+
 class SetUpTearDownTestCase: XCTestCase {
     static var allTests: [(String, SetUpTearDownTestCase -> () throws -> Void)] {
         return [
@@ -28,7 +32,7 @@ class SetUpTearDownTestCase: XCTestCase {
         print("In \(#function)")
     }
 
-// CHECK: Test Case 'SetUpTearDownTestCase.test_hasValueFromSetUp' started.
+// CHECK: Test Case 'SetUpTearDownTestCase.test_hasValueFromSetUp' started at \d+:\d+:\d+\.\d+
 // CHECK: In setUp\(\)
 // CHECK: In test_hasValueFromSetUp\(\)
 // CHECK: In tearDown\(\)
@@ -38,9 +42,11 @@ class SetUpTearDownTestCase: XCTestCase {
         XCTAssertEqual(value, 42)
     }
 }
-// CHECK: Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: Test Suite 'SetUpTearDownTestCase' passed at \d+:\d+:\d+\.\d+
+// CHECK: \t Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
 
+// CHECK: Test Suite 'NewInstanceForEachTestTestCase' started at \d+:\d+:\d+\.\d+
 class NewInstanceForEachTestTestCase: XCTestCase {
     static var allTests: [(String, NewInstanceForEachTestTestCase -> () throws -> Void)] {
         return [
@@ -51,20 +57,21 @@ class NewInstanceForEachTestTestCase: XCTestCase {
 
     var value = 1
 
-// CHECK: Test Case 'NewInstanceForEachTestTestCase.test_hasInitializedValue' started.
+// CHECK: Test Case 'NewInstanceForEachTestTestCase.test_hasInitializedValue' started at \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'NewInstanceForEachTestTestCase.test_hasInitializedValue' passed \(\d+\.\d+ seconds\).
     func test_hasInitializedValue() {
         XCTAssertEqual(value, 1)
         value += 1
     }
 
-// CHECK: Test Case 'NewInstanceForEachTestTestCase.test_hasInitializedValueInAnotherTest' started.
+// CHECK: Test Case 'NewInstanceForEachTestTestCase.test_hasInitializedValueInAnotherTest' started at \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'NewInstanceForEachTestTestCase.test_hasInitializedValueInAnotherTest' passed \(\d+\.\d+ seconds\).
     func test_hasInitializedValueInAnotherTest() {
         XCTAssertEqual(value, 1)
     }
 }
-// CHECK: Executed 2 tests, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: Test Suite 'NewInstanceForEachTestTestCase' passed at \d+:\d+:\d+\.\d+
+// CHECK: \t Executed 2 tests, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
 
 XCTMain([
@@ -72,4 +79,7 @@ XCTMain([
     testCase(NewInstanceForEachTestTestCase.allTests)
 ])
 
-// CHECK: Total executed 3 tests, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: Test Suite '.*\.xctest' passed at \d+:\d+:\d+\.\d+
+// CHECK: \t Executed 3 tests, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: Test Suite 'All tests' passed at \d+:\d+:\d+\.\d+
+// CHECK: \t Executed 3 tests, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds

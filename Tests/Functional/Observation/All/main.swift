@@ -10,6 +10,9 @@
     import SwiftFoundation
 #endif
 
+// CHECK: Test Suite 'All tests' started at \d+:\d+:\d+\.\d+
+// CHECK: Test Suite '.*\.xctest' started at \d+:\d+:\d+\.\d+
+
 class Observer: XCTestObservation {
     var startedBundlePaths = [String]()
     var startedTestSuites = [XCTestSuite]()
@@ -51,6 +54,7 @@ class Observer: XCTestObservation {
 let observer = Observer()
 XCTestObservationCenter.shared().addTestObserver(observer)
 
+// CHECK: Test Suite 'Observation' started at \d+:\d+:\d+\.\d+
 class Observation: XCTestCase {
     static var allTests: [(String, Observation -> () throws -> Void)] {
         return [
@@ -60,7 +64,7 @@ class Observation: XCTestCase {
         ]
     }
 
-// CHECK: Test Case 'Observation.test_one' started.
+// CHECK: Test Case 'Observation.test_one' started at \d+:\d+:\d+\.\d+
 // CHECK: .*/Observation/All/main.swift:\d+: error: Observation.test_one : failed - fail!
 // CHECK: Test Case 'Observation.test_one' failed \(\d+\.\d+ seconds\).
     func test_one() {
@@ -77,7 +81,7 @@ class Observation: XCTestCase {
         XCTAssertEqual(observer.failureDescriptions, ["failed - fail!"])
     }
 
-// CHECK: Test Case 'Observation.test_two' started.
+// CHECK: Test Case 'Observation.test_two' started at \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'Observation.test_two' passed \(\d+\.\d+ seconds\).
     func test_two() {
         XCTAssertEqual(observer.startedBundlePaths.count, 1)
@@ -91,7 +95,7 @@ class Observation: XCTestCase {
         XCTestObservationCenter.shared().removeTestObserver(observer)
     }
 
-// CHECK: Test Case 'Observation.test_three' started.
+// CHECK: Test Case 'Observation.test_three' started at \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'Observation.test_three' passed \(\d+\.\d+ seconds\).
     func test_three() {
         XCTAssertEqual(observer.startedBundlePaths.count, 1)
@@ -103,11 +107,21 @@ class Observation: XCTestCase {
     }
 }
 
+// There's no guarantee as to the order in which these two observers will be
+// called, so we match any order here.
+
+// CHECK: (In testSuiteDidFinish: Observation)|(Test Suite 'Observation' failed at \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+// CHECK: (In testSuiteDidFinish: Observation)|(Test Suite 'Observation' failed at \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+// CHECK: (In testSuiteDidFinish: Observation)|(Test Suite 'Observation' failed at \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+
 XCTMain([testCase(Observation.allTests)])
 
-// CHECK: Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
-// CHECK: In testSuiteDidFinish: Observation
-// CHECK: In testSuiteDidFinish: .*\.xctest
-// CHECK: In testSuiteDidFinish: All tests
-// CHECK: Total executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: (In testSuiteDidFinish: .*\.xctest)|(Test Suite '.*\.xctest' failed at \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+// CHECK: (In testSuiteDidFinish: .*\.xctest)|(Test Suite '.*\.xctest' failed at \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+// CHECK: (In testSuiteDidFinish: .*\.xctest)|(Test Suite '.*\.xctest' failed at \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+
+// CHECK: (In testSuiteDidFinish: All tests)|(Test Suite 'All tests' failed at \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+// CHECK: (In testSuiteDidFinish: All tests)|(Test Suite 'All tests' failed at \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+// CHECK: (In testSuiteDidFinish: All tests)|(Test Suite 'All tests' failed at \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+
 // CHECK: In testBundleDidFinish

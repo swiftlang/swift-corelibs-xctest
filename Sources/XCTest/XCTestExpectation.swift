@@ -55,14 +55,12 @@ public class XCTestExpectation {
         if isFulfilled {
             // Mirror Objective-C XCTest behavior: treat multiple calls to
             // fulfill() as an unexpected failure.
-            let failure = XCTFailure(
-                message: "multiple calls made to XCTestExpectation.fulfill() for \(description).",
-                failureDescription: "API violation",
-                expected: false,
-                file: file,
-                line: line)
-            if let failureHandler = XCTFailureHandler {
-                failureHandler(failure)
+            if let testCase = XCTCurrentTestCase {
+                testCase.recordFailure(
+                    withDescription: "API violation - multiple calls made to XCTestExpectation.fulfill() for \(description).",
+                    inFile: String(file),
+                    atLine: line,
+                    expected: false)
             }
         } else {
             isFulfilled = true

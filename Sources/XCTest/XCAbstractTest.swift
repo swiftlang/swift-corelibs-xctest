@@ -26,6 +26,37 @@ public class XCTest {
         fatalError("Must be overridden by subclasses.")
     }
 
+    /// The `XCTestRun` subclass that will be instantiated when the test is run
+    /// to hold the test's results. Must be overridden by subclasses.
+    public var testRunClass: AnyClass? {
+        fatalError("Must be overridden by subclasses.")
+    }
+
+    /// The test run object that executed the test, an instance of
+    /// testRunClass. If the test has not yet been run, this will be nil.
+    /// - Note: FIXME: This property is meant to be `private(set)`. It is
+    ///   publicly settable for now due to a Swift compiler bug on Linux. To
+    ///   ensure compatibility of tests between swift-corelibs-xctest and Apple
+    ///   XCTest, you should not set this property. See
+    ///   https://bugs.swift.org/browse/SR-1129 for details.
+    public public(set) var testRun: XCTestRun? = nil
+
+    /// The method through which tests are executed. Must be overridden by
+    /// subclasses.
+    public func perform(_ run: XCTestRun) {
+        fatalError("Must be overridden by subclasses.")
+    }
+
+    /// Creates an instance of the `testRunClass` and passes it as a parameter
+    /// to `perform()`.
+    public func run() {
+        guard let testRunType = testRunClass as? XCTestRun.Type else {
+            fatalError("XCTest.testRunClass must be a kind of XCTestRun.")
+        }
+        testRun = testRunType.init(test: self)
+        perform(testRun!)
+    }
+
     /// Setup method called before the invocation of each test method in the
     /// class.
     public func setUp() {}
@@ -33,4 +64,8 @@ public class XCTest {
     /// Teardown method called after the invocation of each test method in the
     /// class.
     public func tearDown() {}
+
+    // FIXME: This initializer is required due to a Swift compiler bug on Linux.
+    //        It should be removed once the bug is fixed.
+    public init() {}
 }

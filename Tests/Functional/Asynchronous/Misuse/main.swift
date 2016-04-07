@@ -8,25 +8,29 @@
     import SwiftXCTest
 #endif
 
+// CHECK: Test Suite 'All tests' started at \d+:\d+:\d+\.\d+
+// CHECK: Test Suite '.*\.xctest' started at \d+:\d+:\d+\.\d+
+
+// CHECK: Test Suite 'MisuseTestCase' started at \d+:\d+:\d+\.\d+
 class MisuseTestCase: XCTestCase {
-// CHECK: Test Case 'MisuseTestCase.test_whenExpectationsAreMade_butNotWaitedFor_fails' started.
-// CHECK: .*/Tests/Functional/Asynchronous/Misuse/main.swift:17: unexpected error: MisuseTestCase.test_whenExpectationsAreMade_butNotWaitedFor_fails :  - Failed due to unwaited expectations.
+// CHECK: Test Case 'MisuseTestCase.test_whenExpectationsAreMade_butNotWaitedFor_fails' started at \d+:\d+:\d+\.\d+
+// CHECK: .*/Tests/Functional/Asynchronous/Misuse/main.swift:21: error: MisuseTestCase.test_whenExpectationsAreMade_butNotWaitedFor_fails : Failed due to unwaited expectations.
 // CHECK: Test Case 'MisuseTestCase.test_whenExpectationsAreMade_butNotWaitedFor_fails' failed \(\d+\.\d+ seconds\).
     func test_whenExpectationsAreMade_butNotWaitedFor_fails() {
         self.expectation(withDescription: "the first expectation")
         self.expectation(withDescription: "the second expectation (the file and line number for this one are included in the failure message")
     }
 
-// CHECK: Test Case 'MisuseTestCase.test_whenNoExpectationsAreMade_butTheyAreWaitedFor_fails' started.
-// CHECK: .*/Tests/Functional/Asynchronous/Misuse/main.swift:24: unexpected error: MisuseTestCase.test_whenNoExpectationsAreMade_butTheyAreWaitedFor_fails : API violation - call made to wait without any expectations having been set.
+// CHECK: Test Case 'MisuseTestCase.test_whenNoExpectationsAreMade_butTheyAreWaitedFor_fails' started at \d+:\d+:\d+\.\d+
+// CHECK: .*/Tests/Functional/Asynchronous/Misuse/main.swift:28: error: MisuseTestCase.test_whenNoExpectationsAreMade_butTheyAreWaitedFor_fails : API violation - call made to wait without any expectations having been set.
 // CHECK: Test Case 'MisuseTestCase.test_whenNoExpectationsAreMade_butTheyAreWaitedFor_fails' failed \(\d+\.\d+ seconds\).
     func test_whenNoExpectationsAreMade_butTheyAreWaitedFor_fails() {
         self.waitForExpectations(withTimeout: 0.1)
     }
 
-// CHECK: Test Case 'MisuseTestCase.test_whenExpectationIsFulfilledMultipleTimes_fails' started.
-// CHECK: .*/Tests/Functional/Asynchronous/Misuse/main.swift:34: unexpected error: MisuseTestCase.test_whenExpectationIsFulfilledMultipleTimes_fails : API violation - multiple calls made to XCTestExpectation.fulfill\(\) for rob.
-// CHECK: .*/Tests/Functional/Asynchronous/Misuse/main.swift:44: unexpected error: MisuseTestCase.test_whenExpectationIsFulfilledMultipleTimes_fails : API violation - multiple calls made to XCTestExpectation.fulfill\(\) for rob.
+// CHECK: Test Case 'MisuseTestCase.test_whenExpectationIsFulfilledMultipleTimes_fails' started at \d+:\d+:\d+\.\d+
+// CHECK: .*/Tests/Functional/Asynchronous/Misuse/main.swift:38: error: MisuseTestCase.test_whenExpectationIsFulfilledMultipleTimes_fails : API violation - multiple calls made to XCTestExpectation.fulfill\(\) for rob.
+// CHECK: .*/Tests/Functional/Asynchronous/Misuse/main.swift:48: error: MisuseTestCase.test_whenExpectationIsFulfilledMultipleTimes_fails : API violation - multiple calls made to XCTestExpectation.fulfill\(\) for rob.
 // CHECK: Test Case 'MisuseTestCase.test_whenExpectationIsFulfilledMultipleTimes_fails' failed \(\d+\.\d+ seconds\).
     func test_whenExpectationIsFulfilledMultipleTimes_fails() {
         let expectation = self.expectation(withDescription: "rob")
@@ -53,8 +57,12 @@ class MisuseTestCase: XCTestCase {
         ]
     }
 }
+// CHECK: Test Suite 'MisuseTestCase' failed at \d+:\d+:\d+\.\d+
+// CHECK: \t Executed 3 tests, with 4 failures \(4 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
 XCTMain([testCase(MisuseTestCase.allTests)])
 
-// CHECK: Executed 3 tests, with 4 failures \(4 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
-// CHECK: Total executed 3 tests, with 4 failures \(4 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: Test Suite '.*\.xctest' failed at \d+:\d+:\d+\.\d+
+// CHECK: \t Executed 3 tests, with 4 failures \(4 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: Test Suite 'All tests' failed at \d+:\d+:\d+\.\d+
+// CHECK: \t Executed 3 tests, with 4 failures \(4 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds

@@ -10,6 +10,8 @@
     import SwiftFoundation
 #endif
 
+// CHECK: Test Suite 'Selected tests' started at \d+:\d+:\d+\.\d+
+
 class Observer: XCTestObservation {
     var startedTestSuites = [XCTestSuite]()
     var finishedTestSuites = [XCTestSuite]()
@@ -46,6 +48,7 @@ class SkippedTestCase: XCTestCase {
     }
 }
 
+// CHECK: Test Suite 'ExecutedTestCase' started at \d+:\d+:\d+\.\d+
 class ExecutedTestCase: XCTestCase {
     static var allTests: [(String, ExecutedTestCase -> () throws -> Void)] {
         return [
@@ -54,7 +57,7 @@ class ExecutedTestCase: XCTestCase {
         ]
     }
 
-// CHECK: Test Case 'ExecutedTestCase.test_executed' started.
+// CHECK: Test Case 'ExecutedTestCase.test_executed' started at \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'ExecutedTestCase.test_executed' passed \(\d+\.\d+ seconds\).
     func test_executed() {
         let suiteNames = observer.startedTestSuites.map { $0.name }
@@ -66,12 +69,18 @@ class ExecutedTestCase: XCTestCase {
     }
 }
 
+// There's no guarantee as to the order in which these two observers will be
+// called, so we match any order here.
+
+// CHECK: (In testSuiteDidFinish: ExecutedTestCase)|(Test Suite 'ExecutedTestCase' passed at \d+:\d+:\d+\.\d+|\t Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+// CHECK: (In testSuiteDidFinish: ExecutedTestCase)|(Test Suite 'ExecutedTestCase' passed at \d+:\d+:\d+\.\d+|\t Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+// CHECK: (In testSuiteDidFinish: ExecutedTestCase)|(Test Suite 'ExecutedTestCase' passed at \d+:\d+:\d+\.\d+|\t Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+
 XCTMain([
     testCase(SkippedTestCase.allTests),
     testCase(ExecutedTestCase.allTests),
 ])
 
-// CHECK: Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
-// CHECK: In testSuiteDidFinish: ExecutedTestCase
-// CHECK: In testSuiteDidFinish: Selected tests
-// CHECK: Total executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: (In testSuiteDidFinish: Selected tests|Test Suite 'Selected tests' passed at \d+:\d+:\d+\.\d+)|(\t Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+// CHECK: (In testSuiteDidFinish: Selected tests|Test Suite 'Selected tests' passed at \d+:\d+:\d+\.\d+)|(\t Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+// CHECK: (In testSuiteDidFinish: Selected tests|Test Suite 'Selected tests' passed at \d+:\d+:\d+\.\d+)|(\t Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
