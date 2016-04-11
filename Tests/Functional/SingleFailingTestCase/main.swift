@@ -19,9 +19,9 @@ class SingleFailingTestCase: XCTestCase {
         ]
     }
 
-// CHECK: Test Case 'SingleFailingTestCase.test_fails' started at \d+:\d+:\d+\.\d+
-// CHECK: .*/SingleFailingTestCase/main.swift:26: error: SingleFailingTestCase.test_fails : XCTAssertTrue failed -
-// CHECK: Test Case 'SingleFailingTestCase.test_fails' failed \(\d+\.\d+ seconds\).
+    // CHECK: Test Case 'SingleFailingTestCase.test_fails' started at \d+:\d+:\d+\.\d+
+    // CHECK: .*/SingleFailingTestCase/main.swift:26: error: SingleFailingTestCase.test_fails : XCTAssertTrue failed -
+    // CHECK: Test Case 'SingleFailingTestCase.test_fails' failed \(\d+\.\d+ seconds\).
     func test_fails() {
         XCTAssert(false)
     }
