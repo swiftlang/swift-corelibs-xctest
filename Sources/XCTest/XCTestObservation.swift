@@ -11,7 +11,7 @@
 //  Hooks for being notified about progress during a test run.
 //
 
-#if os(Linux) || os(FreeBSD)
+#if os(Linux) || os(FreeBSD) || os(Android)
     import Foundation
 #else
     import SwiftFoundation

@@ -11,7 +11,7 @@
 //  A test run collects information about the execution of a test.
 //
 
-#if os(Linux) || os(FreeBSD)
+#if os(Linux) || os(FreeBSD) || os(Android)
     import Foundation
 #else
     import SwiftFoundation

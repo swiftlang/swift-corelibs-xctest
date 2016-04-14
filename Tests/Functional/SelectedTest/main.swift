@@ -6,7 +6,7 @@
 // RUN: %{xctest_checker} -p "// CHECK-TESTCASE:" %T/one_test_case %s
 // RUN: %{xctest_checker} -p "// CHECK-ALL:" %T/all %s
 
-#if os(Linux) || os(FreeBSD)
+#if os(Linux) || os(FreeBSD) || os(Android)
     import XCTest
 #else
     import SwiftXCTest

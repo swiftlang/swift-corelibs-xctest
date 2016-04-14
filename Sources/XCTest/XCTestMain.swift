@@ -12,7 +12,7 @@
 //  for running tests and some infrastructure for running them.
 //
 
-#if os(Linux) || os(FreeBSD)
+#if os(Linux) || os(FreeBSD) || os(Android)
     import Glibc
     import Foundation
 #else
