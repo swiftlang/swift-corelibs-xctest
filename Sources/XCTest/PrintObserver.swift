@@ -23,11 +23,11 @@ internal class PrintObserver: XCTestObservation {
     func testBundleWillStart(_ testBundle: NSBundle) {}
 
     func testSuiteWillStart(_ testSuite: XCTestSuite) {
-        printAndFlush("Test Suite '\(testSuite.name)' started at \(dateFormatter.stringFromDate(testSuite.testRun!.startDate!))")
+        printAndFlush("Test Suite '\(testSuite.name)' started at \(dateFormatter.string(from: testSuite.testRun!.startDate!))")
     }
 
     func testCaseWillStart(_ testCase: XCTestCase) {
-        printAndFlush("Test Case '\(testCase.name)' started at \(dateFormatter.stringFromDate(testCase.testRun!.startDate!))")
+        printAndFlush("Test Case '\(testCase.name)' started at \(dateFormatter.string(from: testCase.testRun!.startDate!))")
     }
 
     func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {
@@ -47,7 +47,7 @@ internal class PrintObserver: XCTestObservation {
     func testSuiteDidFinish(_ testSuite: XCTestSuite) {
         let testRun = testSuite.testRun!
         let verb = testRun.hasSucceeded ? "passed" : "failed"
-        printAndFlush("Test Suite '\(testSuite.name)' \(verb) at \(dateFormatter.stringFromDate(testRun.stopDate!))")
+        printAndFlush("Test Suite '\(testSuite.name)' \(verb) at \(dateFormatter.string(from: testRun.stopDate!))")
 
         let tests = testRun.executionCount == 1 ? "test" : "tests"
         let failures = testRun.totalFailureCount == 1 ? "failure" : "failures"

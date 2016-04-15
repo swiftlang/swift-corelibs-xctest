@@ -34,7 +34,7 @@ public class XCTestRun {
     /// when it was stopped.
     public var totalDuration: NSTimeInterval {
         if let stop = stopDate, start = startDate {
-            return stop.timeIntervalSinceDate(start)
+            return stop.timeIntervalSince(start)
         } else {
             return 0.0
         }
