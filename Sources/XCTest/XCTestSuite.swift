@@ -65,7 +65,7 @@ public class XCTestSuite: XCTest {
         setUp()
         for test in tests {
             test.run()
-            testRun.addTest(test.testRun!)
+            testRun.addTestRun(test.testRun!)
         }
         tearDown()
         run.stop()

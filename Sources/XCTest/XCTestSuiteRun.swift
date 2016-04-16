@@ -57,7 +57,7 @@ public class XCTestSuiteRun: XCTestRun {
 
     /// Add a test run to the collection of `testRuns`.
     /// - Note: It is rare to call this method outside of XCTest itself.
-    public func addTest(_ testRun: XCTestRun) {
+    public func addTestRun(_ testRun: XCTestRun) {
         testRuns.append(testRun)
     }
 
