@@ -16,6 +16,7 @@ import subprocess
 import sys
 import tempfile
 import textwrap
+import platform
 
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -36,146 +37,214 @@ def _mkdirp(path):
     if not os.path.exists(path):
         run("mkdir -p {}".format(path))
 
+class DarwinStrategy:
+    @staticmethod
+    def requires_foundation_build_dir():
+        # The Foundation build directory is not required on Darwin because the
+        # Xcode workspace implicitly builds Foundation when building the XCTest
+        # schemes.
+        return False
 
-def _core_foundation_build_dir(foundation_build_dir):
-    """
-    Given the path to a swift-corelibs-foundation built product directory,
-    return the path to CoreFoundation built products.
+    @staticmethod
+    def build(args):
+        """
+        Build XCTest and place the built products in the given 'build_dir'.
+        If 'test' is specified, also executes the 'test' subcommand.
+        """
+        swiftc = os.path.abspath(args.swiftc)
+        build_dir = os.path.abspath(args.build_dir)
 
-    When specifying a built Foundation dir such as
-    '/build/foundation-linux-x86_64/Foundation', CoreFoundation dependencies
-    are placed in 'usr/lib/swift'. Note that it's technically not necessary to
-    include this extra path when linking the installed Swift's
-    'usr/lib/swift/linux/libFoundation.so'.
-    """
-    return os.path.join(foundation_build_dir, 'usr', 'lib', 'swift')
+        run("xcodebuild -workspace {source_dir}/XCTest.xcworkspace "
+            "-scheme SwiftXCTest "
+            "SWIFT_EXEC=\"{swiftc}\" "
+            "SWIFT_LINK_OBJC_RUNTIME=YES "
+            "SYMROOT=\"{build_dir}\" OBJROOT=\"{build_dir}\"".format(
+                swiftc=swiftc,
+                build_dir=build_dir,
+                source_dir=SOURCE_DIR))
 
+        if args.test:
+            # Execute main() using the arguments necessary to run the tests.
+            main(args=["test",
+                       "--swiftc", swiftc,
+                       build_dir])
 
-def _build(args):
-    """
-    Build XCTest and place the built products in the given 'build_dir'.
-    If 'test' is specified, also executes the 'test' subcommand.
-    """
-    swiftc = os.path.abspath(args.swiftc)
-    build_dir = os.path.abspath(args.build_dir)
-    foundation_build_dir = os.path.abspath(args.foundation_build_dir)
-    core_foundation_build_dir = _core_foundation_build_dir(
-        foundation_build_dir)
+    @staticmethod
+    def test(args):
+        """
+        Test SwiftXCTest.framework, using the given 'swiftc' compiler, looking
+        for it in the given 'build_dir'.
+        """
+        swiftc = os.path.abspath(args.swiftc)
+        build_dir = os.path.abspath(args.build_dir)
 
-    _mkdirp(build_dir)
+        run("xcodebuild -workspace {source_dir}/XCTest.xcworkspace "
+            "-scheme SwiftXCTestFunctionalTests "
+            "SWIFT_EXEC=\"{swiftc}\" "
+            "SWIFT_LINK_OBJC_RUNTIME=YES "
+            "SYMROOT=\"{build_dir}\" OBJROOT=\"{build_dir}\" "
+            "| grep -v \"    export\"".format(
+                swiftc=swiftc,
+                build_dir=build_dir,
+                source_dir=SOURCE_DIR))
 
-    sourcePaths = glob.glob(os.path.join(
-        SOURCE_DIR, 'Sources', 'XCTest', '*.swift'))
-
-    if args.build_style == "debug":
-        style_options = "-g"
-    else:
-        style_options = "-O"
-
-    # Not incremental..
-    # Build library
-    run("{swiftc} -c {style_options} -emit-object -emit-module "
-        "-module-name XCTest -module-link-name XCTest -parse-as-library "
-        "-emit-module-path {build_dir}/XCTest.swiftmodule "
-        "-force-single-frontend-invocation "
-        "-I {foundation_build_dir} -I {core_foundation_build_dir} "
-        "{source_paths} -o {build_dir}/XCTest.o".format(
-            swiftc=swiftc,
-            style_options=style_options,
-            build_dir=build_dir,
-            foundation_build_dir=foundation_build_dir,
-            core_foundation_build_dir=core_foundation_build_dir,
-            source_paths=" ".join(sourcePaths)))
-    run("{swiftc} -emit-library {build_dir}/XCTest.o "
-        "-L {foundation_build_dir} -lswiftGlibc -lswiftCore -lFoundation -lm "
-        "-o {build_dir}/libXCTest.so".format(
-            swiftc=swiftc,
-            build_dir=build_dir,
-            foundation_build_dir=foundation_build_dir))
-
-    if args.test:
-        # Execute main() using the arguments necessary to run the tests.
-        main(args=["test",
-                   "--swiftc", swiftc,
-                   "--foundation-build-dir", foundation_build_dir,
-                   build_dir])
-
-    # If --module-install-path and --library-install-path were specified,
-    # we also install the built XCTest products.
-    if args.module_path is not None and args.lib_path is not None:
-        # Execute main() using the arguments necessary for installation.
-        main(args=["install", build_dir,
-                   "--module-install-path", args.module_path,
-                   "--library-install-path", args.lib_path])
-
-    note('Done.')
+    @staticmethod
+    def install(args):
+        """
+        Installing XCTest is not supported on Darwin.
+        """
+        note("error: The install command is not supported on this platform")
+        exit(1)
 
 
-def _test(args):
-    """
-    Test the built XCTest.so library at the given 'build_dir', using the
-    given 'swiftc' compiler.
-    """
-    lit_path = os.path.abspath(args.lit)
-    if not os.path.exists(lit_path):
-        raise IOError(
-            'Could not find lit tester tool at path: "{}". This tool is '
-            'requred to run the test suite. Unless you specified a custom '
-            'path to the tool using the "--lit" option, the lit tool will be '
-            'found in the LLVM source tree, which is expected to be checked '
-            'out in the same directory as swift-corelibs-xctest. If you do '
-            'not have LLVM checked out at this path, you may follow the '
-            'instructions for "Getting Sources for Swift and Related '
-            'Projects" from the Swift project README in order to fix this '
-            'error.'.format(lit_path))
+class GenericUnixStrategy:
+    @staticmethod
+    def requires_foundation_build_dir():
+        # This script does not know how to build Foundation in Unix environments,
+        # so we need the path to a pre-built Foundation library.
+        return True
 
-    # FIXME: Allow these to be specified by the Swift build script.
-    lit_flags = "-sv --no-progress-bar"
-    tests_path = os.path.join(SOURCE_DIR, "Tests", "Functional")
-    core_foundation_build_dir = _core_foundation_build_dir(
-        args.foundation_build_dir)
+    @staticmethod
+    def build(args):
+        """
+        Build XCTest and place the built products in the given 'build_dir'.
+        If 'test' is specified, also executes the 'test' subcommand.
+        """
+        swiftc = os.path.abspath(args.swiftc)
+        build_dir = os.path.abspath(args.build_dir)
+        foundation_build_dir = os.path.abspath(args.foundation_build_dir)
+        core_foundation_build_dir = GenericUnixStrategy.core_foundation_build_dir(
+            foundation_build_dir)
 
-    run('SWIFT_EXEC={swiftc} '
-        'BUILT_PRODUCTS_DIR={built_products_dir} '
-        'FOUNDATION_BUILT_PRODUCTS_DIR={foundation_build_dir} '
-        'CORE_FOUNDATION_BUILT_PRODUCTS_DIR={core_foundation_build_dir} '
-        '{lit_path} {lit_flags} '
-        '{tests_path}'.format(
-            swiftc=args.swiftc,
-            built_products_dir=args.build_dir,
-            foundation_build_dir=args.foundation_build_dir,
-            core_foundation_build_dir=core_foundation_build_dir,
-            lit_path=lit_path,
-            lit_flags=lit_flags,
-            tests_path=tests_path))
+        _mkdirp(build_dir)
 
+        sourcePaths = glob.glob(os.path.join(
+            SOURCE_DIR, 'Sources', 'XCTest', '*.swift'))
 
-def _install(args):
-    """
-    Install the XCTest.so, XCTest.swiftmodule, and XCTest.swiftdoc build
-    products into the given module and library paths.
-    """
-    build_dir = os.path.abspath(args.build_dir)
-    module_install_path = os.path.abspath(args.module_install_path)
-    library_install_path = os.path.abspath(args.library_install_path)
+        if args.build_style == "debug":
+            style_options = "-g"
+        else:
+            style_options = "-O"
 
-    _mkdirp(module_install_path)
-    _mkdirp(library_install_path)
+        # Not incremental..
+        # Build library
+        run("{swiftc} -c {style_options} -emit-object -emit-module "
+            "-module-name XCTest -module-link-name XCTest -parse-as-library "
+            "-emit-module-path {build_dir}/XCTest.swiftmodule "
+            "-force-single-frontend-invocation "
+            "-I {foundation_build_dir} -I {core_foundation_build_dir} "
+            "{source_paths} -o {build_dir}/XCTest.o".format(
+                swiftc=swiftc,
+                style_options=style_options,
+                build_dir=build_dir,
+                foundation_build_dir=foundation_build_dir,
+                core_foundation_build_dir=core_foundation_build_dir,
+                source_paths=" ".join(sourcePaths)))
+        run("{swiftc} -emit-library {build_dir}/XCTest.o "
+            "-L {foundation_build_dir} -lswiftGlibc -lswiftCore -lFoundation -lm "
+            "-o {build_dir}/libXCTest.so".format(
+                swiftc=swiftc,
+                build_dir=build_dir,
+                foundation_build_dir=foundation_build_dir))
 
-    xctest_so = "libXCTest.so"
-    run("cp {} {}".format(
-        os.path.join(build_dir, xctest_so),
-        os.path.join(library_install_path, xctest_so)))
+        if args.test:
+            # Execute main() using the arguments necessary to run the tests.
+            main(args=["test",
+                       "--swiftc", swiftc,
+                       "--foundation-build-dir", foundation_build_dir,
+                       build_dir])
 
-    xctest_swiftmodule = "XCTest.swiftmodule"
-    run("cp {} {}".format(
-        os.path.join(build_dir, xctest_swiftmodule),
-        os.path.join(module_install_path, xctest_swiftmodule)))
+        # If --module-install-path and --library-install-path were specified,
+        # we also install the built XCTest products.
+        if args.module_path is not None and args.lib_path is not None:
+            # Execute main() using the arguments necessary for installation.
+            main(args=["install", build_dir,
+                       "--module-install-path", args.module_path,
+                       "--library-install-path", args.lib_path])
 
-    xctest_swiftdoc = "XCTest.swiftdoc"
-    run("cp {} {}".format(
-        os.path.join(build_dir, xctest_swiftdoc),
-        os.path.join(module_install_path, xctest_swiftdoc)))
+        note('Done.')
+
+    @staticmethod
+    def test(args):
+        """
+        Test the built XCTest.so library at the given 'build_dir', using the
+        given 'swiftc' compiler.
+        """
+        lit_path = os.path.abspath(args.lit)
+        if not os.path.exists(lit_path):
+            raise IOError(
+                'Could not find lit tester tool at path: "{}". This tool is '
+                'requred to run the test suite. Unless you specified a custom '
+                'path to the tool using the "--lit" option, the lit tool will be '
+                'found in the LLVM source tree, which is expected to be checked '
+                'out in the same directory as swift-corelibs-xctest. If you do '
+                'not have LLVM checked out at this path, you may follow the '
+                'instructions for "Getting Sources for Swift and Related '
+                'Projects" from the Swift project README in order to fix this '
+                'error.'.format(lit_path))
+
+        # FIXME: Allow these to be specified by the Swift build script.
+        lit_flags = "-sv --no-progress-bar"
+        tests_path = os.path.join(SOURCE_DIR, "Tests", "Functional")
+        foundation_build_dir = os.path.abspath(args.foundation_build_dir)
+        core_foundation_build_dir = GenericUnixStrategy.core_foundation_build_dir(
+            foundation_build_dir)
+
+        run('SWIFT_EXEC={swiftc} '
+            'BUILT_PRODUCTS_DIR={built_products_dir} '
+            'FOUNDATION_BUILT_PRODUCTS_DIR={foundation_build_dir} '
+            'CORE_FOUNDATION_BUILT_PRODUCTS_DIR={core_foundation_build_dir} '
+            '{lit_path} {lit_flags} '
+            '{tests_path}'.format(
+                swiftc=os.path.abspath(args.swiftc),
+                built_products_dir=args.build_dir,
+                foundation_build_dir=foundation_build_dir,
+                core_foundation_build_dir=core_foundation_build_dir,
+                lit_path=lit_path,
+                lit_flags=lit_flags,
+                tests_path=tests_path))
+
+    @staticmethod
+    def install(args):
+        """
+        Install the XCTest.so, XCTest.swiftmodule, and XCTest.swiftdoc build
+        products into the given module and library paths.
+        """
+        build_dir = os.path.abspath(args.build_dir)
+        module_install_path = os.path.abspath(args.module_install_path)
+        library_install_path = os.path.abspath(args.library_install_path)
+
+        _mkdirp(module_install_path)
+        _mkdirp(library_install_path)
+
+        xctest_so = "libXCTest.so"
+        run("cp {} {}".format(
+            os.path.join(build_dir, xctest_so),
+            os.path.join(library_install_path, xctest_so)))
+
+        xctest_swiftmodule = "XCTest.swiftmodule"
+        run("cp {} {}".format(
+            os.path.join(build_dir, xctest_swiftmodule),
+            os.path.join(module_install_path, xctest_swiftmodule)))
+
+        xctest_swiftdoc = "XCTest.swiftdoc"
+        run("cp {} {}".format(
+            os.path.join(build_dir, xctest_swiftdoc),
+            os.path.join(module_install_path, xctest_swiftdoc)))
+
+    @staticmethod
+    def core_foundation_build_dir(foundation_build_dir):
+        """
+        Given the path to a swift-corelibs-foundation built product directory,
+        return the path to CoreFoundation built products.
+
+        When specifying a built Foundation dir such as
+        '/build/foundation-linux-x86_64/Foundation', CoreFoundation dependencies
+        are placed in 'usr/lib/swift'. Note that it's technically not necessary to
+        include this extra path when linking the installed Swift's
+        'usr/lib/swift/linux/libFoundation.so'.
+        """
+        return os.path.join(foundation_build_dir, 'usr', 'lib', 'swift')
 
 
 def main(args=sys.argv[1:]):
@@ -184,22 +253,23 @@ def main(args=sys.argv[1:]):
     delegates building or testing XCTest to a sub-parser and its corresponding
     function.
     """
+    strategy = DarwinStrategy if platform.system() == 'Darwin' else GenericUnixStrategy
+
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description=textwrap.dedent("""
             Build, test, and install XCTest.
 
-            WARNING: This script is only meant to be used on Linux
-            environments, and in general should not be invoked directly. The
+            NOTE: In general this script should not be invoked directly. The
             recommended way to build and test XCTest is via the Swift build
             script. See this project's README for details.
 
             The Swift build script invokes this %(prog)s script to build,
-            test, and install this project on Linux. Assuming you are on a
-            Linux environment, you may invoke it in the same way to build this
-            project directly. For example, If your install of Swift is located
-            at "/swift" and you wish to install XCTest into that same location,
-            here is a sample invocation of the build script:
+            test, and install this project. You may invoke it in the same way 
+            to build this project directly. For example, if you are in a Linux
+            environment, your install of Swift is located at "/swift" and you
+            wish to install XCTest into that same location, here is a sample
+            invocation of the build script:
 
             $ %(prog)s \\
                 --swiftc="/swift/usr/bin/swiftc" \\
@@ -207,6 +277,10 @@ def main(args=sys.argv[1:]):
                 --foundation-build-dir "/swift/usr/lib/swift/linux" \\
                 --library-install-path="/swift/usr/lib/swift/linux" \\
                 --module-install-path="/swift/usr/lib/swift/linux/x86_64"
+
+            Note that installation is not supported on Darwin as this library
+            is only intended to be used as a dependency in environments where
+            Apple XCTest is not available.
             """))
     subparsers = parser.add_subparsers(
         description=textwrap.dedent("""
@@ -222,7 +296,7 @@ def main(args=sys.argv[1:]):
             Build XCTest.so, XCTest.swiftmodule, and XCTest.swiftdoc using the
             given Swift compiler. This command may also test and install the
             built products."""))
-    build_parser.set_defaults(func=_build)
+    build_parser.set_defaults(func=strategy.build)
     build_parser.add_argument(
         "--swiftc",
         help="Path to the 'swiftc' compiler that will be used to build "
@@ -239,7 +313,7 @@ def main(args=sys.argv[1:]):
         "--foundation-build-dir",
         help="Path to swift-corelibs-foundation build products, which "
              "the built XCTest.so will be linked against.",
-        required=True)
+        required=strategy.requires_foundation_build_dir())
     build_parser.add_argument("--swift-build-dir",
                               help="deprecated, do not use")
     build_parser.add_argument("--arch", help="deprecated, do not use")
@@ -279,7 +353,7 @@ def main(args=sys.argv[1:]):
     test_parser = subparsers.add_parser(
         "test",
         description="Tests a built XCTest framework at the given path.")
-    test_parser.set_defaults(func=_test)
+    test_parser.set_defaults(func=strategy.test)
     test_parser.add_argument(
         "build_dir",
         help="An absolute path to a directory containing the built XCTest.so "
@@ -298,12 +372,12 @@ def main(args=sys.argv[1:]):
         "--foundation-build-dir",
         help="Path to swift-corelibs-foundation build products, which the "
              "tests will be linked against.",
-        required=True)
+        required=strategy.requires_foundation_build_dir())
 
     install_parser = subparsers.add_parser(
         "install",
         description="Installs a built XCTest framework.")
-    install_parser.set_defaults(func=_install)
+    install_parser.set_defaults(func=strategy.install)
     install_parser.add_argument(
         "build_dir",
         help="An absolute path to a directory containing a built XCTest.so, "
