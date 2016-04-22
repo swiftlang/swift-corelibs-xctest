@@ -10,28 +10,15 @@
 //  XCTestSuite.swift
 //  A collection of test cases.
 //
+// A concrete subclass of XCTest, XCTestSuite is a collection of test cases.
+// Suites are usually managed by the IDE, but XCTestSuite can also be
+// instantiated and manipulated directly:
+//
+//     let suite = XCTestSuite(name: "My Tests")
+//     suite.addTest(myTest)
+//     suite.testCaseCount // 1
+//     suite.perform(myRunner)
 
-/// A concrete subclass of XCTest, XCTestSuite is a collection of test cases.
-/// Suites are usually managed by the IDE, but XCTestSuite also provides API
-/// for dynamic test and suite management:
-///
-///     XCTestSuite *suite = [XCTestSuite testSuiteWithName:@"My tests"];
-///     [suite addTest:[MathTest testCaseWithSelector:@selector(testAdd)]];
-///     [suite addTest:[MathTest testCaseWithSelector:@selector(testDivideByZero)]];
-///
-/// Alternatively, a test suite can extract the tests to be run automatically.
-/// To do so, pass the class of your test case class to the suite's constructor:
-///
-///     XCTestSuite *suite = [XCTestSuite testSuiteForTestCaseClass:[MathTest class]];
-///
-/// This creates a suite with all the methods starting with "test" that take no
-/// arguments. Also, a test suite of all the test cases found in the runtime
-/// can be created automatically:
-///
-///     XCTestSuite *suite = [XCTestSuite defaultTestSuite];
-///
-/// This creates a suite of suites with all the XCTestCase subclasses methods
-/// that start with "test" and take no arguments.
 public class XCTestSuite: XCTest {
     public private(set) var tests = [XCTest]()
 
