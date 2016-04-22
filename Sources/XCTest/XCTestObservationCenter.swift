@@ -71,7 +71,7 @@ public class XCTestObservationCenter {
         forEachObserver { $0.testBundleDidFinish(testBundle) }
     }
 
-    private func forEachObserver(@noescape _ body: XCTestObservation -> Void) {
+    private func forEachObserver(_ body: @noescape XCTestObservation -> Void) {
         for observer in observers {
             body(observer.object)
         }
