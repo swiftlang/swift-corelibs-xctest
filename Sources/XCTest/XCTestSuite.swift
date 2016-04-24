@@ -10,14 +10,14 @@
 //  XCTestSuite.swift
 //  A collection of test cases.
 //
-// A concrete subclass of XCTest, XCTestSuite is a collection of test cases.
-// Suites are usually managed by the IDE, but XCTestSuite can also be
-// instantiated and manipulated directly:
+// A subclass of XCTest, XCTestSuite is a collection of test cases. Based on
+// what's passed into XCTMain(), a hierarchy of suites is built up, but
+// XCTestSuite can also be instantiated and manipulated directly:
 //
 //     let suite = XCTestSuite(name: "My Tests")
 //     suite.addTest(myTest)
 //     suite.testCaseCount // 1
-//     suite.perform(myRunner)
+//     suite.run()
 
 public class XCTestSuite: XCTest {
     public private(set) var tests = [XCTest]()
