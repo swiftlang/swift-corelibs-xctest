@@ -42,9 +42,9 @@
 ///
 ///     XCTMain([ testCase(TestFoo.allTests) ])
 ///
-/// Command line arguments can be used to select a particular test or test case to execute. For example:
+/// Command line arguments can be used to select a particular test case or class to execute. For example:
 ///
-///     ./FooTests FooTestCase/testFoo  # Run a single test method
+///     ./FooTests FooTestCase/testFoo  # Run a single test case
 ///     ./FooTests FooTestCase          # Run all the tests in FooTestCase
 ///
 /// - Parameter testCases: An array of test cases run, each produced by a call to the `testCase` function
@@ -75,10 +75,10 @@
     }
 
     let filter = TestFiltering(selectedTestName: selectedTestName)
-    for (testCaseType, tests) in TestFiltering.filterTests(testCases, filter: filter.selectedTestFilter) {
-        let testCaseSuite = XCTestSuite(name: "\(testCaseType)")
-        for (testName, testClosure) in tests {
-            let testCase = testCaseType.init(name: testName, testClosure: testClosure)
+    for (testCaseClass, testCaseMethods) in TestFiltering.filterTests(testCases, filter: filter.selectedTestFilter) {
+        let testCaseSuite = XCTestSuite(name: "\(testCaseClass)")
+        for (testName, testClosure) in testCaseMethods {
+            let testCase = testCaseClass.init(name: testName, testClosure: testClosure)
             testCaseSuite.addTest(testCase)
         }
         currentTestSuite.addTest(testCaseSuite)

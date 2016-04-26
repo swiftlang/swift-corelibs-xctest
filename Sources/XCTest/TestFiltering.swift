@@ -37,20 +37,19 @@ internal struct TestFiltering {
 
     static func filterTests(_ entries: [XCTestCaseEntry], filter: TestFilter) -> [XCTestCaseEntry] {
         return entries
-            .map { testCase, tests in
-                return (testCase, tests.filter { filter(testCase, $0.0) } )
+            .map { testCaseClass, testCaseMethods in
+                return (testCaseClass, testCaseMethods.filter { filter(testCaseClass, $0.0) } )
             }
-            .filter { testCase, tests in
-                return !tests.isEmpty
+            .filter { _, testCaseMethods in
+                return !testCaseMethods.isEmpty
             }
     }
 }
 
-/// A selected test can be an entire test case, or a single test method
-/// within a test case.
+/// A selected test can be a single test case, or an entire class of test cases
 private struct SelectedTest {
-    let testCaseName: String
-    let testName: String?
+    let testCaseClassName: String
+    let testCaseMethodName: String?
 }
 
 private extension SelectedTest {
@@ -58,17 +57,17 @@ private extension SelectedTest {
         let components = selectedTestName.characters.split(separator: "/").map(String.init)
         switch components.count {
         case 1:
-            testCaseName = components[0]
-            testName = nil
+            testCaseClassName = components[0]
+            testCaseMethodName = nil
         case 2:
-            testCaseName = components[0]
-            testName = components[1]
+            testCaseClassName = components[0]
+            testCaseMethodName = components[1]
         default:
             return nil
         }
     }
 
-    func matches(testCase: XCTestCase.Type, testName: String) -> Bool {
-        return String(reflecting: testCase) == testCaseName && (self.testName == nil || testName == self.testName)
+    func matches(testCaseClass: XCTestCase.Type, testCaseMethodName: String) -> Bool {
+        return String(reflecting: testCaseClass) == testCaseClassName && (self.testCaseMethodName == nil || testCaseMethodName == self.testCaseMethodName)
     }
 }
