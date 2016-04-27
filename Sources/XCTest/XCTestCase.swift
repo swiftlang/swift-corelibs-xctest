@@ -18,7 +18,7 @@
 #endif
 
 /// This is a compound type used by `XCTMain` to represent tests to run. It combines an
-/// `XCTestCase` subclass type with the list of test methods to invoke on the test case.
+/// `XCTestCase` subclass type with the list of test case methods to invoke on the class.
 /// This type is intended to be produced by the `testCase` helper function.
 /// - seealso: `testCase`
 /// - seealso: `XCTMain`
@@ -28,6 +28,10 @@ public typealias XCTestCaseEntry = (testCaseClass: XCTestCase.Type, allTests: [(
 // order for XCTAssert functions to report failures.
 internal var XCTCurrentTestCase: XCTestCase?
 
+/// An instance of this class represents an individual test case which can be
+/// run by the framework. This class is normally subclassed and extended with
+/// methods containing the tests to run.
+/// - seealso: `XCTMain`
 public class XCTestCase: XCTest {
     private let testClosure: XCTestCase throws -> Void
 

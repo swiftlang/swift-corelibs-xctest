@@ -23,7 +23,7 @@ class TestNSURL : XCTestCase {
 }
 ```
 
-Also, this version of XCTest does not use the external test runner binary. Instead, create your own executable which links `libXCTest.so`. In your `main.swift`, invoke the `XCTMain` function with an array of the test cases classes that you wish to run, wrapped by the `testCase` helper function. For example:
+Also, this version of XCTest does not use the external test runner binary. Instead, create your own executable which links `libXCTest.so`. In your `main.swift`, invoke the `XCTMain` function with an array of the tests from the `XCTestCase` subclasses that you wish to run, wrapped by the `testCase` helper function. For example:
 
 ```swift
 XCTMain([testCase(TestNSString.allTests), testCase(TestNSArray.allTests), testCase(TestNSDictionary.allTests)])
@@ -32,7 +32,7 @@ XCTMain([testCase(TestNSString.allTests), testCase(TestNSArray.allTests), testCa
 The `XCTMain` function does not return, and will cause your test app to exit with either `0` for success or `1` for failure. Command line arguments given to the executable can be used to select a particular test or test case to execute. For example:
 
 ```sh
-./FooTests FooTestCase/testFoo  # Run a single test method
+./FooTests FooTestCase/testFoo  # Run a single test case
 ./FooTests FooTestCase          # Run all the tests in FooTestCase
 ```
 

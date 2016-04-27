@@ -44,7 +44,7 @@ class SkippedTestCase: XCTestCase {
     }
 
     func test_skipped() {
-        XCTFail("This test method should not be executed.")
+        XCTFail("This test case should not be executed.")
     }
 }
 
@@ -65,7 +65,7 @@ class ExecutedTestCase: XCTestCase {
     }
 
     func test_skipped() {
-        XCTFail("This test method should not be executed.")
+        XCTFail("This test case should not be executed.")
     }
 }
 
