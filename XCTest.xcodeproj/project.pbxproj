@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		510957A91CA878410091D1A1 /* XCNotificationExpectationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510957A81CA878410091D1A1 /* XCNotificationExpectationHandler.swift */; };
+		AE33888B1CD3D72500C39B1C /* XCTestCaseSuite.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE33888A1CD3D72500C39B1C /* XCTestCaseSuite.swift */; };
 		AE7DD6091C8E81A0006FC722 /* ArgumentParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7DD6071C8E81A0006FC722 /* ArgumentParser.swift */; };
 		AE7DD60A1C8E81A0006FC722 /* TestFiltering.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7DD6081C8E81A0006FC722 /* TestFiltering.swift */; };
 		AE7DD60C1C8F0513006FC722 /* XCTestObservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7DD60B1C8F0513006FC722 /* XCTestObservation.swift */; };
@@ -41,6 +42,7 @@
 /* Begin PBXFileReference section */
 		510957A81CA878410091D1A1 /* XCNotificationExpectationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCNotificationExpectationHandler.swift; sourceTree = "<group>"; };
 		5B5D86DB1BBC74AD00234F36 /* SwiftXCTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftXCTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE33888A1CD3D72500C39B1C /* XCTestCaseSuite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestCaseSuite.swift; sourceTree = "<group>"; };
 		AE7DD6061C8DC6C0006FC722 /* Functional */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Functional; sourceTree = "<group>"; };
 		AE7DD6071C8E81A0006FC722 /* ArgumentParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArgumentParser.swift; sourceTree = "<group>"; };
 		AE7DD6081C8E81A0006FC722 /* TestFiltering.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestFiltering.swift; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 				AE9596E01C9692B8001A9EF0 /* XCTestObservationCenter.swift */,
 				DACC94411C8B87B900EC85F5 /* XCWaitCompletionHandler.swift */,
 				510957A81CA878410091D1A1 /* XCNotificationExpectationHandler.swift */,
+				AE33888A1CD3D72500C39B1C /* XCTestCaseSuite.swift */,
 			);
 			path = XCTest;
 			sourceTree = "<group>";
@@ -287,6 +290,7 @@
 				AE9596DF1C96911F001A9EF0 /* ObjectWrapper.swift in Sources */,
 				AED59FF61CB5394800F49260 /* XCTestErrors.swift in Sources */,
 				C265F6721C3AEB6A00520CF9 /* XCTestMain.swift in Sources */,
+				AE33888B1CD3D72500C39B1C /* XCTestCaseSuite.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
