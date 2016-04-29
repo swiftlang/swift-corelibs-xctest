@@ -21,6 +21,12 @@ class SetUpTearDownTestCase: XCTestCase {
 
     var value = 0
 
+    // CHECK: In class setUp\(\)
+    override class func setUp() {
+        super.setUp()
+        print("In class \(#function)")
+    }
+
     override func setUp() {
         super.setUp()
         print("In \(#function)")
@@ -40,6 +46,12 @@ class SetUpTearDownTestCase: XCTestCase {
     func test_hasValueFromSetUp() {
         print("In \(#function)")
         XCTAssertEqual(value, 42)
+    }
+
+    // CHECK: In class tearDown\(\)
+    override class func tearDown() {
+        super.tearDown()
+        print("In class \(#function)")
     }
 }
 // CHECK: Test Suite 'SetUpTearDownTestCase' passed at \d+:\d+:\d+\.\d+

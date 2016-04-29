@@ -129,6 +129,14 @@ public class XCTestCase: XCTest {
             fatalError("Terminating execution due to test failure")
         }
     }
+
+    /// Setup method called before the invocation of any test method in the
+    /// class.
+    public class func setUp() {}
+
+    /// Teardown method called after the invocation of every test method in the
+    /// class.
+    public class func tearDown() {}
 }
 
 /// Wrapper function allowing an array of static test case methods to fit

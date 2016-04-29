@@ -75,14 +75,9 @@
     }
 
     let filter = TestFiltering(selectedTestName: selectedTestName)
-    for (testCaseClass, testCaseMethods) in TestFiltering.filterTests(testCases, filter: filter.selectedTestFilter) {
-        let testCaseSuite = XCTestSuite(name: "\(testCaseClass)")
-        for (testName, testClosure) in testCaseMethods {
-            let testCase = testCaseClass.init(name: testName, testClosure: testClosure)
-            testCaseSuite.addTest(testCase)
-        }
-        currentTestSuite.addTest(testCaseSuite)
-    }
+    TestFiltering.filterTests(testCases, filter: filter.selectedTestFilter)
+        .map(XCTestCaseSuite.init)
+        .forEach(currentTestSuite.addTest)
 
     rootTestSuite.run()
 
