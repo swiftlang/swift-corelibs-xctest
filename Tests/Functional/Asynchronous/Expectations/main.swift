@@ -79,7 +79,7 @@ class ExpectationsTestCase: XCTestCase {
         waitForExpectations(withTimeout: -1.0)
     }
 
-    static var allTests: [(String, ExpectationsTestCase -> () throws -> Void)] {
+    static var allTests: [(String, (ExpectationsTestCase) -> () throws -> Void)] {
         return [
             ("test_waitingForAnUnfulfilledExpectation_fails", test_waitingForAnUnfulfilledExpectation_fails),
             ("test_waitingForUnfulfilledExpectations_outputsAllExpectations_andFails", test_waitingForUnfulfilledExpectations_outputsAllExpectations_andFails),

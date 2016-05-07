@@ -66,7 +66,7 @@ class NotificationExpectationsTestCase: XCTestCase {
         waitForExpectations(withTimeout: 0.1)
     }
     
-    static var allTests: [(String, NotificationExpectationsTestCase -> () throws -> Void)] {
+    static var allTests: [(String, (NotificationExpectationsTestCase) -> () throws -> Void)] {
         return [
                    ("test_observeNotificationWithName_passes", test_observeNotificationWithName_passes),
                    ("test_observeNotificationWithNameAndObject_passes", test_observeNotificationWithNameAndObject_passes),

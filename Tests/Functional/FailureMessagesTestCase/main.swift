@@ -15,7 +15,7 @@
 
 // CHECK: Test Suite 'FailureMessagesTestCase' started at \d+:\d+:\d+\.\d+
 class FailureMessagesTestCase: XCTestCase {
-    static var allTests: [(String, FailureMessagesTestCase -> () throws -> Void)] {
+    static var allTests: [(String, (FailureMessagesTestCase) -> () throws -> Void)] {
         return [
             ("testAssert", testAssert),
             ("testAssertEqualOptionals", testAssertEqualOptionals),

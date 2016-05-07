@@ -37,7 +37,7 @@ let observer = Observer()
 XCTestObservationCenter.shared().addTestObserver(observer)
 
 class SkippedTestCase: XCTestCase {
-    static var allTests: [(String, SkippedTestCase -> () throws -> Void)] {
+    static var allTests: [(String, (SkippedTestCase) -> () throws -> Void)] {
         return [
             ("test_skipped", test_skipped),
         ]
@@ -50,7 +50,7 @@ class SkippedTestCase: XCTestCase {
 
 // CHECK: Test Suite 'ExecutedTestCase' started at \d+:\d+:\d+\.\d+
 class ExecutedTestCase: XCTestCase {
-    static var allTests: [(String, ExecutedTestCase -> () throws -> Void)] {
+    static var allTests: [(String, (ExecutedTestCase) -> () throws -> Void)] {
         return [
             ("test_executed", test_executed),
             ("test_skipped", test_skipped),

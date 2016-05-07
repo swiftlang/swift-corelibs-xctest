@@ -45,7 +45,7 @@ class HandlerTestCase: XCTestCase {
         XCTAssertTrue(handlerWasCalled)
     }
 
-    static var allTests: [(String, HandlerTestCase -> () throws -> Void)] {
+    static var allTests: [(String, (HandlerTestCase) -> () throws -> Void)] {
         return [
             ("test_whenExpectationsAreNotFulfilled_handlerCalled_andFails", test_whenExpectationsAreNotFulfilled_handlerCalled_andFails),
             ("test_whenExpectationsAreFulfilled_handlerCalled_andPasses", test_whenExpectationsAreFulfilled_handlerCalled_andPasses),

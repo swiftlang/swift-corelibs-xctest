@@ -18,7 +18,7 @@
 // CHECK-ALL: Test Suite '.*\.xctest' started at \d+:\d+:\d+\.\d+
 
 class ExecutedTestCase: XCTestCase {
-    static var allTests: [(String, ExecutedTestCase -> () throws -> Void)] {
+    static var allTests: [(String, (ExecutedTestCase) -> () throws -> Void)] {
         return [
             ("test_bar", test_bar),
             ("test_foo", test_foo),
@@ -52,7 +52,7 @@ class ExecutedTestCase: XCTestCase {
 
 // CHECK-ALL: Test Suite 'SkippedTestCase' started at \d+:\d+:\d+\.\d+
 class SkippedTestCase: XCTestCase {
-    static var allTests: [(String, SkippedTestCase -> () throws -> Void)] {
+    static var allTests: [(String, (SkippedTestCase) -> () throws -> Void)] {
         return [("test_baz", test_baz)]
     }
 

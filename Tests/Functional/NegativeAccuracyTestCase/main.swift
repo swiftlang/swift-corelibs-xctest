@@ -15,7 +15,7 @@
 
 // CHECK: Test Suite 'NegativeAccuracyTestCase' started at \d+:\d+:\d+\.\d+
 class NegativeAccuracyTestCase: XCTestCase {
-    static var allTests: [(String, NegativeAccuracyTestCase -> () throws -> Void)] {
+    static var allTests: [(String, (NegativeAccuracyTestCase) -> () throws -> Void)] {
         return [
             ("test_equalWithAccuracy_passes", test_equalWithAccuracy_passes),
             ("test_equalWithAccuracy_fails", test_equalWithAccuracy_fails),

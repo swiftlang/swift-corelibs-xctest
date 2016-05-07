@@ -13,7 +13,7 @@
 
 // CHECK: Test Suite 'ErrorHandling' started at \d+:\d+:\d+\.\d+
 class ErrorHandling: XCTestCase {
-    static var allTests: [(String, ErrorHandling -> () throws -> Void)] {
+    static var allTests: [(String, (ErrorHandling) -> () throws -> Void)] {
         return [
             // Tests for XCTAssertThrowsError
             ("test_shouldButDoesNotThrowErrorInAssertion", test_shouldButDoesNotThrowErrorInAssertion),

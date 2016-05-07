@@ -49,7 +49,7 @@ class MisuseTestCase: XCTestCase {
         self.waitForExpectations(withTimeout: 0.1)
     }
 
-    static var allTests: [(String, MisuseTestCase -> () throws -> Void)] {
+    static var allTests: [(String, (MisuseTestCase) -> () throws -> Void)] {
         return [
             ("test_whenExpectationsAreMade_butNotWaitedFor_fails", test_whenExpectationsAreMade_butNotWaitedFor_fails),
             ("test_whenNoExpectationsAreMade_butTheyAreWaitedFor_fails", test_whenNoExpectationsAreMade_butTheyAreWaitedFor_fails),

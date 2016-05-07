@@ -50,7 +50,7 @@ class NotificationHandlerTestCase: XCTestCase {
         NSNotificationCenter.defaultCenter().postNotificationName("note", object: nil)
     }
     
-    static var allTests: [(String, NotificationHandlerTestCase -> () throws -> Void)] {
+    static var allTests: [(String, (NotificationHandlerTestCase) -> () throws -> Void)] {
         return [
                    ("test_notificationNameIsObserved_handlerReturnsFalse_andFails", test_notificationNameIsObserved_handlerReturnsFalse_andFails),
                    ("test_notificationNameIsObserved_handlerReturnsTrue_andPasses", test_notificationNameIsObserved_handlerReturnsTrue_andPasses),

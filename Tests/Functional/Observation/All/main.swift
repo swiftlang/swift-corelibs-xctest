@@ -56,7 +56,7 @@ XCTestObservationCenter.shared().addTestObserver(observer)
 
 // CHECK: Test Suite 'Observation' started at \d+:\d+:\d+\.\d+
 class Observation: XCTestCase {
-    static var allTests: [(String, Observation -> () throws -> Void)] {
+    static var allTests: [(String, (Observation) -> () throws -> Void)] {
         return [
             ("test_one", test_one),
             ("test_two", test_two),

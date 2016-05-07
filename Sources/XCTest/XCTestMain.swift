@@ -26,7 +26,7 @@
 /// Example usage:
 ///
 ///     class TestFoo: XCTestCase {
-///         static var allTests : [(String, TestFoo -> () throws -> Void)] {
+///         static var allTests : [(String, (TestFoo) -> () throws -> Void)] {
 ///             return [
 ///                 ("test_foo", test_foo),
 ///                 ("test_bar", test_bar),
