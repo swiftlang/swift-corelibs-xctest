@@ -143,11 +143,11 @@ public class XCTestCase: XCTest {
 /// the signature required by `XCTMain`
 /// - seealso: `XCTMain`
 public func testCase<T: XCTestCase>(_ allTests: [(String, (T) -> () throws -> Void)]) -> XCTestCaseEntry {
-    let tests: [(String, XCTestCase throws -> Void)] = allTests.map { ($0.0, test($0.1)) }
+    let tests: [(String, (XCTestCase) throws -> Void)] = allTests.map { ($0.0, test($0.1)) }
     return (T.self, tests)
 }
 
-private func test<T: XCTestCase>(_ testFunc: T -> () throws -> Void) -> XCTestCase throws -> Void {
+private func test<T: XCTestCase>(_ testFunc: (T) -> () throws -> Void) -> (XCTestCase) throws -> Void {
     return { testCaseType in
         guard let testCase = testCaseType as? T else {
             fatalError("Attempt to invoke test on class \(T.self) with incompatible instance type \(testCaseType.dynamicType)")
