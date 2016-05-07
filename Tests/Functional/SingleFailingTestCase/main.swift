@@ -13,7 +13,7 @@
 
 // CHECK: Test Suite 'SingleFailingTestCase' started at \d+:\d+:\d+\.\d+
 class SingleFailingTestCase: XCTestCase {
-    static var allTests: [(String, SingleFailingTestCase -> () throws -> Void)] {
+    static var allTests: [(String, (SingleFailingTestCase) -> () throws -> Void)] {
         return [
             ("test_fails", test_fails)
         ]

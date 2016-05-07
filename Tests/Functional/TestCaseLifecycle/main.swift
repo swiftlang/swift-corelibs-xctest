@@ -13,7 +13,7 @@
 
 // CHECK: Test Suite 'SetUpTearDownTestCase' started at \d+:\d+:\d+\.\d+
 class SetUpTearDownTestCase: XCTestCase {
-    static var allTests: [(String, SetUpTearDownTestCase -> () throws -> Void)] {
+    static var allTests: [(String, (SetUpTearDownTestCase) -> () throws -> Void)] {
         return [
             ("test_hasValueFromSetUp", test_hasValueFromSetUp),
         ]
@@ -60,7 +60,7 @@ class SetUpTearDownTestCase: XCTestCase {
 
 // CHECK: Test Suite 'NewInstanceForEachTestTestCase' started at \d+:\d+:\d+\.\d+
 class NewInstanceForEachTestTestCase: XCTestCase {
-    static var allTests: [(String, NewInstanceForEachTestTestCase -> () throws -> Void)] {
+    static var allTests: [(String, (NewInstanceForEachTestTestCase) -> () throws -> Void)] {
         return [
             ("test_hasInitializedValue", test_hasInitializedValue),
             ("test_hasInitializedValueInAnotherTest", test_hasInitializedValueInAnotherTest),

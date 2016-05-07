@@ -22,7 +22,7 @@
 /// This type is intended to be produced by the `testCase` helper function.
 /// - seealso: `testCase`
 /// - seealso: `XCTMain`
-public typealias XCTestCaseEntry = (testCaseClass: XCTestCase.Type, allTests: [(String, XCTestCase throws -> Void)])
+public typealias XCTestCaseEntry = (testCaseClass: XCTestCase.Type, allTests: [(String, (XCTestCase) throws -> Void)])
 
 // A global pointer to the currently running test case. This is required in
 // order for XCTAssert functions to report failures.
@@ -33,7 +33,7 @@ internal var XCTCurrentTestCase: XCTestCase?
 /// methods containing the tests to run.
 /// - seealso: `XCTMain`
 public class XCTestCase: XCTest {
-    private let testClosure: XCTestCase throws -> Void
+    private let testClosure: (XCTestCase) throws -> Void
 
     /// The name of the test case, consisting of its class name and the method
     /// name it will run.
@@ -81,7 +81,7 @@ public class XCTestCase: XCTest {
     /// - Note: Like the designated initializer for Apple XCTest's XCTestCase,
     ///   `-[XCTestCase initWithInvocation:]`, it's rare for anyone outside of
     ///   XCTest itself to call this initializer.
-    public required init(name: String, testClosure: XCTestCase throws -> Void) {
+    public required init(name: String, testClosure: (XCTestCase) throws -> Void) {
         _name = "\(self.dynamicType).\(name)"
         self.testClosure = testClosure
     }
@@ -142,7 +142,7 @@ public class XCTestCase: XCTest {
 /// Wrapper function allowing an array of static test case methods to fit
 /// the signature required by `XCTMain`
 /// - seealso: `XCTMain`
-public func testCase<T: XCTestCase>(_ allTests: [(String, T -> () throws -> Void)]) -> XCTestCaseEntry {
+public func testCase<T: XCTestCase>(_ allTests: [(String, (T) -> () throws -> Void)]) -> XCTestCaseEntry {
     let tests: [(String, XCTestCase throws -> Void)] = allTests.map { ($0.0, test($0.1)) }
     return (T.self, tests)
 }
@@ -158,7 +158,6 @@ private func test<T: XCTestCase>(_ testFunc: T -> () throws -> Void) -> XCTestCa
 }
 
 extension XCTestCase {
-    
     public var continueAfterFailure: Bool {
         get {
             return true

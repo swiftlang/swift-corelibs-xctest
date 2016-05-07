@@ -63,7 +63,7 @@ class PredicateExpectationsTestCase: XCTestCase {
         waitForExpectations(withTimeout: 0.1)
     }
     
-    static var allTests: [(String, PredicateExpectationsTestCase -> () throws -> Void)] {
+    static var allTests: [(String, (PredicateExpectationsTestCase) -> () throws -> Void)] {
         return [
                    ("test_immediatelyTruePredicateAndObject_passes", test_immediatelyTruePredicateAndObject_passes),
                    ("test_immediatelyFalsePredicateAndObject_fails", test_immediatelyFalsePredicateAndObject_fails),

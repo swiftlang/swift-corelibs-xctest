@@ -55,7 +55,7 @@ class PredicateHandlerTestCase: XCTestCase {
         waitForExpectations(withTimeout: 0.1, handler: nil)
     }
     
-    static var allTests: [(String, PredicateHandlerTestCase -> () throws -> Void)] {
+    static var allTests: [(String, (PredicateHandlerTestCase) -> () throws -> Void)] {
         return [
                    ("test_predicateIsTrue_handlerReturnsTrue_passes", test_predicateIsTrue_handlerReturnsTrue_passes),
                    ("test_predicateIsTrue_handlerReturnsFalse_fails", test_predicateIsTrue_handlerReturnsFalse_fails),

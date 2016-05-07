@@ -13,7 +13,7 @@
 
 // CHECK: Test Suite 'PassingTestCase' started at \d+:\d+:\d+\.\d+
 class PassingTestCase: XCTestCase {
-    static var allTests: [(String, PassingTestCase -> () throws -> Void)] {
+    static var allTests: [(String, (PassingTestCase) -> () throws -> Void)] {
         return [
             ("test_passes", test_passes),
         ]
@@ -30,7 +30,7 @@ class PassingTestCase: XCTestCase {
 
 // CHECK: Test Suite 'FailingTestCase' started at \d+:\d+:\d+\.\d+
 class FailingTestCase: XCTestCase {
-    static var allTests: [(String, FailingTestCase -> () throws -> Void)] {
+    static var allTests: [(String, (FailingTestCase) -> () throws -> Void)] {
         return [
             ("test_passes", test_passes),
             ("test_fails", test_fails),
