@@ -121,7 +121,7 @@ public class XCTestCase: XCTest {
 
         // FIXME: Apple XCTest does not throw a fatal error and crash the test
         //        process, it merely prevents the remainder of a testClosure
-        //        from execting after it's been determined that it has already
+        //        from expecting after it's been determined that it has already
         //        failed. The following behavior is incorrect.
         // FIXME: No regression tests exist for this feature. We may break it
         //        without ever realizing.
