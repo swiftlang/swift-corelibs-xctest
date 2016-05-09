@@ -8,7 +8,7 @@
 //
 //
 //  XCTestCaseSuite.swift
-//  A test suite associated with a paticular test case class.
+//  A test suite associated with a particular test case class.
 //
 
 #if os(Linux) || os(FreeBSD)

@@ -129,7 +129,7 @@ private func _XCTEvaluateAssertion(_ assertion: _XCTAssertion, message: @autoclo
 ///   }
 ///   ```
 ///
-///  Calling this assertion will cause XCTest to report the failure occured
+///  Calling this assertion will cause XCTest to report the failure occurred
 ///  in the file where `AssertEmpty()` is defined, and on the line where
 ///  `XCTAssertEqual` is called from within that function:
 ///
