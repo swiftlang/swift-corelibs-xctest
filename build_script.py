@@ -115,6 +115,10 @@ class GenericUnixStrategy:
         foundation_build_dir = os.path.abspath(args.foundation_build_dir)
         core_foundation_build_dir = GenericUnixStrategy.core_foundation_build_dir(
             foundation_build_dir)
+        if args.libdispatch_build_dir:
+            libdispatch_build_dir = os.path.abspath(args.libdispatch_build_dir)
+        if args.libdispatch_src_dir:
+            libdispatch_src_dir = os.path.abspath(args.libdispatch_src_dir)
 
         _mkdirp(build_dir)
 
@@ -128,17 +132,26 @@ class GenericUnixStrategy:
 
         # Not incremental..
         # Build library
-        run("{swiftc} -c {style_options} -emit-object -emit-module "
+        if args.libdispatch_build_dir and args.libdispatch_src_dir:
+            libdispatch_args = "-I {libdispatch_build_dir}/src -I {libdispatch_src_dir} ".format(
+                libdispatch_build_dir=libdispatch_build_dir,
+                libdispatch_src_dir=libdispatch_src_dir)
+        else:
+            libdispatch_args = ""
+
+        run("{swiftc} -Xcc -fblocks -c {style_options} -emit-object -emit-module "
             "-module-name XCTest -module-link-name XCTest -parse-as-library "
             "-emit-module-path {build_dir}/XCTest.swiftmodule "
             "-force-single-frontend-invocation "
             "-I {foundation_build_dir} -I {core_foundation_build_dir} "
+            "{libdispatch_args} "
             "{source_paths} -o {build_dir}/XCTest.o".format(
                 swiftc=swiftc,
                 style_options=style_options,
                 build_dir=build_dir,
                 foundation_build_dir=foundation_build_dir,
                 core_foundation_build_dir=core_foundation_build_dir,
+                libdispatch_args=libdispatch_args,
                 source_paths=" ".join(sourcePaths)))
         run("{swiftc} -emit-library {build_dir}/XCTest.o "
             "-L {foundation_build_dir} -lswiftGlibc -lswiftCore -lFoundation -lm "
@@ -314,6 +327,14 @@ def main(args=sys.argv[1:]):
         help="Path to swift-corelibs-foundation build products, which "
              "the built XCTest.so will be linked against.",
         required=strategy.requires_foundation_build_dir())
+    build_parser.add_argument(
+        "--libdispatch-build-dir",
+        help="Path to swift-corelibs-libdispatch build products, which "
+             "the built XCTest.so will be linked against.")
+    build_parser.add_argument(
+        "--libdispatch-src-dir",
+        help="Path to swift-corelibs-libdispatch source tree, which "
+             "the built XCTest.so will be linked against.")
     build_parser.add_argument("--swift-build-dir",
                               help="deprecated, do not use")
     build_parser.add_argument("--arch", help="deprecated, do not use")
