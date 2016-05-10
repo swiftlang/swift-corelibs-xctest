@@ -75,3 +75,9 @@ internal class PrintObserver: XCTestObservation {
         return String(round(timeInterval * 1000.0) / 1000.0)
     }
 }
+
+extension PrintObserver: _XCTestObservation {
+    func testCase(_ testCase: XCTestCase, didMeasurePerformanceResults results: String, file: StaticString, line: UInt) {
+        printAndFlush("\(file):\(line): Test Case '\(testCase.name)' measured \(results)")
+    }
+}
