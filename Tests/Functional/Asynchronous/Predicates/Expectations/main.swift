@@ -41,7 +41,7 @@ class PredicateExpectationsTestCase: XCTestCase {
         let predicate = NSPredicate(block: {
             evaluatedObject, bindings in
             if let evaluatedDate = evaluatedObject as? NSDate {
-                return evaluatedDate.compare(NSDate()) == NSComparisonResult.OrderedAscending
+                return evaluatedDate.compare(NSDate()) == NSComparisonResult.orderedAscending
             }
             return false
         })
@@ -55,7 +55,7 @@ class PredicateExpectationsTestCase: XCTestCase {
         let halfSecLaterDate = NSDate(timeIntervalSinceNow: 0.01)
         let predicate = NSPredicate(block: { evaluatedObject, bindings in
             if let evaluatedDate = evaluatedObject as? NSDate {
-                return evaluatedDate.compare(NSDate()) == NSComparisonResult.OrderedDescending
+                return evaluatedDate.compare(NSDate()) == NSComparisonResult.orderedDescending
             }
             return false
         })

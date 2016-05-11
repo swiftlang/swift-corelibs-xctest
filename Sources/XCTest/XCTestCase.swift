@@ -284,7 +284,7 @@ extension XCTestCase {
 
             // Otherwise, wait another fraction of a second.
             runLoop.runUntilDate(NSDate(timeIntervalSinceNow: 0.01))
-        } while NSDate().compare(timeoutDate) == NSComparisonResult.OrderedAscending
+        } while NSDate().compare(timeoutDate) == NSComparisonResult.orderedAscending
 
         if unfulfilledDescriptions.count > 0 {
             // Not all expectations were fulfilled. Append a failure
