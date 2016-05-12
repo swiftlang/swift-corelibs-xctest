@@ -44,7 +44,7 @@ class PredicateHandlerTestCase: XCTestCase {
         let halfSecLaterDate = NSDate(timeIntervalSinceNow: 0.2)
         let predicate = NSPredicate(block: { evaluatedObject, bindings in
             if let evaluatedDate = evaluatedObject as? NSDate {
-                return evaluatedDate.compare(NSDate()) == NSComparisonResult.OrderedAscending
+                return evaluatedDate.compare(NSDate()) == NSComparisonResult.orderedAscending
             }
             return false
         })
