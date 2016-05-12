@@ -18,6 +18,7 @@ class FailureMessagesTestCase: XCTestCase {
     static var allTests = {
         return [
             ("testAssert", testAssert),
+            ("testAssertEqualValues", testAssertEqualValues),
             ("testAssertEqualOptionals", testAssertEqualOptionals),
             ("testAssertEqualArraySlices", testAssertEqualArraySlices),
             ("testAssertEqualContiguousArrays", testAssertEqualContiguousArrays),
@@ -30,6 +31,7 @@ class FailureMessagesTestCase: XCTestCase {
             ("testAssertLessThan", testAssertLessThan),
             ("testAssertLessThanOrEqual", testAssertLessThanOrEqual),
             ("testAssertNil", testAssertNil),
+            ("testAssertNotEqualValues", testAssertNotEqualValues),
             ("testAssertNotEqualOptionals", testAssertNotEqualOptionals),
             ("testAssertNotEqualArraySlices", testAssertNotEqualArraySlices),
             ("testAssertNotEqualContiguousArrays", testAssertNotEqualContiguousArrays),
@@ -49,13 +51,20 @@ class FailureMessagesTestCase: XCTestCase {
         XCTAssert(false, "message", file: "test.swift")
     }
 
+// CHECK: Test Case 'FailureMessagesTestCase.testAssertEqualValues' started at \d+:\d+:\d+\.\d+
+// CHECK: test.swift:[[@LINE+3]]: error: FailureMessagesTestCase.testAssertEqualValues : XCTAssertEqual failed: \("1"\) is not equal to \("2"\) - message
+// CHECK: Test Case 'FailureMessagesTestCase.testAssertEqualValues' failed \(\d+\.\d+ seconds\).
+    func testAssertEqualValues() {
+        XCTAssertEqual(1, 2, "message", file: "test.swift")
+    }
+
 // CHECK: Test Case 'FailureMessagesTestCase.testAssertEqualOptionals' started at \d+:\d+:\d+\.\d+
 // CHECK: test.swift:[[@LINE+3]]: error: FailureMessagesTestCase.testAssertEqualOptionals : XCTAssertEqual failed: \("Optional\(1\)"\) is not equal to \("Optional\(2\)"\) - message
 // CHECK: Test Case 'FailureMessagesTestCase.testAssertEqualOptionals' failed \(\d+\.\d+ seconds\).
     func testAssertEqualOptionals() {
-        XCTAssertEqual(1, 2, "message", file: "test.swift")
+        XCTAssertEqual(Optional(1), Optional(2), "message", file: "test.swift")
     }
-
+    
 // CHECK: Test Case 'FailureMessagesTestCase.testAssertEqualArraySlices' started at \d+:\d+:\d+\.\d+
 // CHECK: test.swift:[[@LINE+3]]: error: FailureMessagesTestCase.testAssertEqualArraySlices : XCTAssertEqual failed: \("\[1\]"\) is not equal to \("\[2\]"\) - message
 // CHECK: Test Case 'FailureMessagesTestCase.testAssertEqualArraySlices' failed \(\d+\.\d+ seconds\).
@@ -133,13 +142,20 @@ class FailureMessagesTestCase: XCTestCase {
         XCTAssertNil("helloworld", "message", file: "test.swift")
     }
 
+// CHECK: Test Case 'FailureMessagesTestCase.testAssertNotEqualValues' started at \d+:\d+:\d+\.\d+
+// CHECK: test.swift:[[@LINE+3]]: error: FailureMessagesTestCase.testAssertNotEqualValues : XCTAssertNotEqual failed: \("1"\) is equal to \("1"\) - message
+// CHECK: Test Case 'FailureMessagesTestCase.testAssertNotEqualValues' failed \(\d+\.\d+ seconds\).
+    func testAssertNotEqualValues() {
+        XCTAssertNotEqual(1, 1, "message", file: "test.swift")
+    }
+
 // CHECK: Test Case 'FailureMessagesTestCase.testAssertNotEqualOptionals' started at \d+:\d+:\d+\.\d+
 // CHECK: test.swift:[[@LINE+3]]: error: FailureMessagesTestCase.testAssertNotEqualOptionals : XCTAssertNotEqual failed: \("Optional\(1\)"\) is equal to \("Optional\(1\)"\) - message
 // CHECK: Test Case 'FailureMessagesTestCase.testAssertNotEqualOptionals' failed \(\d+\.\d+ seconds\).
     func testAssertNotEqualOptionals() {
-        XCTAssertNotEqual(1, 1, "message", file: "test.swift")
+        XCTAssertNotEqual(Optional(1), Optional(1), "message", file: "test.swift")
     }
-
+    
 // CHECK: Test Case 'FailureMessagesTestCase.testAssertNotEqualArraySlices' started at \d+:\d+:\d+\.\d+
 // CHECK: test.swift:[[@LINE+3]]: error: FailureMessagesTestCase.testAssertNotEqualArraySlices : XCTAssertNotEqual failed: \("\[1\]"\) is equal to \("\[1\]"\) - message
 // CHECK: Test Case 'FailureMessagesTestCase.testAssertNotEqualArraySlices' failed \(\d+\.\d+ seconds\).
@@ -197,11 +213,11 @@ class FailureMessagesTestCase: XCTestCase {
     }
 }
 // CHECK: Test Suite 'FailureMessagesTestCase' failed at \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 22 tests, with 22 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 24 tests, with 24 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
 XCTMain([testCase(FailureMessagesTestCase.allTests)])
 
 // CHECK: Test Suite '.*\.xctest' failed at \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 22 tests, with 22 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 24 tests, with 24 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 // CHECK: Test Suite 'All tests' failed at \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 22 tests, with 22 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 24 tests, with 24 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
