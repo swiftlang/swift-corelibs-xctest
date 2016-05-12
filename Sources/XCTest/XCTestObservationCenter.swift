@@ -71,9 +71,19 @@ public class XCTestObservationCenter {
         forEachObserver { $0.testBundleDidFinish(testBundle) }
     }
 
+    internal func testCase(_ testCase: XCTestCase, didMeasurePerformanceResults results: String, file: StaticString, line: UInt) {
+        forEachInternalObserver { $0.testCase(testCase, didMeasurePerformanceResults: results, file: file, line: line) }
+    }
+
     private func forEachObserver(_ body: @noescape (XCTestObservation) -> Void) {
         for observer in observers {
             body(observer.object)
+        }
+    }
+
+    private func forEachInternalObserver(_ body: @noescape (_XCTestObservation) -> Void) {
+        for observer in observers where observer.object is _XCTestObservation {
+            body(observer.object as! _XCTestObservation)
         }
     }
 }
