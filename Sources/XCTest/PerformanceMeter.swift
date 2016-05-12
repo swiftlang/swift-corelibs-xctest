@@ -39,9 +39,28 @@ internal protocol PerformanceMetric {
     func failureMessage() -> String?
 }
 
+/// Protocol used by `PerformanceMeter` to report measurement results
 internal protocol PerformanceMeterDelegate {
+    /// Reports a string representation of the gathered performance metrics
+    /// - Parameter results: The raw measured values, and some derived data such
+    ///   as average, and standard deviation
+    /// - Parameter file: The source file name where the measurement was invoked
+    /// - Parameter line: The source line number where the measurement was invoked
     func recordMeasurements(results: String, file: StaticString, line: UInt)
+
+    /// Reports a test failure from the analysis of performance measurements.
+    /// This can currently be caused by an unexpectedly large standard deviation
+    /// calculated over the data.
+    /// - Parameter description: An explanation of the failure
+    /// - Parameter file: The source file name where the measurement was invoked
+    /// - Parameter line: The source line number where the measurement was invoked
     func recordFailure(description: String, file: StaticString, line: UInt)
+
+    /// Reports a misuse of the `PerformanceMeter` API, such as calling `
+    /// startMeasuring` multiple times.
+    /// - Parameter description: An explanation of the misuse
+    /// - Parameter file: The source file name where the misuse occurred
+    /// - Parameter line: The source line number where the misuse occurred
     func recordAPIViolation(description: String, file: StaticString, line: UInt)
 }
 
