@@ -64,7 +64,7 @@ class ErrorHandling: XCTestCase {
     }
     
 // CHECK: Test Case 'ErrorHandling.test_throwsErrorInAssertionButFailsWhenCheckingError' started at \d+:\d+:\d+\.\d+
-// CHECK: .*/ErrorHandling/main.swift:\d+: error: ErrorHandling.test_throwsErrorInAssertionButFailsWhenCheckingError : XCTAssertEqual failed: \("Optional\("an error message"\)"\) is not equal to \("Optional\(""\)"\) -
+// CHECK: .*/ErrorHandling/main.swift:\d+: error: ErrorHandling.test_throwsErrorInAssertionButFailsWhenCheckingError : XCTAssertEqual failed: \("an error message"\) is not equal to \(""\) -
 // CHECK: Test Case 'ErrorHandling.test_throwsErrorInAssertionButFailsWhenCheckingError' failed \(\d+\.\d+ seconds\).
     func test_throwsErrorInAssertionButFailsWhenCheckingError() {
         XCTAssertThrowsError(try functionThatDoesThrowError()) { error in
