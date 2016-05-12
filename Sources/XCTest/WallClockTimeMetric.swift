@@ -52,7 +52,6 @@ internal final class WallClockTimeMetric: PerformanceMetric {
     }
 
     func failureMessage() -> String? {
-        // The relative standard deviation of the measurements is \d+.\d{3}% which is higher than the max allowed of \d+.\d{3}%.
         let relativeStandardDeviation = measurements.relativeStandardDeviation
         if (relativeStandardDeviation > maxRelativeStandardDeviation &&
             measurements.standardDeviation > standardDeviationNegligibilityThreshold) {
