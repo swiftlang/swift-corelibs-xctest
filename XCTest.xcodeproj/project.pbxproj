@@ -16,6 +16,7 @@
 		AE7DD60C1C8F0513006FC722 /* XCTestObservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7DD60B1C8F0513006FC722 /* XCTestObservation.swift */; };
 		AE9596DF1C96911F001A9EF0 /* ObjectWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE9596DE1C96911F001A9EF0 /* ObjectWrapper.swift */; };
 		AE9596E11C9692B8001A9EF0 /* XCTestObservationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE9596E01C9692B8001A9EF0 /* XCTestObservationCenter.swift */; };
+		AEC323101CE6065B00F17F50 /* XCTestInternalObservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEC3230F1CE6065B00F17F50 /* XCTestInternalObservation.swift */; };
 		AEC3638F1CE2A6D6007BA936 /* XCTestCase+Performance.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEC3638E1CE2A6D6007BA936 /* XCTestCase+Performance.swift */; };
 		AEC3C1851CE2DAAF009BE249 /* WallClockTimeMetric.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEC3C1841CE2DAAF009BE249 /* WallClockTimeMetric.swift */; };
 		AED0F7B81CDA324B00A89E8B /* PerformanceMeter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED0F7B71CDA324B00A89E8B /* PerformanceMeter.swift */; };
@@ -56,6 +57,7 @@
 		AE7DD60B1C8F0513006FC722 /* XCTestObservation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestObservation.swift; sourceTree = "<group>"; };
 		AE9596DE1C96911F001A9EF0 /* ObjectWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectWrapper.swift; sourceTree = "<group>"; };
 		AE9596E01C9692B8001A9EF0 /* XCTestObservationCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestObservationCenter.swift; sourceTree = "<group>"; };
+		AEC3230F1CE6065B00F17F50 /* XCTestInternalObservation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestInternalObservation.swift; sourceTree = "<group>"; };
 		AEC3638E1CE2A6D6007BA936 /* XCTestCase+Performance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Performance.swift"; sourceTree = "<group>"; };
 		AEC3C1841CE2DAAF009BE249 /* WallClockTimeMetric.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WallClockTimeMetric.swift; sourceTree = "<group>"; };
 		AED0F7B71CDA324B00A89E8B /* PerformanceMeter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PerformanceMeter.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 				DADB979B1C51BDA2005E68B6 /* XCTestExpectation.swift */,
 				51DA1EA31CC19C9000F75EB7 /* XCPredicateExpectation.swift */,
 				C265F66C1C3AEB6A00520CF9 /* XCTestMain.swift */,
+				AEC3230F1CE6065B00F17F50 /* XCTestInternalObservation.swift */,
 				AE7DD60B1C8F0513006FC722 /* XCTestObservation.swift */,
 				AE9596E01C9692B8001A9EF0 /* XCTestObservationCenter.swift */,
 				DACC94411C8B87B900EC85F5 /* XCWaitCompletionHandler.swift */,
@@ -304,6 +307,7 @@
 				AE9596E11C9692B8001A9EF0 /* XCTestObservationCenter.swift in Sources */,
 				DA7714FB1CA87DFB001EA745 /* XCTestCaseRun.swift in Sources */,
 				C265F66F1C3AEB6A00520CF9 /* XCTAssert.swift in Sources */,
+				AEC323101CE6065B00F17F50 /* XCTestInternalObservation.swift in Sources */,
 				DA7FB3431CA4EA4000F024F9 /* XCTestSuite.swift in Sources */,
 				AEC3638F1CE2A6D6007BA936 /* XCTestCase+Performance.swift in Sources */,
 				DA7714F91CA87DEF001EA745 /* XCTestSuiteRun.swift in Sources */,

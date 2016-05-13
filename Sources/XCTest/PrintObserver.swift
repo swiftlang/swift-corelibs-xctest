@@ -76,7 +76,7 @@ internal class PrintObserver: XCTestObservation {
     }
 }
 
-extension PrintObserver: _XCTestObservation {
+extension PrintObserver: XCTestInternalObservation {
     func testCase(_ testCase: XCTestCase, didMeasurePerformanceResults results: String, file: StaticString, line: UInt) {
         printAndFlush("\(file):\(line): Test Case '\(testCase.name)' measured \(results)")
     }
