@@ -17,7 +17,7 @@
 class PerformanceTestCase: XCTestCase {
 
     // CHECK: Test Case 'PerformanceTestCase.test_measureBlockIteratesTenTimes' started at \d+:\d+:\d+\.\d+
-    // CHECK: .*/Performance/main.swift:24: Test Case 'PerformanceTestCase.test_measureBlockIteratesTenTimes' measured \[Time, seconds\] .*
+    // CHECK: .*/Performance/main.swift:[[@LINE+4]]: Test Case 'PerformanceTestCase.test_measureBlockIteratesTenTimes' measured \[Time, seconds\] .*
     // CHECK: Test Case 'PerformanceTestCase.test_measureBlockIteratesTenTimes' passed \(\d+\.\d+ seconds\).
     func test_measureBlockIteratesTenTimes() {
         var iterationCount = 0
@@ -28,7 +28,7 @@ class PerformanceTestCase: XCTestCase {
     }
 
     // CHECK: Test Case 'PerformanceTestCase.test_measuresMetricsWithAutomaticStartAndStop' started at \d+:\d+:\d+\.\d+
-    // CHECK: .*/Performance/main.swift:35: Test Case 'PerformanceTestCase.test_measuresMetricsWithAutomaticStartAndStop' measured \[Time, seconds\] .*
+    // CHECK: .*/Performance/main.swift:[[@LINE+4]]: Test Case 'PerformanceTestCase.test_measuresMetricsWithAutomaticStartAndStop' measured \[Time, seconds\] .*
     // CHECK: Test Case 'PerformanceTestCase.test_measuresMetricsWithAutomaticStartAndStop' passed \(\d+\.\d+ seconds\).
     func test_measuresMetricsWithAutomaticStartAndStop() {
         var iterationCount = 0
@@ -39,7 +39,7 @@ class PerformanceTestCase: XCTestCase {
     }
 
     // CHECK: Test Case 'PerformanceTestCase.test_measuresMetricsWithManualStartAndStop' started at \d+:\d+:\d+\.\d+
-    // CHECK: .*/Performance/main.swift:45: Test Case 'PerformanceTestCase.test_measuresMetricsWithManualStartAndStop' measured \[Time, seconds\] .*
+    // CHECK: .*/Performance/main.swift:[[@LINE+3]]: Test Case 'PerformanceTestCase.test_measuresMetricsWithManualStartAndStop' measured \[Time, seconds\] .*
     // CHECK: Test Case 'PerformanceTestCase.test_measuresMetricsWithManualStartAndStop' passed \(\d+\.\d+ seconds\).
     func test_measuresMetricsWithManualStartAndStop() {
         measureMetrics([XCTPerformanceMetric_WallClockTime], automaticallyStartMeasuring: false) {
@@ -49,7 +49,7 @@ class PerformanceTestCase: XCTestCase {
     }
 
     // CHECK: Test Case 'PerformanceTestCase.test_measuresMetricsWithoutExplicitStop' started at \d+:\d+:\d+\.\d+
-    // CHECK: .*/Performance/main.swift:55: Test Case 'PerformanceTestCase.test_measuresMetricsWithoutExplicitStop' measured \[Time, seconds\] .*
+    // CHECK: .*/Performance/main.swift:[[@LINE+3]]: Test Case 'PerformanceTestCase.test_measuresMetricsWithoutExplicitStop' measured \[Time, seconds\] .*
     // CHECK: Test Case 'PerformanceTestCase.test_measuresMetricsWithoutExplicitStop' passed \(\d+\.\d+ seconds\).
     func test_measuresMetricsWithoutExplicitStop() {
         measureMetrics([XCTPerformanceMetric_WallClockTime], automaticallyStartMeasuring: false) {
@@ -64,7 +64,7 @@ class PerformanceTestCase: XCTestCase {
     }
 
     // CHECK: Test Case 'PerformanceTestCase.test_printsValuesAfterMeasuring' started at \d+:\d+:\d+\.\d+
-    // CHECK: .*/Performance/main.swift:70: Test Case 'PerformanceTestCase.test_printsValuesAfterMeasuring' measured \[Time, seconds\] average: \d+.\d{3}, relative standard deviation: \d+.\d{3}%, values: \[\d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}\], performanceMetricID:org.swift.XCTPerformanceMetric_WallClockTime, maxPercentRelativeStandardDeviation: \d+.\d{3}%, maxStandardDeviation: \d.\d{3}
+    // CHECK: .*/Performance/main.swift:[[@LINE+3]]: Test Case 'PerformanceTestCase.test_printsValuesAfterMeasuring' measured \[Time, seconds\] average: \d+.\d{3}, relative standard deviation: \d+.\d{3}%, values: \[\d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}\], performanceMetricID:org.swift.XCTPerformanceMetric_WallClockTime, maxPercentRelativeStandardDeviation: \d+.\d{3}%, maxStandardDeviation: \d.\d{3}
     // CHECK: Test Case 'PerformanceTestCase.test_printsValuesAfterMeasuring' passed \(\d+\.\d+ seconds\).
     func test_printsValuesAfterMeasuring() {
         measure {}
@@ -75,7 +75,7 @@ class PerformanceTestCase: XCTestCase {
         var iterationCount = 0
         measure {
             iterationCount += 1
-            // CHECK: .*/Performance/main.swift:79: error: PerformanceTestCase.test_abortsMeasurementsAfterTestFailure : XCTAssertLessThan failed: \("3"\) is not less than \("3"\) -
+            // CHECK: .*/Performance/main.swift:[[@LINE+1]]: error: PerformanceTestCase.test_abortsMeasurementsAfterTestFailure : XCTAssertLessThan failed: \("3"\) is not less than \("3"\) -
             XCTAssertLessThan(iterationCount, 3)
         }
         XCTAssertEqual(iterationCount, 3)
@@ -85,8 +85,8 @@ class PerformanceTestCase: XCTestCase {
     // CHECK: Test Case 'PerformanceTestCase.test_measuresWallClockTimeInBlock' started at \d+:\d+:\d+\.\d+
     func test_measuresWallClockTimeInBlock() {
         var hasWaited = false
-        // CHECK: .*/Performance/main.swift:90: Test Case 'PerformanceTestCase.test_measuresWallClockTimeInBlock' measured \[Time, seconds\] average: \d+.\d{3}, relative standard deviation: \d+.\d{3}%, values: \[1.\d{6}, 0.\d{6}, 0.\d{6}, 0.\d{6}, 0.\d{6}, 0.\d{6}, 0.\d{6}, 0.\d{6}, 0.\d{6}, 0.\d{6}\], performanceMetricID:org.swift.XCTPerformanceMetric_WallClockTime, maxPercentRelativeStandardDeviation: \d+.\d{3}%, maxStandardDeviation: \d.\d{3}
-        // CHECK: .*/Performance/main.swift:90: error: PerformanceTestCase.test_measuresWallClockTimeInBlock : failed: The relative standard deviation of the measurements is \d+.\d{3}% which is higher than the max allowed of \d+.\d{3}%.
+        // CHECK: .*/Performance/main.swift:[[@LINE+2]]: Test Case 'PerformanceTestCase.test_measuresWallClockTimeInBlock' measured \[Time, seconds\] average: \d+.\d{3}, relative standard deviation: \d+.\d{3}%, values: \[1.\d{6}, 0.\d{6}, 0.\d{6}, 0.\d{6}, 0.\d{6}, 0.\d{6}, 0.\d{6}, 0.\d{6}, 0.\d{6}, 0.\d{6}\], performanceMetricID:org.swift.XCTPerformanceMetric_WallClockTime, maxPercentRelativeStandardDeviation: \d+.\d{3}%, maxStandardDeviation: \d.\d{3}
+        // CHECK: .*/Performance/main.swift:[[@LINE+1]]: error: PerformanceTestCase.test_measuresWallClockTimeInBlock : failed: The relative standard deviation of the measurements is \d+.\d{3}% which is higher than the max allowed of \d+.\d{3}%.
         measure {
             if !hasWaited {
                 NSThread.sleepForTimeInterval(1)
