@@ -11,6 +11,7 @@
 import re
 
 from .error import XCTestCheckerError
+from .line import replace_offsets
 
 
 def _actual_lines(path):
@@ -40,7 +41,8 @@ def _expected_lines_and_line_numbers(path, check_prefix):
 
             components = line.split(check_prefix)
             if len(components) == 2:
-                yield components[1].strip(), line_number
+                yield (replace_offsets(components[1].strip(), line_number),
+                       line_number)
             elif len(components) > 2:
                 # Include a newline, then the file name and line number in the
                 # exception in order to have it appear as an inline failure in
