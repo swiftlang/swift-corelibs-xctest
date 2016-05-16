@@ -77,13 +77,3 @@ public extension XCTestObservation {
     func testSuiteDidFinish(_ testSuite: XCTestSuite) {}
     func testBundleDidFinish(_ testBundle: NSBundle) {}
 }
-
-/// Expanded version of `XCTestObservation` used internally to respond to
-/// additional events not publicly exposed.
-internal protocol _XCTestObservation: XCTestObservation {
-    func testCase(_ testCase: XCTestCase, didMeasurePerformanceResults: String, file: StaticString, line: UInt)
-}
-
-internal extension _XCTestObservation {
-    func testCase(_ testCase: XCTestCase, didMeasurePerformanceResults: String, file: StaticString, line: UInt) {}
-}

@@ -81,9 +81,9 @@ public class XCTestObservationCenter {
         }
     }
 
-    private func forEachInternalObserver(_ body: @noescape (_XCTestObservation) -> Void) {
-        for observer in observers where observer.object is _XCTestObservation {
-            body(observer.object as! _XCTestObservation)
+    private func forEachInternalObserver(_ body: @noescape (XCTestInternalObservation) -> Void) {
+        for observer in observers where observer.object is XCTestInternalObservation {
+            body(observer.object as! XCTestInternalObservation)
         }
     }
 }

@@ -8,14 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		510957A91CA878410091D1A1 /* XCNotificationExpectationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510957A81CA878410091D1A1 /* XCNotificationExpectationHandler.swift */; };
-		AE33888B1CD3D72500C39B1C /* XCTestCaseSuite.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE33888A1CD3D72500C39B1C /* XCTestCaseSuite.swift */; };
 		51DA1EA41CC19C9000F75EB7 /* XCPredicateExpectation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DA1EA31CC19C9000F75EB7 /* XCPredicateExpectation.swift */; };
 		5A3952F11CC173380053159C /* XCPredicateExpectationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A3952F01CC173380053159C /* XCPredicateExpectationHandler.swift */; };
+		AE33888B1CD3D72500C39B1C /* XCTestCaseSuite.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE33888A1CD3D72500C39B1C /* XCTestCaseSuite.swift */; };
 		AE7DD6091C8E81A0006FC722 /* ArgumentParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7DD6071C8E81A0006FC722 /* ArgumentParser.swift */; };
 		AE7DD60A1C8E81A0006FC722 /* TestFiltering.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7DD6081C8E81A0006FC722 /* TestFiltering.swift */; };
 		AE7DD60C1C8F0513006FC722 /* XCTestObservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7DD60B1C8F0513006FC722 /* XCTestObservation.swift */; };
 		AE9596DF1C96911F001A9EF0 /* ObjectWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE9596DE1C96911F001A9EF0 /* ObjectWrapper.swift */; };
 		AE9596E11C9692B8001A9EF0 /* XCTestObservationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE9596E01C9692B8001A9EF0 /* XCTestObservationCenter.swift */; };
+		AEC323101CE6065B00F17F50 /* XCTestInternalObservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEC3230F1CE6065B00F17F50 /* XCTestInternalObservation.swift */; };
+		AEC323121CE6077300F17F50 /* XCTestCase+Asynchronous.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEC323111CE6077300F17F50 /* XCTestCase+Asynchronous.swift */; };
 		AEC3638F1CE2A6D6007BA936 /* XCTestCase+Performance.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEC3638E1CE2A6D6007BA936 /* XCTestCase+Performance.swift */; };
 		AEC3C1851CE2DAAF009BE249 /* WallClockTimeMetric.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEC3C1841CE2DAAF009BE249 /* WallClockTimeMetric.swift */; };
 		AED0F7B81CDA324B00A89E8B /* PerformanceMeter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED0F7B71CDA324B00A89E8B /* PerformanceMeter.swift */; };
@@ -56,6 +58,8 @@
 		AE7DD60B1C8F0513006FC722 /* XCTestObservation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestObservation.swift; sourceTree = "<group>"; };
 		AE9596DE1C96911F001A9EF0 /* ObjectWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectWrapper.swift; sourceTree = "<group>"; };
 		AE9596E01C9692B8001A9EF0 /* XCTestObservationCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestObservationCenter.swift; sourceTree = "<group>"; };
+		AEC3230F1CE6065B00F17F50 /* XCTestInternalObservation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestInternalObservation.swift; sourceTree = "<group>"; };
+		AEC323111CE6077300F17F50 /* XCTestCase+Asynchronous.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Asynchronous.swift"; sourceTree = "<group>"; };
 		AEC3638E1CE2A6D6007BA936 /* XCTestCase+Performance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Performance.swift"; sourceTree = "<group>"; };
 		AEC3C1841CE2DAAF009BE249 /* WallClockTimeMetric.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WallClockTimeMetric.swift; sourceTree = "<group>"; };
 		AED0F7B71CDA324B00A89E8B /* PerformanceMeter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PerformanceMeter.swift; sourceTree = "<group>"; };
@@ -139,24 +143,26 @@
 				DA7714FC1CA8D057001EA745 /* PrintObserver.swift */,
 				AE7DD6081C8E81A0006FC722 /* TestFiltering.swift */,
 				AEC3C1841CE2DAAF009BE249 /* WallClockTimeMetric.swift */,
-				C265F6691C3AEB6A00520CF9 /* XCTAssert.swift */,
 				DA7FB38E1CA4EE3800F024F9 /* XCAbstractTest.swift */,
-				DA7FB3421CA4EA4000F024F9 /* XCTestSuite.swift */,
-				DA7732471CA87278007E31FD /* XCTestRun.swift */,
+				510957A81CA878410091D1A1 /* XCNotificationExpectationHandler.swift */,
+				51DA1EA31CC19C9000F75EB7 /* XCPredicateExpectation.swift */,
+				5A3952F01CC173380053159C /* XCPredicateExpectationHandler.swift */,
+				C265F6691C3AEB6A00520CF9 /* XCTAssert.swift */,
 				C265F66A1C3AEB6A00520CF9 /* XCTestCase.swift */,
+				AEC323111CE6077300F17F50 /* XCTestCase+Asynchronous.swift */,
 				AEC3638E1CE2A6D6007BA936 /* XCTestCase+Performance.swift */,
-				DA7714F81CA87DEF001EA745 /* XCTestSuiteRun.swift */,
 				DA7714FA1CA87DFB001EA745 /* XCTestCaseRun.swift */,
+				AE33888A1CD3D72500C39B1C /* XCTestCaseSuite.swift */,
 				AED59FF51CB5394800F49260 /* XCTestErrors.swift */,
 				DADB979B1C51BDA2005E68B6 /* XCTestExpectation.swift */,
-				51DA1EA31CC19C9000F75EB7 /* XCPredicateExpectation.swift */,
+				AEC3230F1CE6065B00F17F50 /* XCTestInternalObservation.swift */,
 				C265F66C1C3AEB6A00520CF9 /* XCTestMain.swift */,
 				AE7DD60B1C8F0513006FC722 /* XCTestObservation.swift */,
 				AE9596E01C9692B8001A9EF0 /* XCTestObservationCenter.swift */,
+				DA7732471CA87278007E31FD /* XCTestRun.swift */,
+				DA7FB3421CA4EA4000F024F9 /* XCTestSuite.swift */,
+				DA7714F81CA87DEF001EA745 /* XCTestSuiteRun.swift */,
 				DACC94411C8B87B900EC85F5 /* XCWaitCompletionHandler.swift */,
-				510957A81CA878410091D1A1 /* XCNotificationExpectationHandler.swift */,
-				AE33888A1CD3D72500C39B1C /* XCTestCaseSuite.swift */,
-				5A3952F01CC173380053159C /* XCPredicateExpectationHandler.swift */,
 			);
 			path = XCTest;
 			sourceTree = "<group>";
@@ -304,12 +310,14 @@
 				AE9596E11C9692B8001A9EF0 /* XCTestObservationCenter.swift in Sources */,
 				DA7714FB1CA87DFB001EA745 /* XCTestCaseRun.swift in Sources */,
 				C265F66F1C3AEB6A00520CF9 /* XCTAssert.swift in Sources */,
+				AEC323101CE6065B00F17F50 /* XCTestInternalObservation.swift in Sources */,
 				DA7FB3431CA4EA4000F024F9 /* XCTestSuite.swift in Sources */,
 				AEC3638F1CE2A6D6007BA936 /* XCTestCase+Performance.swift in Sources */,
 				DA7714F91CA87DEF001EA745 /* XCTestSuiteRun.swift in Sources */,
 				AE9596DF1C96911F001A9EF0 /* ObjectWrapper.swift in Sources */,
 				AED59FF61CB5394800F49260 /* XCTestErrors.swift in Sources */,
 				C265F6721C3AEB6A00520CF9 /* XCTestMain.swift in Sources */,
+				AEC323121CE6077300F17F50 /* XCTestCase+Asynchronous.swift in Sources */,
 				AE33888B1CD3D72500C39B1C /* XCTestCaseSuite.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
