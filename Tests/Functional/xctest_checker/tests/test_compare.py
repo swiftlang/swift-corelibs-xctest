@@ -87,5 +87,10 @@ class CompareTestCase(unittest.TestCase):
         expected = _tmpfile('c: foo\nc: ^ bar \nc: baz $\n')
         compare.compare(actual, expected, check_prefix='c:')
 
+    def test_line_number_substitution(self):
+        actual = _tmpfile('beep 1\nboop 5\n')
+        expected = _tmpfile('c: beep [[@LINE]]\nc: boop [[@LINE+3]]')
+        compare.compare(actual, expected, check_prefix='c: ')
+
 if __name__ == "__main__":
     unittest.main()
