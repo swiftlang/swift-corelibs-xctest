@@ -8,17 +8,46 @@
 //
 //
 //  ArgumentParser.swift
-//  Tools for parsing test execution configuration from command line arguments
+//  Tools for parsing test execution configuration from command line arguments.
 //
 
+/// Utility for converting command line arguments into a strongly-typed
+/// representation of the passed-in options
 internal struct ArgumentParser {
+
+    /// The basic operations that can be performed by an XCTest runner executable
+    enum ExecutionMode {
+        /// Run a test or test suite, printing results to stdout and exiting with
+        /// a non-0 return code if any tests failed. The name of a test or class
+        /// may be provided to only run a subset of test cases.
+        case run(selectedTestName: String?)
+
+        /// Print a list of all the tests that can be run. The lines in this
+        /// output are valid test names for the `run` mode.
+        case list
+
+        var selectedTestName: String? {
+            if case .run(let name) = self {
+                return name
+            } else {
+                return nil
+            }
+        }
+    }
+
     private let arguments: [String]
 
     init(arguments: [String] = Process.arguments) {
         self.arguments = arguments
     }
 
-    var selectedTestName: String? {
-        return arguments.count > 1 ? arguments[1] : nil
+    var executionMode: ExecutionMode {
+        if arguments.count <= 1 {
+            return .run(selectedTestName: nil)
+        } else if arguments[1] == "--list-tests" || arguments[1] == "-l" {
+            return .list
+        } else {
+            return .run(selectedTestName: arguments[1])
+        }
     }
 }

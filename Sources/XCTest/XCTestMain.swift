@@ -50,22 +50,17 @@
 /// - Parameter testCases: An array of test cases run, each produced by a call to the `testCase` function
 /// - seealso: `testCase`
 @noreturn public func XCTMain(_ testCases: [XCTestCaseEntry]) {
-    // Add a test observer that prints test progress to stdout.
-    let observationCenter = XCTestObservationCenter.shared()
-    observationCenter.addTestObserver(PrintObserver())
-
-    // Announce that the test bundle will start executing.
     let testBundle = NSBundle.mainBundle()
-    observationCenter.testBundleWillStart(testBundle)
+
+    let executionMode = ArgumentParser().executionMode
 
     // Apple XCTest behaves differently if tests have been filtered:
     // - The root `XCTestSuite` is named "Selected tests" instead of
     //   "All tests".
     // - An `XCTestSuite` representing the .xctest test bundle is not included.
-    let selectedTestName = ArgumentParser().selectedTestName
     let rootTestSuite: XCTestSuite
     let currentTestSuite: XCTestSuite
-    if selectedTestName == nil {
+    if executionMode.selectedTestName == nil {
         rootTestSuite = XCTestSuite(name: "All tests")
         currentTestSuite = XCTestSuite(name: "\(testBundle.bundlePath.lastPathComponent).xctest")
         rootTestSuite.addTest(currentTestSuite)
@@ -74,13 +69,24 @@
         currentTestSuite = rootTestSuite
     }
 
-    let filter = TestFiltering(selectedTestName: selectedTestName)
+    let filter = TestFiltering(selectedTestName: executionMode.selectedTestName)
     TestFiltering.filterTests(testCases, filter: filter.selectedTestFilter)
         .map(XCTestCaseSuite.init)
         .forEach(currentTestSuite.addTest)
 
-    rootTestSuite.run()
+    if case .list = executionMode {
+        TestListing(testSuite: rootTestSuite).printTests()
+        exit(0)
+    } else {
+        // Add a test observer that prints test progress to stdout.
+        let observationCenter = XCTestObservationCenter.shared()
+        observationCenter.addTestObserver(PrintObserver())
 
-    observationCenter.testBundleDidFinish(testBundle)
-    exit(rootTestSuite.testRun!.totalFailureCount == 0 ? 0 : 1)
+        observationCenter.testBundleWillStart(testBundle)
+        rootTestSuite.run()
+        observationCenter.testBundleDidFinish(testBundle)
+
+        exit(rootTestSuite.testRun!.totalFailureCount == 0 ? 0 : 1)
+    }
 }
+
