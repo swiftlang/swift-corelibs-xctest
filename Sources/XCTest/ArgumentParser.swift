@@ -22,9 +22,19 @@ internal struct ArgumentParser {
         /// may be provided to only run a subset of test cases.
         case run(selectedTestName: String?)
 
-        /// Print a list of all the tests that can be run. The lines in this
-        /// output are valid test names for the `run` mode.
-        case list
+        /// The different ways that the tests can be represented when they are listed
+        enum ListType {
+            /// A flat list of the tests that can be run. The lines in this
+            /// output are valid test names for the `run` mode.
+            case humanReadable
+
+            /// A JSON representation of the test suite, intended for consumption
+            /// by other tools
+            case json
+        }
+
+        /// Print a list of all the tests in the suite.
+        case list(type: ListType)
 
         var selectedTestName: String? {
             if case .run(let name) = self {
@@ -45,7 +55,9 @@ internal struct ArgumentParser {
         if arguments.count <= 1 {
             return .run(selectedTestName: nil)
         } else if arguments[1] == "--list-tests" || arguments[1] == "-l" {
-            return .list
+            return .list(type: .humanReadable)
+        } else if arguments[1] == "--dump-tests-json" {
+            return .list(type: .json)
         } else {
             return .run(selectedTestName: arguments[1])
         }

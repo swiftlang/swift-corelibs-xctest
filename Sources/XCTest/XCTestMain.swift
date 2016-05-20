@@ -74,10 +74,14 @@
         .map(XCTestCaseSuite.init)
         .forEach(currentTestSuite.addTest)
 
-    if case .list = executionMode {
-        TestListing(testSuite: rootTestSuite).printTests()
+    switch executionMode {
+    case .list(type: .humanReadable):
+        TestListing(testSuite: rootTestSuite).printTestList()
         exit(0)
-    } else {
+    case .list(type: .json):
+        TestListing(testSuite: rootTestSuite).printTestJSON()
+        exit(0)
+    case .run(selectedTestName: _):
         // Add a test observer that prints test progress to stdout.
         let observationCenter = XCTestObservationCenter.shared()
         observationCenter.addTestObserver(PrintObserver())

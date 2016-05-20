@@ -11,6 +11,12 @@
 //  Implementation of the mode for printing the list of tests.
 //
 
+#if os(Linux) || os(FreeBSD)
+    import Foundation
+#else
+    import SwiftFoundation
+#endif
+
 internal struct TestListing {
     private let testSuite: XCTestSuite
 
@@ -18,15 +24,26 @@ internal struct TestListing {
         self.testSuite = testSuite
     }
 
-    func printTests() {
-        for line in testSuite.list() {
-            print(line)
+    /// Prints a flat list of the tests in the suite, in the format used to
+    /// specify a test by name when running tests.
+    func printTestList() {
+        for entry in testSuite.list() {
+            print(entry)
         }
+    }
+
+    /// Prints a JSON representation of the tests in the suite, mirring the internal
+    /// tree representation of test suites and test cases. This output is intended
+    /// to be consumed by other tools.
+    func printTestJSON() {
+        let json = try! NSJSONSerialization.data(withJSONObject: testSuite.dictionaryRepresentation())
+        print(NSString(data: json, encoding: NSUTF8StringEncoding)!)
     }
 }
 
 protocol Listable {
     func list() -> [String]
+    func dictionaryRepresentation() -> NSDictionary
 }
 
 private func moduleName(value: Any) -> String {
@@ -40,16 +57,24 @@ extension XCTestSuite: Listable {
             .flatMap({ ($0 as? Listable) })
     }
 
-    private var suiteListEntry: [String] {
-        if let testCase = tests.first as? XCTestCase {
-            return ["\(moduleName(value: testCase)).\(name)"]
+    private var listingName: String {
+        if let childTestCase = tests.first as? XCTestCase where name == String(childTestCase.dynamicType) {
+            return "\(moduleName(value: childTestCase)).\(name)"
         } else {
-            return []
+            return name
         }
     }
 
     func list() -> [String] {
-        return suiteListEntry + listables.flatMap({ $0.list() })
+        return listables.flatMap({ $0.list() })
+    }
+
+    func dictionaryRepresentation() -> NSDictionary {
+        let listedTests = tests.flatMap({ ($0 as? Listable)?.dictionaryRepresentation() })
+        return [
+                   "name": listingName.bridge(),
+                   "tests": listedTests.bridge()
+            ].bridge()
     }
 }
 
@@ -59,6 +84,11 @@ extension XCTestCase: Listable {
             .split(separator: ".")
             .map(String.init)
             .joined(separator: "/")
-        return ["  \(moduleName(value: self)).\(adjustedName)"]
+        return ["\(moduleName(value: self)).\(adjustedName)"]
+    }
+
+    func dictionaryRepresentation() -> NSDictionary {
+        let methodName = String(name.characters.split(separator: ".").last!)
+        return ["name": methodName].bridge()
     }
 }
