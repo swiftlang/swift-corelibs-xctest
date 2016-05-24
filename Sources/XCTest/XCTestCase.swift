@@ -169,6 +169,13 @@ public func testCase<T: XCTestCase>(_ allTests: [(String, (T) -> () throws -> Vo
     return (T.self, tests)
 }
 
+/// Wrapper function for the non-throwing variant of tests.
+/// - seealso: `XCTMain`
+public func testCase<T: XCTestCase>(_ allTests: [(String, (T) -> () -> Void)]) -> XCTestCaseEntry {
+    let tests: [(String, (XCTestCase) throws -> Void)] = allTests.map { ($0.0, test($0.1)) }
+    return (T.self, tests)
+}
+
 private func test<T: XCTestCase>(_ testFunc: (T) -> () throws -> Void) -> (XCTestCase) throws -> Void {
     return { testCaseType in
         guard let testCase = testCaseType as? T else {
