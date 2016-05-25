@@ -18,12 +18,12 @@
 // CHECK-ALL: Test Suite '.*\.xctest' started at \d+:\d+:\d+\.\d+
 
 class ExecutedTestCase: XCTestCase {
-    static var allTests: [(String, (ExecutedTestCase) -> () throws -> Void)] {
+    static var allTests = {
         return [
             ("test_bar", test_bar),
             ("test_foo", test_foo),
         ]
-    }
+    }()
 
 // CHECK-METHOD:   Test Suite 'ExecutedTestCase' started at \d+:\d+:\d+\.\d+
 // CHECK-METHOD:   Test Case 'ExecutedTestCase.test_foo' started at \d+:\d+:\d+\.\d+
@@ -52,9 +52,9 @@ class ExecutedTestCase: XCTestCase {
 
 // CHECK-ALL: Test Suite 'SkippedTestCase' started at \d+:\d+:\d+\.\d+
 class SkippedTestCase: XCTestCase {
-    static var allTests: [(String, (SkippedTestCase) -> () throws -> Void)] {
+    static var allTests = {
         return [("test_baz", test_baz)]
-    }
+    }()
 
 // CHECK-ALL: Test Case 'SkippedTestCase.test_baz' started at \d+:\d+:\d+\.\d+
 // CHECK-ALL: Test Case 'SkippedTestCase.test_baz' passed \(\d+\.\d+ seconds\).

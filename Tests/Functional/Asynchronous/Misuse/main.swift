@@ -49,13 +49,13 @@ class MisuseTestCase: XCTestCase {
         self.waitForExpectations(withTimeout: 0.1)
     }
 
-    static var allTests: [(String, (MisuseTestCase) -> () throws -> Void)] {
+    static var allTests = {
         return [
             ("test_whenExpectationsAreMade_butNotWaitedFor_fails", test_whenExpectationsAreMade_butNotWaitedFor_fails),
             ("test_whenNoExpectationsAreMade_butTheyAreWaitedFor_fails", test_whenNoExpectationsAreMade_butTheyAreWaitedFor_fails),
             ("test_whenExpectationIsFulfilledMultipleTimes_fails", test_whenExpectationIsFulfilledMultipleTimes_fails),
         ]
-    }
+    }()
 }
 // CHECK: Test Suite 'MisuseTestCase' failed at \d+:\d+:\d+\.\d+
 // CHECK: \t Executed 3 tests, with 4 failures \(4 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds

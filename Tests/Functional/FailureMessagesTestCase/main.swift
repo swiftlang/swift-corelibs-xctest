@@ -15,7 +15,7 @@
 
 // CHECK: Test Suite 'FailureMessagesTestCase' started at \d+:\d+:\d+\.\d+
 class FailureMessagesTestCase: XCTestCase {
-    static var allTests: [(String, (FailureMessagesTestCase) -> () throws -> Void)] {
+    static var allTests = {
         return [
             ("testAssert", testAssert),
             ("testAssertEqualOptionals", testAssertEqualOptionals),
@@ -40,12 +40,12 @@ class FailureMessagesTestCase: XCTestCase {
             ("testAssertTrue", testAssertTrue),
             ("testFail", testFail),
         ]
-    }
+    }()
 
 // CHECK: Test Case 'FailureMessagesTestCase.testAssert' started at \d+:\d+:\d+\.\d+
 // CHECK: test.swift:[[@LINE+3]]: error: FailureMessagesTestCase.testAssert : XCTAssertTrue failed - message
 // CHECK: Test Case 'FailureMessagesTestCase.testAssert' failed \(\d+\.\d+ seconds\).
-    func testAssert() {
+    func testAssert() throws {
         XCTAssert(false, "message", file: "test.swift")
     }
 

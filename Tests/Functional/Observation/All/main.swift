@@ -56,13 +56,13 @@ XCTestObservationCenter.shared().addTestObserver(observer)
 
 // CHECK: Test Suite 'Observation' started at \d+:\d+:\d+\.\d+
 class Observation: XCTestCase {
-    static var allTests: [(String, (Observation) -> () throws -> Void)] {
+    static var allTests = {
         return [
             ("test_one", test_one),
             ("test_two", test_two),
             ("test_three", test_three),
         ]
-    }
+    }()
 
 // CHECK: Test Case 'Observation.test_one' started at \d+:\d+:\d+\.\d+
 // CHECK: .*/Observation/All/main.swift:[[@LINE+12]]: error: Observation.test_one : failed - fail!

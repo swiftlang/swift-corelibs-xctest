@@ -26,12 +26,12 @@
 /// Example usage:
 ///
 ///     class TestFoo: XCTestCase {
-///         static var allTests : [(String, (TestFoo) -> () throws -> Void)] {
+///         static var allTests = {
 ///             return [
 ///                 ("test_foo", test_foo),
 ///                 ("test_bar", test_bar),
 ///             ]
-///         }
+///         }()
 ///
 ///         func test_foo() {
 ///             // Test things...

@@ -96,7 +96,7 @@ class PerformanceTestCase: XCTestCase {
     }
     // CHECK: Test Case 'PerformanceTestCase.test_measuresWallClockTimeInBlock' failed \(\d+\.\d+ seconds\).
 
-    static var allTests: [(String, (PerformanceTestCase) -> () throws -> Void)] {
+    static var allTests = {
         return [
                    ("test_measureBlockIteratesTenTimes", test_measureBlockIteratesTenTimes),
                    ("test_measuresMetricsWithAutomaticStartAndStop", test_measuresMetricsWithAutomaticStartAndStop),
@@ -107,7 +107,7 @@ class PerformanceTestCase: XCTestCase {
                    ("test_abortsMeasurementsAfterTestFailure", test_abortsMeasurementsAfterTestFailure),
                    ("test_measuresWallClockTimeInBlock", test_measuresWallClockTimeInBlock),
         ]
-    }
+    }()
 }
 // CHECK: Test Suite 'PerformanceTestCase' failed at \d+:\d+:\d+\.\d+
 // CHECK: \t Executed \d+ tests, with 2 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds

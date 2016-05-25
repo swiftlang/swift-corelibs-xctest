@@ -79,7 +79,7 @@ class ExpectationsTestCase: XCTestCase {
         waitForExpectations(withTimeout: -1.0)
     }
 
-    static var allTests: [(String, (ExpectationsTestCase) -> () throws -> Void)] {
+    static var allTests = {
         return [
             ("test_waitingForAnUnfulfilledExpectation_fails", test_waitingForAnUnfulfilledExpectation_fails),
             ("test_waitingForUnfulfilledExpectations_outputsAllExpectations_andFails", test_waitingForUnfulfilledExpectations_outputsAllExpectations_andFails),
@@ -89,7 +89,7 @@ class ExpectationsTestCase: XCTestCase {
             ("test_whenTimeoutIsImmediate_andAllExpectationsAreFulfilled_passes", test_whenTimeoutIsImmediate_andAllExpectationsAreFulfilled_passes),
             ("test_whenTimeoutIsImmediate_butNotAllExpectationsAreFulfilled_fails", test_whenTimeoutIsImmediate_butNotAllExpectationsAreFulfilled_fails),
         ]
-    }
+    }()
 }
 // CHECK: Test Suite 'ExpectationsTestCase' failed at \d+:\d+:\d+\.\d+
 // CHECK: \t Executed 7 tests, with 4 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds

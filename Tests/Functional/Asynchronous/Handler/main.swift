@@ -45,12 +45,12 @@ class HandlerTestCase: XCTestCase {
         XCTAssertTrue(handlerWasCalled)
     }
 
-    static var allTests: [(String, (HandlerTestCase) -> () throws -> Void)] {
+    static var allTests = {
         return [
             ("test_whenExpectationsAreNotFulfilled_handlerCalled_andFails", test_whenExpectationsAreNotFulfilled_handlerCalled_andFails),
             ("test_whenExpectationsAreFulfilled_handlerCalled_andPasses", test_whenExpectationsAreFulfilled_handlerCalled_andPasses),
         ]
-    }
+    }()
 }
 // CHECK: Test Suite 'HandlerTestCase' failed at \d+:\d+:\d+\.\d+
 // CHECK: \t Executed 2 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds

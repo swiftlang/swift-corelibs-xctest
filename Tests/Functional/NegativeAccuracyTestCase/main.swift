@@ -15,14 +15,14 @@
 
 // CHECK: Test Suite 'NegativeAccuracyTestCase' started at \d+:\d+:\d+\.\d+
 class NegativeAccuracyTestCase: XCTestCase {
-    static var allTests: [(String, (NegativeAccuracyTestCase) -> () throws -> Void)] {
+    static var allTests = {
         return [
             ("test_equalWithAccuracy_passes", test_equalWithAccuracy_passes),
             ("test_equalWithAccuracy_fails", test_equalWithAccuracy_fails),
             ("test_notEqualWithAccuracy_passes", test_notEqualWithAccuracy_passes),
             ("test_notEqualWithAccuracy_fails", test_notEqualWithAccuracy_fails),
         ]
-    }
+    }()
 
 // CHECK: Test Case 'NegativeAccuracyTestCase.test_equalWithAccuracy_passes' started at \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'NegativeAccuracyTestCase.test_equalWithAccuracy_passes' passed \(\d+\.\d+ seconds\).

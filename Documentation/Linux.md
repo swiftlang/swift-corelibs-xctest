@@ -4,7 +4,7 @@ When running on the Objective-C runtime, XCTest is able to find all of your test
 
 ```swift
 class TestNSURL : XCTestCase {
-    static var allTests : [(String, (TestNSURL) -> () throws -> Void)] {
+    static var allTests = {
         return [
             ("test_URLStrings", test_URLStrings),
             ("test_fileURLWithPath_relativeToURL", test_fileURLWithPath_relativeToURL),
@@ -12,7 +12,7 @@ class TestNSURL : XCTestCase {
             ("test_fileURLWithPath_isDirectory", test_fileURLWithPath_isDirectory),
             // Other tests go here
         ]
-    }
+    }()
 
     func test_fileURLWithPath_relativeToURL() {
         // Write your test here. Most of the XCTAssert macros you are familiar with are available.
