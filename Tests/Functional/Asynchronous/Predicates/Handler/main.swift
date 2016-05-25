@@ -55,13 +55,13 @@ class PredicateHandlerTestCase: XCTestCase {
         waitForExpectations(withTimeout: 0.1, handler: nil)
     }
     
-    static var allTests: [(String, (PredicateHandlerTestCase) -> () throws -> Void)] {
+    static var allTests = {
         return [
                    ("test_predicateIsTrue_handlerReturnsTrue_passes", test_predicateIsTrue_handlerReturnsTrue_passes),
                    ("test_predicateIsTrue_handlerReturnsFalse_fails", test_predicateIsTrue_handlerReturnsFalse_fails),
                    ("test_predicateIsTrueAfterTimeout_handlerIsNotCalled_fails", test_predicateIsTrueAfterTimeout_handlerIsNotCalled_fails),
         ]
-    }
+    }()
 }
 
 // CHECK: Test Suite 'PredicateHandlerTestCase' failed at \d+:\d+:\d+\.\d+

@@ -13,11 +13,11 @@
 
 // CHECK: Test Suite 'PassingTestCase' started at \d+:\d+:\d+\.\d+
 class PassingTestCase: XCTestCase {
-    static var allTests: [(String, (PassingTestCase) -> () throws -> Void)] {
+    static var allTests = {
         return [
             ("test_passes", test_passes),
         ]
-    }
+    }()
 
 // CHECK: Test Case 'PassingTestCase.test_passes' started at \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'PassingTestCase.test_passes' passed \(\d+\.\d+ seconds\).
@@ -30,13 +30,13 @@ class PassingTestCase: XCTestCase {
 
 // CHECK: Test Suite 'FailingTestCase' started at \d+:\d+:\d+\.\d+
 class FailingTestCase: XCTestCase {
-    static var allTests: [(String, (FailingTestCase) -> () throws -> Void)] {
+    static var allTests = {
         return [
             ("test_passes", test_passes),
             ("test_fails", test_fails),
             ("test_fails_with_message", test_fails_with_message),
         ]
-    }
+    }()
 
 // CHECK: Test Case 'FailingTestCase.test_passes' started at \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'FailingTestCase.test_passes' passed \(\d+\.\d+ seconds\).

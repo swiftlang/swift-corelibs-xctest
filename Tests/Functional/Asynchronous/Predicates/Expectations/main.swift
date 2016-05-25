@@ -63,14 +63,14 @@ class PredicateExpectationsTestCase: XCTestCase {
         waitForExpectations(withTimeout: 0.1)
     }
     
-    static var allTests: [(String, (PredicateExpectationsTestCase) -> () throws -> Void)] {
+    static var allTests = {
         return [
                    ("test_immediatelyTruePredicateAndObject_passes", test_immediatelyTruePredicateAndObject_passes),
                    ("test_immediatelyFalsePredicateAndObject_fails", test_immediatelyFalsePredicateAndObject_fails),
                    ("test_delayedTruePredicateAndObject_passes", test_delayedTruePredicateAndObject_passes),
                    ("test_immediatelyTrueDelayedFalsePredicateAndObject_passes", test_immediatelyTrueDelayedFalsePredicateAndObject_passes),
         ]
-    }
+    }()
 }
 
 // CHECK: Test Suite 'PredicateExpectationsTestCase' failed at \d+:\d+:\d+\.\d+

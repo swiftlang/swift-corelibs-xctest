@@ -37,11 +37,11 @@ let observer = Observer()
 XCTestObservationCenter.shared().addTestObserver(observer)
 
 class SkippedTestCase: XCTestCase {
-    static var allTests: [(String, (SkippedTestCase) -> () throws -> Void)] {
+    static var allTests = {
         return [
             ("test_skipped", test_skipped),
         ]
-    }
+    }()
 
     func test_skipped() {
         XCTFail("This test case should not be executed.")
@@ -50,12 +50,12 @@ class SkippedTestCase: XCTestCase {
 
 // CHECK: Test Suite 'ExecutedTestCase' started at \d+:\d+:\d+\.\d+
 class ExecutedTestCase: XCTestCase {
-    static var allTests: [(String, (ExecutedTestCase) -> () throws -> Void)] {
+    static var allTests = {
         return [
             ("test_executed", test_executed),
             ("test_skipped", test_skipped),
         ]
-    }
+    }()
 
 // CHECK: Test Case 'ExecutedTestCase.test_executed' started at \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'ExecutedTestCase.test_executed' passed \(\d+\.\d+ seconds\).

@@ -66,7 +66,7 @@ class NotificationExpectationsTestCase: XCTestCase {
         waitForExpectations(withTimeout: 0.1)
     }
     
-    static var allTests: [(String, (NotificationExpectationsTestCase) -> () throws -> Void)] {
+    static var allTests = {
         return [
                    ("test_observeNotificationWithName_passes", test_observeNotificationWithName_passes),
                    ("test_observeNotificationWithNameAndObject_passes", test_observeNotificationWithNameAndObject_passes),
@@ -74,7 +74,7 @@ class NotificationExpectationsTestCase: XCTestCase {
                    ("test_observeNotificationWithIncorrectName_fails", test_observeNotificationWithIncorrectName_fails),
                    ("test_observeNotificationWithIncorrectObject_fails", test_observeNotificationWithIncorrectObject_fails),
         ]
-    }
+    }()
 }
 // CHECK: Test Suite 'NotificationExpectationsTestCase' failed at \d+:\d+:\d+\.\d+
 // CHECK: \t Executed 5 tests, with 2 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds

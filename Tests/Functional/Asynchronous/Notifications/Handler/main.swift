@@ -50,13 +50,13 @@ class NotificationHandlerTestCase: XCTestCase {
         NSNotificationCenter.defaultCenter().postNotificationName("note", object: nil)
     }
     
-    static var allTests: [(String, (NotificationHandlerTestCase) -> () throws -> Void)] {
+    static var allTests = {
         return [
                    ("test_notificationNameIsObserved_handlerReturnsFalse_andFails", test_notificationNameIsObserved_handlerReturnsFalse_andFails),
                    ("test_notificationNameIsObserved_handlerReturnsTrue_andPasses", test_notificationNameIsObserved_handlerReturnsTrue_andPasses),
                    ("test_notificationNameIsObservedAfterTimeout_handlerIsNotCalled", test_notificationNameIsObservedAfterTimeout_handlerIsNotCalled),
         ]
-    }
+    }()
 }
 // CHECK: Test Suite 'NotificationHandlerTestCase' failed at \d+:\d+:\d+\.\d+
 // CHECK: \t Executed 3 tests, with 2 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds

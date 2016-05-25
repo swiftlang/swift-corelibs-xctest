@@ -108,7 +108,7 @@ class PerformanceMisuseTestCase: XCTestCase {
     }
     // CHECK: Test Case 'PerformanceMisuseTestCase.test_measuringUnknownMetric_fails' failed \(\d+\.\d+ seconds\).
 
-    static var allTests: [(String, (PerformanceMisuseTestCase) -> () throws -> Void)] {
+    static var allTests = {
         return [
                    ("test_whenMeasuringMultipleInOneTest_fails", test_whenMeasuringMultipleInOneTest_fails),
                    ("test_whenMeasuringMetricsAndNotStartingOrEnding_fails", test_whenMeasuringMetricsAndNotStartingOrEnding_fails),
@@ -122,7 +122,7 @@ class PerformanceMisuseTestCase: XCTestCase {
                    ("test_measuringNoMetrics_fails", test_measuringNoMetrics_fails),
                    ("test_measuringUnknownMetric_fails", test_measuringUnknownMetric_fails),
         ]
-    }
+    }()
 }
 // CHECK: Test Suite 'PerformanceMisuseTestCase' failed at \d+:\d+:\d+\.\d+
 // CHECK: \t Executed \d+ tests, with 12 failures \(12 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
