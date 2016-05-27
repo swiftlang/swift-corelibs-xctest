@@ -55,7 +55,7 @@
     observationCenter.addTestObserver(PrintObserver())
 
     // Announce that the test bundle will start executing.
-    let testBundle = NSBundle.mainBundle()
+    let testBundle = NSBundle.main()
     observationCenter.testBundleWillStart(testBundle)
 
     // Apple XCTest behaves differently if tests have been filtered:
