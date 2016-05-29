@@ -44,6 +44,8 @@ $ ./FooTests Tests.FooTestCase          # Run all the tests in FooTestCase
 
 ```sh
 $ ./FooTests --list-tests
+Listing 4 tests in FooTests.xctest:
+
 Tests.FooTestCase/testFoo
 Tests.FooTestCase/testBar
 Tests.BarTestCase/test123

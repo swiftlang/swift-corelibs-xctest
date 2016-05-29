@@ -32,6 +32,8 @@ if Process.arguments.contains("--verify") {
     exit(0)
 }
 
+// CHECK: Listing 4 tests in .*\.xctest:
+// CHECK: ^$
 
 class FirstTestCase: XCTestCase {
     static var allTests = {

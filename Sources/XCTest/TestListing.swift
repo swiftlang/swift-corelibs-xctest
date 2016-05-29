@@ -27,6 +27,11 @@ internal struct TestListing {
     /// Prints a flat list of the tests in the suite, in the format used to
     /// specify a test by name when running tests.
     func printTestList() {
+        let list = testSuite.list()
+        let tests = list.count == 1 ? "test" : "tests"
+        let bundleName = testSuite.findBundleTestSuite()?.name ?? "<<unknown bundle>>"
+
+        print("Listing \(list.count) \(tests) in \(bundleName):\n")
         for entry in testSuite.list() {
             print(entry)
         }
@@ -75,6 +80,14 @@ extension XCTestSuite: Listable {
                    "name": listingName.bridge(),
                    "tests": listedTests.bridge()
             ].bridge()
+    }
+
+    func findBundleTestSuite() -> XCTestSuite? {
+        if name.hasSuffix(".xctest") {
+            return self
+        } else {
+            return tests.flatMap({ ($0 as? XCTestSuite)?.findBundleTestSuite() }).first
+        }
     }
 }
 
