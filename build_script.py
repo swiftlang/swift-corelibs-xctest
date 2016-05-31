@@ -155,6 +155,9 @@ class GenericUnixStrategy:
                 source_paths=" ".join(sourcePaths)))
         run("{swiftc} -emit-library {build_dir}/XCTest.o "
             "-L {foundation_build_dir} -lswiftGlibc -lswiftCore -lFoundation -lm "
+            # We embed an rpath of `$ORIGIN` to ensure other referenced
+            # libraries (like `Foundation`) can be found solely via XCTest.
+            "-Xlinker -rpath=\\$ORIGIN "
             "-o {build_dir}/libXCTest.so".format(
                 swiftc=swiftc,
                 build_dir=build_dir,
