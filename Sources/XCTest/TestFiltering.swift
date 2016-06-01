@@ -16,7 +16,7 @@ internal typealias TestFilter = (XCTestCase.Type, String) -> Bool
 internal struct TestFiltering {
     private let selectedTestName: String?
 
-    init(selectedTestName: String? = ArgumentParser().selectedTestName) {
+    init(selectedTestName: String?) {
         self.selectedTestName = selectedTestName
     }
 
