@@ -346,9 +346,6 @@ def main(args=sys.argv[1:]):
         "--libdispatch-src-dir",
         help="Path to swift-corelibs-libdispatch source tree, which "
              "the built XCTest.so will be linked against.")
-    build_parser.add_argument("--swift-build-dir",
-                              help="deprecated, do not use")
-    build_parser.add_argument("--arch", help="deprecated, do not use")
     build_parser.add_argument(
         "--module-install-path",
         help="Location at which to install XCTest.swiftmodule and "
