@@ -2,7 +2,7 @@
 // RUN: %{built_tests_dir}/Asynchronous-Notifications-Handler > %t || true
 // RUN: %{xctest_checker} %t %s
 
-#if os(Linux) || os(FreeBSD)
+#if os(Linux) || os(FreeBSD) || os(Android)
     import XCTest
     import Foundation
 #else

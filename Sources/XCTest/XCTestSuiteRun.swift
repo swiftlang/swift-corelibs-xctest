@@ -11,7 +11,7 @@
 //  A test run for an `XCTestSuite`.
 //
 
-#if os(Linux) || os(FreeBSD)
+#if os(Linux) || os(FreeBSD) || os(Android)
     import Foundation
 #else
     import SwiftFoundation

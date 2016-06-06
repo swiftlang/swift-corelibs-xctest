@@ -12,7 +12,7 @@
 //  fulfilled times out.
 //
 
-#if os(Linux) || os(FreeBSD)
+#if os(Linux) || os(FreeBSD) || os(Android)
     import Foundation
 #else
     import SwiftFoundation
