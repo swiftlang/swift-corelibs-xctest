@@ -123,7 +123,7 @@ class GenericUnixStrategy:
         _mkdirp(build_dir)
 
         sourcePaths = glob.glob(os.path.join(
-            SOURCE_DIR, 'Sources', 'XCTest', '*.swift'))
+            SOURCE_DIR, 'Sources', 'XCTest', '*', '*.swift'))
 
         if args.build_style == "debug":
             style_options = "-g"
