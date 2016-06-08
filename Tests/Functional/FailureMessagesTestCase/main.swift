@@ -64,7 +64,7 @@ class FailureMessagesTestCase: XCTestCase {
     func testAssertEqualOptionals() {
         XCTAssertEqual(Optional(1), Optional(2), "message", file: "test.swift")
     }
-    
+
 // CHECK: Test Case 'FailureMessagesTestCase.testAssertEqualArraySlices' started at \d+:\d+:\d+\.\d+
 // CHECK: test.swift:[[@LINE+3]]: error: FailureMessagesTestCase.testAssertEqualArraySlices : XCTAssertEqual failed: \("\[1\]"\) is not equal to \("\[2\]"\) - message
 // CHECK: Test Case 'FailureMessagesTestCase.testAssertEqualArraySlices' failed \(\d+\.\d+ seconds\).
@@ -155,7 +155,7 @@ class FailureMessagesTestCase: XCTestCase {
     func testAssertNotEqualOptionals() {
         XCTAssertNotEqual(Optional(1), Optional(1), "message", file: "test.swift")
     }
-    
+
 // CHECK: Test Case 'FailureMessagesTestCase.testAssertNotEqualArraySlices' started at \d+:\d+:\d+\.\d+
 // CHECK: test.swift:[[@LINE+3]]: error: FailureMessagesTestCase.testAssertNotEqualArraySlices : XCTAssertNotEqual failed: \("\[1\]"\) is equal to \("\[1\]"\) - message
 // CHECK: Test Case 'FailureMessagesTestCase.testAssertNotEqualArraySlices' failed \(\d+\.\d+ seconds\).
