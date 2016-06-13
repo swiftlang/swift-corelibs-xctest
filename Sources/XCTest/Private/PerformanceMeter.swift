@@ -91,7 +91,7 @@ public final class PerformanceMeter {
         return state == .measurementFinished || state == .measurementAborted
     }
 
-    private enum State {
+    fileprivate enum State {
         case iterationUnstarted
         case iterationStarted
         case iterationFinished

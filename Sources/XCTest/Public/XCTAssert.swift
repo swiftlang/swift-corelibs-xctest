@@ -10,7 +10,7 @@
 //  XCTAssert.swift
 //
 
-private enum _XCTAssertion {
+fileprivate enum _XCTAssertion {
     case equal
     case equalWithAccuracy
     case greaterThan
@@ -46,7 +46,7 @@ private enum _XCTAssertion {
     }
 }
 
-private enum _XCTAssertionResult {
+fileprivate enum _XCTAssertionResult {
     case success
     case expectedFailure(String?)
     case unexpectedFailure(ErrorProtocol)

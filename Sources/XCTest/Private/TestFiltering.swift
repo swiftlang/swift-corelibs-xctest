@@ -47,12 +47,12 @@ internal struct TestFiltering {
 }
 
 /// A selected test can be a single test case, or an entire class of test cases
-private struct SelectedTest {
+fileprivate struct SelectedTest {
     let testCaseClassName: String
     let testCaseMethodName: String?
 }
 
-private extension SelectedTest {
+fileprivate extension SelectedTest {
     init?(selectedTestName: String) {
         let components = selectedTestName.characters.split(separator: "/").map(String.init)
         switch components.count {

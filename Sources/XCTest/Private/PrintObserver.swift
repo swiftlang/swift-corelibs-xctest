@@ -66,7 +66,7 @@ internal class PrintObserver: XCTestObservation {
         return formatter
     }()
 
-    private func printAndFlush(_ message: String) {
+    fileprivate func printAndFlush(_ message: String) {
         print(message)
         fflush(stdout)
     }

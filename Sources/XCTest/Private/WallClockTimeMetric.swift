@@ -67,7 +67,7 @@ internal final class WallClockTimeMetric: PerformanceMetric {
 }
 
 
-private extension Collection where Index: IntegerLiteralConvertible, Iterator.Element == WallClockTimeMetric.Measurement {
+fileprivate extension Collection where Index: IntegerLiteralConvertible, Iterator.Element == WallClockTimeMetric.Measurement {
     var average: WallClockTimeMetric.Measurement {
         return self.reduce(0, combine: +) / Double(count.toIntMax())
     }
