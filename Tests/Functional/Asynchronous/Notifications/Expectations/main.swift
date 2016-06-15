@@ -21,7 +21,7 @@ class NotificationExpectationsTestCase: XCTestCase {
     func test_observeNotificationWithName_passes() {
         let notificationName = "notificationWithNameTest"
         expectation(forNotification: notificationName, object:nil)
-        NSNotificationCenter.defaultCenter().postNotificationName(notificationName, object: nil)
+        NotificationCenter.defaultCenter().postNotificationName(notificationName, object: nil)
         waitForExpectations(withTimeout: 0.0)
     }
     
@@ -31,7 +31,7 @@ class NotificationExpectationsTestCase: XCTestCase {
         let notificationName = "notificationWithNameAndObjectTest"
         let dummyObject = NSObject()
         expectation(forNotification: notificationName, object:dummyObject)
-        NSNotificationCenter.defaultCenter().postNotificationName(notificationName, object: dummyObject)
+        NotificationCenter.defaultCenter().postNotificationName(notificationName, object: dummyObject)
         waitForExpectations(withTimeout: 0.0)
     }
     
@@ -41,7 +41,7 @@ class NotificationExpectationsTestCase: XCTestCase {
         let notificationName = "notificationWithNameAndObject_expectNoObjectTest"
         expectation(forNotification: notificationName, object:nil)
         let dummyObject = NSObject()
-        NSNotificationCenter.defaultCenter().postNotificationName(notificationName, object: dummyObject)
+        NotificationCenter.defaultCenter().postNotificationName(notificationName, object: dummyObject)
         waitForExpectations(withTimeout: 0.0)
     }
     
@@ -50,7 +50,7 @@ class NotificationExpectationsTestCase: XCTestCase {
 // CHECK: Test Case 'NotificationExpectationsTestCase.test_observeNotificationWithIncorrectName_fails' failed \(\d+\.\d+ seconds\).
     func test_observeNotificationWithIncorrectName_fails() {
         expectation(forNotification: "expectedName", object: nil)
-        NSNotificationCenter.defaultCenter().postNotificationName("actualName", object: nil)
+        NotificationCenter.defaultCenter().postNotificationName("actualName", object: nil)
         waitForExpectations(withTimeout: 0.1)
     }
     
@@ -62,7 +62,7 @@ class NotificationExpectationsTestCase: XCTestCase {
         let dummyObject: NSString = "dummyObject"
         let anotherDummyObject = NSObject()
         expectation(forNotification: notificationName, object: dummyObject)
-        NSNotificationCenter.defaultCenter().postNotificationName(notificationName, object:anotherDummyObject)
+        NotificationCenter.defaultCenter().postNotificationName(notificationName, object:anotherDummyObject)
         waitForExpectations(withTimeout: 0.1)
     }
     

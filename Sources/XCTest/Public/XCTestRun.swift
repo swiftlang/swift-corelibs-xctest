@@ -25,14 +25,14 @@ public class XCTestRun {
     public let test: XCTest
 
     /// The time at which the test run was started, or nil.
-    public private(set) var startDate: NSDate?
+    public private(set) var startDate: Date?
 
     /// The time at which the test run was stopped, or nil.
-    public private(set) var stopDate: NSDate?
+    public private(set) var stopDate: Date?
 
     /// The number of seconds that elapsed between when the run was started and
     /// when it was stopped.
-    public var totalDuration: NSTimeInterval {
+    public var totalDuration: TimeInterval {
         if let stop = stopDate, start = startDate {
             return stop.timeIntervalSince(start)
         } else {
@@ -43,7 +43,7 @@ public class XCTestRun {
     /// In an `XCTestCase` run, the number of seconds that elapsed between when
     /// the run was started and when it was stopped. In an `XCTestSuite` run,
     /// the combined `testDuration` of each test case in the suite.
-    public var testDuration: NSTimeInterval {
+    public var testDuration: TimeInterval {
         return totalDuration
     }
 
@@ -94,7 +94,7 @@ public class XCTestRun {
                        "already been stopped: \(self)")
         }
 
-        startDate = NSDate()
+        startDate = Date()
     }
 
     /// Stop a test run. Must not be called unless the run has been started.
@@ -110,7 +110,7 @@ public class XCTestRun {
         }
 
         executionCount += 1
-        stopDate = NSDate()
+        stopDate = Date()
     }
 
     /// Records a failure in the execution of the test for this test run. Must

@@ -41,7 +41,7 @@ internal struct TestListing {
     /// tree representation of test suites and test cases. This output is intended
     /// to be consumed by other tools.
     func printTestJSON() {
-        let json = try! NSJSONSerialization.data(withJSONObject: testSuite.dictionaryRepresentation())
+        let json = try! JSONSerialization.data(withJSONObject: testSuite.dictionaryRepresentation())
         print(NSString(data: json, encoding: NSUTF8StringEncoding)!)
     }
 }

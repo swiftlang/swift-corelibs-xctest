@@ -20,8 +20,8 @@
 /// A test run for an `XCTestSuite`.
 public class XCTestSuiteRun: XCTestRun {
     /// The combined `testDuration` of each test case run in the suite.
-    public override var totalDuration: NSTimeInterval {
-        return testRuns.reduce(NSTimeInterval(0.0)) { $0 + $1.totalDuration }
+    public override var totalDuration: TimeInterval {
+        return testRuns.reduce(TimeInterval(0.0)) { $0 + $1.totalDuration }
     }
 
     /// The combined execution count of each test case run in the suite.

@@ -20,7 +20,7 @@
 /// Prints textual representations of each XCTestObservation event to stdout.
 /// Mirrors the Apple XCTest output exactly.
 internal class PrintObserver: XCTestObservation {
-    func testBundleWillStart(_ testBundle: NSBundle) {}
+    func testBundleWillStart(_ testBundle: Bundle) {}
 
     func testSuiteWillStart(_ testSuite: XCTestSuite) {
         printAndFlush("Test Suite '\(testSuite.name)' started at \(dateFormatter.string(from: testSuite.testRun!.startDate!))")
@@ -58,10 +58,10 @@ internal class PrintObserver: XCTestObservation {
         )
     }
 
-    func testBundleDidFinish(_ testBundle: NSBundle) {}
+    func testBundleDidFinish(_ testBundle: Bundle) {}
 
-    private lazy var dateFormatter: NSDateFormatter = {
-        let formatter = NSDateFormatter()
+    private lazy var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm:ss.SSS"
         return formatter
     }()
@@ -71,7 +71,7 @@ internal class PrintObserver: XCTestObservation {
         fflush(stdout)
     }
 
-    private func formatTimeInterval(_ timeInterval: NSTimeInterval) -> String {
+    private func formatTimeInterval(_ timeInterval: TimeInterval) -> String {
         return String(round(timeInterval * 1000.0) / 1000.0)
     }
 }

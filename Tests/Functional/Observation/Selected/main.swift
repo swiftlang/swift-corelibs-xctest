@@ -16,7 +16,7 @@ class Observer: XCTestObservation {
     var startedTestSuites = [XCTestSuite]()
     var finishedTestSuites = [XCTestSuite]()
 
-    func testBundleWillStart(_ testBundle: NSBundle) {}
+    func testBundleWillStart(_ testBundle: Bundle) {}
 
     func testSuiteWillStart(_ testSuite: XCTestSuite) {
         startedTestSuites.append(testSuite)
@@ -30,7 +30,7 @@ class Observer: XCTestObservation {
         print("In \(#function): \(testSuite.name)")
     }
 
-    func testBundleDidFinish(_ testBundle: NSBundle) {}
+    func testBundleDidFinish(_ testBundle: Bundle) {}
 }
 
 let observer = Observer()
