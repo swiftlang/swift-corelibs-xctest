@@ -43,7 +43,7 @@ public class XCTestObservationCenter {
         observers.remove(testObserver.wrapper)
     }
 
-    internal func testBundleWillStart(_ testBundle: NSBundle) {
+    internal func testBundleWillStart(_ testBundle: Bundle) {
         forEachObserver { $0.testBundleWillStart(testBundle) }
     }
 
@@ -67,7 +67,7 @@ public class XCTestObservationCenter {
         forEachObserver { $0.testSuiteDidFinish(testSuite) }
     }
 
-    internal func testBundleDidFinish(_ testBundle: NSBundle) {
+    internal func testBundleDidFinish(_ testBundle: Bundle) {
         forEachObserver { $0.testBundleDidFinish(testBundle) }
     }
 

@@ -22,7 +22,7 @@ class Observer: XCTestObservation {
     var finishedTestSuites = [XCTestSuite]()
     var finishedBundlePaths = [String]()
 
-    func testBundleWillStart(_ testBundle: NSBundle) {
+    func testBundleWillStart(_ testBundle: Bundle) {
         startedBundlePaths.append(testBundle.bundlePath)
     }
 
@@ -46,7 +46,7 @@ class Observer: XCTestObservation {
         print("In \(#function): \(testSuite.name)")
     }
 
-    func testBundleDidFinish(_ testBundle: NSBundle) {
+    func testBundleDidFinish(_ testBundle: Bundle) {
         print("In \(#function)")
     }
 }

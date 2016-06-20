@@ -23,7 +23,7 @@ class NotificationHandlerTestCase: XCTestCase {
             notification in
             return false
         })
-        NSNotificationCenter.defaultCenter().postNotificationName("returnFalse", object: nil)
+        NotificationCenter.defaultCenter().postNotificationName("returnFalse", object: nil)
         waitForExpectations(withTimeout: 0.1)
     }
     
@@ -34,7 +34,7 @@ class NotificationHandlerTestCase: XCTestCase {
             notification in
             return true
         })
-        NSNotificationCenter.defaultCenter().postNotificationName("returnTrue", object: nil)
+        NotificationCenter.defaultCenter().postNotificationName("returnTrue", object: nil)
         waitForExpectations(withTimeout: 0.1)
     }
 
@@ -47,7 +47,7 @@ class NotificationHandlerTestCase: XCTestCase {
             return true
         })
         waitForExpectations(withTimeout: 0.1, handler: nil)
-        NSNotificationCenter.defaultCenter().postNotificationName("note", object: nil)
+        NotificationCenter.defaultCenter().postNotificationName("note", object: nil)
     }
     
     static var allTests = {

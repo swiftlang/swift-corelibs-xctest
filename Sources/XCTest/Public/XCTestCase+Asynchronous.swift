@@ -74,7 +74,7 @@ public extension XCTestCase {
     ///   these environments. To ensure compatibility of tests between
     ///   swift-corelibs-xctest and Apple XCTest, it is not recommended to pass
     ///   explicit values for `file` and `line`.
-    func waitForExpectations(withTimeout timeout: NSTimeInterval, file: StaticString = #file, line: UInt = #line, handler: XCWaitCompletionHandler? = nil) {
+    func waitForExpectations(withTimeout timeout: TimeInterval, file: StaticString = #file, line: UInt = #line, handler: XCWaitCompletionHandler? = nil) {
         // Mirror Objective-C XCTest behavior; display an unexpected test
         // failure when users wait without having first set expectations.
         // FIXME: Objective-C XCTest raises an exception for most "API
@@ -103,8 +103,8 @@ public extension XCTestCase {
         //        been fulfilled, it would be more efficient to use a runloop
         //        source that can be signaled to wake up when an expectation is
         //        fulfilled.
-        let runLoop = NSRunLoop.currentRunLoop()
-        let timeoutDate = NSDate(timeIntervalSinceNow: timeout)
+        let runLoop = RunLoop.current()
+        let timeoutDate = Date(timeIntervalSinceNow: timeout)
         repeat {
             unfulfilledDescriptions = []
             for expectation in _allExpectations {
@@ -120,8 +120,8 @@ public extension XCTestCase {
             }
 
             // Otherwise, wait another fraction of a second.
-            runLoop.runUntilDate(NSDate(timeIntervalSinceNow: 0.01))
-        } while NSDate().compare(timeoutDate) == NSComparisonResult.orderedAscending
+            runLoop.run(until: Date(timeIntervalSinceNow: 0.01))
+        } while Date().compare(timeoutDate) == ComparisonResult.orderedAscending
 
         if unfulfilledDescriptions.count > 0 {
             // Not all expectations were fulfilled. Append a failure
@@ -171,14 +171,14 @@ public extension XCTestCase {
         var observer: NSObjectProtocol? = nil
         func removeObserver() {
             if let observer = observer as? AnyObject {
-                NSNotificationCenter.defaultCenter().removeObserver(observer)
+                NotificationCenter.defaultCenter().removeObserver(observer)
             }
         }
 
         weak var weakExpectation = expectation
-        observer = NSNotificationCenter
+        observer = NotificationCenter
             .defaultCenter()
-            .addObserverForName(notificationName,
+            .addObserverForName(Notification.Name(rawValue: notificationName),
                                 object: objectToObserve,
                                 queue: nil,
                                 usingBlock: {
@@ -226,7 +226,7 @@ public extension XCTestCase {
     ///   first successful evaluation will fulfill the expectation. If provided,
     ///   the handler can override that behavior which leaves the caller
     ///   responsible for fulfilling the expectation.
-    func expectation(for predicate: NSPredicate, evaluatedWith object: AnyObject, file: StaticString = #file, line: UInt = #line, handler: XCPredicateExpectationHandler? = nil) -> XCTestExpectation {
+    func expectation(for predicate: Predicate, evaluatedWith object: AnyObject, file: StaticString = #file, line: UInt = #line, handler: XCPredicateExpectationHandler? = nil) -> XCTestExpectation {
         let expectation = XCPredicateExpectation(
             predicate: predicate,
             object: object,

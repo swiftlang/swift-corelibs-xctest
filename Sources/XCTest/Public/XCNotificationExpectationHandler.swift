@@ -23,4 +23,4 @@
 ///
 /// - Parameter notification: The notification that the expectation was 
 ///   observing. 
-public typealias XCNotificationExpectationHandler = (NSNotification) -> (Bool)
+public typealias XCNotificationExpectationHandler = (Notification) -> (Bool)

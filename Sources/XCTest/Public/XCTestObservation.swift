@@ -25,7 +25,7 @@ public protocol XCTestObservation: class {
     /// Sent immediately before tests begin as a hook for any pre-testing setup.
     /// - Parameter testBundle: The bundle containing the tests that were
     ///   executed.
-    func testBundleWillStart(_ testBundle: NSBundle)
+    func testBundleWillStart(_ testBundle: Bundle)
 
     /// Sent when a test suite starts executing.
     /// - Parameter testSuite: The test suite that started. Additional
@@ -64,16 +64,16 @@ public protocol XCTestObservation: class {
     /// it blocks until all such activity is complete.
     /// - Parameter testBundle: The bundle containing the tests that were
     ///   executed.
-    func testBundleDidFinish(_ testBundle: NSBundle)
+    func testBundleDidFinish(_ testBundle: Bundle)
 }
 
 // All `XCTestObservation` methods are optional, so empty default implementations are provided
 public extension XCTestObservation {
-    func testBundleWillStart(_ testBundle: NSBundle) {}
+    func testBundleWillStart(_ testBundle: Bundle) {}
     func testSuiteWillStart(_ testSuite: XCTestSuite) {}
     func testCaseWillStart(_ testCase: XCTestCase) {}
     func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {}
     func testCaseDidFinish(_ testCase: XCTestCase) {}
     func testSuiteDidFinish(_ testSuite: XCTestSuite) {}
-    func testBundleDidFinish(_ testBundle: NSBundle) {}
+    func testBundleDidFinish(_ testBundle: Bundle) {}
 }

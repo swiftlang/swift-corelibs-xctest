@@ -22,8 +22,8 @@
 internal final class WallClockTimeMetric: PerformanceMetric {
     static let name = "org.swift.XCTPerformanceMetric_WallClockTime"
 
-    typealias Measurement = NSTimeInterval
-    private var startTime: NSTimeInterval?
+    typealias Measurement = TimeInterval
+    private var startTime: TimeInterval?
     var measurements: [Measurement] = []
 
     func startMeasuring() {
@@ -61,8 +61,8 @@ internal final class WallClockTimeMetric: PerformanceMetric {
         return nil
     }
 
-    private func currentTime() -> NSTimeInterval {
-        return NSProcessInfo.processInfo().systemUptime
+    private func currentTime() -> TimeInterval {
+        return ProcessInfo.processInfo().systemUptime
     }
 }
 
