@@ -44,10 +44,10 @@ class ExpectationsTestCase: XCTestCase {
 // CHECK: Test Case 'ExpectationsTestCase.test_waitingForAnEventuallyFulfilledExpectation_passes' passed \(\d+\.\d+ seconds\).
     func test_waitingForAnEventuallyFulfilledExpectation_passes() {
         let expectation = self.expectation(withDescription: "flam")
-        let timer = Timer.scheduledTimer(0.1, repeats: false) { _ in
+        let timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { _ in
             expectation.fulfill()
         }
-        RunLoop.currentRunLoop().addTimer(timer, forMode: NSDefaultRunLoopMode)
+        RunLoop.current().add(timer, forMode: .defaultRunLoopMode)
         waitForExpectations(withTimeout: 1.0)
     }
 
@@ -56,10 +56,10 @@ class ExpectationsTestCase: XCTestCase {
 // CHECK: Test Case 'ExpectationsTestCase.test_waitingForAnExpectationFulfilledAfterTheTimeout_fails' failed \(\d+\.\d+ seconds\).
     func test_waitingForAnExpectationFulfilledAfterTheTimeout_fails() {
         let expectation = self.expectation(withDescription: "hog")
-        let timer = Timer.scheduledTimer(1.0, repeats: false) { _ in
+        let timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
             expectation.fulfill()
         }
-        RunLoop.currentRunLoop().addTimer(timer, forMode: NSDefaultRunLoopMode)
+        RunLoop.current().add(timer, forMode: .defaultRunLoopMode)
         waitForExpectations(withTimeout: 0.1)
     }
 

@@ -41,9 +41,9 @@ class PredicateHandlerTestCase: XCTestCase {
     // CHECK: .*/Tests/Functional/Asynchronous/Predicates/Handler/main.swift:[[@LINE+14]]: error: PredicateHandlerTestCase.test_predicateIsTrueAfterTimeout_handlerIsNotCalled_fails : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: Expect `<Predicate: 0x[0-9a-fA-F]{1,16}>` for object \d{4}-\d{2}-\d{2} \d+:\d+:\d+ \+\d+
     // CHECK: Test Case 'PredicateHandlerTestCase.test_predicateIsTrueAfterTimeout_handlerIsNotCalled_fails' failed \(\d+\.\d+ seconds\).
     func test_predicateIsTrueAfterTimeout_handlerIsNotCalled_fails() {
-        let halfSecLaterDate = Date(timeIntervalSinceNow: 0.2)
+        let halfSecLaterDate = NSDate(timeIntervalSinceNow: 0.2)
         let predicate = Predicate(block: { evaluatedObject, bindings in
-            if let evaluatedDate = evaluatedObject as? Date {
+            if let evaluatedDate = evaluatedObject as? NSDate {
                 return evaluatedDate.compare(Date()) == ComparisonResult.orderedAscending
             }
             return false
