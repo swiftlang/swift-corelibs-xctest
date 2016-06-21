@@ -27,7 +27,7 @@ if Process.arguments.contains("--verify") {
         }
     }
 
-    let deserialized = try! JSONSerialization.jsonObject(with: NSData(contentsOfFile: Process.arguments[2])!)
+    let deserialized = try! JSONSerialization.jsonObject(with: Data(contentsOf: URL(fileURLWithPath: Process.arguments[2])))
     dump(deserialized)
     exit(0)
 }

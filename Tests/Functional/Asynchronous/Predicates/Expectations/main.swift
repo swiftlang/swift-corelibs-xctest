@@ -37,10 +37,10 @@ class PredicateExpectationsTestCase: XCTestCase {
     // CHECK: Test Case 'PredicateExpectationsTestCase.test_delayedTruePredicateAndObject_passes' started at \d+:\d+:\d+\.\d+
     // CHECK: Test Case 'PredicateExpectationsTestCase.test_delayedTruePredicateAndObject_passes' passed \(\d+\.\d+ seconds\).
     func test_delayedTruePredicateAndObject_passes() {
-        let halfSecLaterDate = Date(timeIntervalSinceNow: 0.01)
+        let halfSecLaterDate = NSDate(timeIntervalSinceNow: 0.01)
         let predicate = Predicate(block: {
             evaluatedObject, bindings in
-            if let evaluatedDate = evaluatedObject as? Date {
+            if let evaluatedDate = evaluatedObject as? NSDate {
                 return evaluatedDate.compare(Date()) == ComparisonResult.orderedAscending
             }
             return false
@@ -52,9 +52,9 @@ class PredicateExpectationsTestCase: XCTestCase {
     // CHECK: Test Case 'PredicateExpectationsTestCase.test_immediatelyTrueDelayedFalsePredicateAndObject_passes' started at \d+:\d+:\d+\.\d+
     // CHECK: Test Case 'PredicateExpectationsTestCase.test_immediatelyTrueDelayedFalsePredicateAndObject_passes' passed \(\d+\.\d+ seconds\).
     func test_immediatelyTrueDelayedFalsePredicateAndObject_passes() {
-        let halfSecLaterDate = Date(timeIntervalSinceNow: 0.01)
+        let halfSecLaterDate = NSDate(timeIntervalSinceNow: 0.01)
         let predicate = Predicate(block: { evaluatedObject, bindings in
-            if let evaluatedDate = evaluatedObject as? Date {
+            if let evaluatedDate = evaluatedObject as? NSDate {
                 return evaluatedDate.compare(Date()) == ComparisonResult.orderedDescending
             }
             return false
