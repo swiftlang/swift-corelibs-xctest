@@ -17,6 +17,7 @@ import sys
 import tempfile
 import textwrap
 import platform
+import errno
 
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -36,6 +37,19 @@ def _mkdirp(path):
     """
     if not os.path.exists(path):
         run("mkdir -p {}".format(path))
+
+
+def symlink_force(target, link_name):
+    if os.path.isdir(link_name):
+        link_name = os.path.join(link_name, os.path.basename(target))
+    try:
+        os.symlink(target, link_name)
+    except OSError as e:
+        if e.errno == errno.EEXIST:
+            os.remove(link_name)
+            os.symlink(target, link_name)
+        else:
+            raise e
 
 class DarwinStrategy:
     @staticmethod
@@ -205,17 +219,29 @@ class GenericUnixStrategy:
         foundation_build_dir = os.path.abspath(args.foundation_build_dir)
         core_foundation_build_dir = GenericUnixStrategy.core_foundation_build_dir(
             foundation_build_dir, args.foundation_install_prefix)
+        if args.libdispatch_build_dir:
+            libdispatch_build_dir = os.path.abspath(args.libdispatch_build_dir)
+            symlink_force(os.path.join(args.libdispatch_build_dir, "src", ".libs", "libdispatch.so"),
+                foundation_build_dir)
+        if args.libdispatch_src_dir and args.libdispatch_build_dir:
+            libdispatch_src_args = "LIBDISPATCH_SRC_DIR={libdispatch_src_dir} LIBDISPATCH_BUILD_DIR={libdispatch_build_dir}".format(
+                libdispatch_src_dir=os.path.abspath(args.libdispatch_src_dir),
+                libdispatch_build_dir=os.path.join(args.libdispatch_build_dir, 'src', '.libs'))
+        else:
+            libdispatch_src_args = ""
 
         run('SWIFT_EXEC={swiftc} '
             'BUILT_PRODUCTS_DIR={built_products_dir} '
             'FOUNDATION_BUILT_PRODUCTS_DIR={foundation_build_dir} '
             'CORE_FOUNDATION_BUILT_PRODUCTS_DIR={core_foundation_build_dir} '
+            '{libdispatch_src_args} '
             '{lit_path} {lit_flags} '
             '{tests_path}'.format(
                 swiftc=os.path.abspath(args.swiftc),
                 built_products_dir=args.build_dir,
                 foundation_build_dir=foundation_build_dir,
                 core_foundation_build_dir=core_foundation_build_dir,
+                libdispatch_src_args=libdispatch_src_args,
                 lit_path=lit_path,
                 lit_flags=lit_flags,
                 tests_path=tests_path))
@@ -409,6 +435,14 @@ def main(args=sys.argv[1:]):
              "dependencies are expected to be found under "
              "FOUNDATION_BUILD_DIR/FOUNDATION_INSTALL_PREFIX.",
         default="/usr")
+    test_parser.add_argument(
+        "--libdispatch-build-dir",
+        help="Path to swift-corelibs-libdispatch build products, which "
+             "the built XCTest.so will be linked against.")
+    test_parser.add_argument(
+        "--libdispatch-src-dir",
+        help="Path to swift-corelibs-libdispatch source tree, which "
+             "the built XCTest.so will be linked against.")
 
     install_parser = subparsers.add_parser(
         "install",
