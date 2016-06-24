@@ -62,7 +62,7 @@
     let currentTestSuite: XCTestSuite
     if executionMode.selectedTestName == nil {
         rootTestSuite = XCTestSuite(name: "All tests")
-        currentTestSuite = XCTestSuite(name: "\(testBundle.bundlePath.lastPathComponent).xctest")
+        currentTestSuite = XCTestSuite(name: "\(testBundle.bundleURL.lastPathComponent).xctest")
         rootTestSuite.addTest(currentTestSuite)
     } else {
         rootTestSuite = XCTestSuite(name: "Selected tests")

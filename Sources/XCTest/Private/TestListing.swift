@@ -42,7 +42,7 @@ internal struct TestListing {
     /// to be consumed by other tools.
     func printTestJSON() {
         let json = try! JSONSerialization.data(withJSONObject: testSuite.dictionaryRepresentation())
-        print(NSString(data: json, encoding: NSUTF8StringEncoding)!)
+        print(String(data: json, encoding: .utf8)!)
     }
 }
 
