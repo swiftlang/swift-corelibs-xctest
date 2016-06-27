@@ -68,13 +68,20 @@ class DarwinStrategy:
         swiftc = os.path.abspath(args.swiftc)
         build_dir = os.path.abspath(args.build_dir)
 
+        if args.build_style == "debug":
+            style_options = "Debug"
+        else:
+            style_options = "Release"
+
         run("xcodebuild -workspace {source_dir}/XCTest.xcworkspace "
             "-scheme SwiftXCTest "
+            "-configuration {style_options} "
             "SWIFT_EXEC=\"{swiftc}\" "
             "SWIFT_LINK_OBJC_RUNTIME=YES "
             "SYMROOT=\"{build_dir}\" OBJROOT=\"{build_dir}\"".format(
                 swiftc=swiftc,
                 build_dir=build_dir,
+                style_options=style_options,
                 source_dir=SOURCE_DIR))
 
         if args.test:
@@ -92,14 +99,21 @@ class DarwinStrategy:
         swiftc = os.path.abspath(args.swiftc)
         build_dir = os.path.abspath(args.build_dir)
 
+        if args.build_style == "debug":
+            style_options = "Debug"
+        else:
+            style_options = "Release"
+
         run("xcodebuild -workspace {source_dir}/XCTest.xcworkspace "
             "-scheme SwiftXCTestFunctionalTests "
+            "-configuration {style_options} "
             "SWIFT_EXEC=\"{swiftc}\" "
             "SWIFT_LINK_OBJC_RUNTIME=YES "
             "SYMROOT=\"{build_dir}\" OBJROOT=\"{build_dir}\" "
             "| grep -v \"    export\"".format(
                 swiftc=swiftc,
                 build_dir=build_dir,
+                style_options=style_options,
                 source_dir=SOURCE_DIR))
 
     @staticmethod
@@ -443,6 +457,20 @@ def main(args=sys.argv[1:]):
         "--libdispatch-src-dir",
         help="Path to swift-corelibs-libdispatch source tree, which "
              "the built XCTest.so will be linked against.")
+    test_parser.add_argument(
+        "--release",
+        help="builds the tests for release",
+        action="store_const",
+        dest="build_style",
+        const="release",
+        default="debug")
+    test_parser.add_argument(
+        "--debug",
+        help="builds the tests for debug (the default)",
+        action="store_const",
+        dest="build_style",
+        const="debug",
+        default="debug")
 
     install_parser = subparsers.add_parser(
         "install",
