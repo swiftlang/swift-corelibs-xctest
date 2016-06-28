@@ -19,10 +19,10 @@ class HandlerTestCase: XCTestCase {
 // CHECK: .*/Tests/Functional/Asynchronous/Handler/main.swift:[[@LINE+6]]: error: HandlerTestCase.test_whenExpectationsAreNotFulfilled_handlerCalled_andFails : Asynchronous wait failed - Exceeded timeout of 0.2 seconds, with unfulfilled expectations: fog
 // CHECK: Test Case 'HandlerTestCase.test_whenExpectationsAreNotFulfilled_handlerCalled_andFails' failed \(\d+\.\d+ seconds\).
     func test_whenExpectationsAreNotFulfilled_handlerCalled_andFails() {
-        self.expectation(withDescription: "fog")
+        self.expectation(description: "fog")
 
         var handlerWasCalled = false
-        self.waitForExpectations(withTimeout: 0.2) { error in
+        self.waitForExpectations(timeout: 0.2) { error in
             XCTAssertNotNil(error, "Expectation handlers for unfulfilled expectations should not be nil.")
             XCTAssertEqual(error?.domain, XCTestErrorDomain, "The error domain should be XCTest's own error domain")
             XCTAssertEqual(error?.code, XCTestErrorCode.timeoutWhileWaiting.rawValue, "The error code should indicate that a timeout occurred")
@@ -34,11 +34,11 @@ class HandlerTestCase: XCTestCase {
 // CHECK: Test Case 'HandlerTestCase.test_whenExpectationsAreFulfilled_handlerCalled_andPasses' started at \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'HandlerTestCase.test_whenExpectationsAreFulfilled_handlerCalled_andPasses' passed \(\d+\.\d+ seconds\).
     func test_whenExpectationsAreFulfilled_handlerCalled_andPasses() {
-        let expectation = self.expectation(withDescription: "bog")
+        let expectation = self.expectation(description: "bog")
         expectation.fulfill()
 
         var handlerWasCalled = false
-        self.waitForExpectations(withTimeout: 0.2) { error in
+        self.waitForExpectations(timeout: 0.2) { error in
             XCTAssertNil(error, "Expectation handlers for fulfilled expectations should be nil.")
             handlerWasCalled = true
         }

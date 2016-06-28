@@ -17,11 +17,11 @@ public let XCTestErrorDomain = "org.swift.XCTestErrorDomain"
 /// Error codes for errors in the XCTestErrorDomain.
 public enum XCTestErrorCode : Int {
     /// Indicates that one or more expectations failed to be fulfilled in time
-    /// during a call to `waitForExpectations(withTimeout:handler:)`
+    /// during a call to `waitForExpectations(timeout:handler:)`
     case timeoutWhileWaiting
 
     /// Indicates that a test assertion failed while waiting for expectations
-    /// during a call to `waitForExpectations(withTimeout:handler:)`
+    /// during a call to `waitForExpectations(timeout:handler:)`
     /// FIXME: swift-corelibs-xctest does not currently produce this error code.
     case failureWhileWaiting
 }

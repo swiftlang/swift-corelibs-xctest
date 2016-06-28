@@ -19,64 +19,64 @@ class ExpectationsTestCase: XCTestCase {
 // CHECK: .*/Tests/Functional/Asynchronous/Expectations/main.swift:[[@LINE+4]]: error: ExpectationsTestCase.test_waitingForAnUnfulfilledExpectation_fails : Asynchronous wait failed - Exceeded timeout of 0.2 seconds, with unfulfilled expectations: foo
 // CHECK: Test Case 'ExpectationsTestCase.test_waitingForAnUnfulfilledExpectation_fails' failed \(\d+\.\d+ seconds\).
     func test_waitingForAnUnfulfilledExpectation_fails() {
-        expectation(withDescription: "foo")
-        waitForExpectations(withTimeout: 0.2)
+        expectation(description: "foo")
+        waitForExpectations(timeout: 0.2)
     }
 
 // CHECK: Test Case 'ExpectationsTestCase.test_waitingForUnfulfilledExpectations_outputsAllExpectations_andFails' started at \d+:\d+:\d+\.\d+
 // CHECK: .*/Tests/Functional/Asynchronous/Expectations/main.swift:[[@LINE+5]]: error: ExpectationsTestCase.test_waitingForUnfulfilledExpectations_outputsAllExpectations_andFails : Asynchronous wait failed - Exceeded timeout of 0.2 seconds, with unfulfilled expectations: bar, baz
 // CHECK: Test Case 'ExpectationsTestCase.test_waitingForUnfulfilledExpectations_outputsAllExpectations_andFails' failed \(\d+\.\d+ seconds\).
     func test_waitingForUnfulfilledExpectations_outputsAllExpectations_andFails() {
-        expectation(withDescription: "bar")
-        expectation(withDescription: "baz")
-        waitForExpectations(withTimeout: 0.2)
+        expectation(description: "bar")
+        expectation(description: "baz")
+        waitForExpectations(timeout: 0.2)
     }
 
 // CHECK: Test Case 'ExpectationsTestCase.test_waitingForAnImmediatelyFulfilledExpectation_passes' started at \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'ExpectationsTestCase.test_waitingForAnImmediatelyFulfilledExpectation_passes' passed \(\d+\.\d+ seconds\).
     func test_waitingForAnImmediatelyFulfilledExpectation_passes() {
-        let expectation = self.expectation(withDescription: "flim")
+        let expectation = self.expectation(description: "flim")
         expectation.fulfill()
-        waitForExpectations(withTimeout: 0.2)
+        waitForExpectations(timeout: 0.2)
     }
 
 // CHECK: Test Case 'ExpectationsTestCase.test_waitingForAnEventuallyFulfilledExpectation_passes' started at \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'ExpectationsTestCase.test_waitingForAnEventuallyFulfilledExpectation_passes' passed \(\d+\.\d+ seconds\).
     func test_waitingForAnEventuallyFulfilledExpectation_passes() {
-        let expectation = self.expectation(withDescription: "flam")
+        let expectation = self.expectation(description: "flam")
         let timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { _ in
             expectation.fulfill()
         }
         RunLoop.current().add(timer, forMode: .defaultRunLoopMode)
-        waitForExpectations(withTimeout: 1.0)
+        waitForExpectations(timeout: 1.0)
     }
 
 // CHECK: Test Case 'ExpectationsTestCase.test_waitingForAnExpectationFulfilledAfterTheTimeout_fails' started at \d+:\d+:\d+\.\d+
 // CHECK: .*/Tests/Functional/Asynchronous/Expectations/main.swift:[[@LINE+8]]: error: ExpectationsTestCase.test_waitingForAnExpectationFulfilledAfterTheTimeout_fails : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: hog
 // CHECK: Test Case 'ExpectationsTestCase.test_waitingForAnExpectationFulfilledAfterTheTimeout_fails' failed \(\d+\.\d+ seconds\).
     func test_waitingForAnExpectationFulfilledAfterTheTimeout_fails() {
-        let expectation = self.expectation(withDescription: "hog")
+        let expectation = self.expectation(description: "hog")
         let timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
             expectation.fulfill()
         }
         RunLoop.current().add(timer, forMode: .defaultRunLoopMode)
-        waitForExpectations(withTimeout: 0.1)
+        waitForExpectations(timeout: 0.1)
     }
 
 // CHECK: Test Case 'ExpectationsTestCase.test_whenTimeoutIsImmediate_andAllExpectationsAreFulfilled_passes' started at \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'ExpectationsTestCase.test_whenTimeoutIsImmediate_andAllExpectationsAreFulfilled_passes' passed \(\d+\.\d+ seconds\).
     func test_whenTimeoutIsImmediate_andAllExpectationsAreFulfilled_passes() {
-        let expectation = self.expectation(withDescription: "smog")
+        let expectation = self.expectation(description: "smog")
         expectation.fulfill()
-        waitForExpectations(withTimeout: 0.0)
+        waitForExpectations(timeout: 0.0)
     }
 
 // CHECK: Test Case 'ExpectationsTestCase.test_whenTimeoutIsImmediate_butNotAllExpectationsAreFulfilled_fails' started at \d+:\d+:\d+\.\d+
 // CHECK: .*/Tests/Functional/Asynchronous/Expectations/main.swift:[[@LINE+4]]: error: ExpectationsTestCase.test_whenTimeoutIsImmediate_butNotAllExpectationsAreFulfilled_fails : Asynchronous wait failed - Exceeded timeout of -1.0 seconds, with unfulfilled expectations: dog
 // CHECK: Test Case 'ExpectationsTestCase.test_whenTimeoutIsImmediate_butNotAllExpectationsAreFulfilled_fails' failed \(\d+\.\d+ seconds\).
     func test_whenTimeoutIsImmediate_butNotAllExpectationsAreFulfilled_fails() {
-        expectation(withDescription: "dog")
-        waitForExpectations(withTimeout: -1.0)
+        expectation(description: "dog")
+        waitForExpectations(timeout: -1.0)
     }
 
     static var allTests = {

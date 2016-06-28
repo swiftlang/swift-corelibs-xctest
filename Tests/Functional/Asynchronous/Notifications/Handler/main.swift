@@ -24,7 +24,7 @@ class NotificationHandlerTestCase: XCTestCase {
             return false
         })
         NotificationCenter.defaultCenter().postNotificationName(Notification.Name(rawValue: "returnFalse"), object: nil)
-        waitForExpectations(withTimeout: 0.1)
+        waitForExpectations(timeout: 0.1)
     }
     
 // CHECK: Test Case 'NotificationHandlerTestCase.test_notificationNameIsObserved_handlerReturnsTrue_andPasses' started at \d+:\d+:\d+\.\d+
@@ -35,7 +35,7 @@ class NotificationHandlerTestCase: XCTestCase {
             return true
         })
         NotificationCenter.defaultCenter().postNotificationName(Notification.Name(rawValue: "returnTrue"), object: nil)
-        waitForExpectations(withTimeout: 0.1)
+        waitForExpectations(timeout: 0.1)
     }
 
 // CHECK: Test Case 'NotificationHandlerTestCase.test_notificationNameIsObservedAfterTimeout_handlerIsNotCalled' started at \d+:\d+:\d+\.\d+
@@ -46,7 +46,7 @@ class NotificationHandlerTestCase: XCTestCase {
             XCTFail("Should not call the notification expectation handler")
             return true
         })
-        waitForExpectations(withTimeout: 0.1, handler: nil)
+        waitForExpectations(timeout: 0.1, handler: nil)
         NotificationCenter.defaultCenter().postNotificationName(Notification.Name(rawValue: "note"), object: nil)
     }
     
