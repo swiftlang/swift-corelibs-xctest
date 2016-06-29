@@ -1,5 +1,5 @@
-// RUN: %{swiftc} %s -o %{built_tests_dir}/NegativeAccuracyTestCase
-// RUN: %{built_tests_dir}/NegativeAccuracyTestCase > %t || true
+// RUN: %{swiftc} %s -o %T/NegativeAccuracyTestCase
+// RUN: %T/NegativeAccuracyTestCase > %t || true
 // RUN: %{xctest_checker} %t %s
 
 #if os(Linux) || os(FreeBSD)

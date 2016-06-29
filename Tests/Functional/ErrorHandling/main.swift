@@ -1,5 +1,5 @@
-// RUN: %{swiftc} %s -o %{built_tests_dir}/ErrorHandling
-// RUN: %{built_tests_dir}/ErrorHandling > %t || true
+// RUN: %{swiftc} %s -o %T/ErrorHandling
+// RUN: %T/ErrorHandling > %t || true
 // RUN: %{xctest_checker} %t %s
 
 #if os(Linux) || os(FreeBSD)

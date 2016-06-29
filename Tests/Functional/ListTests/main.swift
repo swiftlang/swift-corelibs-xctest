@@ -1,8 +1,8 @@
-// RUN: %{swiftc} %s -o %{built_tests_dir}/ListTests
-// RUN: %{built_tests_dir}/ListTests --list-tests > %t_list || true
+// RUN: %{swiftc} %s -o %T/ListTests
+// RUN: %T/ListTests --list-tests > %t_list || true
 // RUN: %{xctest_checker} %t_list %s
-// RUN: %{built_tests_dir}/ListTests --dump-tests-json > %t_json || true
-// RUN: %{built_tests_dir}/ListTests --verify %t_json > %t_verify
+// RUN: %T/ListTests --dump-tests-json > %t_json || true
+// RUN: %T/ListTests --verify %t_json > %t_verify
 // RUN: %{xctest_checker} %t_verify verify_json.expected
 
 #if os(Linux) || os(FreeBSD)

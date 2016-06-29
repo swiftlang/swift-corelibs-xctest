@@ -1,7 +1,7 @@
-// RUN: %{swiftc} %s -o %{built_tests_dir}/SelectedTest
-// RUN: %{built_tests_dir}/SelectedTest SelectedTest.ExecutedTestCase/test_foo > %T/one_test_case || true
-// RUN: %{built_tests_dir}/SelectedTest SelectedTest.ExecutedTestCase > %T/one_test_case_class || true
-// RUN: %{built_tests_dir}/SelectedTest > %T/all || true
+// RUN: %{swiftc} %s -o %T/SelectedTest
+// RUN: %T/SelectedTest SelectedTest.ExecutedTestCase/test_foo > %T/one_test_case || true
+// RUN: %T/SelectedTest SelectedTest.ExecutedTestCase > %T/one_test_case_class || true
+// RUN: %T/SelectedTest > %T/all || true
 // RUN: %{xctest_checker} -p "// CHECK-METHOD:" %T/one_test_case %s
 // RUN: %{xctest_checker} -p "// CHECK-CLASS:" %T/one_test_case_class %s
 // RUN: %{xctest_checker} -p "// CHECK-ALL:" %T/all %s

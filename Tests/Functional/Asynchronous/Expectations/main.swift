@@ -1,5 +1,5 @@
-// RUN: %{swiftc} %s -o %{built_tests_dir}/Asynchronous
-// RUN: %{built_tests_dir}/Asynchronous > %t || true
+// RUN: %{swiftc} %s -o %T/Asynchronous
+// RUN: %T/Asynchronous > %t || true
 // RUN: %{xctest_checker} %t %s
 
 #if os(Linux) || os(FreeBSD)
