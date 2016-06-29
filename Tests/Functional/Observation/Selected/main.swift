@@ -1,5 +1,5 @@
-// RUN: %{swiftc} %s -o %{built_tests_dir}/Selected
-// RUN: %{built_tests_dir}/Selected Selected.ExecutedTestCase/test_executed > %t || true
+// RUN: %{swiftc} %s -o %T/Selected
+// RUN: %T/Selected Selected.ExecutedTestCase/test_executed > %t || true
 // RUN: %{xctest_checker} %t %s
 
 #if os(Linux) || os(FreeBSD)

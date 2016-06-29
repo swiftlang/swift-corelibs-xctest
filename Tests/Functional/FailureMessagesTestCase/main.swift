@@ -1,5 +1,5 @@
-// RUN: %{swiftc} %s -o %{built_tests_dir}/FailureMessagesTestCase
-// RUN: %{built_tests_dir}/FailureMessagesTestCase > %t || true
+// RUN: %{swiftc} %s -o %T/FailureMessagesTestCase
+// RUN: %T/FailureMessagesTestCase > %t || true
 // RUN: %{xctest_checker} %t %s
 
 #if os(Linux) || os(FreeBSD)

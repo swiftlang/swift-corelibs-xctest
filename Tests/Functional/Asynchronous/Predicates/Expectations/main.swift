@@ -1,5 +1,5 @@
-// RUN: %{swiftc} %s -o %{built_tests_dir}/Asynchronous-Predicates
-// RUN: %{built_tests_dir}/Asynchronous-Predicates > %t || true
+// RUN: %{swiftc} %s -o %T/Asynchronous-Predicates
+// RUN: %T/Asynchronous-Predicates > %t || true
 // RUN: %{xctest_checker} %t %s
 
 #if os(Linux) || os(FreeBSD)
