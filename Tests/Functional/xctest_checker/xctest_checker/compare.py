@@ -14,13 +14,12 @@ from .error import XCTestCheckerError
 from .line import replace_offsets
 
 
-def _actual_lines(path):
+def _actual_lines(file_handle):
     """
-    Returns a generator that yields each line in the file at the given path.
+    Returns a generator that yields each line in the file.
     """
-    with open(path) as f:
-        for line in f:
-            yield line
+    for line in file_handle:
+        yield line
 
 
 def _expected_lines_and_line_numbers(path, check_prefix):

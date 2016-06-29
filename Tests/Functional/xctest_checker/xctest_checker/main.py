@@ -12,14 +12,40 @@
 from __future__ import absolute_import
 
 import argparse
+import textwrap
 
 from . import compare
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('actual', help='A path to a file containing the '
-                                       'actual output of an XCTest run.')
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=textwrap.dedent("""
+            Compare the text output of an XCTest executable with the text
+            that's expected."""),
+        epilog=textwrap.dedent("""
+            In general, %(prog)s should not be invoked directly. Instead,
+            use the Swift built script to build swift-corelibs-xctest and run
+            its tests, which in turn use %(prog)s.
+
+            However, you may find it useful to run %(prog)s directly when
+            debugging the test suite. To compare the actual output of an
+            executable against the expected output, you may run the following:
+
+                Tests/Functional/MyTestCase/Output/MyTestCase | \\
+                    %(prog)s - Tests/Functional/MyTestCase/main.swift
+
+            This pipes the output from the "MyTestCase" executable into
+            %(prog)s, which compares that output to the expected output from
+            "MyTestCase/main.swift".
+            """))
+    parser.add_argument(
+        'actual',
+        type=argparse.FileType('r'),
+        default='-',
+        help='A path to a file containing the actual output of an XCTest '
+             'run, or an input stream of the output. If no argument is '
+             'specified, reads from stdin by default.')
     parser.add_argument('expected', help='A path to a file containing the '
                                          'expected output of an XCTest run.')
     parser.add_argument('-p', '--check-prefix',
