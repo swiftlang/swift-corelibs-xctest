@@ -39,7 +39,7 @@ public extension XCTestCase {
     ///   between these environments. To ensure compatibility of tests between
     ///   swift-corelibs-xctest and Apple XCTest, it is not recommended to pass
     ///   explicit values for `file` and `line`.
-    func expectation(withDescription description: String, file: StaticString = #file, line: UInt = #line) -> XCTestExpectation {
+    func expectation(description: String, file: StaticString = #file, line: UInt = #line) -> XCTestExpectation {
         let expectation = XCTestExpectation(
             description: description,
             file: file,
@@ -74,7 +74,7 @@ public extension XCTestCase {
     ///   these environments. To ensure compatibility of tests between
     ///   swift-corelibs-xctest and Apple XCTest, it is not recommended to pass
     ///   explicit values for `file` and `line`.
-    func waitForExpectations(withTimeout timeout: TimeInterval, file: StaticString = #file, line: UInt = #line, handler: XCWaitCompletionHandler? = nil) {
+    func waitForExpectations(timeout: TimeInterval, file: StaticString = #file, line: UInt = #line, handler: XCWaitCompletionHandler? = nil) {
         // Mirror Objective-C XCTest behavior; display an unexpected test
         // failure when users wait without having first set expectations.
         // FIXME: Objective-C XCTest raises an exception for most "API
@@ -166,7 +166,7 @@ public extension XCTestCase {
     ///   expectation.
     func expectation(forNotification notificationName: String, object objectToObserve: AnyObject?, handler: XCNotificationExpectationHandler? = nil) -> XCTestExpectation {
         let objectDescription = objectToObserve == nil ? "any object" : "\(objectToObserve!)"
-        let expectation = self.expectation(withDescription: "Expect notification '\(notificationName)' from " + objectDescription)
+        let expectation = self.expectation(description: "Expect notification '\(notificationName)' from " + objectDescription)
         // Start observing the notification with specified name and object.
         var observer: NSObjectProtocol? = nil
         func removeObserver() {

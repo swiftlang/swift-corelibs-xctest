@@ -21,7 +21,7 @@ class PredicateExpectationsTestCase: XCTestCase {
         let predicate = Predicate(value: true)
         let object = NSObject()
         expectation(for: predicate, evaluatedWith: object)
-        waitForExpectations(withTimeout: 0.1)
+        waitForExpectations(timeout: 0.1)
     }
 
     // CHECK: Test Case 'PredicateExpectationsTestCase.test_immediatelyFalsePredicateAndObject_fails' started at \d+:\d+:\d+\.\d+
@@ -31,7 +31,7 @@ class PredicateExpectationsTestCase: XCTestCase {
         let predicate = Predicate(value: false)
         let object = NSObject()
         expectation(for: predicate, evaluatedWith: object)
-        waitForExpectations(withTimeout: 0.1)
+        waitForExpectations(timeout: 0.1)
     }
 
     // CHECK: Test Case 'PredicateExpectationsTestCase.test_delayedTruePredicateAndObject_passes' started at \d+:\d+:\d+\.\d+
@@ -46,7 +46,7 @@ class PredicateExpectationsTestCase: XCTestCase {
             return false
         })
         expectation(for: predicate, evaluatedWith: halfSecLaterDate)
-        waitForExpectations(withTimeout: 0.1)
+        waitForExpectations(timeout: 0.1)
     }
     
     // CHECK: Test Case 'PredicateExpectationsTestCase.test_immediatelyTrueDelayedFalsePredicateAndObject_passes' started at \d+:\d+:\d+\.\d+
@@ -60,7 +60,7 @@ class PredicateExpectationsTestCase: XCTestCase {
             return false
         })
         expectation(for: predicate, evaluatedWith: halfSecLaterDate)
-        waitForExpectations(withTimeout: 0.1)
+        waitForExpectations(timeout: 0.1)
     }
     
     static var allTests = {
