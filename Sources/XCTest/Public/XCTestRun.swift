@@ -33,7 +33,7 @@ public class XCTestRun {
     /// The number of seconds that elapsed between when the run was started and
     /// when it was stopped.
     public var totalDuration: TimeInterval {
-        if let stop = stopDate, start = startDate {
+        if let stop = stopDate, let start = startDate {
             return stop.timeIntervalSince(start)
         } else {
             return 0.0
