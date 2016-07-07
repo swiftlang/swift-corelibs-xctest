@@ -126,7 +126,7 @@ public extension XCTestCase {
     ///   ensure compatibility of tests between swift-corelibs-xctest and Apple
     ///   XCTest, it is not recommended to pass explicit values for `file` and `line`.
     func startMeasuring(file: StaticString = #file, line: UInt = #line) {
-        guard let performanceMeter = _performanceMeter where !performanceMeter.didFinishMeasuring else {
+        guard let performanceMeter = _performanceMeter, !performanceMeter.didFinishMeasuring else {
             return recordAPIViolation(description: "Cannot start measuring. startMeasuring() is only supported from a block passed to measureMetrics(...).", file: file, line: line)
         }
         performanceMeter.startMeasuring(file: file, line: line)
@@ -141,7 +141,7 @@ public extension XCTestCase {
     ///   ensure compatibility of tests between swift-corelibs-xctest and Apple
     ///   XCTest, it is not recommended to pass explicit values for `file` and `line`.
     func stopMeasuring(file: StaticString = #file, line: UInt = #line) {
-        guard let performanceMeter = _performanceMeter where !performanceMeter.didFinishMeasuring else {
+        guard let performanceMeter = _performanceMeter, !performanceMeter.didFinishMeasuring else {
             return recordAPIViolation(description: "Cannot stop measuring. stopMeasuring() is only supported from a block passed to measureMetrics(...).", file: file, line: line)
         }
         performanceMeter.stopMeasuring(file: file, line: line)

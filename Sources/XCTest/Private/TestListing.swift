@@ -63,7 +63,7 @@ extension XCTestSuite: Listable {
     }
 
     private var listingName: String {
-        if let childTestCase = tests.first as? XCTestCase where name == String(childTestCase.dynamicType) {
+        if let childTestCase = tests.first as? XCTestCase, name == String(childTestCase.dynamicType) {
             return "\(moduleName(value: childTestCase)).\(name)"
         } else {
             return name
