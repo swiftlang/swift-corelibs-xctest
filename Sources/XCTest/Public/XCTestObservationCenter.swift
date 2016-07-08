@@ -88,7 +88,7 @@ public class XCTestObservationCenter {
     }
 }
 
-private extension XCTestObservation {
+fileprivate extension XCTestObservation {
     var wrapper: ObjectWrapper<XCTestObservation> {
         return ObjectWrapper(object: self, objectIdentifier: ObjectIdentifier(self))
     }
