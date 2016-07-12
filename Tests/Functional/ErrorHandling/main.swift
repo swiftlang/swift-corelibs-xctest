@@ -32,7 +32,7 @@ class ErrorHandling: XCTestCase {
     func functionThatDoesNotThrowError() throws {
     }
     
-    enum SomeError: ErrorProtocol {
+    enum SomeError: Swift.Error {
         case anError(String)
     }
     
