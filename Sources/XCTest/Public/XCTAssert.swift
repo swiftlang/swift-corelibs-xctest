@@ -49,7 +49,7 @@ private enum _XCTAssertion {
 private enum _XCTAssertionResult {
     case success
     case expectedFailure(String?)
-    case unexpectedFailure(ErrorProtocol)
+    case unexpectedFailure(Swift.Error)
 
     var isExpected: Bool {
         switch self {
@@ -404,9 +404,9 @@ public func XCTFail(_ message: String = "", file: StaticString = #file, line: UI
     }
 }
 
-public func XCTAssertThrowsError<T>(_ expression: @autoclosure () throws -> T, _ message: String = "", file: StaticString = #file, line: UInt = #line, _ errorHandler: (error: ErrorProtocol) -> Void = { _ in }) {
+public func XCTAssertThrowsError<T>(_ expression: @autoclosure () throws -> T, _ message: String = "", file: StaticString = #file, line: UInt = #line, _ errorHandler: (error: Swift.Error) -> Void = { _ in }) {
     _XCTEvaluateAssertion(.throwsError, message: message, file: file, line: line) {
-        var caughtErrorOptional: ErrorProtocol?
+        var caughtErrorOptional: Swift.Error?
         do {
             _ = try expression()
         } catch {

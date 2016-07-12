@@ -67,7 +67,7 @@ internal protocol PerformanceMeterDelegate {
 /// - Bug: This class is intended to be `internal` but is public to work around
 /// a toolchain bug on Linux. See `XCTestCase._performanceMeter` for more info.
 public final class PerformanceMeter {
-    enum Error: ErrorProtocol, CustomStringConvertible {
+    enum Error: Swift.Error, CustomStringConvertible {
         case noMetrics
         case unknownMetric(metricName: String)
         case startMeasuringAlreadyCalled
