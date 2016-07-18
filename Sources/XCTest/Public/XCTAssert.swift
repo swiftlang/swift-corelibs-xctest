@@ -152,7 +152,7 @@ private func _XCTEvaluateAssertion(_ assertion: _XCTAssertion, message: @autoclo
 ///
 ///  Now calling failures in `AssertEmpty` will be reported in the file and on
 ///  the line that the assert function is *called*, not where it is defined.
-public func XCTAssert(_ expression: @autoclosure () throws -> Boolean, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
+public func XCTAssert(_ expression: @autoclosure () throws -> Bool, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
     XCTAssertTrue(expression, message, file: file, line: line)
 }
 
@@ -233,10 +233,10 @@ public func XCTAssertEqualWithAccuracy<T: FloatingPoint>(_ expression1: @autoclo
     }
 }
 
-public func XCTAssertFalse(_ expression: @autoclosure () throws -> Boolean, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
+public func XCTAssertFalse(_ expression: @autoclosure () throws -> Bool, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
     _XCTEvaluateAssertion(.`false`, message: message, file: file, line: line) {
         let value = try expression()
-        if !value.boolValue {
+        if !value {
             return .success
         } else {
             return .expectedFailure(nil)
@@ -387,10 +387,10 @@ public func XCTAssertNotNil(_ expression: @autoclosure () throws -> Any?, _ mess
     }
 }
 
-public func XCTAssertTrue(_ expression: @autoclosure () throws -> Boolean, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
+public func XCTAssertTrue(_ expression: @autoclosure () throws -> Bool, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
     _XCTEvaluateAssertion(.`true`, message: message, file: file, line: line) {
         let value = try expression()
-        if value.boolValue {
+        if value {
             return .success
         } else {
             return .expectedFailure(nil)
