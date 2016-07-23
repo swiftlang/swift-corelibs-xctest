@@ -49,7 +49,7 @@
 ///
 /// - Parameter testCases: An array of test cases run, each produced by a call to the `testCase` function
 /// - seealso: `testCase`
-@noreturn public func XCTMain(_ testCases: [XCTestCaseEntry]) {
+public func XCTMain(_ testCases: [XCTestCaseEntry]) -> Never {
     let testBundle = Bundle.main()
 
     let executionMode = ArgumentParser().executionMode
