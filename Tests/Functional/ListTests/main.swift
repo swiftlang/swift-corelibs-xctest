@@ -16,7 +16,7 @@
 // The JSON output isn't a stable enough format to use FileCheck-style line
 // verification directly. Instead, verify the output by deserializing the output 
 // a stable representation of the test tree for checking.
-if Process.arguments.contains("--verify") {
+if CommandLine.arguments.contains("--verify") {
     func dump(_ value: Any, prefix: String = "") {
         guard let object = value as? [String: Any] else { return print("<<wrong type>>") }
         guard let name = object["name"] as? String else { return print("<<missing name>>") }
@@ -27,7 +27,7 @@ if Process.arguments.contains("--verify") {
         }
     }
 
-    let deserialized = try! JSONSerialization.jsonObject(with: Data(contentsOf: URL(fileURLWithPath: Process.arguments[2])))
+    let deserialized = try! JSONSerialization.jsonObject(with: Data(contentsOf: URL(fileURLWithPath: CommandLine.arguments[2])))
     dump(deserialized)
     exit(0)
 }
