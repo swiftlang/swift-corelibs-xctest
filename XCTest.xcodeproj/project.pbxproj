@@ -272,6 +272,7 @@
 				TargetAttributes = {
 					5B5D86DA1BBC74AD00234F36 = {
 						CreatedOnToolsVersion = 7.1;
+						LastSwiftMigration = 0800;
 					};
 					DAA333B51C267AD6000CC115 = {
 						CreatedOnToolsVersion = 7.2;
@@ -457,6 +458,7 @@
 				PRODUCT_NAME = SwiftXCTest;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				USER_HEADER_SEARCH_PATHS = $BUILT_PRODUCTS_DIR/usr/local/include/CoreFoundation;
 			};
 			name = Debug;
@@ -478,6 +480,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_NAME = SwiftXCTest;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				USER_HEADER_SEARCH_PATHS = $BUILT_PRODUCTS_DIR/usr/local/include/CoreFoundation;
 			};
 			name = Release;
