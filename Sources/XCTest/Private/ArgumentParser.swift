@@ -47,7 +47,7 @@ internal struct ArgumentParser {
 
     private let arguments: [String]
 
-    init(arguments: [String] = Process.arguments) {
+    init(arguments: [String] = CommandLine.arguments) {
         self.arguments = arguments
     }
 
