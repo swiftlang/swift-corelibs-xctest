@@ -4,22 +4,22 @@ When running on the Objective-C runtime, XCTest is able to find all of your test
 
 ```swift
 class TestNSURL : XCTestCase {
-static var allTests = {
-return [
-("test_URLStrings", test_URLStrings),
-("test_fileURLWithPath_relativeToURL", test_fileURLWithPath_relativeToURL),
-("test_fileURLWithPath", test_fileURLWithPath),
-("test_fileURLWithPath_isDirectory", test_fileURLWithPath_isDirectory),
-// Other tests go here
-]
-}()
+    static var allTests = {
+        return [
+            ("test_URLStrings", test_URLStrings),
+            ("test_fileURLWithPath_relativeToURL", test_fileURLWithPath_relativeToURL),
+            ("test_fileURLWithPath", test_fileURLWithPath),
+            ("test_fileURLWithPath_isDirectory", test_fileURLWithPath_isDirectory),
+            // Other tests go here
+        ]
+    }()
 
-func test_fileURLWithPath_relativeToURL() {
-// Write your test here. Most of the XCTAssert macros you are familiar with are available.
-XCTAssertTrue(theBestNumber == 42, "The number is wrong")
-}
+    func test_fileURLWithPath_relativeToURL() {
+        // Write your test here. Most of the XCTAssert macros you are familiar with are available.
+        XCTAssertTrue(theBestNumber == 42, "The number is wrong")
+    }
 
-// Other tests go here
+    // Other tests go here
 }
 ```
 
