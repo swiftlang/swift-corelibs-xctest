@@ -85,7 +85,7 @@ public extension XCTestCase {
         if _allExpectations.count == 0 {
             recordFailure(
                 withDescription: "API violation - call made to wait without any expectations having been set.",
-                inFile: String(file),
+                inFile: String(describing: file),
                 atLine: line,
                 expected: false)
             return
@@ -129,7 +129,7 @@ public extension XCTestCase {
             let descriptions = unfulfilledDescriptions.joined(separator: ", ")
             recordFailure(
                 withDescription: "Asynchronous wait failed - Exceeded timeout of \(timeout) seconds, with unfulfilled expectations: \(descriptions)",
-                inFile: String(file),
+                inFile: String(describing: file),
                 atLine: line,
                 expected: true)
         }
@@ -248,7 +248,7 @@ internal extension XCTestCase {
         if expectations.count > 0 {
             recordFailure(
                 withDescription: "Failed due to unwaited expectations.",
-                inFile: String(expectations.last!.file),
+                inFile: String(describing: expectations.last!.file),
                 atLine: expectations.last!.line,
                 expected: false)
         }

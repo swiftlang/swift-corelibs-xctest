@@ -151,7 +151,7 @@ public extension XCTestCase {
 extension XCTestCase: PerformanceMeterDelegate {
     internal func recordAPIViolation(description: String, file: StaticString, line: UInt) {
         recordFailure(withDescription: "API violation - \(description)",
-                      inFile: String(file),
+                      inFile: String(describing: file),
                       atLine: line,
                       expected: false)
     }
@@ -161,6 +161,6 @@ extension XCTestCase: PerformanceMeterDelegate {
     }
 
     internal func recordFailure(description: String, file: StaticString, line: UInt) {
-        recordFailure(withDescription: "failed: " + description, inFile: String(file), atLine: line, expected: true)
+        recordFailure(withDescription: "failed: " + description, inFile: String(describing: file), atLine: line, expected: true)
     }
 }
