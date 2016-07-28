@@ -124,7 +124,6 @@ public final class PerformanceMeter {
 
     func startMeasuring(file: StaticString = #file, line: UInt = #line) {
         guard state == .iterationUnstarted else {
-            state = .measurementAborted
             return recordAPIViolation(.startMeasuringAlreadyCalled, file: file, line: line)
         }
         state = .iterationStarted
