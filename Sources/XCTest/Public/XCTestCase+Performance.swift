@@ -111,7 +111,7 @@ public extension XCTestCase {
         PerformanceMeter.measureMetrics(metrics, delegate: self, file: file, line: line) { meter in
             self._performanceMeter = meter
             if automaticallyStartMeasuring {
-                meter.startMeasuring()
+                meter.startMeasuring(file: file, line: line)
             }
             block()
         }
