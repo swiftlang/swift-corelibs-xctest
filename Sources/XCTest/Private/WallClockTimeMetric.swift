@@ -62,7 +62,7 @@ internal final class WallClockTimeMetric: PerformanceMetric {
     }
 
     private func currentTime() -> TimeInterval {
-        return ProcessInfo.processInfo().systemUptime
+        return ProcessInfo.processInfo.systemUptime
     }
 }
 
