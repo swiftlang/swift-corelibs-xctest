@@ -186,7 +186,7 @@ public final class PerformanceMeter {
 
     private func stopMeasuringIfNeeded() {
         if state == .iterationStarted {
-            stopMeasuring()
+            stopMeasuring(file: invocationFile, line: invocationLine)
         }
     }
 
