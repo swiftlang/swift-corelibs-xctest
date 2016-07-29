@@ -20,6 +20,7 @@ import platform
 import errno
 
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
+VERSION = (3, 0, 0)
 
 
 def note(msg):
@@ -50,6 +51,19 @@ def symlink_force(target, link_name):
             os.symlink(target, link_name)
         else:
             raise e
+
+
+class SetDir():
+    def __init__(self, newdir):
+        self.newdir = newdir
+        self.olddir = os.getcwd()
+
+    def __enter__(self):
+        os.chdir(self.newdir)
+
+    def __exit__(self, *args):
+        os.chdir(self.olddir)
+
 
 class DarwinStrategy:
     @staticmethod
@@ -181,15 +195,34 @@ class GenericUnixStrategy:
                 core_foundation_build_dir=core_foundation_build_dir,
                 libdispatch_args=libdispatch_args,
                 source_paths=" ".join(sourcePaths)))
+
+        xctest_lib = 'libXCTest.so'
+        xctest_soname = '{}.{}.{}.{}'.format(xctest_lib, *VERSION)
+
         run("{swiftc} -emit-library {build_dir}/XCTest.o "
             "-L {foundation_build_dir} -lswiftGlibc -lswiftCore -lFoundation -lm "
             # We embed an rpath of `$ORIGIN` to ensure other referenced
             # libraries (like `Foundation`) can be found solely via XCTest.
             "-Xlinker -rpath=\\$ORIGIN "
-            "-o {build_dir}/libXCTest.so".format(
+            "-Xlinker -soname={soname} "
+            "-o {build_dir}/{soname} "
+            "-module-name XCTest".format(
                 swiftc=swiftc,
                 build_dir=build_dir,
-                foundation_build_dir=foundation_build_dir))
+                foundation_build_dir=foundation_build_dir,
+                soname=xctest_soname))
+
+        # create symlinks for versions
+        with SetDir(build_dir):
+            # symlink lib.so
+            if not os.path.exists(xctest_lib):
+                note('ln -s {} {}'.format(xctest_soname, xctest_lib))
+                os.symlink(xctest_soname, xctest_lib)
+            # symlink lib.so.MAJOR
+            xctest_so_major = '{}.{}'.format(xctest_lib, VERSION[0])
+            if not os.path.exists(xctest_so_major):
+                note('ln -s {} {}'.format(xctest_soname, xctest_so_major))
+                os.symlink(xctest_soname, xctest_so_major)
 
         if args.test:
             # Execute main() using the arguments necessary to run the tests.
@@ -274,9 +307,20 @@ class GenericUnixStrategy:
         _mkdirp(library_install_path)
 
         xctest_so = "libXCTest.so"
+        xctest_so_versioned = "{}.{}.{}.{}".format(xctest_so, *VERSION)
         run("cp {} {}".format(
-            os.path.join(build_dir, xctest_so),
-            os.path.join(library_install_path, xctest_so)))
+            os.path.join(build_dir, xctest_so_versioned),
+            os.path.join(library_install_path, xctest_so_versioned)))
+
+        # create symlinks for versions
+        with SetDir(library_install_path):
+            if not os.path.exists(xctest_so):
+                note('ln -s {} {}'.format(xctest_so_versioned, xctest_so))
+                os.symlink(xctest_so_versioned, xctest_so)
+            xctest_so_major = '{}.{}'.format(xctest_so, VERSION[0])
+            if not os.path.exists(xctest_so_major):
+                note('ln -s {} {}'.format(xctest_so_versioned, xctest_so_major))
+                os.symlink(xctest_so_versioned, xctest_so_major)
 
         xctest_swiftmodule = "XCTest.swiftmodule"
         run("cp {} {}".format(
