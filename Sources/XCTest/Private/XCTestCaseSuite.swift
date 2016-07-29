@@ -26,7 +26,7 @@ internal class XCTestCaseSuite: XCTestSuite {
     init(testCaseEntry: XCTestCaseEntry) {
         let testCaseClass = testCaseEntry.testCaseClass
         self.testCaseClass = testCaseClass
-        super.init(name: String(testCaseClass))
+        super.init(name: String(describing: testCaseClass))
 
         for (testName, testClosure) in testCaseEntry.allTests {
             let testCase = testCaseClass.init(name: testName, testClosure: testClosure)

@@ -58,7 +58,7 @@ public class XCTestExpectation {
             if let testCase = XCTCurrentTestCase {
                 testCase.recordFailure(
                     withDescription: "API violation - multiple calls made to XCTestExpectation.fulfill() for \(description).",
-                    inFile: String(file),
+                    inFile: String(describing: file),
                     atLine: line,
                     expected: false)
             }

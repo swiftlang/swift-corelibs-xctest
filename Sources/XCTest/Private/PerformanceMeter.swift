@@ -118,7 +118,7 @@ public final class PerformanceMeter {
             let meter = PerformanceMeter(metrics: metrics, delegate: delegate, file: file, line: line)
             meter.measure(block)
         } catch let e {
-            delegate.recordAPIViolation(description: String(e), file: file, line: line)
+            delegate.recordAPIViolation(description: String(describing: e), file: file, line: line)
         }
     }
 
@@ -203,6 +203,6 @@ public final class PerformanceMeter {
 
     private func recordAPIViolation(_ error: Error, file: StaticString, line: UInt) {
         state = .measurementAborted
-        delegate.recordAPIViolation(description: String(error), file: file, line: line)
+        delegate.recordAPIViolation(description: String(describing: error), file: file, line: line)
     }
 }
