@@ -89,7 +89,7 @@ public class XCTestCase: XCTest {
     /// - Note: Like the designated initializer for Apple XCTest's XCTestCase,
     ///   `-[XCTestCase initWithInvocation:]`, it's rare for anyone outside of
     ///   XCTest itself to call this initializer.
-    public required init(name: String, testClosure: (XCTestCase) throws -> Void) {
+    public required init(name: String, testClosure: @escaping (XCTestCase) throws -> Void) {
         _name = "\(self.dynamicType).\(name)"
         self.testClosure = testClosure
     }
@@ -176,7 +176,7 @@ public func testCase<T: XCTestCase>(_ allTests: [(String, (T) -> () -> Void)]) -
     return (T.self, tests)
 }
 
-private func test<T: XCTestCase>(_ testFunc: (T) -> () throws -> Void) -> (XCTestCase) throws -> Void {
+private func test<T: XCTestCase>(_ testFunc: @escaping (T) -> () throws -> Void) -> (XCTestCase) throws -> Void {
     return { testCaseType in
         guard let testCase = testCaseType as? T else {
             fatalError("Attempt to invoke test on class \(T.self) with incompatible instance type \(testCaseType.dynamicType)")
