@@ -50,7 +50,7 @@ public extension XCTestCase {
     ///   ensure compatibility of tests between swift-corelibs-xctest and Apple
     ///   XCTest, it is not recommended to pass explicit values for `file` and `line`.
     func measure(file: StaticString = #file, line: UInt = #line, block: () -> Void) {
-        measureMetrics(self.dynamicType.defaultPerformanceMetrics(),
+        measureMetrics(type(of: self).defaultPerformanceMetrics(),
                        automaticallyStartMeasuring: true,
                        file: file,
                        line: line,
@@ -66,7 +66,7 @@ public extension XCTestCase {
     /// may interfere the API will measure them separately.
     ///
     ///     func testMyFunction2_WallClockTime() {
-    ///         measureMetrics(self.dynamicType.defaultPerformanceMetrics(), automaticallyStartMeasuring: false) {
+    ///         measureMetrics(type(of: self).defaultPerformanceMetrics(), automaticallyStartMeasuring: false) {
     ///
     ///             // Do setup work that needs to be done for every iteration but
     ///             // you don't want to measure before the call to `startMeasuring()`
