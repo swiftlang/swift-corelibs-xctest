@@ -52,7 +52,7 @@ protocol Listable {
 }
 
 private func moduleName(value: Any) -> String {
-    let moduleAndType = String(reflecting: value.dynamicType)
+    let moduleAndType = String(reflecting: type(of: value))
     return String(moduleAndType.characters.split(separator: ".").first!)
 }
 
@@ -63,7 +63,7 @@ extension XCTestSuite: Listable {
     }
 
     private var listingName: String {
-        if let childTestCase = tests.first as? XCTestCase, name == String(describing: childTestCase.dynamicType) {
+        if let childTestCase = tests.first as? XCTestCase, name == String(describing: type(of: childTestCase)) {
             return "\(moduleName(value: childTestCase)).\(name)"
         } else {
             return name

@@ -44,7 +44,7 @@ internal final class WallClockTimeMetric: PerformanceMetric {
                           String(format: "average: %.3f", measurements.average),
                           String(format: "relative standard deviation: %.3f%%", measurements.relativeStandardDeviation),
                           "values: [\(measurements.map({ String(format: "%.6f", $0) }).joined(separator: ", "))]",
-                          "performanceMetricID:\(self.dynamicType.name)",
+                          "performanceMetricID:\(type(of: self).name)",
                           String(format: "maxPercentRelativeStandardDeviation: %.3f%%", maxRelativeStandardDeviation),
                           String(format: "maxStandardDeviation: %.3f", standardDeviationNegligibilityThreshold),
                           ]
