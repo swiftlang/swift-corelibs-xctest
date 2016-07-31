@@ -28,17 +28,17 @@ internal struct TestFiltering {
     }
 
     private func excludeAllFilter() -> TestFilter {
-        return { _ in false }
+        return { _, _ in false }
     }
 
     private func includeAllFilter() -> TestFilter {
-        return { _ in true }
+        return { _, _ in true }
     }
 
     static func filterTests(_ entries: [XCTestCaseEntry], filter: TestFilter) -> [XCTestCaseEntry] {
         return entries
             .map { testCaseClass, testCaseMethods in
-                return (testCaseClass, testCaseMethods.filter { filter(testCaseClass, $0.0) } )
+                return (testCaseClass, testCaseMethods.filter { s, _ in filter(testCaseClass, s) } )
             }
             .filter { _, testCaseMethods in
                 return !testCaseMethods.isEmpty
