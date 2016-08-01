@@ -19,11 +19,11 @@
 ///     suite.addTest(myTest)
 ///     suite.testCaseCount // 1
 ///     suite.run()
-public class XCTestSuite: XCTest {
-    public private(set) var tests = [XCTest]()
+open class XCTestSuite: XCTest {
+    open private(set) var tests = [XCTest]()
 
     /// The name of this test suite.
-    override public var name: String {
+    open override var name: String {
         return _name
     }
     /// A private setter for the name of this test suite.
@@ -35,15 +35,15 @@ public class XCTestSuite: XCTest {
     public let _name: String
 
     /// The number of test cases in this suite.
-    public override var testCaseCount: UInt {
+    open override var testCaseCount: UInt {
         return tests.reduce(0) { $0 + $1.testCaseCount }
     }
 
-    public override var testRunClass: AnyClass? {
+    open override var testRunClass: AnyClass? {
         return XCTestSuiteRun.self
     }
 
-    public override func perform(_ run: XCTestRun) {
+    open override func perform(_ run: XCTestRun) {
         guard let testRun = run as? XCTestSuiteRun else {
             fatalError("Wrong XCTestRun class.")
         }
@@ -64,7 +64,7 @@ public class XCTestSuite: XCTest {
 
     /// Adds a test (either an `XCTestSuite` or an `XCTestCase` to this
     /// collection.
-    public func addTest(_ test: XCTest) {
+    open func addTest(_ test: XCTest) {
         tests.append(test)
     }
 }

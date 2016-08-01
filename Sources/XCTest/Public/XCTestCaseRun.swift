@@ -12,18 +12,18 @@
 //
 
 /// A test run for an `XCTestCase`.
-public class XCTestCaseRun: XCTestRun {
-    public override func start() {
+open class XCTestCaseRun: XCTestRun {
+    open override func start() {
         super.start()
         XCTestObservationCenter.shared().testCaseWillStart(testCase)
     }
 
-    public override func stop() {
+    open override func stop() {
         super.stop()
         XCTestObservationCenter.shared().testCaseDidFinish(testCase)
     }
 
-    public override func recordFailure(withDescription description: String, inFile filePath: String?, atLine lineNumber: UInt, expected: Bool) {
+    open override func recordFailure(withDescription description: String, inFile filePath: String?, atLine lineNumber: UInt, expected: Bool) {
         super.recordFailure(
             withDescription: "\(test.name) : \(description)",
             inFile: filePath,
