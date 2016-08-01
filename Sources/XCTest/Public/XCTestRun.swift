@@ -20,19 +20,19 @@
 /// A test run collects information about the execution of a test. Failures in
 /// explicit test assertions are classified as "expected", while failures from
 /// unrelated or uncaught exceptions are classified as "unexpected".
-public class XCTestRun {
+open class XCTestRun {
     /// The test instance provided when the test run was initialized.
     public let test: XCTest
 
     /// The time at which the test run was started, or nil.
-    public private(set) var startDate: Date?
+    open private(set) var startDate: Date?
 
     /// The time at which the test run was stopped, or nil.
-    public private(set) var stopDate: Date?
+    open private(set) var stopDate: Date?
 
     /// The number of seconds that elapsed between when the run was started and
     /// when it was stopped.
-    public var totalDuration: TimeInterval {
+    open var totalDuration: TimeInterval {
         if let stop = stopDate, let start = startDate {
             return stop.timeIntervalSince(start)
         } else {
@@ -43,33 +43,33 @@ public class XCTestRun {
     /// In an `XCTestCase` run, the number of seconds that elapsed between when
     /// the run was started and when it was stopped. In an `XCTestSuite` run,
     /// the combined `testDuration` of each test case in the suite.
-    public var testDuration: TimeInterval {
+    open var testDuration: TimeInterval {
         return totalDuration
     }
 
     /// The number of tests in the run.
-    public var testCaseCount: UInt {
+    open var testCaseCount: UInt {
         return test.testCaseCount
     }
 
     /// The number of test executions recorded during the run.
-    public private(set) var executionCount: UInt = 0
+    open private(set) var executionCount: UInt = 0
 
     /// The number of test failures recorded during the run.
-    public private(set) var failureCount: UInt = 0
+    open private(set) var failureCount: UInt = 0
 
     /// The number of uncaught exceptions recorded during the run.
-    public private(set) var unexpectedExceptionCount: UInt = 0
+    open private(set) var unexpectedExceptionCount: UInt = 0
 
     /// The total number of test failures and uncaught exceptions recorded
     /// during the run.
-    public var totalFailureCount: UInt {
+    open var totalFailureCount: UInt {
         return failureCount + unexpectedExceptionCount
     }
 
     /// `true` if all tests in the run completed their execution without
     /// recording any failures, otherwise `false`.
-    public var hasSucceeded: Bool {
+    open var hasSucceeded: Bool {
         guard isStopped else {
             return false
         }
@@ -84,7 +84,7 @@ public class XCTestRun {
     }
 
     /// Start a test run. Must not be called more than once.
-    public func start() {
+    open func start() {
         guard !isStarted else {
             fatalError("Invalid attempt to start a test run that has " +
                        "already been started: \(self)")
@@ -99,7 +99,7 @@ public class XCTestRun {
 
     /// Stop a test run. Must not be called unless the run has been started.
     /// Must not be called more than once.
-    public func stop() {
+    open func stop() {
         guard isStarted else {
             fatalError("Invalid attempt to stop a test run that has " +
                        "not yet been started: \(self)")

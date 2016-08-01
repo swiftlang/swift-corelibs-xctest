@@ -32,12 +32,12 @@ internal var XCTCurrentTestCase: XCTestCase?
 /// run by the framework. This class is normally subclassed and extended with
 /// methods containing the tests to run.
 /// - seealso: `XCTMain`
-public class XCTestCase: XCTest {
+open class XCTestCase: XCTest {
     private let testClosure: (XCTestCase) throws -> Void
 
     /// The name of the test case, consisting of its class name and the method
     /// name it will run.
-    public override var name: String {
+    open override var name: String {
         return _name
     }
     /// A private setter for the name of this test case.
@@ -48,7 +48,7 @@ public class XCTestCase: XCTest {
     ///   https://bugs.swift.org/browse/SR-1129 for details.
     public var _name: String
 
-    public override var testCaseCount: UInt {
+    open override var testCaseCount: UInt {
         return 1
     }
 
@@ -68,11 +68,11 @@ public class XCTestCase: XCTest {
     ///   https://bugs.swift.org/browse/SR-1129 for details.
     public var _performanceMeter: PerformanceMeter?
 
-    public override var testRunClass: AnyClass? {
+    open override var testRunClass: AnyClass? {
         return XCTestCaseRun.self
     }
 
-    public override func perform(_ run: XCTestRun) {
+    open override func perform(_ run: XCTestRun) {
         guard let testRun = run as? XCTestCaseRun else {
             fatalError("Wrong XCTestRun class.")
         }
@@ -96,7 +96,7 @@ public class XCTestCase: XCTest {
 
     /// Invoking a test performs its setUp, invocation, and tearDown. In
     /// general this should not be called directly.
-    public func invokeTest() {
+    open func invokeTest() {
         setUp()
         do {
             try testClosure(self)
@@ -120,7 +120,7 @@ public class XCTestCase: XCTest {
     /// - Parameter expected: `true` if the failure being reported was the
     ///   result of a failed assertion, `false` if it was the result of an
     ///   uncaught exception.
-    public func recordFailure(withDescription description: String, inFile filePath: String, atLine lineNumber: UInt, expected: Bool) {
+    open func recordFailure(withDescription description: String, inFile filePath: String, atLine lineNumber: UInt, expected: Bool) {
         testRun?.recordFailure(
             withDescription: description,
             inFile: filePath,
@@ -142,13 +142,13 @@ public class XCTestCase: XCTest {
 
     /// Setup method called before the invocation of any test method in the
     /// class.
-    public class func setUp() {}
+    open class func setUp() {}
 
     /// Teardown method called after the invocation of every test method in the
     /// class.
-    public class func tearDown() {}
+    open class func tearDown() {}
 
-    public var continueAfterFailure: Bool {
+    open var continueAfterFailure: Bool {
         get {
             return true
         }

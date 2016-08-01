@@ -15,20 +15,20 @@
 /// An abstract base class for testing. `XCTestCase` and `XCTestSuite` extend
 /// `XCTest` to provide for creating, managing, and executing tests. Most
 /// developers will not need to subclass `XCTest` directly.
-public class XCTest {
+open class XCTest {
     /// Test's name. Must be overridden by subclasses.
-    public var name: String {
+    open var name: String {
         fatalError("Must be overridden by subclasses.")
     }
 
     /// Number of test cases. Must be overridden by subclasses.
-    public var testCaseCount: UInt {
+    open var testCaseCount: UInt {
         fatalError("Must be overridden by subclasses.")
     }
 
     /// The `XCTestRun` subclass that will be instantiated when the test is run
     /// to hold the test's results. Must be overridden by subclasses.
-    public var testRunClass: AnyClass? {
+    open var testRunClass: AnyClass? {
         fatalError("Must be overridden by subclasses.")
     }
 
@@ -39,17 +39,17 @@ public class XCTest {
     ///   ensure compatibility of tests between swift-corelibs-xctest and Apple
     ///   XCTest, you should not set this property. See
     ///   https://bugs.swift.org/browse/SR-1129 for details.
-    public public(set) var testRun: XCTestRun? = nil
+    open open(set) var testRun: XCTestRun? = nil
 
     /// The method through which tests are executed. Must be overridden by
     /// subclasses.
-    public func perform(_ run: XCTestRun) {
+    open func perform(_ run: XCTestRun) {
         fatalError("Must be overridden by subclasses.")
     }
 
     /// Creates an instance of the `testRunClass` and passes it as a parameter
     /// to `perform()`.
-    public func run() {
+    open func run() {
         guard let testRunType = testRunClass as? XCTestRun.Type else {
             fatalError("XCTest.testRunClass must be a kind of XCTestRun.")
         }
@@ -59,11 +59,11 @@ public class XCTest {
 
     /// Setup method called before the invocation of each test method in the
     /// class.
-    public func setUp() {}
+    open func setUp() {}
 
     /// Teardown method called after the invocation of each test method in the
     /// class.
-    public func tearDown() {}
+    open func tearDown() {}
 
     // FIXME: This initializer is required due to a Swift compiler bug on Linux.
     //        It should be removed once the bug is fixed.
