@@ -165,14 +165,14 @@ open class XCTestCase: XCTest {
 /// the signature required by `XCTMain`
 /// - seealso: `XCTMain`
 public func testCase<T: XCTestCase>(_ allTests: [(String, (T) -> () throws -> Void)]) -> XCTestCaseEntry {
-    let tests: [(String, (XCTestCase) throws -> Void)] = allTests.map { ($0, test($1)) }
+    let tests: [(String, (XCTestCase) throws -> Void)] = allTests.map { ($0.0, test($0.1)) }
     return (T.self, tests)
 }
 
 /// Wrapper function for the non-throwing variant of tests.
 /// - seealso: `XCTMain`
 public func testCase<T: XCTestCase>(_ allTests: [(String, (T) -> () -> Void)]) -> XCTestCaseEntry {
-    let tests: [(String, (XCTestCase) throws -> Void)] = allTests.map { ($0, test($1)) }
+    let tests: [(String, (XCTestCase) throws -> Void)] = allTests.map { ($0.0, test($0.1)) }
     return (T.self, tests)
 }
 
