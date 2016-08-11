@@ -75,11 +75,11 @@ extension XCTestSuite: Listable {
     }
 
     func dictionaryRepresentation() -> NSDictionary {
-        let listedTests = tests.flatMap({ ($0 as? Listable)?.dictionaryRepresentation() })
-        return [
-                   "name": listingName.bridge(),
-                   "tests": listedTests.bridge()
-            ].bridge()
+        let listedTests = NSArray(array: tests.flatMap({ ($0 as? Listable)?.dictionaryRepresentation() }))
+        return NSDictionary(objects: [NSString(string: listingName),
+                                      listedTests],
+                            forKeys: [NSString(string: "name"),
+                                      NSString(string: "tests")])
     }
 
     func findBundleTestSuite() -> XCTestSuite? {
@@ -102,6 +102,6 @@ extension XCTestCase: Listable {
 
     func dictionaryRepresentation() -> NSDictionary {
         let methodName = String(name.characters.split(separator: ".").last!)
-        return ["name": methodName].bridge()
+        return NSDictionary(object: NSString(string: methodName), forKey: NSString(string: "name"))
     }
 }
