@@ -1,6 +1,7 @@
 // RUN: %{swiftc} %s -o %T/Asynchronous-Predicates
 // RUN: %T/Asynchronous-Predicates > %t || true
-// RUN: %{xctest_checker} %t %s
+// Disabled due to: https://bugs.swift.org/browse/SR-2332
+// xxx: %{xctest_checker} %t %s
 
 #if os(Linux) || os(FreeBSD)
     import XCTest
