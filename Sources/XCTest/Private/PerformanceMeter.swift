@@ -112,7 +112,7 @@ public final class PerformanceMeter {
         self.invocationLine = line
     }
 
-    static func measureMetrics(_ metricNames: [String], delegate: PerformanceMeterDelegate, file: StaticString = #file, line: UInt = #line, for block: @noescape (PerformanceMeter) -> Void) {
+    static func measureMetrics(_ metricNames: [String], delegate: PerformanceMeterDelegate, file: StaticString = #file, line: UInt = #line, for block: (PerformanceMeter) -> Void) {
         do {
             let metrics = try self.metrics(forNames: metricNames)
             let meter = PerformanceMeter(metrics: metrics, delegate: delegate, file: file, line: line)
@@ -163,7 +163,7 @@ public final class PerformanceMeter {
         return 10
     }
 
-    private func measure(_ block: @noescape (PerformanceMeter) -> Void) {
+    private func measure(_ block: (PerformanceMeter) -> Void) {
         for _ in (0..<numberOfIterations) {
             state = .iterationUnstarted
 
