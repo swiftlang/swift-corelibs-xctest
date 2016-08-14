@@ -75,7 +75,7 @@ private enum _XCTAssertionResult {
     }
 }
 
-private func _XCTEvaluateAssertion(_ assertion: _XCTAssertion, message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line, expression: @noescape () throws -> _XCTAssertionResult) {
+private func _XCTEvaluateAssertion(_ assertion: _XCTAssertion, message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line, expression: () throws -> _XCTAssertionResult) {
     let result: _XCTAssertionResult
     do {
         result = try expression()
