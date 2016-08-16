@@ -1,7 +1,6 @@
 // RUN: %{swiftc} %s -o %T/Asynchronous-Predicates
 // RUN: %T/Asynchronous-Predicates > %t || true
-// Disabled due to: https://bugs.swift.org/browse/SR-2332
-// xxx: %{xctest_checker} %t %s
+// RUN: %{xctest_checker} %t %s
 
 #if os(Linux) || os(FreeBSD)
     import XCTest
@@ -38,29 +37,26 @@ class PredicateExpectationsTestCase: XCTestCase {
     // CHECK: Test Case 'PredicateExpectationsTestCase.test_delayedTruePredicateAndObject_passes' started at \d+:\d+:\d+\.\d+
     // CHECK: Test Case 'PredicateExpectationsTestCase.test_delayedTruePredicateAndObject_passes' passed \(\d+\.\d+ seconds\).
     func test_delayedTruePredicateAndObject_passes() {
-        let halfSecLaterDate = NSDate(timeIntervalSinceNow: 0.01)
-        let predicate = Predicate(block: {
-            evaluatedObject, bindings in
-            if let evaluatedDate = evaluatedObject as? NSDate {
-                return evaluatedDate.compare(Date()) == ComparisonResult.orderedAscending
-            }
-            return false
+        var didEvaluate = false
+        let predicate = Predicate(block: { evaluatedObject, bindings in
+            defer { didEvaluate = true }
+            return didEvaluate
         })
-        expectation(for: predicate, evaluatedWith: halfSecLaterDate)
+        expectation(for: predicate, evaluatedWith: NSObject())
         waitForExpectations(timeout: 0.1)
     }
     
     // CHECK: Test Case 'PredicateExpectationsTestCase.test_immediatelyTrueDelayedFalsePredicateAndObject_passes' started at \d+:\d+:\d+\.\d+
     // CHECK: Test Case 'PredicateExpectationsTestCase.test_immediatelyTrueDelayedFalsePredicateAndObject_passes' passed \(\d+\.\d+ seconds\).
     func test_immediatelyTrueDelayedFalsePredicateAndObject_passes() {
-        let halfSecLaterDate = NSDate(timeIntervalSinceNow: 0.01)
+        var didEvaluate = false
         let predicate = Predicate(block: { evaluatedObject, bindings in
-            if let evaluatedDate = evaluatedObject as? NSDate {
-                return evaluatedDate.compare(Date()) == ComparisonResult.orderedDescending
-            }
-            return false
+            defer { didEvaluate = true }
+            return !didEvaluate
         })
-        expectation(for: predicate, evaluatedWith: halfSecLaterDate)
+        expectation(for: predicate, evaluatedWith: NSObject())
+        XCTAssertTrue(didEvaluate)
+        
         waitForExpectations(timeout: 0.1)
     }
     
