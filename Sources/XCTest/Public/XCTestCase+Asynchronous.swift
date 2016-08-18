@@ -103,7 +103,7 @@ public extension XCTestCase {
         //        been fulfilled, it would be more efficient to use a runloop
         //        source that can be signaled to wake up when an expectation is
         //        fulfilled.
-        let runLoop = RunLoop.current()
+        let runLoop = RunLoop.current
         let timeoutDate = Date(timeIntervalSinceNow: timeout)
         repeat {
             unfulfilledDescriptions = []
@@ -171,14 +171,14 @@ public extension XCTestCase {
         var observer: NSObjectProtocol? = nil
         func removeObserver() {
             if let observer = observer as? AnyObject {
-                NotificationCenter.defaultCenter().removeObserver(observer)
+                NotificationCenter.default.removeObserver(observer)
             }
         }
 
         weak var weakExpectation = expectation
         observer = NotificationCenter
-            .defaultCenter()
-            .addObserverForName(Notification.Name(rawValue: notificationName),
+            .default
+            .addObserver(forName: Notification.Name(rawValue: notificationName),
                                 object: objectToObserve,
                                 queue: nil,
                                 usingBlock: {
