@@ -18,13 +18,13 @@
 #endif
 
 internal class XCPredicateExpectation: XCTestExpectation {
-    internal let predicate: Predicate
+    internal let predicate: NSPredicate
     internal let object: AnyObject
     internal var timer: Timer?
     internal let handler: XCPredicateExpectationHandler?
     private let evaluationInterval = 0.01
     
-    internal init(predicate: Predicate, object: AnyObject, description: String, file: StaticString, line: UInt, testCase: XCTestCase, handler: XCPredicateExpectationHandler? = nil) {
+    internal init(predicate: NSPredicate, object: AnyObject, description: String, file: StaticString, line: UInt, testCase: XCTestCase, handler: XCPredicateExpectationHandler? = nil) {
         self.predicate = predicate
         self.object = object
         self.handler = handler
