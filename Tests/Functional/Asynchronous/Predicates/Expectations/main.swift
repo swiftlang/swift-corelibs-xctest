@@ -15,21 +15,21 @@
 // CHECK: Test Suite '.*\.xctest' started at \d+:\d+:\d+\.\d+
 
 // CHECK: Test Suite 'PredicateExpectationsTestCase' started at \d+:\d+:\d+\.\d+
-class PredicateExpectationsTestCase: XCTestCase {
+class NSPredicateExpectationsTestCase: XCTestCase {
     // CHECK: Test Case 'PredicateExpectationsTestCase.test_immediatelyTruePredicateAndObject_passes' started at \d+:\d+:\d+\.\d+
     // CHECK: Test Case 'PredicateExpectationsTestCase.test_immediatelyTruePredicateAndObject_passes' passed \(\d+\.\d+ seconds\).
     func test_immediatelyTruePredicateAndObject_passes() {
-        let predicate = Predicate(value: true)
+        let predicate = NSPredicate(value: true)
         let object = NSObject()
         expectation(for: predicate, evaluatedWith: object)
         waitForExpectations(timeout: 0.1)
     }
 
     // CHECK: Test Case 'PredicateExpectationsTestCase.test_immediatelyFalsePredicateAndObject_fails' started at \d+:\d+:\d+\.\d+
-    // CHECK: .*/Tests/Functional/Asynchronous/Predicates/Expectations/main.swift:[[@LINE+6]]: error: PredicateExpectationsTestCase.test_immediatelyFalsePredicateAndObject_fails : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: Expect `<Predicate: 0x[0-9A-Fa-f]{1,16}>` for object <NSObject: 0x[0-9A-Fa-f]{1,16}>
+    // CHECK: .*/Tests/Functional/Asynchronous/Predicates/Expectations/main.swift:[[@LINE+6]]: error: NSPredicateExpectationsTestCase.test_immediatelyFalsePredicateAndObject_fails : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: Expect `<Predicate: 0x[0-9A-Fa-f]{1,16}>` for object <NSObject: 0x[0-9A-Fa-f]{1,16}>
     // CHECK: Test Case 'PredicateExpectationsTestCase.test_immediatelyFalsePredicateAndObject_fails' failed \(\d+\.\d+ seconds\).
     func test_immediatelyFalsePredicateAndObject_fails() {
-        let predicate = Predicate(value: false)
+        let predicate = NSPredicate(value: false)
         let object = NSObject()
         expectation(for: predicate, evaluatedWith: object)
         waitForExpectations(timeout: 0.1)
@@ -39,7 +39,7 @@ class PredicateExpectationsTestCase: XCTestCase {
     // CHECK: Test Case 'PredicateExpectationsTestCase.test_delayedTruePredicateAndObject_passes' passed \(\d+\.\d+ seconds\).
     func test_delayedTruePredicateAndObject_passes() {
         var didEvaluate = false
-        let predicate = Predicate(block: { evaluatedObject, bindings in
+        let predicate = NSPredicate(block: { evaluatedObject, bindings in
             defer { didEvaluate = true }
             return didEvaluate
         })
@@ -51,7 +51,7 @@ class PredicateExpectationsTestCase: XCTestCase {
     // CHECK: Test Case 'PredicateExpectationsTestCase.test_immediatelyTrueDelayedFalsePredicateAndObject_passes' passed \(\d+\.\d+ seconds\).
     func test_immediatelyTrueDelayedFalsePredicateAndObject_passes() {
         var didEvaluate = false
-        let predicate = Predicate(block: { evaluatedObject, bindings in
+        let predicate = NSPredicate(block: { evaluatedObject, bindings in
             defer { didEvaluate = true }
             return !didEvaluate
         })

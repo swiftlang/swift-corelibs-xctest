@@ -89,7 +89,7 @@ class PerformanceTestCase: XCTestCase {
         // CHECK: .*/Performance/main.swift:[[@LINE+1]]: error: PerformanceTestCase.test_measuresWallClockTimeInBlock : failed: The relative standard deviation of the measurements is \d+.\d{3}% which is higher than the max allowed of \d+.\d{3}%.
         measure {
             if !hasWaited {
-                Thread.sleepForTimeInterval(1)
+                Thread.sleep(forTimeInterval: 1)
                 hasWaited = true
             }
         }
