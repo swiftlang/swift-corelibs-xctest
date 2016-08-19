@@ -170,7 +170,7 @@ public extension XCTestCase {
         // Start observing the notification with specified name and object.
         var observer: NSObjectProtocol? = nil
         func removeObserver() {
-            if let observer = observer as? AnyObject {
+            if let observer = observer {
                 NotificationCenter.default.removeObserver(observer)
             }
         }
