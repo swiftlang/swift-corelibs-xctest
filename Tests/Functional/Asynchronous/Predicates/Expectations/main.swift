@@ -14,7 +14,7 @@
 // CHECK: Test Suite '.*\.xctest' started at \d+:\d+:\d+\.\d+
 
 // CHECK: Test Suite 'PredicateExpectationsTestCase' started at \d+:\d+:\d+\.\d+
-class NSPredicateExpectationsTestCase: XCTestCase {
+class PredicateExpectationsTestCase: XCTestCase {
     // CHECK: Test Case 'PredicateExpectationsTestCase.test_immediatelyTruePredicateAndObject_passes' started at \d+:\d+:\d+\.\d+
     // CHECK: Test Case 'PredicateExpectationsTestCase.test_immediatelyTruePredicateAndObject_passes' passed \(\d+\.\d+ seconds\).
     func test_immediatelyTruePredicateAndObject_passes() {
