@@ -26,7 +26,7 @@ class PredicateExpectationsTestCase: XCTestCase {
     }
 
     // CHECK: Test Case 'PredicateExpectationsTestCase.test_immediatelyFalsePredicateAndObject_fails' started at \d+:\d+:\d+\.\d+
-    // CHECK: .*/Tests/Functional/Asynchronous/Predicates/Expectations/main.swift:[[@LINE+6]]: error: NSPredicateExpectationsTestCase.test_immediatelyFalsePredicateAndObject_fails : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: Expect `<Predicate: 0x[0-9A-Fa-f]{1,16}>` for object <NSObject: 0x[0-9A-Fa-f]{1,16}>
+    // CHECK: .*/Tests/Functional/Asynchronous/Predicates/Expectations/main.swift:[[@LINE+6]]: error: PredicateExpectationsTestCase.test_immediatelyFalsePredicateAndObject_fails : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: Expect `<Predicate: 0x[0-9A-Fa-f]{1,16}>` for object <NSObject: 0x[0-9A-Fa-f]{1,16}>
     // CHECK: Test Case 'PredicateExpectationsTestCase.test_immediatelyFalsePredicateAndObject_fails' failed \(\d+\.\d+ seconds\).
     func test_immediatelyFalsePredicateAndObject_fails() {
         let predicate = NSPredicate(value: false)
