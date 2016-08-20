@@ -109,8 +109,7 @@ class DarwinStrategy:
             "-configuration {style_options} "
             "SWIFT_EXEC=\"{swiftc}\" "
             "SWIFT_LINK_OBJC_RUNTIME=YES "
-            "SYMROOT=\"{build_dir}\" OBJROOT=\"{build_dir}\" "
-            "| grep -v \"    export\"".format(
+            "SYMROOT=\"{build_dir}\" OBJROOT=\"{build_dir}\" ".format(
                 swiftc=swiftc,
                 build_dir=build_dir,
                 style_options=style_options,
