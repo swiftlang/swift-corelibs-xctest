@@ -237,9 +237,13 @@ class GenericUnixStrategy:
             symlink_force(os.path.join(args.libdispatch_build_dir, "src", ".libs", "libdispatch.so"),
                 foundation_build_dir)
         if args.libdispatch_src_dir and args.libdispatch_build_dir:
-            libdispatch_src_args = "LIBDISPATCH_SRC_DIR={libdispatch_src_dir} LIBDISPATCH_BUILD_DIR={libdispatch_build_dir}".format(
-                libdispatch_src_dir=os.path.abspath(args.libdispatch_src_dir),
-                libdispatch_build_dir=os.path.join(args.libdispatch_build_dir, 'src', '.libs'))
+            libdispatch_src_args = ( 
+               "LIBDISPATCH_SRC_DIR={libdispatch_src_dir} "
+               "LIBDISPATCH_BUILD_DIR={libdispatch_build_dir} "
+               "LIBDISPATCH_OVERLAY_DIR={libdispatch_overlay_dir}".format(
+                   libdispatch_src_dir=os.path.abspath(args.libdispatch_src_dir),
+                   libdispatch_build_dir=os.path.join(args.libdispatch_build_dir, 'src', '.libs'),
+                   libdispatch_overlay_dir=os.path.join(args.libdispatch_build_dir, 'src', 'swift')))
         else:
             libdispatch_src_args = ""
 
