@@ -47,7 +47,7 @@ class ExpectationsTestCase: XCTestCase {
         let timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { _ in
             expectation.fulfill()
         }
-        RunLoop.current().add(timer, forMode: .defaultRunLoopMode)
+        RunLoop.current.add(timer, forMode: .defaultRunLoopMode)
         waitForExpectations(timeout: 1.0)
     }
 
@@ -59,7 +59,7 @@ class ExpectationsTestCase: XCTestCase {
         let timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
             expectation.fulfill()
         }
-        RunLoop.current().add(timer, forMode: .defaultRunLoopMode)
+        RunLoop.current.add(timer, forMode: .defaultRunLoopMode)
         waitForExpectations(timeout: 0.1)
     }
 

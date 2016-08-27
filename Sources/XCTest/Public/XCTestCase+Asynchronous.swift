@@ -103,7 +103,7 @@ public extension XCTestCase {
         //        been fulfilled, it would be more efficient to use a runloop
         //        source that can be signaled to wake up when an expectation is
         //        fulfilled.
-        let runLoop = RunLoop.current()
+        let runLoop = RunLoop.current
         let timeoutDate = Date(timeIntervalSinceNow: timeout)
         repeat {
             unfulfilledDescriptions = []
@@ -171,14 +171,14 @@ public extension XCTestCase {
         var observer: NSObjectProtocol? = nil
         func removeObserver() {
             if let observer = observer as? AnyObject {
-                NotificationCenter.defaultCenter().removeObserver(observer)
+                NotificationCenter.default.removeObserver(observer)
             }
         }
 
         weak var weakExpectation = expectation
         observer = NotificationCenter
-            .defaultCenter()
-            .addObserverForName(Notification.Name(rawValue: notificationName),
+            .default
+            .addObserver(forName: Notification.Name(rawValue: notificationName),
                                 object: objectToObserve,
                                 queue: nil,
                                 usingBlock: {
@@ -226,7 +226,7 @@ public extension XCTestCase {
     ///   first successful evaluation will fulfill the expectation. If provided,
     ///   the handler can override that behavior which leaves the caller
     ///   responsible for fulfilling the expectation.
-    func expectation(for predicate: Predicate, evaluatedWith object: AnyObject, file: StaticString = #file, line: UInt = #line, handler: XCPredicateExpectationHandler? = nil) -> XCTestExpectation {
+    func expectation(for predicate: NSPredicate, evaluatedWith object: AnyObject, file: StaticString = #file, line: UInt = #line, handler: XCPredicateExpectationHandler? = nil) -> XCTestExpectation {
         let expectation = XCPredicateExpectation(
             predicate: predicate,
             object: object,
