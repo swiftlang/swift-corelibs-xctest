@@ -53,20 +53,10 @@ open class XCTestCase: XCTest {
     }
 
     /// The set of expectations made upon this test case.
-    /// - Note: FIXME: This is meant to be a `private var`, but is marked as
-    ///   `public` here to work around a Swift compiler bug on Linux. To ensure
-    ///   compatibility of tests between swift-corelibs-xctest and Apple XCTest,
-    ///   this property should not be modified. See
-    ///   https://bugs.swift.org/browse/SR-1129 for details.
-    public var _allExpectations = [XCTestExpectation]()
+    final internal var _allExpectations = [XCTestExpectation]()
 
     /// An internal object implementing performance measurements.
-    /// - Note: FIXME: This is meant to be a `internal var`, but is marked as
-    ///   `public` here to work around a Swift compiler bug on Linux. To ensure
-    ///   compatibility of tests between swift-corelibs-xctest and Apple XCTest,
-    ///   this property should not be modified. See
-    ///   https://bugs.swift.org/browse/SR-1129 for details.
-    public var _performanceMeter: PerformanceMeter?
+    final internal var _performanceMeter: PerformanceMeter?
 
     open override var testRunClass: AnyClass? {
         return XCTestCaseRun.self
