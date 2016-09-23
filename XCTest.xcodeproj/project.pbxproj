@@ -8,22 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		AE2FE0FB1CFE86DB003EF0D7 /* XCAbstractTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE0EA1CFE86DB003EF0D7 /* XCAbstractTest.swift */; };
-		AE2FE0FC1CFE86DB003EF0D7 /* XCNotificationExpectationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE0EB1CFE86DB003EF0D7 /* XCNotificationExpectationHandler.swift */; };
-		AE2FE0FD1CFE86DB003EF0D7 /* XCPredicateExpectationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE0EC1CFE86DB003EF0D7 /* XCPredicateExpectationHandler.swift */; };
 		AE2FE0FE1CFE86DB003EF0D7 /* XCTAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE0ED1CFE86DB003EF0D7 /* XCTAssert.swift */; };
 		AE2FE0FF1CFE86DB003EF0D7 /* XCTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE0EE1CFE86DB003EF0D7 /* XCTestCase.swift */; };
-		AE2FE1001CFE86DB003EF0D7 /* XCTestCase+Asynchronous.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE0EF1CFE86DB003EF0D7 /* XCTestCase+Asynchronous.swift */; };
 		AE2FE1011CFE86DB003EF0D7 /* XCTestCase+Performance.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE0F01CFE86DB003EF0D7 /* XCTestCase+Performance.swift */; };
 		AE2FE1021CFE86DB003EF0D7 /* XCTestCaseRun.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE0F11CFE86DB003EF0D7 /* XCTestCaseRun.swift */; };
 		AE2FE1031CFE86DB003EF0D7 /* XCTestErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE0F21CFE86DB003EF0D7 /* XCTestErrors.swift */; };
-		AE2FE1041CFE86DB003EF0D7 /* XCTestExpectation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE0F31CFE86DB003EF0D7 /* XCTestExpectation.swift */; };
 		AE2FE1051CFE86DB003EF0D7 /* XCTestMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE0F41CFE86DB003EF0D7 /* XCTestMain.swift */; };
 		AE2FE1061CFE86DB003EF0D7 /* XCTestObservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE0F51CFE86DB003EF0D7 /* XCTestObservation.swift */; };
 		AE2FE1071CFE86DB003EF0D7 /* XCTestObservationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE0F61CFE86DB003EF0D7 /* XCTestObservationCenter.swift */; };
 		AE2FE1081CFE86DB003EF0D7 /* XCTestRun.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE0F71CFE86DB003EF0D7 /* XCTestRun.swift */; };
 		AE2FE1091CFE86DB003EF0D7 /* XCTestSuite.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE0F81CFE86DB003EF0D7 /* XCTestSuite.swift */; };
 		AE2FE10A1CFE86DB003EF0D7 /* XCTestSuiteRun.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE0F91CFE86DB003EF0D7 /* XCTestSuiteRun.swift */; };
-		AE2FE10B1CFE86DB003EF0D7 /* XCWaitCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE0FA1CFE86DB003EF0D7 /* XCWaitCompletionHandler.swift */; };
 		AE2FE1151CFE86E6003EF0D7 /* ArgumentParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE10C1CFE86E6003EF0D7 /* ArgumentParser.swift */; };
 		AE2FE1161CFE86E6003EF0D7 /* ObjectWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE10D1CFE86E6003EF0D7 /* ObjectWrapper.swift */; };
 		AE2FE1171CFE86E6003EF0D7 /* PerformanceMeter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE10E1CFE86E6003EF0D7 /* PerformanceMeter.swift */; };
@@ -35,6 +30,13 @@
 		AE2FE11D1CFE86E6003EF0D7 /* XCTestInternalObservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE1141CFE86E6003EF0D7 /* XCTestInternalObservation.swift */; };
 		AE63767E1D01ED17002C0EA8 /* TestListing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE63767D1D01ED17002C0EA8 /* TestListing.swift */; };
 		DA7805FA1C6704A2003C6636 /* SwiftFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7805F91C6704A2003C6636 /* SwiftFoundation.framework */; };
+		DA9D44191D920A3500108768 /* XCNotificationExpectationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9D44141D920A3500108768 /* XCNotificationExpectationHandler.swift */; };
+		DA9D441A1D920A3500108768 /* XCPredicateExpectationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9D44151D920A3500108768 /* XCPredicateExpectationHandler.swift */; };
+		DA9D441B1D920A3500108768 /* XCTestCase+Asynchronous.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9D44161D920A3500108768 /* XCTestCase+Asynchronous.swift */; };
+		DA9D441C1D920A3500108768 /* XCTestExpectation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9D44171D920A3500108768 /* XCTestExpectation.swift */; };
+		DA9D441D1D920A3500108768 /* XCWaitCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9D44181D920A3500108768 /* XCWaitCompletionHandler.swift */; };
+		DA9D441F1D920A5900108768 /* XCTestCase+PredicateExpectation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9D441E1D920A5900108768 /* XCTestCase+PredicateExpectation.swift */; };
+		DA9D44211D920A6400108768 /* XCTestCase+NotificationExpectation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9D44201D920A6400108768 /* XCTestCase+NotificationExpectation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,22 +52,17 @@
 /* Begin PBXFileReference section */
 		5B5D86DB1BBC74AD00234F36 /* SwiftXCTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftXCTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE2FE0EA1CFE86DB003EF0D7 /* XCAbstractTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCAbstractTest.swift; sourceTree = "<group>"; };
-		AE2FE0EB1CFE86DB003EF0D7 /* XCNotificationExpectationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCNotificationExpectationHandler.swift; sourceTree = "<group>"; };
-		AE2FE0EC1CFE86DB003EF0D7 /* XCPredicateExpectationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCPredicateExpectationHandler.swift; sourceTree = "<group>"; };
 		AE2FE0ED1CFE86DB003EF0D7 /* XCTAssert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTAssert.swift; sourceTree = "<group>"; };
 		AE2FE0EE1CFE86DB003EF0D7 /* XCTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestCase.swift; sourceTree = "<group>"; };
-		AE2FE0EF1CFE86DB003EF0D7 /* XCTestCase+Asynchronous.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Asynchronous.swift"; sourceTree = "<group>"; };
 		AE2FE0F01CFE86DB003EF0D7 /* XCTestCase+Performance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Performance.swift"; sourceTree = "<group>"; };
 		AE2FE0F11CFE86DB003EF0D7 /* XCTestCaseRun.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestCaseRun.swift; sourceTree = "<group>"; };
 		AE2FE0F21CFE86DB003EF0D7 /* XCTestErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestErrors.swift; sourceTree = "<group>"; };
-		AE2FE0F31CFE86DB003EF0D7 /* XCTestExpectation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestExpectation.swift; sourceTree = "<group>"; };
 		AE2FE0F41CFE86DB003EF0D7 /* XCTestMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestMain.swift; sourceTree = "<group>"; };
 		AE2FE0F51CFE86DB003EF0D7 /* XCTestObservation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestObservation.swift; sourceTree = "<group>"; };
 		AE2FE0F61CFE86DB003EF0D7 /* XCTestObservationCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestObservationCenter.swift; sourceTree = "<group>"; };
 		AE2FE0F71CFE86DB003EF0D7 /* XCTestRun.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestRun.swift; sourceTree = "<group>"; };
 		AE2FE0F81CFE86DB003EF0D7 /* XCTestSuite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestSuite.swift; sourceTree = "<group>"; };
 		AE2FE0F91CFE86DB003EF0D7 /* XCTestSuiteRun.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestSuiteRun.swift; sourceTree = "<group>"; };
-		AE2FE0FA1CFE86DB003EF0D7 /* XCWaitCompletionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCWaitCompletionHandler.swift; sourceTree = "<group>"; };
 		AE2FE10C1CFE86E6003EF0D7 /* ArgumentParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArgumentParser.swift; sourceTree = "<group>"; };
 		AE2FE10D1CFE86E6003EF0D7 /* ObjectWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectWrapper.swift; sourceTree = "<group>"; };
 		AE2FE10E1CFE86E6003EF0D7 /* PerformanceMeter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PerformanceMeter.swift; sourceTree = "<group>"; };
@@ -81,6 +78,13 @@
 		B1384A421C1B3E8700EDF031 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		B1384A431C1B3E8700EDF031 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		DA7805F91C6704A2003C6636 /* SwiftFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftFoundation.framework; path = "../swift-corelibs-foundation/build/Debug/SwiftFoundation.framework"; sourceTree = "<group>"; };
+		DA9D44141D920A3500108768 /* XCNotificationExpectationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCNotificationExpectationHandler.swift; sourceTree = "<group>"; };
+		DA9D44151D920A3500108768 /* XCPredicateExpectationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCPredicateExpectationHandler.swift; sourceTree = "<group>"; };
+		DA9D44161D920A3500108768 /* XCTestCase+Asynchronous.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Asynchronous.swift"; sourceTree = "<group>"; };
+		DA9D44171D920A3500108768 /* XCTestExpectation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestExpectation.swift; sourceTree = "<group>"; };
+		DA9D44181D920A3500108768 /* XCWaitCompletionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCWaitCompletionHandler.swift; sourceTree = "<group>"; };
+		DA9D441E1D920A5900108768 /* XCTestCase+PredicateExpectation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+PredicateExpectation.swift"; sourceTree = "<group>"; };
+		DA9D44201D920A6400108768 /* XCTestCase+NotificationExpectation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+NotificationExpectation.swift"; sourceTree = "<group>"; };
 		EA3E74BB1BF2B6D500635A73 /* build_script.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = build_script.py; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -138,23 +142,19 @@
 		AE2FE0E91CFE86AE003EF0D7 /* Public */ = {
 			isa = PBXGroup;
 			children = (
+				DA9D44131D920A3500108768 /* Asynchronous */,
 				AE2FE0EA1CFE86DB003EF0D7 /* XCAbstractTest.swift */,
-				AE2FE0EB1CFE86DB003EF0D7 /* XCNotificationExpectationHandler.swift */,
-				AE2FE0EC1CFE86DB003EF0D7 /* XCPredicateExpectationHandler.swift */,
 				AE2FE0ED1CFE86DB003EF0D7 /* XCTAssert.swift */,
 				AE2FE0EE1CFE86DB003EF0D7 /* XCTestCase.swift */,
-				AE2FE0EF1CFE86DB003EF0D7 /* XCTestCase+Asynchronous.swift */,
 				AE2FE0F01CFE86DB003EF0D7 /* XCTestCase+Performance.swift */,
 				AE2FE0F11CFE86DB003EF0D7 /* XCTestCaseRun.swift */,
 				AE2FE0F21CFE86DB003EF0D7 /* XCTestErrors.swift */,
-				AE2FE0F31CFE86DB003EF0D7 /* XCTestExpectation.swift */,
 				AE2FE0F41CFE86DB003EF0D7 /* XCTestMain.swift */,
 				AE2FE0F51CFE86DB003EF0D7 /* XCTestObservation.swift */,
 				AE2FE0F61CFE86DB003EF0D7 /* XCTestObservationCenter.swift */,
 				AE2FE0F71CFE86DB003EF0D7 /* XCTestRun.swift */,
 				AE2FE0F81CFE86DB003EF0D7 /* XCTestSuite.swift */,
 				AE2FE0F91CFE86DB003EF0D7 /* XCTestSuiteRun.swift */,
-				AE2FE0FA1CFE86DB003EF0D7 /* XCWaitCompletionHandler.swift */,
 			);
 			path = Public;
 			sourceTree = "<group>";
@@ -200,6 +200,20 @@
 				AE7DD6061C8DC6C0006FC722 /* Functional */,
 			);
 			path = Tests;
+			sourceTree = "<group>";
+		};
+		DA9D44131D920A3500108768 /* Asynchronous */ = {
+			isa = PBXGroup;
+			children = (
+				DA9D44161D920A3500108768 /* XCTestCase+Asynchronous.swift */,
+				DA9D44171D920A3500108768 /* XCTestExpectation.swift */,
+				DA9D44181D920A3500108768 /* XCWaitCompletionHandler.swift */,
+				DA9D44151D920A3500108768 /* XCPredicateExpectationHandler.swift */,
+				DA9D441E1D920A5900108768 /* XCTestCase+PredicateExpectation.swift */,
+				DA9D44141D920A3500108768 /* XCNotificationExpectationHandler.swift */,
+				DA9D44201D920A6400108768 /* XCTestCase+NotificationExpectation.swift */,
+			);
+			path = Asynchronous;
 			sourceTree = "<group>";
 		};
 		EA3E74BC1BF2B6D700635A73 /* Linux Build */ = {
@@ -314,32 +328,34 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE2FE1071CFE86DB003EF0D7 /* XCTestObservationCenter.swift in Sources */,
-				AE2FE1001CFE86DB003EF0D7 /* XCTestCase+Asynchronous.swift in Sources */,
+				DA9D441C1D920A3500108768 /* XCTestExpectation.swift in Sources */,
 				AE2FE1011CFE86DB003EF0D7 /* XCTestCase+Performance.swift in Sources */,
+				DA9D441B1D920A3500108768 /* XCTestCase+Asynchronous.swift in Sources */,
 				AE2FE1181CFE86E6003EF0D7 /* PrintObserver.swift in Sources */,
 				AE2FE1021CFE86DB003EF0D7 /* XCTestCaseRun.swift in Sources */,
+				DA9D441D1D920A3500108768 /* XCWaitCompletionHandler.swift in Sources */,
+				DA9D441A1D920A3500108768 /* XCPredicateExpectationHandler.swift in Sources */,
 				AE2FE1171CFE86E6003EF0D7 /* PerformanceMeter.swift in Sources */,
 				AE2FE1051CFE86DB003EF0D7 /* XCTestMain.swift in Sources */,
 				AE2FE11B1CFE86E6003EF0D7 /* XCPredicateExpectation.swift in Sources */,
+				DA9D44191D920A3500108768 /* XCNotificationExpectationHandler.swift in Sources */,
+				DA9D44211D920A6400108768 /* XCTestCase+NotificationExpectation.swift in Sources */,
 				AE63767E1D01ED17002C0EA8 /* TestListing.swift in Sources */,
 				AE2FE1151CFE86E6003EF0D7 /* ArgumentParser.swift in Sources */,
 				AE2FE0FF1CFE86DB003EF0D7 /* XCTestCase.swift in Sources */,
+				DA9D441F1D920A5900108768 /* XCTestCase+PredicateExpectation.swift in Sources */,
 				AE2FE11D1CFE86E6003EF0D7 /* XCTestInternalObservation.swift in Sources */,
 				AE2FE1061CFE86DB003EF0D7 /* XCTestObservation.swift in Sources */,
-				AE2FE10B1CFE86DB003EF0D7 /* XCWaitCompletionHandler.swift in Sources */,
 				AE2FE0FB1CFE86DB003EF0D7 /* XCAbstractTest.swift in Sources */,
 				AE2FE1081CFE86DB003EF0D7 /* XCTestRun.swift in Sources */,
 				AE2FE10A1CFE86DB003EF0D7 /* XCTestSuiteRun.swift in Sources */,
-				AE2FE0FD1CFE86DB003EF0D7 /* XCPredicateExpectationHandler.swift in Sources */,
 				AE2FE1161CFE86E6003EF0D7 /* ObjectWrapper.swift in Sources */,
 				AE2FE11A1CFE86E6003EF0D7 /* WallClockTimeMetric.swift in Sources */,
 				AE2FE1191CFE86E6003EF0D7 /* TestFiltering.swift in Sources */,
-				AE2FE0FC1CFE86DB003EF0D7 /* XCNotificationExpectationHandler.swift in Sources */,
 				AE2FE1031CFE86DB003EF0D7 /* XCTestErrors.swift in Sources */,
 				AE2FE1091CFE86DB003EF0D7 /* XCTestSuite.swift in Sources */,
 				AE2FE11C1CFE86E6003EF0D7 /* XCTestCaseSuite.swift in Sources */,
 				AE2FE0FE1CFE86DB003EF0D7 /* XCTAssert.swift in Sources */,
-				AE2FE1041CFE86DB003EF0D7 /* XCTestExpectation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
