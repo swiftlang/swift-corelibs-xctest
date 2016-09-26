@@ -10,7 +10,7 @@
 # See http://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
 
 import argparse
-import glob
+import fnmatch
 import os
 import subprocess
 import sys
@@ -37,6 +37,19 @@ def _mkdirp(path):
     """
     if not os.path.exists(path):
         run("mkdir -p {}".format(path))
+
+
+def _find_files_with_extension(path, extension):
+    """
+    In Python 3.5 and above, glob supports recursive patterns such as
+    '**/*.swift'. This function backports that functionality to Python 3.4
+    and below.
+    """
+    paths = []
+    for root, _, file_names in os.walk(path):
+        for file_name in fnmatch.filter(file_names, '*.{}'.format(extension)):
+            paths.append(os.path.join(root, file_name))
+    return paths
 
 
 def symlink_force(target, link_name):
@@ -149,8 +162,9 @@ class GenericUnixStrategy:
 
         _mkdirp(build_dir)
 
-        sourcePaths = glob.glob(os.path.join(
-            SOURCE_DIR, 'Sources', 'XCTest', '*', '*.swift'))
+        sourcePaths = _find_files_with_extension(
+                os.path.join(SOURCE_DIR, 'Sources', 'XCTest'),
+                'swift')
 
         if args.build_style == "debug":
             style_options = "-g"
