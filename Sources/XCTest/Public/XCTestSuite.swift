@@ -27,12 +27,7 @@ open class XCTestSuite: XCTest {
         return _name
     }
     /// A private setter for the name of this test suite.
-    /// - Note: FIXME: This property should be readonly, but currently has to
-    ///   be publicly settable due to a Swift compiler bug on Linux. To ensure
-    ///   compatibility of tests between swift-corelibs-xctest and Apple XCTest,
-    ///   this property should not be modified. See
-    ///   https://bugs.swift.org/browse/SR-1129 for details.
-    public let _name: String
+    private let _name: String
 
     /// The number of test cases in this suite.
     open override var testCaseCount: UInt {

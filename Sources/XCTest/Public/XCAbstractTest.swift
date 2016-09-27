@@ -34,12 +34,7 @@ open class XCTest {
 
     /// The test run object that executed the test, an instance of
     /// testRunClass. If the test has not yet been run, this will be nil.
-    /// - Note: FIXME: This property is meant to be `private(set)`. It is
-    ///   publicly settable for now due to a Swift compiler bug on Linux. To
-    ///   ensure compatibility of tests between swift-corelibs-xctest and Apple
-    ///   XCTest, you should not set this property. See
-    ///   https://bugs.swift.org/browse/SR-1129 for details.
-    open open(set) var testRun: XCTestRun? = nil
+    open private(set) var testRun: XCTestRun? = nil
 
     /// The method through which tests are executed. Must be overridden by
     /// subclasses.
