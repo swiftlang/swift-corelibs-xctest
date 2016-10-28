@@ -1,5 +1,5 @@
 // RUN: %{swiftc} %s -o %T/Performance
-// RUN: %T/Performance > %t || true
+// RUN: %T/Performance &> %t || true
 // RUN: %{xctest_checker} %t %s
 
 #if os(Linux) || os(FreeBSD)

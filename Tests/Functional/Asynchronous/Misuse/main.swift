@@ -1,5 +1,5 @@
 // RUN: %{swiftc} %s -o %T/Misuse
-// RUN: %T/Misuse > %t || true
+// RUN: %T/Misuse &> %t || true
 // RUN: %{xctest_checker} %t %s
 
 #if os(Linux) || os(FreeBSD)

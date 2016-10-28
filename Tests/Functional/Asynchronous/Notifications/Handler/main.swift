@@ -1,5 +1,5 @@
 // RUN: %{swiftc} %s -o %T/Asynchronous-Notifications-Handler
-// RUN: %T/Asynchronous-Notifications-Handler > %t || true
+// RUN: %T/Asynchronous-Notifications-Handler &> %t || true
 // RUN: %{xctest_checker} %t %s
 
 #if os(Linux) || os(FreeBSD)
