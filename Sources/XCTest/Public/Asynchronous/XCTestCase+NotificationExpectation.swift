@@ -45,8 +45,7 @@ public extension XCTestCase {
             .default
             .addObserver(forName: Notification.Name(rawValue: notificationName),
                          object: objectToObserve,
-                         queue: nil,
-                         usingBlock: {
+                         queue: nil) {
                             notification in
                             guard let expectation = weakExpectation else {
                                 removeObserver()
@@ -64,7 +63,7 @@ public extension XCTestCase {
                                 expectation.fulfill()
                                 removeObserver()
                             }
-            })
+                        }
 
         return expectation
     }
