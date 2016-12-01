@@ -173,7 +173,7 @@ public func XCTAssertEqual<T: Equatable>(_ expression1: @autoclosure () throws -
         if value1 == value2 {
             return .success
         } else {
-            return .expectedFailure("(\"\(value1)\") is not equal to (\"\(value2)\")")
+            return .expectedFailure("(\"\(String(describing: value1))\") is not equal to (\"\(String(describing: value2))\")")
         }
     }
 }
@@ -316,7 +316,7 @@ public func XCTAssertNotEqual<T: Equatable>(_ expression1: @autoclosure () throw
         if value1 != value2 {
             return .success
         } else {
-            return .expectedFailure("(\"\(value1)\") is equal to (\"\(value2)\")")
+            return .expectedFailure("(\"\(String(describing: value1))\") is equal to (\"\(String(describing: value2))\")")
         }
     }
 }
