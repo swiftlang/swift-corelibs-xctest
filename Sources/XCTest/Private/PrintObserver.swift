@@ -11,10 +11,10 @@
 //  Prints test progress to stdout.
 //
 
-#if os(Linux) || os(FreeBSD)
-    import Foundation
-#else
+#if os(macOS)
     import SwiftFoundation
+#else
+    import Foundation
 #endif
 
 /// Prints textual representations of each XCTestObservation event to stdout.

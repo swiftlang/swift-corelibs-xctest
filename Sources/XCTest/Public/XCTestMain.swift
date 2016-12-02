@@ -12,12 +12,16 @@
 //  for running tests and some infrastructure for running them.
 //
 
-#if os(Linux) || os(FreeBSD)
-    import Glibc
-    import Foundation
-#else
-    import Darwin
+#if os(macOS)
     import SwiftFoundation
+#else
+    import Foundation
+#endif
+
+#if os(macOS)
+    import Darwin
+#elseif os(Linux) || os(FreeBSD)
+    import Glibc
 #endif
 
 /// Starts a test run for the specified test cases.
@@ -93,4 +97,3 @@ public func XCTMain(_ testCases: [XCTestCaseEntry]) -> Never {
         exit(rootTestSuite.testRun!.totalFailureCount == 0 ? 0 : 1)
     }
 }
-

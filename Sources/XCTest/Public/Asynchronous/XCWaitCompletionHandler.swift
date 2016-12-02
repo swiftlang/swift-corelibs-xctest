@@ -12,10 +12,10 @@
 //  fulfilled times out.
 //
 
-#if os(Linux) || os(FreeBSD)
-    import Foundation
-#else
+#if os(macOS)
     import SwiftFoundation
+#else
+    import Foundation
 #endif
 
 /// A block to be invoked when a call to wait times out or has had all

@@ -11,10 +11,10 @@
 //  Notification center for test run progress events.
 //
 
-#if os(Linux) || os(FreeBSD)
-    import Foundation
-#else
+#if os(macOS)
     import SwiftFoundation
+#else
+    import Foundation
 #endif
 
 /// Provides a registry for objects wishing to be informed about progress

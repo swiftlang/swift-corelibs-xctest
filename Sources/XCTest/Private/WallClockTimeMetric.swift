@@ -11,10 +11,10 @@
 //  Performance metric measuring how long it takes code to execute
 //
 
-#if os(Linux) || os(FreeBSD)
-    import Foundation
-#else
+#if os(macOS)
     import SwiftFoundation
+#else
+    import Foundation
 #endif
 
 /// This metric uses the system uptime to keep track of how much time passes

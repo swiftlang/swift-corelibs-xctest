@@ -2,10 +2,10 @@
 // RUN: %T/FailingTestSuite > %t || true
 // RUN: %{xctest_checker} %t %s
 
-#if os(Linux) || os(FreeBSD)
-    import XCTest
-#else
+#if os(macOS)
     import SwiftXCTest
+#else
+    import XCTest
 #endif
 
 // CHECK: Test Suite 'All tests' started at \d+:\d+:\d+\.\d+

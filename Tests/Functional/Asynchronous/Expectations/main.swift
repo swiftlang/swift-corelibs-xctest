@@ -2,12 +2,12 @@
 // RUN: %T/Asynchronous > %t || true
 // RUN: %{xctest_checker} %t %s
 
-#if os(Linux) || os(FreeBSD)
-    import XCTest
-    import Foundation
-#else
-    import SwiftXCTest
+#if os(macOS)
     import SwiftFoundation
+    import SwiftXCTest
+#else
+    import Foundation
+    import XCTest
 #endif
 
 // CHECK: Test Suite 'All tests' started at \d+:\d+:\d+\.\d+

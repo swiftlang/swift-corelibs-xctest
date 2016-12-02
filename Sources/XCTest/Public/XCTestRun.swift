@@ -11,10 +11,10 @@
 //  A test run collects information about the execution of a test.
 //
 
-#if os(Linux) || os(FreeBSD)
-    import Foundation
-#else
+#if os(macOS)
     import SwiftFoundation
+#else
+    import Foundation
 #endif
 
 /// A test run collects information about the execution of a test. Failures in

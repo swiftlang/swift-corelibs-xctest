@@ -11,10 +11,10 @@
 //  Base class for test cases
 //
 
-#if os(Linux) || os(FreeBSD)
-    import Foundation
-#else
+#if os(macOS)
     import SwiftFoundation
+#else
+    import Foundation
 #endif
 
 /// This is a compound type used by `XCTMain` to represent tests to run. It combines an

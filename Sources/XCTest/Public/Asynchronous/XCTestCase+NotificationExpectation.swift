@@ -10,10 +10,10 @@
 //  XCTestCase+NotificationExpectation.swift
 //
 
-#if os(Linux) || os(FreeBSD)
-    import Foundation
-#else
+#if os(macOS)
     import SwiftFoundation
+#else
+    import Foundation
 #endif
 
 public extension XCTestCase {
