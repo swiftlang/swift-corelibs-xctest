@@ -11,10 +11,10 @@
 //  Expectations with a specified predicate and object to evaluate.
 //
 
-#if os(Linux) || os(FreeBSD)
-    import Foundation
-#else
+#if os(macOS)
     import SwiftFoundation
+#else
+    import Foundation
 #endif
 
 internal class XCPredicateExpectation: XCTestExpectation {

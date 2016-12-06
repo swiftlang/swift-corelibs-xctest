@@ -11,10 +11,10 @@
 //  Implementation of the mode for printing the list of tests.
 //
 
-#if os(Linux) || os(FreeBSD)
-    import Foundation
-#else
+#if os(macOS)
     import SwiftFoundation
+#else
+    import Foundation
 #endif
 
 internal struct TestListing {

@@ -2,10 +2,10 @@
 // RUN: %T/FailureMessagesTestCase > %t || true
 // RUN: %{xctest_checker} %t %s
 
-#if os(Linux) || os(FreeBSD)
-    import XCTest
-#else
+#if os(macOS)
     import SwiftXCTest
+#else
+    import XCTest
 #endif
 
 // Regression test for https://github.com/apple/swift-corelibs-xctest/pull/22

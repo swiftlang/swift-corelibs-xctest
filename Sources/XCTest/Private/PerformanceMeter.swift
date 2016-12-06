@@ -11,10 +11,10 @@
 //  Measures the performance of a block of code and reports the results.
 //
 
-#if os(Linux) || os(FreeBSD)
-    import Foundation
-#else
+#if os(macOS)
     import SwiftFoundation
+#else
+    import Foundation
 #endif
 
 /// Describes a type that is capable of measuring some aspect of code performance

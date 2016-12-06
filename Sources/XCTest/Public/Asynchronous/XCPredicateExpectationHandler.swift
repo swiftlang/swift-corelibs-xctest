@@ -12,10 +12,10 @@
 //  evaluated with a given object.
 //
 
-#if os(Linux) || os(FreeBSD)
-    import Foundation
-#else
+#if os(macOS)
     import SwiftFoundation
+#else
+    import Foundation
 #endif
 
 /// A block to be invoked when evaluating the predicate against the object 

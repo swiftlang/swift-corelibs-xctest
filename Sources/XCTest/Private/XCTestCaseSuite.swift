@@ -11,10 +11,10 @@
 //  A test suite associated with a particular test case class.
 //
 
-#if os(Linux) || os(FreeBSD)
-    import Foundation
-#else
+#if os(macOS)
     import SwiftFoundation
+#else
+    import Foundation
 #endif
 
 /// A test suite which is associated with a particular test case class. It will

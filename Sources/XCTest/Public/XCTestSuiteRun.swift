@@ -11,10 +11,10 @@
 //  A test run for an `XCTestSuite`.
 //
 
-#if os(Linux) || os(FreeBSD)
-    import Foundation
-#else
+#if os(macOS)
     import SwiftFoundation
+#else
+    import Foundation
 #endif
 
 /// A test run for an `XCTestSuite`.
