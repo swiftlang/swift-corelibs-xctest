@@ -15,7 +15,7 @@
 class MisuseTestCase: XCTestCase {
 // CHECK: Test Case 'MisuseTestCase.test_whenExpectationsAreMade_butNotWaitedFor_fails' started at \d+:\d+:\d+\.\d+
 // CHECK: .*/Tests/Functional/Asynchronous/Misuse/main.swift:[[@LINE+4]]: error: MisuseTestCase.test_whenExpectationsAreMade_butNotWaitedFor_fails : Failed due to unwaited expectations.
-// CHECK: Test Case 'MisuseTestCase.test_whenExpectationsAreMade_butNotWaitedFor_fails' failed \(\d+\.\d+ seconds\).
+// CHECK: Test Case 'MisuseTestCase.test_whenExpectationsAreMade_butNotWaitedFor_fails' failed \(\d+\.\d+ seconds\)
     func test_whenExpectationsAreMade_butNotWaitedFor_fails() {
         self.expectation(description: "the first expectation")
         self.expectation(description: "the second expectation (the file and line number for this one are included in the failure message")
@@ -23,7 +23,7 @@ class MisuseTestCase: XCTestCase {
 
 // CHECK: Test Case 'MisuseTestCase.test_whenNoExpectationsAreMade_butTheyAreWaitedFor_fails' started at \d+:\d+:\d+\.\d+
 // CHECK: .*/Tests/Functional/Asynchronous/Misuse/main.swift:[[@LINE+3]]: error: MisuseTestCase.test_whenNoExpectationsAreMade_butTheyAreWaitedFor_fails : API violation - call made to wait without any expectations having been set.
-// CHECK: Test Case 'MisuseTestCase.test_whenNoExpectationsAreMade_butTheyAreWaitedFor_fails' failed \(\d+\.\d+ seconds\).
+// CHECK: Test Case 'MisuseTestCase.test_whenNoExpectationsAreMade_butTheyAreWaitedFor_fails' failed \(\d+\.\d+ seconds\)
     func test_whenNoExpectationsAreMade_butTheyAreWaitedFor_fails() {
         self.waitForExpectations(timeout: 0.1)
     }
@@ -31,7 +31,7 @@ class MisuseTestCase: XCTestCase {
 // CHECK: Test Case 'MisuseTestCase.test_whenExpectationIsFulfilledMultipleTimes_fails' started at \d+:\d+:\d+\.\d+
 // CHECK: .*/Tests/Functional/Asynchronous/Misuse/main.swift:[[@LINE+6]]: error: MisuseTestCase.test_whenExpectationIsFulfilledMultipleTimes_fails : API violation - multiple calls made to XCTestExpectation.fulfill\(\) for rob.
 // CHECK: .*/Tests/Functional/Asynchronous/Misuse/main.swift:[[@LINE+15]]: error: MisuseTestCase.test_whenExpectationIsFulfilledMultipleTimes_fails : API violation - multiple calls made to XCTestExpectation.fulfill\(\) for rob.
-// CHECK: Test Case 'MisuseTestCase.test_whenExpectationIsFulfilledMultipleTimes_fails' failed \(\d+\.\d+ seconds\).
+// CHECK: Test Case 'MisuseTestCase.test_whenExpectationIsFulfilledMultipleTimes_fails' failed \(\d+\.\d+ seconds\)
     func test_whenExpectationIsFulfilledMultipleTimes_fails() {
         let expectation = self.expectation(description: "rob")
         expectation.fulfill()

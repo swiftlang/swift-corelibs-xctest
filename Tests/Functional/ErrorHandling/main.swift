@@ -42,13 +42,13 @@ class ErrorHandling: XCTestCase {
 
 // CHECK: Test Case 'ErrorHandling.test_shouldButDoesNotThrowErrorInAssertion' started at \d+:\d+:\d+\.\d+
 // CHECK: .*/ErrorHandling/main.swift:[[@LINE+3]]: error: ErrorHandling.test_shouldButDoesNotThrowErrorInAssertion : XCTAssertThrowsError failed: did not throw error -
-// CHECK: Test Case 'ErrorHandling.test_shouldButDoesNotThrowErrorInAssertion' failed \(\d+\.\d+ seconds\).
+// CHECK: Test Case 'ErrorHandling.test_shouldButDoesNotThrowErrorInAssertion' failed \(\d+\.\d+ seconds\)
     func test_shouldButDoesNotThrowErrorInAssertion() {
         XCTAssertThrowsError(try functionThatDoesNotThrowError())
     }
     
 // CHECK: Test Case 'ErrorHandling.test_shouldThrowErrorInAssertion' started at \d+:\d+:\d+\.\d+
-// CHECK: Test Case 'ErrorHandling.test_shouldThrowErrorInAssertion' passed \(\d+\.\d+ seconds\).
+// CHECK: Test Case 'ErrorHandling.test_shouldThrowErrorInAssertion' passed \(\d+\.\d+ seconds\)
     func test_shouldThrowErrorInAssertion() {
         XCTAssertThrowsError(try functionThatDoesThrowError()) { error in
             guard let thrownError = error as? SomeError else {
@@ -65,7 +65,7 @@ class ErrorHandling: XCTestCase {
     
 // CHECK: Test Case 'ErrorHandling.test_throwsErrorInAssertionButFailsWhenCheckingError' started at \d+:\d+:\d+\.\d+
 // CHECK: .*/ErrorHandling/main.swift:[[@LINE+11]]: error: ErrorHandling.test_throwsErrorInAssertionButFailsWhenCheckingError : XCTAssertEqual failed: \("an error message"\) is not equal to \(""\) -
-// CHECK: Test Case 'ErrorHandling.test_throwsErrorInAssertionButFailsWhenCheckingError' failed \(\d+\.\d+ seconds\).
+// CHECK: Test Case 'ErrorHandling.test_throwsErrorInAssertionButFailsWhenCheckingError' failed \(\d+\.\d+ seconds\)
     func test_throwsErrorInAssertionButFailsWhenCheckingError() {
         XCTAssertThrowsError(try functionThatDoesThrowError()) { error in
             guard let thrownError = error as? SomeError else {
@@ -82,13 +82,13 @@ class ErrorHandling: XCTestCase {
 
 // CHECK: Test Case 'ErrorHandling.test_canAndDoesThrowErrorFromTestMethod' started at \d+:\d+:\d+\.\d+
 // CHECK: \<EXPR\>:0: error: ErrorHandling.test_canAndDoesThrowErrorFromTestMethod : threw error "anError\("an error message"\)"
-// CHECK: Test Case 'ErrorHandling.test_canAndDoesThrowErrorFromTestMethod' failed \(\d+\.\d+ seconds\).
+// CHECK: Test Case 'ErrorHandling.test_canAndDoesThrowErrorFromTestMethod' failed \(\d+\.\d+ seconds\)
     func test_canAndDoesThrowErrorFromTestMethod() throws {
         try functionThatDoesThrowError()
     }
     
 // CHECK: Test Case 'ErrorHandling.test_canButDoesNotThrowErrorFromTestMethod' started at \d+:\d+:\d+\.\d+
-// CHECK: Test Case 'ErrorHandling.test_canButDoesNotThrowErrorFromTestMethod' passed \(\d+\.\d+ seconds\).
+// CHECK: Test Case 'ErrorHandling.test_canButDoesNotThrowErrorFromTestMethod' passed \(\d+\.\d+ seconds\)
     func test_canButDoesNotThrowErrorFromTestMethod() throws {
         try functionThatDoesNotThrowError()
     }
@@ -99,7 +99,7 @@ class ErrorHandling: XCTestCase {
 
 // CHECK: Test Case 'ErrorHandling.test_assertionExpressionCanThrow' started at \d+:\d+:\d+\.\d+
 // CHECK: .*/ErrorHandling/main.swift:[[@LINE+3]]: error: ErrorHandling.test_assertionExpressionCanThrow : XCTAssertEqual threw error "anError\("did not actually return"\)" -
-// CHECK: Test Case 'ErrorHandling.test_assertionExpressionCanThrow' failed \(\d+\.\d+ seconds\).
+// CHECK: Test Case 'ErrorHandling.test_assertionExpressionCanThrow' failed \(\d+\.\d+ seconds\)
     func test_assertionExpressionCanThrow() {
         XCTAssertEqual(try functionThatShouldReturnButThrows(), 1)
     }

@@ -27,19 +27,19 @@ class ExecutedTestCase: XCTestCase {
 
 // CHECK-METHOD:   Test Suite 'ExecutedTestCase' started at \d+:\d+:\d+\.\d+
 // CHECK-METHOD:   Test Case 'ExecutedTestCase.test_foo' started at \d+:\d+:\d+\.\d+
-// CHECK-METHOD:   Test Case 'ExecutedTestCase.test_foo' passed \(\d+\.\d+ seconds\).
+// CHECK-METHOD:   Test Case 'ExecutedTestCase.test_foo' passed \(\d+\.\d+ seconds\)
 // CHECK-CLASS: Test Suite 'ExecutedTestCase' started at \d+:\d+:\d+\.\d+
 // CHECK-CLASS: Test Case 'ExecutedTestCase.test_bar' started at \d+:\d+:\d+\.\d+
-// CHECK-CLASS: Test Case 'ExecutedTestCase.test_bar' passed \(\d+\.\d+ seconds\).
+// CHECK-CLASS: Test Case 'ExecutedTestCase.test_bar' passed \(\d+\.\d+ seconds\)
 // CHECK-ALL:      Test Suite 'ExecutedTestCase' started at \d+:\d+:\d+\.\d+
 // CHECK-ALL:      Test Case 'ExecutedTestCase.test_bar' started at \d+:\d+:\d+\.\d+
-// CHECK-ALL:      Test Case 'ExecutedTestCase.test_bar' passed \(\d+\.\d+ seconds\).
+// CHECK-ALL:      Test Case 'ExecutedTestCase.test_bar' passed \(\d+\.\d+ seconds\)
     func test_bar() {}
 
 // CHECK-CLASS: Test Case 'ExecutedTestCase.test_foo' started at \d+:\d+:\d+\.\d+
-// CHECK-CLASS: Test Case 'ExecutedTestCase.test_foo' passed \(\d+\.\d+ seconds\).
+// CHECK-CLASS: Test Case 'ExecutedTestCase.test_foo' passed \(\d+\.\d+ seconds\)
 // CHECK-ALL:      Test Case 'ExecutedTestCase.test_foo' started at \d+:\d+:\d+\.\d+
-// CHECK-ALL:      Test Case 'ExecutedTestCase.test_foo' passed \(\d+\.\d+ seconds\).
+// CHECK-ALL:      Test Case 'ExecutedTestCase.test_foo' passed \(\d+\.\d+ seconds\)
     func test_foo() {}
 }
 // CHECK-METHOD:   Test Suite 'ExecutedTestCase' passed at \d+:\d+:\d+\.\d+
@@ -57,7 +57,7 @@ class SkippedTestCase: XCTestCase {
     }()
 
 // CHECK-ALL: Test Case 'SkippedTestCase.test_baz' started at \d+:\d+:\d+\.\d+
-// CHECK-ALL: Test Case 'SkippedTestCase.test_baz' passed \(\d+\.\d+ seconds\).
+// CHECK-ALL: Test Case 'SkippedTestCase.test_baz' passed \(\d+\.\d+ seconds\)
     func test_baz() {}
 }
 // CHECK-ALL: Test Suite 'SkippedTestCase' passed at \d+:\d+:\d+\.\d+

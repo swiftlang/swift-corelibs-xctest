@@ -42,7 +42,7 @@ class SetUpTearDownTestCase: XCTestCase {
 // CHECK: In setUp\(\)
 // CHECK: In test_hasValueFromSetUp\(\)
 // CHECK: In tearDown\(\)
-// CHECK: Test Case 'SetUpTearDownTestCase.test_hasValueFromSetUp' passed \(\d+\.\d+ seconds\).
+// CHECK: Test Case 'SetUpTearDownTestCase.test_hasValueFromSetUp' passed \(\d+\.\d+ seconds\)
     func test_hasValueFromSetUp() {
         print("In \(#function)")
         XCTAssertEqual(value, 42)
@@ -70,14 +70,14 @@ class NewInstanceForEachTestTestCase: XCTestCase {
     var value = 1
 
 // CHECK: Test Case 'NewInstanceForEachTestTestCase.test_hasInitializedValue' started at \d+:\d+:\d+\.\d+
-// CHECK: Test Case 'NewInstanceForEachTestTestCase.test_hasInitializedValue' passed \(\d+\.\d+ seconds\).
+// CHECK: Test Case 'NewInstanceForEachTestTestCase.test_hasInitializedValue' passed \(\d+\.\d+ seconds\)
     func test_hasInitializedValue() {
         XCTAssertEqual(value, 1)
         value += 1
     }
 
 // CHECK: Test Case 'NewInstanceForEachTestTestCase.test_hasInitializedValueInAnotherTest' started at \d+:\d+:\d+\.\d+
-// CHECK: Test Case 'NewInstanceForEachTestTestCase.test_hasInitializedValueInAnotherTest' passed \(\d+\.\d+ seconds\).
+// CHECK: Test Case 'NewInstanceForEachTestTestCase.test_hasInitializedValueInAnotherTest' passed \(\d+\.\d+ seconds\)
     func test_hasInitializedValueInAnotherTest() {
         XCTAssertEqual(value, 1)
     }

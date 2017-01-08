@@ -66,7 +66,7 @@ class Observation: XCTestCase {
 
 // CHECK: Test Case 'Observation.test_one' started at \d+:\d+:\d+\.\d+
 // CHECK: .*/Observation/All/main.swift:[[@LINE+12]]: error: Observation.test_one : failed - fail!
-// CHECK: Test Case 'Observation.test_one' failed \(\d+\.\d+ seconds\).
+// CHECK: Test Case 'Observation.test_one' failed \(\d+\.\d+ seconds\)
     func test_one() {
         XCTAssertEqual(observer.startedBundlePaths.count, 1)
         XCTAssertEqual(
@@ -82,7 +82,7 @@ class Observation: XCTestCase {
     }
 
 // CHECK: Test Case 'Observation.test_two' started at \d+:\d+:\d+\.\d+
-// CHECK: Test Case 'Observation.test_two' passed \(\d+\.\d+ seconds\).
+// CHECK: Test Case 'Observation.test_two' passed \(\d+\.\d+ seconds\)
     func test_two() {
         XCTAssertEqual(observer.startedBundlePaths.count, 1)
         XCTAssertEqual(
@@ -96,7 +96,7 @@ class Observation: XCTestCase {
     }
 
 // CHECK: Test Case 'Observation.test_three' started at \d+:\d+:\d+\.\d+
-// CHECK: Test Case 'Observation.test_three' passed \(\d+\.\d+ seconds\).
+// CHECK: Test Case 'Observation.test_three' passed \(\d+\.\d+ seconds\)
     func test_three() {
         XCTAssertEqual(observer.startedBundlePaths.count, 1)
         XCTAssertEqual(observer.startedTestCaseNames, ["Observation.test_one", "Observation.test_two"])

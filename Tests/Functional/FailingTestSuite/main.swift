@@ -20,7 +20,7 @@ class PassingTestCase: XCTestCase {
     }()
 
 // CHECK: Test Case 'PassingTestCase.test_passes' started at \d+:\d+:\d+\.\d+
-// CHECK: Test Case 'PassingTestCase.test_passes' passed \(\d+\.\d+ seconds\).
+// CHECK: Test Case 'PassingTestCase.test_passes' passed \(\d+\.\d+ seconds\)
     func test_passes() {
         XCTAssert(true)
     }
@@ -39,21 +39,21 @@ class FailingTestCase: XCTestCase {
     }()
 
 // CHECK: Test Case 'FailingTestCase.test_passes' started at \d+:\d+:\d+\.\d+
-// CHECK: Test Case 'FailingTestCase.test_passes' passed \(\d+\.\d+ seconds\).
+// CHECK: Test Case 'FailingTestCase.test_passes' passed \(\d+\.\d+ seconds\)
     func test_passes() {
         XCTAssert(true)
     }
 
 // CHECK: Test Case 'FailingTestCase.test_fails' started at \d+:\d+:\d+\.\d+
 // CHECK: .*/FailingTestSuite/main.swift:[[@LINE+3]]: error: FailingTestCase.test_fails : XCTAssertTrue failed - $
-// CHECK: Test Case 'FailingTestCase.test_fails' failed \(\d+\.\d+ seconds\).
+// CHECK: Test Case 'FailingTestCase.test_fails' failed \(\d+\.\d+ seconds\)
     func test_fails() {
         XCTAssert(false)
     }
 
 // CHECK: Test Case 'FailingTestCase.test_fails_with_message' started at \d+:\d+:\d+\.\d+
 // CHECK: .*/FailingTestSuite/main.swift:[[@LINE+3]]: error: FailingTestCase.test_fails_with_message : XCTAssertTrue failed - Foo bar.
-// CHECK: Test Case 'FailingTestCase.test_fails_with_message' failed \(\d+\.\d+ seconds\).
+// CHECK: Test Case 'FailingTestCase.test_fails_with_message' failed \(\d+\.\d+ seconds\)
     func test_fails_with_message() {
         XCTAssert(false, "Foo bar.")
     }

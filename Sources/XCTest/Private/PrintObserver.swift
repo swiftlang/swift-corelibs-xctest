@@ -38,10 +38,7 @@ internal class PrintObserver: XCTestObservation {
     func testCaseDidFinish(_ testCase: XCTestCase) {
         let testRun = testCase.testRun!
         let verb = testRun.hasSucceeded ? "passed" : "failed"
-        // FIXME: Apple XCTest does not print a period after "(N seconds)".
-        //        The trailing period here should be removed and the functional
-        //        test suite should be updated.
-        printAndFlush("Test Case '\(testCase.name)' \(verb) (\(formatTimeInterval(testRun.totalDuration)) seconds).")
+        printAndFlush("Test Case '\(testCase.name)' \(verb) (\(formatTimeInterval(testRun.totalDuration)) seconds)")
     }
 
     func testSuiteDidFinish(_ testSuite: XCTestSuite) {
