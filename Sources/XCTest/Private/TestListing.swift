@@ -11,12 +11,6 @@
 //  Implementation of the mode for printing the list of tests.
 //
 
-#if os(macOS)
-    import SwiftFoundation
-#else
-    import Foundation
-#endif
-
 internal struct TestListing {
     private let testSuite: XCTestSuite
 

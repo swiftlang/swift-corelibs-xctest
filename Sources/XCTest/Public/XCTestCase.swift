@@ -11,12 +11,6 @@
 //  Base class for test cases
 //
 
-#if os(macOS)
-    import SwiftFoundation
-#else
-    import Foundation
-#endif
-
 /// This is a compound type used by `XCTMain` to represent tests to run. It combines an
 /// `XCTestCase` subclass type with the list of test case methods to invoke on the class.
 /// This type is intended to be produced by the `testCase` helper function.

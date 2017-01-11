@@ -12,12 +12,6 @@
 //  observed.
 //
 
-#if os(macOS)
-    import SwiftFoundation
-#else
-    import Foundation
-#endif
-
 /// A block to be invoked when a notification specified by the expectation is
 /// observed.
 ///

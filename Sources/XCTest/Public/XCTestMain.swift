@@ -12,10 +12,12 @@
 //  for running tests and some infrastructure for running them.
 //
 
+// Note that we are re-exporting Foundation so tests importing XCTest don't need
+// to import it themselves. This is consistent with the behavior of Apple XCTest
 #if os(macOS)
-    import SwiftFoundation
+    @_exported import SwiftFoundation
 #else
-    import Foundation
+    @_exported import Foundation
 #endif
 
 #if os(macOS)

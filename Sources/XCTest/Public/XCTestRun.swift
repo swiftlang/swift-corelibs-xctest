@@ -11,12 +11,6 @@
 //  A test run collects information about the execution of a test.
 //
 
-#if os(macOS)
-    import SwiftFoundation
-#else
-    import Foundation
-#endif
-
 /// A test run collects information about the execution of a test. Failures in
 /// explicit test assertions are classified as "expected", while failures from
 /// unrelated or uncaught exceptions are classified as "unexpected".

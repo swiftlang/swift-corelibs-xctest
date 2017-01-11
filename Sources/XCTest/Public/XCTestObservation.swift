@@ -11,12 +11,6 @@
 //  Hooks for being notified about progress during a test run.
 //
 
-#if os(macOS)
-    import SwiftFoundation
-#else
-    import Foundation
-#endif
-
 /// `XCTestObservation` provides hooks for being notified about progress during a
 /// test run.
 /// - seealso: `XCTestObservationCenter`
