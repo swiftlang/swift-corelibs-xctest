@@ -18,7 +18,7 @@ class PerformanceTestCase: XCTestCase {
 
     // CHECK: Test Case 'PerformanceTestCase.test_measureBlockIteratesTenTimes' started at \d+:\d+:\d+\.\d+
     // CHECK: .*/Performance/main.swift:[[@LINE+4]]: Test Case 'PerformanceTestCase.test_measureBlockIteratesTenTimes' measured \[Time, seconds\] .*
-    // CHECK: Test Case 'PerformanceTestCase.test_measureBlockIteratesTenTimes' passed \(\d+\.\d+ seconds\).
+    // CHECK: Test Case 'PerformanceTestCase.test_measureBlockIteratesTenTimes' passed \(\d+\.\d+ seconds\)
     func test_measureBlockIteratesTenTimes() {
         var iterationCount = 0
         measure(block: {
@@ -29,7 +29,7 @@ class PerformanceTestCase: XCTestCase {
 
     // CHECK: Test Case 'PerformanceTestCase.test_measuresMetricsWithAutomaticStartAndStop' started at \d+:\d+:\d+\.\d+
     // CHECK: .*/Performance/main.swift:[[@LINE+4]]: Test Case 'PerformanceTestCase.test_measuresMetricsWithAutomaticStartAndStop' measured \[Time, seconds\] .*
-    // CHECK: Test Case 'PerformanceTestCase.test_measuresMetricsWithAutomaticStartAndStop' passed \(\d+\.\d+ seconds\).
+    // CHECK: Test Case 'PerformanceTestCase.test_measuresMetricsWithAutomaticStartAndStop' passed \(\d+\.\d+ seconds\)
     func test_measuresMetricsWithAutomaticStartAndStop() {
         var iterationCount = 0
         measureMetrics([XCTPerformanceMetric_WallClockTime], automaticallyStartMeasuring: true, for: {
@@ -40,7 +40,7 @@ class PerformanceTestCase: XCTestCase {
 
     // CHECK: Test Case 'PerformanceTestCase.test_measuresMetricsWithManualStartAndStop' started at \d+:\d+:\d+\.\d+
     // CHECK: .*/Performance/main.swift:[[@LINE+3]]: Test Case 'PerformanceTestCase.test_measuresMetricsWithManualStartAndStop' measured \[Time, seconds\] .*
-    // CHECK: Test Case 'PerformanceTestCase.test_measuresMetricsWithManualStartAndStop' passed \(\d+\.\d+ seconds\).
+    // CHECK: Test Case 'PerformanceTestCase.test_measuresMetricsWithManualStartAndStop' passed \(\d+\.\d+ seconds\)
     func test_measuresMetricsWithManualStartAndStop() {
         measureMetrics([XCTPerformanceMetric_WallClockTime], automaticallyStartMeasuring: false) {
             self.startMeasuring()
@@ -50,7 +50,7 @@ class PerformanceTestCase: XCTestCase {
 
     // CHECK: Test Case 'PerformanceTestCase.test_measuresMetricsWithoutExplicitStop' started at \d+:\d+:\d+\.\d+
     // CHECK: .*/Performance/main.swift:[[@LINE+3]]: Test Case 'PerformanceTestCase.test_measuresMetricsWithoutExplicitStop' measured \[Time, seconds\] .*
-    // CHECK: Test Case 'PerformanceTestCase.test_measuresMetricsWithoutExplicitStop' passed \(\d+\.\d+ seconds\).
+    // CHECK: Test Case 'PerformanceTestCase.test_measuresMetricsWithoutExplicitStop' passed \(\d+\.\d+ seconds\)
     func test_measuresMetricsWithoutExplicitStop() {
         measureMetrics([XCTPerformanceMetric_WallClockTime], automaticallyStartMeasuring: false) {
             self.startMeasuring()
@@ -58,14 +58,14 @@ class PerformanceTestCase: XCTestCase {
     }
 
     // CHECK: Test Case 'PerformanceTestCase.test_hasWallClockAsDefaultPerformanceMetric' started at \d+:\d+:\d+\.\d+
-    // CHECK: Test Case 'PerformanceTestCase.test_hasWallClockAsDefaultPerformanceMetric' passed \(\d+\.\d+ seconds\).
+    // CHECK: Test Case 'PerformanceTestCase.test_hasWallClockAsDefaultPerformanceMetric' passed \(\d+\.\d+ seconds\)
     func test_hasWallClockAsDefaultPerformanceMetric() {
         XCTAssertEqual(PerformanceTestCase.defaultPerformanceMetrics(), [XCTPerformanceMetric_WallClockTime])
     }
 
     // CHECK: Test Case 'PerformanceTestCase.test_printsValuesAfterMeasuring' started at \d+:\d+:\d+\.\d+
     // CHECK: .*/Performance/main.swift:[[@LINE+3]]: Test Case 'PerformanceTestCase.test_printsValuesAfterMeasuring' measured \[Time, seconds\] average: \d+.\d{3}, relative standard deviation: \d+.\d{3}%, values: \[\d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}\], performanceMetricID:org.swift.XCTPerformanceMetric_WallClockTime, maxPercentRelativeStandardDeviation: \d+.\d{3}%, maxStandardDeviation: \d.\d{3}
-    // CHECK: Test Case 'PerformanceTestCase.test_printsValuesAfterMeasuring' passed \(\d+\.\d+ seconds\).
+    // CHECK: Test Case 'PerformanceTestCase.test_printsValuesAfterMeasuring' passed \(\d+\.\d+ seconds\)
     func test_printsValuesAfterMeasuring() {
         measure {}
     }
@@ -80,7 +80,7 @@ class PerformanceTestCase: XCTestCase {
         }
         XCTAssertEqual(iterationCount, 3)
     }
-    // CHECK: Test Case 'PerformanceTestCase.test_abortsMeasurementsAfterTestFailure' failed \(\d+\.\d+ seconds\).
+    // CHECK: Test Case 'PerformanceTestCase.test_abortsMeasurementsAfterTestFailure' failed \(\d+\.\d+ seconds\)
 
     // CHECK: Test Case 'PerformanceTestCase.test_measuresWallClockTimeInBlock' started at \d+:\d+:\d+\.\d+
     func test_measuresWallClockTimeInBlock() {
@@ -94,7 +94,7 @@ class PerformanceTestCase: XCTestCase {
             }
         }
     }
-    // CHECK: Test Case 'PerformanceTestCase.test_measuresWallClockTimeInBlock' failed \(\d+\.\d+ seconds\).
+    // CHECK: Test Case 'PerformanceTestCase.test_measuresWallClockTimeInBlock' failed \(\d+\.\d+ seconds\)
 
     static var allTests = {
         return [

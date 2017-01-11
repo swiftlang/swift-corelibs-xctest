@@ -58,7 +58,7 @@ class ExecutedTestCase: XCTestCase {
     }()
 
 // CHECK: Test Case 'ExecutedTestCase.test_executed' started at \d+:\d+:\d+\.\d+
-// CHECK: Test Case 'ExecutedTestCase.test_executed' passed \(\d+\.\d+ seconds\).
+// CHECK: Test Case 'ExecutedTestCase.test_executed' passed \(\d+\.\d+ seconds\)
     func test_executed() {
         let suiteNames = observer.startedTestSuites.map { $0.name }
         XCTAssertEqual(suiteNames, ["Selected tests", "ExecutedTestCase"])

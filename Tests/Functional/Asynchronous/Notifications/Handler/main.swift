@@ -17,7 +17,7 @@
 class NotificationHandlerTestCase: XCTestCase {
 // CHECK: Test Case 'NotificationHandlerTestCase.test_notificationNameIsObserved_handlerReturnsFalse_andFails' started at \d+:\d+:\d+\.\d+
 // CHECK: .*/Tests/Functional/Asynchronous/Notifications/Handler/main.swift:[[@LINE+8]]: error: NotificationHandlerTestCase.test_notificationNameIsObserved_handlerReturnsFalse_andFails : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: Expect notification 'returnFalse' from any object
-// CHECK: Test Case 'NotificationHandlerTestCase.test_notificationNameIsObserved_handlerReturnsFalse_andFails' failed \(\d+\.\d+ seconds\).
+// CHECK: Test Case 'NotificationHandlerTestCase.test_notificationNameIsObserved_handlerReturnsFalse_andFails' failed \(\d+\.\d+ seconds\)
     func test_notificationNameIsObserved_handlerReturnsFalse_andFails() {
         expectation(forNotification: "returnFalse", object: nil, handler: {
             notification in
@@ -28,7 +28,7 @@ class NotificationHandlerTestCase: XCTestCase {
     }
     
 // CHECK: Test Case 'NotificationHandlerTestCase.test_notificationNameIsObserved_handlerReturnsTrue_andPasses' started at \d+:\d+:\d+\.\d+
-// CHECK: Test Case 'NotificationHandlerTestCase.test_notificationNameIsObserved_handlerReturnsTrue_andPasses' passed \(\d+\.\d+ seconds\).
+// CHECK: Test Case 'NotificationHandlerTestCase.test_notificationNameIsObserved_handlerReturnsTrue_andPasses' passed \(\d+\.\d+ seconds\)
     func test_notificationNameIsObserved_handlerReturnsTrue_andPasses() {
         expectation(forNotification: "returnTrue", object: nil, handler: {
             notification in
@@ -40,7 +40,7 @@ class NotificationHandlerTestCase: XCTestCase {
 
 // CHECK: Test Case 'NotificationHandlerTestCase.test_notificationNameIsObservedAfterTimeout_handlerIsNotCalled' started at \d+:\d+:\d+\.\d+
 // CHECK: .*/Tests/Functional/Asynchronous/Notifications/Handler/main.swift:[[@LINE+7]]: error: NotificationHandlerTestCase.test_notificationNameIsObservedAfterTimeout_handlerIsNotCalled : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: Expect notification 'note' from any object
-// CHECK: Test Case 'NotificationHandlerTestCase.test_notificationNameIsObservedAfterTimeout_handlerIsNotCalled' failed \(\d+\.\d+ seconds\).
+// CHECK: Test Case 'NotificationHandlerTestCase.test_notificationNameIsObservedAfterTimeout_handlerIsNotCalled' failed \(\d+\.\d+ seconds\)
     func test_notificationNameIsObservedAfterTimeout_handlerIsNotCalled() {
         expectation(forNotification: "note", object: nil, handler: { _ in
             XCTFail("Should not call the notification expectation handler")
