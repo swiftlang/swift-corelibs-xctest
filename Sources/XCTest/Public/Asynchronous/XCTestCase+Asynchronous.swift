@@ -11,12 +11,6 @@
 //  Methods on XCTestCase for testing asynchronous operations
 //
 
-#if os(macOS)
-    import SwiftFoundation
-#else
-    import Foundation
-#endif
-
 public extension XCTestCase {
 
     /// Creates and returns an expectation associated with the test case.

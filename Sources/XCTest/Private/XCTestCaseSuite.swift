@@ -11,12 +11,6 @@
 //  A test suite associated with a particular test case class.
 //
 
-#if os(macOS)
-    import SwiftFoundation
-#else
-    import Foundation
-#endif
-
 /// A test suite which is associated with a particular test case class. It will
 /// call `setUp` and `tearDown` on the class itself before and after invoking
 /// all of the test cases making up the class.

@@ -10,12 +10,6 @@
 //  XCTestCase+NotificationExpectation.swift
 //
 
-#if os(macOS)
-    import SwiftFoundation
-#else
-    import Foundation
-#endif
-
 public extension XCTestCase {
     /// Creates and returns an expectation for a notification.
     ///

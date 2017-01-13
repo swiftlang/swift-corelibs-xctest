@@ -11,12 +11,6 @@
 //  Prints test progress to stdout.
 //
 
-#if os(macOS)
-    import SwiftFoundation
-#else
-    import Foundation
-#endif
-
 /// Prints textual representations of each XCTestObservation event to stdout.
 /// Mirrors the Apple XCTest output exactly.
 internal class PrintObserver: XCTestObservation {

@@ -10,12 +10,6 @@
 //  XCTestCase+PredicateExpectation.swift
 //
 
-#if os(macOS)
-    import SwiftFoundation
-#else
-    import Foundation
-#endif
-
 public extension XCTestCase {
     /// Creates and returns an expectation that is fulfilled if the predicate
     /// returns true when evaluated with the given object. The expectation

@@ -12,12 +12,6 @@
 //  evaluated with a given object.
 //
 
-#if os(macOS)
-    import SwiftFoundation
-#else
-    import Foundation
-#endif
-
 /// A block to be invoked when evaluating the predicate against the object 
 /// returns true. If the block is not provided the first successful evaluation 
 /// will fulfill the expectation. If provided, the handler can override that 

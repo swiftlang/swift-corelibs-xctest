@@ -6,10 +6,8 @@
 // RUN: %{xctest_checker} %t_verify verify_json.expected
 
 #if os(macOS)
-    import SwiftFoundation
     import SwiftXCTest
 #else
-    import Foundation
     import XCTest
 #endif
 

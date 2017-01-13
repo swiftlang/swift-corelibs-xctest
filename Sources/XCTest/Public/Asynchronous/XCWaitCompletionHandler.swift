@@ -12,12 +12,6 @@
 //  fulfilled times out.
 //
 
-#if os(macOS)
-    import SwiftFoundation
-#else
-    import Foundation
-#endif
-
 /// A block to be invoked when a call to wait times out or has had all
 /// associated expectations fulfilled.
 ///

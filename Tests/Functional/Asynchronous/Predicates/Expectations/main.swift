@@ -3,10 +3,8 @@
 // RUN: %{xctest_checker} %t %s
 
 #if os(macOS)
-    import SwiftFoundation
     import SwiftXCTest
 #else
-    import Foundation
     import XCTest
 #endif
 

@@ -11,12 +11,6 @@
 //  Performance metric measuring how long it takes code to execute
 //
 
-#if os(macOS)
-    import SwiftFoundation
-#else
-    import Foundation
-#endif
-
 /// This metric uses the system uptime to keep track of how much time passes
 /// between starting and stopping measuring.
 internal final class WallClockTimeMetric: PerformanceMetric {
