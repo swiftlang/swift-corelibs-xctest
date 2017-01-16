@@ -42,7 +42,7 @@ private enum _XCTAssertion {
         case .`true`: return "XCTAssertTrue"
         case .`false`: return "XCTAssertFalse"
         case .throwsError: return "XCTAssertThrowsError"
-        case .noThrow return "XCTAssertNoThrow"
+        case .noThrow: return "XCTAssertNoThrow"
         case .fail: return nil
         }
     }
