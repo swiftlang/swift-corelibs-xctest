@@ -29,7 +29,7 @@ class ErrorHandling: XCTestCase {
 
             // Tests for XCTAssertNoThrow
             ("test_shouldNotThrowErrorDefiningSuccess", test_shouldNotThrowErrorDefiningSuccess),
-            ("test_shouldThrowErrorDefiningError", test_shouldThrowErrorDefiningError)
+            ("test_shouldThrowErrorDefiningFailure", test_shouldThrowErrorDefiningFailure),
         ]
     }()
     
@@ -117,7 +117,7 @@ func test_shouldNotThrowErrorDefiningSuccess() {
 
 // CHECK: Test Case 'ErrorHandling.test_shouldThrowErrorDefiningError' started at \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'ErrorHandling.test_shouldThrowErrorDefiningError' passed \(\d+\.\d+ seconds\)
-func test_shouldThrowErrorDefiningError() {
+func test_shouldThrowErrorDefiningFailure() {
     XCTAssertNoThrow(try functionThatDoesThrowError())
 }
 
