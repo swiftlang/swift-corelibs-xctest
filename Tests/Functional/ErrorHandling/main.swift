@@ -26,6 +26,10 @@ class ErrorHandling: XCTestCase {
             
             // Tests for throwing assertion expressions
             ("test_assertionExpressionCanThrow", test_assertionExpressionCanThrow),
+
+            // Tests for XCTAssertNoThrow
+            ("test_shouldNotThrowErrorDefiningSuccess", test_shouldNotThrowErrorDefiningSuccess),
+            ("test_shouldThrowErrorDefiningError", test_shouldThrowErrorDefiningError)
         ]
     }()
     
@@ -104,6 +108,19 @@ class ErrorHandling: XCTestCase {
         XCTAssertEqual(try functionThatShouldReturnButThrows(), 1)
     }
 }
+
+// CHECK: Test Case 'ErrorHandling.test_shouldNotThrowErrorDefiningSuccess' started at \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ErrorHandling.test_shouldNotThrowErrorDefiningSuccess' passed \(\d+\.\d+ seconds\)
+func test_shouldNotThrowErrorDefiningSuccess() {
+    XCTAssertNoThrow(try functionThatDoesNotThrowError())
+}
+
+// CHECK: Test Case 'ErrorHandling.test_shouldThrowErrorDefiningError' started at \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ErrorHandling.test_shouldThrowErrorDefiningError' passed \(\d+\.\d+ seconds\)
+func test_shouldThrowErrorDefiningError() {
+    XCTAssertNoThrow(try functionThatDoesThrowError())
+}
+
 // CHECK: Test Suite 'ErrorHandling' failed at \d+:\d+:\d+\.\d+
 // CHECK: \t Executed 6 tests, with 4 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
