@@ -115,7 +115,7 @@ class ErrorHandling: XCTestCase {
         XCTAssertNoThrow(try functionThatDoesNotThrowError())
     }
 
-// CHECK: Test Case 'ErrorHandling.test_shouldThrowErrorDefiningError' started at \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ErrorHandling.test_shouldThrowErrorDefiningFailure' started at \d+:\d+:\d+\.\d+
 // CHECK: .*/ErrorHandling/main.swift:[[@LINE+3]]: error: ErrorHandling.test_shouldThrowErrorDefiningFailure : XCTAssertNoThrow threw error
 // CHECK: Test Case 'ErrorHandling.test_shouldThrowErrorDefiningFailure' failed \(\d+\.\d+ seconds\)
     func test_shouldThrowErrorDefiningFailure() {
