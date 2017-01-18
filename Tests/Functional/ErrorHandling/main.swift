@@ -107,19 +107,20 @@ class ErrorHandling: XCTestCase {
     func test_assertionExpressionCanThrow() {
         XCTAssertEqual(try functionThatShouldReturnButThrows(), 1)
     }
-}
+
 
 // CHECK: Test Case 'ErrorHandling.test_shouldNotThrowErrorDefiningSuccess' started at \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'ErrorHandling.test_shouldNotThrowErrorDefiningSuccess' passed \(\d+\.\d+ seconds\)
-func test_shouldNotThrowErrorDefiningSuccess() {
-    XCTAssertNoThrow(try functionThatDoesNotThrowError())
-}
+    func test_shouldNotThrowErrorDefiningSuccess() {
+        XCTAssertNoThrow(try functionThatDoesNotThrowError())
+    }
 
 // CHECK: Test Case 'ErrorHandling.test_shouldThrowErrorDefiningError' started at \d+:\d+:\d+\.\d+
 // CHECK: .*/ErrorHandling/main.swift:[[@LINE+3]]: error: ErrorHandling.test_shouldThrowErrorDefiningFailure : XCTAssertNoThrow threw error
 // CHECK: Test Case 'ErrorHandling.test_shouldThrowErrorDefiningFailure' failed \(\d+\.\d+ seconds\)
-func test_shouldThrowErrorDefiningFailure() {
-    XCTAssertNoThrow(try functionThatDoesThrowError())
+    func test_shouldThrowErrorDefiningFailure() {
+        XCTAssertNoThrow(try functionThatDoesThrowError())
+    }
 }
 
 // CHECK: Test Suite 'ErrorHandling' failed at \d+:\d+:\d+\.\d+
