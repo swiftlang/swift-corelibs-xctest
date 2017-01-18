@@ -430,7 +430,7 @@ public func XCTAssertNoThrow<T>(_ expression: @autoclosure () throws -> T, _ mes
              _ = try expression()
             return .success
         } catch _ {
-            return .expectedFailure("threw error")
+            return .expectedFailure("\(filename):\(line): XCTAssertNoThrow failed: threw error \"\(error)\". : \(message)")
         }
     }
 }
