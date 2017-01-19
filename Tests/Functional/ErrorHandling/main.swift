@@ -129,6 +129,6 @@ class ErrorHandling: XCTestCase {
 XCTMain([testCase(ErrorHandling.allTests)])
 
 // CHECK: Test Suite '.*\.xctest' failed at \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 6 tests, with 4 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed \d+ tests, with \d+ failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 // CHECK: Test Suite 'All tests' failed at \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 6 tests, with 4 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed \d+ tests, with \d+ failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
