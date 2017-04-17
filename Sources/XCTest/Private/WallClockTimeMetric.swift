@@ -63,13 +63,13 @@ internal final class WallClockTimeMetric: PerformanceMetric {
 
 private extension Collection where Index: ExpressibleByIntegerLiteral, Iterator.Element == WallClockTimeMetric.Measurement {
     var average: WallClockTimeMetric.Measurement {
-        return self.reduce(0, +) / Double(count.toIntMax())
+        return self.reduce(0, +) / Double(Int(count))
     }
 
     var standardDeviation: WallClockTimeMetric.Measurement {
         let average = self.average
         let squaredDifferences = self.map({ pow($0 - average, 2.0) })
-        let variance = squaredDifferences.reduce(0, +) / Double(count.toIntMax()-1)
+        let variance = squaredDifferences.reduce(0, +) / Double(Int(count-1))
         return sqrt(variance)
     }
 
