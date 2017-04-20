@@ -185,7 +185,7 @@ class GenericUnixStrategy:
             "-module-name XCTest -module-link-name XCTest -parse-as-library "
             "-emit-module-path {build_dir}/XCTest.swiftmodule "
             "-force-single-frontend-invocation "
-            "-swift-version 3"
+            "-swift-version 3 "
             "-I {foundation_build_dir} -I {core_foundation_build_dir} "
             "{libdispatch_args} "
             "{source_paths} -o {build_dir}/XCTest.o".format(
