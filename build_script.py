@@ -180,10 +180,12 @@ class GenericUnixStrategy:
         else:
             libdispatch_args = ""
 
+        # NOTE: Force -swift-version 3 to build XCTest sources.
         run("{swiftc} -Xcc -fblocks -c {style_options} -emit-object -emit-module "
             "-module-name XCTest -module-link-name XCTest -parse-as-library "
             "-emit-module-path {build_dir}/XCTest.swiftmodule "
             "-force-single-frontend-invocation "
+            "-swift-version 3 "
             "-I {foundation_build_dir} -I {core_foundation_build_dir} "
             "{libdispatch_args} "
             "{source_paths} -o {build_dir}/XCTest.o".format(
