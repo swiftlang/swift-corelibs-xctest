@@ -1,5 +1,5 @@
 // RUN: %{swiftc} %s -o %T/All
-// RUN: %T/All > %t || true
+// RUN: %T/All &> %t || true
 // RUN: %{xctest_checker} %t %s
 
 #if os(macOS)

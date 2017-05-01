@@ -1,5 +1,5 @@
 // RUN: %{swiftc} %s -o %T/Asynchronous-Predicates-Handler
-// RUN: %T/Asynchronous-Predicates-Handler > %t || true
+// RUN: %T/Asynchronous-Predicates-Handler &> %t || true
 // RUN: %{xctest_checker} %t %s
 
 #if os(macOS)

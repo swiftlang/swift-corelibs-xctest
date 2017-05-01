@@ -1,5 +1,5 @@
 // RUN: %{swiftc} %s -o %T/NegativeAccuracyTestCase
-// RUN: %T/NegativeAccuracyTestCase > %t || true
+// RUN: %T/NegativeAccuracyTestCase &> %t || true
 // RUN: %{xctest_checker} %t %s
 
 #if os(macOS)

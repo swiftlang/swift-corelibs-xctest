@@ -58,8 +58,8 @@ internal class PrintObserver: XCTestObservation {
     }()
 
     fileprivate func printAndFlush(_ message: String) {
-        print(message)
-        fflush(stdout)
+        fputs("\(message)\n", stderr)
+        fflush(stderr)
     }
 
     private func formatTimeInterval(_ timeInterval: TimeInterval) -> String {

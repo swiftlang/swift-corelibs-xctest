@@ -1,5 +1,5 @@
 // RUN: %{swiftc} %s -o %T/PerformanceMisuse
-// RUN: %T/PerformanceMisuse > %t || true
+// RUN: %T/PerformanceMisuse &> %t || true
 // RUN: %{xctest_checker} %t %s
 
 #if os(macOS)

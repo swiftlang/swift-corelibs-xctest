@@ -1,5 +1,5 @@
 // RUN: %{swiftc} %s -o %T/TestCaseLifecycle
-// RUN: %T/TestCaseLifecycle > %t || true
+// RUN: %T/TestCaseLifecycle &> %t || true
 // RUN: %{xctest_checker} %t %s
 
 #if os(macOS)

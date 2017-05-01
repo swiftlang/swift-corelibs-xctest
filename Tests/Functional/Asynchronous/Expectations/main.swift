@@ -1,5 +1,5 @@
 // RUN: %{swiftc} %s -o %T/Asynchronous
-// RUN: %T/Asynchronous > %t || true
+// RUN: %T/Asynchronous &> %t || true
 // RUN: %{xctest_checker} %t %s
 
 #if os(macOS)
