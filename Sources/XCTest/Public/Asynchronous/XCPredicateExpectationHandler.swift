@@ -16,4 +16,4 @@
 /// returns true. If the block is not provided the first successful evaluation 
 /// will fulfill the expectation. If provided, the handler can override that 
 /// behavior which leaves the caller responsible for fulfilling the expectation.
-public typealias XCPredicateExpectationHandler = (Void) -> (Bool)
+public typealias XCPredicateExpectationHandler = () -> (Bool)
