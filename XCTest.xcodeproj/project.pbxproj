@@ -473,7 +473,10 @@
 			buildSettings = {
 				DEFINES_MODULE = YES;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				"FRAMEWORK_SEARCH_PATHS[sdk=macosx*]" = $BUILT_PRODUCTS_DIR;
+				"FRAMEWORK_SEARCH_PATHS[sdk=macosx*]" = (
+					$BUILT_PRODUCTS_DIR,
+					"../swift-corelibs-foundation/build/Debug",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks @loader_path/Frameworks";
@@ -482,6 +485,7 @@
 					"-framework",
 					SwiftFoundation,
 				);
+				OTHER_SWIFT_FLAGS = "-swift-version 3";
 				PRODUCT_BUNDLE_PACKAGE_TYPE = FMWK;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator macosx watchos watchsimulator";
@@ -506,6 +510,7 @@
 					"-framework",
 					SwiftFoundation,
 				);
+				OTHER_SWIFT_FLAGS = "-swift-version 3";
 				PRODUCT_BUNDLE_PACKAGE_TYPE = FMWK;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator macosx watchos watchsimulator";
