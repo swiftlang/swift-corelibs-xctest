@@ -30,13 +30,13 @@ private enum _XCTAssertion {
     var name: String? {
         switch(self) {
         case .equal: return "XCTAssertEqual"
-        case .equalWithAccuracy: return "XCTAssertEqualWithAccuracy"
+        case .equalWithAccuracy: return "XCTAssertEqual"
         case .greaterThan: return "XCTAssertGreaterThan"
         case .greaterThanOrEqual: return "XCTAssertGreaterThanOrEqual"
         case .lessThan: return "XCTAssertLessThan"
         case .lessThanOrEqual: return "XCTAssertLessThanOrEqual"
         case .notEqual: return "XCTAssertNotEqual"
-        case .notEqualWithAccuracy: return "XCTAssertNotEqualWithAccuracy"
+        case .notEqualWithAccuracy: return "XCTAssertNotEqual"
         case .`nil`: return "XCTAssertNil"
         case .notNil: return "XCTAssertNotNil"
         case .`true`: return "XCTAssertTrue"
@@ -224,7 +224,7 @@ public func XCTAssertEqual<T, U: Equatable>(_ expression1: @autoclosure () throw
     }
 }
 
-public func XCTAssertEqualWithAccuracy<T: FloatingPoint>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, accuracy: T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
+public func XCTAssertEqual<T: FloatingPoint>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, accuracy: T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
     _XCTEvaluateAssertion(.equalWithAccuracy, message: message, file: file, line: line) {
         let (value1, value2) = (try expression1(), try expression2())
         if abs(value1.distance(to: value2)) <= abs(accuracy.distance(to: T(0))) {
@@ -233,6 +233,11 @@ public func XCTAssertEqualWithAccuracy<T: FloatingPoint>(_ expression1: @autoclo
             return .expectedFailure("(\"\(value1)\") is not equal to (\"\(value2)\") +/- (\"\(accuracy)\")")
         }
     }
+}
+
+@available(*, deprecated, renamed: "XCTAssertEqual(_:_:accuracy:file:line:)")
+public func XCTAssertEqualWithAccuracy<T: FloatingPoint>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, accuracy: T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
+    XCTAssertEqual(expression1, expression2, accuracy: accuracy, message, file: file, line: line)
 }
 
 public func XCTAssertFalse(_ expression: @autoclosure () throws -> Bool, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
@@ -367,7 +372,7 @@ public func XCTAssertNotEqual<T, U: Equatable>(_ expression1: @autoclosure () th
     }
 }
 
-public func XCTAssertNotEqualWithAccuracy<T: FloatingPoint>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ accuracy: T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
+public func XCTAssertNotEqual<T: FloatingPoint>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, accuracy: T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
     _XCTEvaluateAssertion(.notEqualWithAccuracy, message: message, file: file, line: line) {
         let (value1, value2) = (try expression1(), try expression2())
         if abs(value1.distance(to: value2)) > abs(accuracy.distance(to: T(0))) {
@@ -376,6 +381,11 @@ public func XCTAssertNotEqualWithAccuracy<T: FloatingPoint>(_ expression1: @auto
             return .expectedFailure("(\"\(value1)\") is equal to (\"\(value2)\") +/- (\"\(accuracy)\")")
         }
     }
+}
+
+@available(*, deprecated, renamed: "XCTAssertNotEqual(_:_:accuracy:file:line:)")
+public func XCTAssertNotEqualWithAccuracy<T: FloatingPoint>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ accuracy: T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
+    XCTAssertNotEqual(expression1, expression2, accuracy: accuracy, message, file: file, line: line)
 }
 
 public func XCTAssertNotNil(_ expression: @autoclosure () throws -> Any?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
