@@ -94,10 +94,10 @@ class FailureMessagesTestCase: XCTestCase {
     }
 
 // CHECK: Test Case 'FailureMessagesTestCase.testAssertEqualWithAccuracy' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: test.swift:[[@LINE+3]]: error: FailureMessagesTestCase.testAssertEqualWithAccuracy : XCTAssertEqualWithAccuracy failed: \("1\.0"\) is not equal to \("2\.0"\) \+/- \("0\.1"\) - message
+// CHECK: test.swift:[[@LINE+3]]: error: FailureMessagesTestCase.testAssertEqualWithAccuracy : XCTAssertEqual failed: \("1\.0"\) is not equal to \("2\.0"\) \+/- \("0\.1"\) - message
 // CHECK: Test Case 'FailureMessagesTestCase.testAssertEqualWithAccuracy' failed \(\d+\.\d+ seconds\)
     func testAssertEqualWithAccuracy() {
-        XCTAssertEqualWithAccuracy(1, 2, accuracy: 0.1, "message", file: "test.swift")
+        XCTAssertEqual(1, 2, accuracy: 0.1, "message", file: "test.swift")
     }
 
 // CHECK: Test Case 'FailureMessagesTestCase.testAssertFalse' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
@@ -185,10 +185,10 @@ class FailureMessagesTestCase: XCTestCase {
     }
 
 // CHECK: Test Case 'FailureMessagesTestCase.testAssertNotEqualWithAccuracy' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: test.swift:[[@LINE+3]]: error: FailureMessagesTestCase.testAssertNotEqualWithAccuracy : XCTAssertNotEqualWithAccuracy failed: \("1\.0"\) is equal to \("1\.0"\) \+/- \("0\.1"\) - message
+// CHECK: test.swift:[[@LINE+3]]: error: FailureMessagesTestCase.testAssertNotEqualWithAccuracy : XCTAssertNotEqual failed: \("1\.0"\) is equal to \("1\.0"\) \+/- \("0\.1"\) - message
 // CHECK: Test Case 'FailureMessagesTestCase.testAssertNotEqualWithAccuracy' failed \(\d+\.\d+ seconds\)
     func testAssertNotEqualWithAccuracy() {
-        XCTAssertNotEqualWithAccuracy(1, 1, 0.1, "message", file: "test.swift")
+        XCTAssertNotEqual(1, 1, accuracy: 0.1, "message", file: "test.swift")
     }
 
 // CHECK: Test Case 'FailureMessagesTestCase.testAssertNotNil' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
