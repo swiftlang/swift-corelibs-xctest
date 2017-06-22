@@ -91,6 +91,7 @@ class DarwinStrategy:
             "-configuration {style_options} "
             "SWIFT_EXEC=\"{swiftc}\" "
             "SWIFT_LINK_OBJC_RUNTIME=YES "
+            "INDEX_ENABLE_DATA_STORE=NO "
             "SYMROOT=\"{build_dir}\" OBJROOT=\"{build_dir}\"".format(
                 swiftc=swiftc,
                 build_dir=build_dir,
@@ -122,6 +123,7 @@ class DarwinStrategy:
             "-configuration {style_options} "
             "SWIFT_EXEC=\"{swiftc}\" "
             "SWIFT_LINK_OBJC_RUNTIME=YES "
+            "INDEX_ENABLE_DATA_STORE=NO "
             "SYMROOT=\"{build_dir}\" OBJROOT=\"{build_dir}\" ".format(
                 swiftc=swiftc,
                 build_dir=build_dir,
