@@ -18,7 +18,7 @@ class PredicateHandlerTestCase: XCTestCase {
     func test_predicateIsTrue_handlerReturnsTrue_passes() {
         let predicate = NSPredicate(value: true)
         let object = NSObject()
-        self.expectation(for: predicate, evaluatedWith: object, handler: { _ in
+        self.expectation(for: predicate, evaluatedWith: object, handler: {
             return true
         })
         waitForExpectations(timeout: 0.1)
@@ -29,7 +29,7 @@ class PredicateHandlerTestCase: XCTestCase {
     func test_predicateIsTrue_handlerReturnsFalse_fails() {
         let predicate = NSPredicate(value: true)
         let object = NSObject()
-        self.expectation(for: predicate, evaluatedWith: object, handler: { _ in
+        self.expectation(for: predicate, evaluatedWith: object, handler: {
             return false
         })
         waitForExpectations(timeout: 0.1)
@@ -46,7 +46,7 @@ class PredicateHandlerTestCase: XCTestCase {
             }
             return false
         })
-        expectation(for: predicate, evaluatedWith: halfSecLaterDate, handler: { _ in
+        expectation(for: predicate, evaluatedWith: halfSecLaterDate, handler: {
             XCTFail("Should not call the predicate expectation handler")
             return true
         })
