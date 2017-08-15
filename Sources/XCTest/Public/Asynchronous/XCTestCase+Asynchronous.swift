@@ -139,7 +139,7 @@ public extension XCTestCase {
                 // If the test failed, send an error object.
                 error = NSError(
                     domain: XCTestErrorDomain,
-                    code: XCTestErrorCode.timeoutWhileWaiting.rawValue,
+                    code: XCTestError.Code.timeoutWhileWaiting.rawValue,
                     userInfo: [:])
             }
             completionHandler(error)
