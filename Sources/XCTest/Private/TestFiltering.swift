@@ -54,7 +54,7 @@ private struct SelectedTest {
 
 private extension SelectedTest {
     init?(selectedTestName: String) {
-        let components = selectedTestName.characters.split(separator: "/").map(String.init)
+        let components = selectedTestName.split(separator: "/").map(String.init)
         switch components.count {
         case 1:
             testCaseClassName = components[0]
