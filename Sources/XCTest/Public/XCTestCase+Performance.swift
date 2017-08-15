@@ -49,7 +49,7 @@ public extension XCTestCase {
     ///   these methods are not exactly identical between these environments. To 
     ///   ensure compatibility of tests between swift-corelibs-xctest and Apple
     ///   XCTest, it is not recommended to pass explicit values for `file` and `line`.
-    func measure(file: StaticString = #file, line: UInt = #line, block: () -> Void) {
+    func measure(file: StaticString = #file, line: Int = #line, block: () -> Void) {
         measureMetrics(type(of: self).defaultPerformanceMetrics(),
                        automaticallyStartMeasuring: true,
                        file: file,
@@ -103,7 +103,7 @@ public extension XCTestCase {
     ///   these methods are not exactly identical between these environments. To
     ///   ensure compatibility of tests between swift-corelibs-xctest and Apple
     ///   XCTest, it is not recommended to pass explicit values for `file` and `line`.
-    func measureMetrics(_ metrics: [String], automaticallyStartMeasuring: Bool, file: StaticString = #file, line: UInt = #line, for block: () -> Void) {
+    func measureMetrics(_ metrics: [String], automaticallyStartMeasuring: Bool, file: StaticString = #file, line: Int = #line, for block: () -> Void) {
         guard _performanceMeter == nil else {
             return recordAPIViolation(description: "Can only record one set of metrics per test method.", file: file, line: line)
         }
@@ -125,7 +125,7 @@ public extension XCTestCase {
     ///   these methods are not exactly identical between these environments. To
     ///   ensure compatibility of tests between swift-corelibs-xctest and Apple
     ///   XCTest, it is not recommended to pass explicit values for `file` and `line`.
-    func startMeasuring(file: StaticString = #file, line: UInt = #line) {
+    func startMeasuring(file: StaticString = #file, line: Int = #line) {
         guard let performanceMeter = _performanceMeter, !performanceMeter.didFinishMeasuring else {
             return recordAPIViolation(description: "Cannot start measuring. startMeasuring() is only supported from a block passed to measureMetrics(...).", file: file, line: line)
         }
@@ -140,7 +140,7 @@ public extension XCTestCase {
     ///   these methods are not exactly identical between these environments. To
     ///   ensure compatibility of tests between swift-corelibs-xctest and Apple
     ///   XCTest, it is not recommended to pass explicit values for `file` and `line`.
-    func stopMeasuring(file: StaticString = #file, line: UInt = #line) {
+    func stopMeasuring(file: StaticString = #file, line: Int = #line) {
         guard let performanceMeter = _performanceMeter, !performanceMeter.didFinishMeasuring else {
             return recordAPIViolation(description: "Cannot stop measuring. stopMeasuring() is only supported from a block passed to measureMetrics(...).", file: file, line: line)
         }
@@ -149,18 +149,18 @@ public extension XCTestCase {
 }
 
 extension XCTestCase: PerformanceMeterDelegate {
-    internal func recordAPIViolation(description: String, file: StaticString, line: UInt) {
+    internal func recordAPIViolation(description: String, file: StaticString, line: Int) {
         recordFailure(withDescription: "API violation - \(description)",
                       inFile: String(describing: file),
                       atLine: line,
                       expected: false)
     }
 
-    internal func recordMeasurements(results: String, file: StaticString, line: UInt) {
+    internal func recordMeasurements(results: String, file: StaticString, line: Int) {
         XCTestObservationCenter.shared().testCase(self, didMeasurePerformanceResults: results, file: file, line: line)
     }
 
-    internal func recordFailure(description: String, file: StaticString, line: UInt) {
+    internal func recordFailure(description: String, file: StaticString, line: Int) {
         recordFailure(withDescription: "failed: " + description, inFile: String(describing: file), atLine: line, expected: true)
     }
 }

@@ -30,7 +30,7 @@ open class XCTestSuite: XCTest {
     private let _name: String
 
     /// The number of test cases in this suite.
-    open override var testCaseCount: UInt {
+    open override var testCaseCount: Int {
         return tests.reduce(0) { $0 + $1.testCaseCount }
     }
 

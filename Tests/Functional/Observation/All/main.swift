@@ -32,7 +32,7 @@ class Observer: XCTestObservation {
         startedTestCaseNames.append(testCase.name)
     }
 
-    func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {
+    func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: Int) {
         failureDescriptions.append(description)
     }
 

@@ -49,7 +49,7 @@ public class XCTestObservationCenter {
         forEachObserver { $0.testCaseWillStart(testCase) }
     }
 
-    internal func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {
+    internal func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: Int) {
         forEachObserver { $0.testCase(testCase, didFailWithDescription: description, inFile: filePath, atLine: lineNumber) }
     }
 
@@ -65,7 +65,7 @@ public class XCTestObservationCenter {
         forEachObserver { $0.testBundleDidFinish(testBundle) }
     }
 
-    internal func testCase(_ testCase: XCTestCase, didMeasurePerformanceResults results: String, file: StaticString, line: UInt) {
+    internal func testCase(_ testCase: XCTestCase, didMeasurePerformanceResults results: String, file: StaticString, line: Int) {
         forEachInternalObserver { $0.testCase(testCase, didMeasurePerformanceResults: results, file: file, line: line) }
     }
 

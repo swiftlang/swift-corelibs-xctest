@@ -33,7 +33,7 @@ public extension XCTestCase {
     ///   first successful evaluation will fulfill the expectation. If provided,
     ///   the handler can override that behavior which leaves the caller
     ///   responsible for fulfilling the expectation.
-    @discardableResult func expectation(for predicate: NSPredicate, evaluatedWith object: AnyObject, file: StaticString = #file, line: UInt = #line, handler: XCPredicateExpectationHandler? = nil) -> XCTestExpectation {
+    @discardableResult func expectation(for predicate: NSPredicate, evaluatedWith object: AnyObject, file: StaticString = #file, line: Int = #line, handler: XCPredicateExpectationHandler? = nil) -> XCTestExpectation {
         let expectation = XCPredicateExpectation(
             predicate: predicate,
             object: object,

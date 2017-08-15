@@ -23,7 +23,7 @@ open class XCTestCaseRun: XCTestRun {
         XCTestObservationCenter.shared().testCaseDidFinish(testCase)
     }
 
-    open override func recordFailure(withDescription description: String, inFile filePath: String?, atLine lineNumber: UInt, expected: Bool) {
+    open override func recordFailure(withDescription description: String, inFile filePath: String?, atLine lineNumber: Int, expected: Bool) {
         super.recordFailure(
             withDescription: "\(test.name) : \(description)",
             inFile: filePath,
