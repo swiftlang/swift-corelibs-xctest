@@ -30,7 +30,7 @@ class PerformanceTestCase: XCTestCase {
     // CHECK: Test Case 'PerformanceTestCase.test_measuresMetricsWithAutomaticStartAndStop' passed \(\d+\.\d+ seconds\)
     func test_measuresMetricsWithAutomaticStartAndStop() {
         var iterationCount = 0
-        measureMetrics([XCTPerformanceMetric_WallClockTime], automaticallyStartMeasuring: true, for: {
+        measureMetrics([.wallClockTime], automaticallyStartMeasuring: true, for: {
             iterationCount += 1
         })
         XCTAssertEqual(iterationCount, 10)
@@ -40,7 +40,7 @@ class PerformanceTestCase: XCTestCase {
     // CHECK: .*/Performance/main.swift:[[@LINE+3]]: Test Case 'PerformanceTestCase.test_measuresMetricsWithManualStartAndStop' measured \[Time, seconds\] .*
     // CHECK: Test Case 'PerformanceTestCase.test_measuresMetricsWithManualStartAndStop' passed \(\d+\.\d+ seconds\)
     func test_measuresMetricsWithManualStartAndStop() {
-        measureMetrics([XCTPerformanceMetric_WallClockTime], automaticallyStartMeasuring: false) {
+        measureMetrics([.wallClockTime], automaticallyStartMeasuring: false) {
             self.startMeasuring()
             self.stopMeasuring()
         }
@@ -50,7 +50,7 @@ class PerformanceTestCase: XCTestCase {
     // CHECK: .*/Performance/main.swift:[[@LINE+3]]: Test Case 'PerformanceTestCase.test_measuresMetricsWithoutExplicitStop' measured \[Time, seconds\] .*
     // CHECK: Test Case 'PerformanceTestCase.test_measuresMetricsWithoutExplicitStop' passed \(\d+\.\d+ seconds\)
     func test_measuresMetricsWithoutExplicitStop() {
-        measureMetrics([XCTPerformanceMetric_WallClockTime], automaticallyStartMeasuring: false) {
+        measureMetrics([.wallClockTime], automaticallyStartMeasuring: false) {
             self.startMeasuring()
         }
     }
@@ -58,7 +58,7 @@ class PerformanceTestCase: XCTestCase {
     // CHECK: Test Case 'PerformanceTestCase.test_hasWallClockAsDefaultPerformanceMetric' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
     // CHECK: Test Case 'PerformanceTestCase.test_hasWallClockAsDefaultPerformanceMetric' passed \(\d+\.\d+ seconds\)
     func test_hasWallClockAsDefaultPerformanceMetric() {
-        XCTAssertEqual(PerformanceTestCase.defaultPerformanceMetrics(), [XCTPerformanceMetric_WallClockTime])
+        XCTAssertEqual(PerformanceTestCase.defaultPerformanceMetrics, [.wallClockTime])
     }
 
     // CHECK: Test Case 'PerformanceTestCase.test_printsValuesAfterMeasuring' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
