@@ -47,7 +47,7 @@ protocol Listable {
 
 private func moduleName(value: Any) -> String {
     let moduleAndType = String(reflecting: type(of: value))
-    return String(moduleAndType.characters.split(separator: ".").first!)
+    return String(moduleAndType.split(separator: ".").first!)
 }
 
 extension XCTestSuite: Listable {
@@ -87,15 +87,14 @@ extension XCTestSuite: Listable {
 
 extension XCTestCase: Listable {
     func list() -> [String] {
-        let adjustedName = name.characters
-            .split(separator: ".")
+        let adjustedName = name.split(separator: ".")
             .map(String.init)
             .joined(separator: "/")
         return ["\(moduleName(value: self)).\(adjustedName)"]
     }
 
     func dictionaryRepresentation() -> NSDictionary {
-        let methodName = String(name.characters.split(separator: ".").last!)
+        let methodName = String(name.split(separator: ".").last!)
         return NSDictionary(object: NSString(string: methodName), forKey: NSString(string: "name"))
     }
 }
