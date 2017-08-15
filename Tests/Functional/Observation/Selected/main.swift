@@ -32,7 +32,7 @@ class Observer: XCTestObservation {
 }
 
 let observer = Observer()
-XCTestObservationCenter.shared().addTestObserver(observer)
+XCTestObservationCenter.shared.addTestObserver(observer)
 
 class SkippedTestCase: XCTestCase {
     static var allTests = {

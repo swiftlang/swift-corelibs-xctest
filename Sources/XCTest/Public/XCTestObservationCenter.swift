@@ -11,18 +11,19 @@
 //  Notification center for test run progress events.
 //
 
+private let _sharedCenter: XCTestObservationCenter = XCTestObservationCenter()
+
 /// Provides a registry for objects wishing to be informed about progress
 /// during the course of a test run. Observers must implement the
 /// `XCTestObservation` protocol
 /// - seealso: `XCTestObservation`
 public class XCTestObservationCenter {
 
-    private static var center = XCTestObservationCenter()
     private var observers = Set<ObjectWrapper<XCTestObservation>>()
 
     /// Registration should be performed on this shared instance
-    public class func shared() -> XCTestObservationCenter {
-        return center
+    public class var shared: XCTestObservationCenter {
+        return _sharedCenter
     }
 
     /// Register an observer to receive future events during a test run. The order

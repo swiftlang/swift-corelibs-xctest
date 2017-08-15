@@ -157,7 +157,7 @@ extension XCTestCase: PerformanceMeterDelegate {
     }
 
     internal func recordMeasurements(results: String, file: StaticString, line: Int) {
-        XCTestObservationCenter.shared().testCase(self, didMeasurePerformanceResults: results, file: file, line: line)
+        XCTestObservationCenter.shared.testCase(self, didMeasurePerformanceResults: results, file: file, line: line)
     }
 
     internal func recordFailure(description: String, file: StaticString, line: Int) {

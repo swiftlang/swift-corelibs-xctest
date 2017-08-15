@@ -36,12 +36,12 @@ open class XCTestSuiteRun: XCTestRun {
 
     open override func start() {
         super.start()
-        XCTestObservationCenter.shared().testSuiteWillStart(testSuite)
+        XCTestObservationCenter.shared.testSuiteWillStart(testSuite)
     }
 
     open override func stop() {
         super.stop()
-        XCTestObservationCenter.shared().testSuiteDidFinish(testSuite)
+        XCTestObservationCenter.shared.testSuiteDidFinish(testSuite)
     }
 
     /// The test run for each of the tests in this suite.

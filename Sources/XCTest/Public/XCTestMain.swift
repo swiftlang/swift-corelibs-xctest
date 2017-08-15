@@ -89,7 +89,7 @@ public func XCTMain(_ testCases: [XCTestCaseEntry]) -> Never {
         exit(0)
     case .run(selectedTestName: _):
         // Add a test observer that prints test progress to stdout.
-        let observationCenter = XCTestObservationCenter.shared()
+        let observationCenter = XCTestObservationCenter.shared
         observationCenter.addTestObserver(PrintObserver())
 
         observationCenter.testBundleWillStart(testBundle)

@@ -15,12 +15,12 @@
 open class XCTestCaseRun: XCTestRun {
     open override func start() {
         super.start()
-        XCTestObservationCenter.shared().testCaseWillStart(testCase)
+        XCTestObservationCenter.shared.testCaseWillStart(testCase)
     }
 
     open override func stop() {
         super.stop()
-        XCTestObservationCenter.shared().testCaseDidFinish(testCase)
+        XCTestObservationCenter.shared.testCaseDidFinish(testCase)
     }
 
     open override func recordFailure(withDescription description: String, inFile filePath: String?, atLine lineNumber: Int, expected: Bool) {
@@ -29,7 +29,7 @@ open class XCTestCaseRun: XCTestRun {
             inFile: filePath,
             atLine: lineNumber,
             expected: expected)
-        XCTestObservationCenter.shared().testCase(
+        XCTestObservationCenter.shared.testCase(
             testCase,
             didFailWithDescription: description,
             inFile: filePath,
