@@ -11,18 +11,19 @@
 //  Notification center for test run progress events.
 //
 
+private let _sharedCenter: XCTestObservationCenter = XCTestObservationCenter()
+
 /// Provides a registry for objects wishing to be informed about progress
 /// during the course of a test run. Observers must implement the
 /// `XCTestObservation` protocol
 /// - seealso: `XCTestObservation`
 public class XCTestObservationCenter {
 
-    private static var center = XCTestObservationCenter()
     private var observers = Set<ObjectWrapper<XCTestObservation>>()
 
     /// Registration should be performed on this shared instance
-    public class func shared() -> XCTestObservationCenter {
-        return center
+    public class var shared: XCTestObservationCenter {
+        return _sharedCenter
     }
 
     /// Register an observer to receive future events during a test run. The order
@@ -49,7 +50,7 @@ public class XCTestObservationCenter {
         forEachObserver { $0.testCaseWillStart(testCase) }
     }
 
-    internal func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {
+    internal func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: Int) {
         forEachObserver { $0.testCase(testCase, didFailWithDescription: description, inFile: filePath, atLine: lineNumber) }
     }
 
@@ -65,7 +66,7 @@ public class XCTestObservationCenter {
         forEachObserver { $0.testBundleDidFinish(testBundle) }
     }
 
-    internal func testCase(_ testCase: XCTestCase, didMeasurePerformanceResults results: String, file: StaticString, line: UInt) {
+    internal func testCase(_ testCase: XCTestCase, didMeasurePerformanceResults results: String, file: StaticString, line: Int) {
         forEachInternalObserver { $0.testCase(testCase, didMeasurePerformanceResults: results, file: file, line: line) }
     }
 

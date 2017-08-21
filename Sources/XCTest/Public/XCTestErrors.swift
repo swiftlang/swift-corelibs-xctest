@@ -14,14 +14,32 @@
 /// The domain used by errors produced by the XCTest library.
 public let XCTestErrorDomain = "org.swift.XCTestErrorDomain"
 
-/// Error codes for errors in the XCTestErrorDomain.
-public enum XCTestErrorCode : Int {
+/// Describes an error in the XCTestErrorDomain.
+public struct XCTestError : _BridgedStoredNSError {
+    public let _nsError: NSError
+
+    public init(_nsError error: NSError) {
+        precondition(error.domain == XCTestErrorDomain)
+        self._nsError = error
+    }
+
+    public static var _nsErrorDomain: String { return XCTestErrorDomain }
+
+    public enum Code : Int, _ErrorCodeProtocol {
+        public typealias _ErrorType = XCTestError
+
+        case timeoutWhileWaiting
+        case failureWhileWaiting
+    }
+}
+
+public extension XCTestError {
     /// Indicates that one or more expectations failed to be fulfilled in time
     /// during a call to `waitForExpectations(timeout:handler:)`
-    case timeoutWhileWaiting
+    public static var timeoutWhileWaiting: XCTestError.Code { return .timeoutWhileWaiting }
 
     /// Indicates that a test assertion failed while waiting for expectations
     /// during a call to `waitForExpectations(timeout:handler:)`
     /// FIXME: swift-corelibs-xctest does not currently produce this error code.
-    case failureWhileWaiting
+    public static var failureWhileWaiting: XCTestError.Code { return .failureWhileWaiting }
 }

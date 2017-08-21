@@ -40,7 +40,7 @@ internal protocol PerformanceMeterDelegate {
     ///   as average, and standard deviation
     /// - Parameter file: The source file name where the measurement was invoked
     /// - Parameter line: The source line number where the measurement was invoked
-    func recordMeasurements(results: String, file: StaticString, line: UInt)
+    func recordMeasurements(results: String, file: StaticString, line: Int)
 
     /// Reports a test failure from the analysis of performance measurements.
     /// This can currently be caused by an unexpectedly large standard deviation
@@ -48,14 +48,14 @@ internal protocol PerformanceMeterDelegate {
     /// - Parameter description: An explanation of the failure
     /// - Parameter file: The source file name where the measurement was invoked
     /// - Parameter line: The source line number where the measurement was invoked
-    func recordFailure(description: String, file: StaticString, line: UInt)
+    func recordFailure(description: String, file: StaticString, line: Int)
 
     /// Reports a misuse of the `PerformanceMeter` API, such as calling `
     /// startMeasuring` multiple times.
     /// - Parameter description: An explanation of the misuse
     /// - Parameter file: The source file name where the misuse occurred
     /// - Parameter line: The source line number where the misuse occurred
-    func recordAPIViolation(description: String, file: StaticString, line: UInt)
+    func recordAPIViolation(description: String, file: StaticString, line: Int)
 }
 
 /// - Bug: This class is intended to be `internal` but is public to work around
@@ -97,16 +97,16 @@ public final class PerformanceMeter {
     private let metrics: [PerformanceMetric]
     private let delegate: PerformanceMeterDelegate
     private let invocationFile: StaticString
-    private let invocationLine: UInt
+    private let invocationLine: Int
 
-    private init(metrics: [PerformanceMetric], delegate: PerformanceMeterDelegate, file: StaticString, line: UInt) {
+    private init(metrics: [PerformanceMetric], delegate: PerformanceMeterDelegate, file: StaticString, line: Int) {
         self.metrics = metrics
         self.delegate = delegate
         self.invocationFile = file
         self.invocationLine = line
     }
 
-    static func measureMetrics(_ metricNames: [String], delegate: PerformanceMeterDelegate, file: StaticString = #file, line: UInt = #line, for block: (PerformanceMeter) -> Void) {
+    static func measureMetrics(_ metricNames: [String], delegate: PerformanceMeterDelegate, file: StaticString = #file, line: Int = #line, for block: (PerformanceMeter) -> Void) {
         do {
             let metrics = try self.metrics(forNames: metricNames)
             let meter = PerformanceMeter(metrics: metrics, delegate: delegate, file: file, line: line)
@@ -116,7 +116,7 @@ public final class PerformanceMeter {
         }
     }
 
-    func startMeasuring(file: StaticString = #file, line: UInt = #line) {
+    func startMeasuring(file: StaticString = #file, line: Int = #line) {
         guard state == .iterationUnstarted else {
             return recordAPIViolation(.startMeasuringAlreadyCalled, file: file, line: line)
         }
@@ -124,7 +124,7 @@ public final class PerformanceMeter {
         metrics.forEach { $0.startMeasuring() }
     }
 
-    func stopMeasuring(file: StaticString = #file, line: UInt = #line) {
+    func stopMeasuring(file: StaticString = #file, line: Int = #line) {
         guard state != .iterationUnstarted else {
             return recordAPIViolation(.stopBeforeStarting, file: file, line: line)
         }
@@ -195,7 +195,7 @@ public final class PerformanceMeter {
         }
     }
 
-    private func recordAPIViolation(_ error: Error, file: StaticString, line: UInt) {
+    private func recordAPIViolation(_ error: Error, file: StaticString, line: Int) {
         state = .measurementAborted
         delegate.recordAPIViolation(description: String(describing: error), file: file, line: line)
     }

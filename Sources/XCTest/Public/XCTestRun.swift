@@ -42,22 +42,22 @@ open class XCTestRun {
     }
 
     /// The number of tests in the run.
-    open var testCaseCount: UInt {
+    open var testCaseCount: Int {
         return test.testCaseCount
     }
 
     /// The number of test executions recorded during the run.
-    open private(set) var executionCount: UInt = 0
+    open private(set) var executionCount: Int = 0
 
     /// The number of test failures recorded during the run.
-    open private(set) var failureCount: UInt = 0
+    open private(set) var failureCount: Int = 0
 
     /// The number of uncaught exceptions recorded during the run.
-    open private(set) var unexpectedExceptionCount: UInt = 0
+    open private(set) var unexpectedExceptionCount: Int = 0
 
     /// The total number of test failures and uncaught exceptions recorded
     /// during the run.
-    open var totalFailureCount: UInt {
+    open var totalFailureCount: Int {
         return failureCount + unexpectedExceptionCount
     }
 
@@ -118,7 +118,7 @@ open class XCTestRun {
     /// - Parameter expected: `true` if the failure being reported was the
     ///   result of a failed assertion, `false` if it was the result of an
     ///   uncaught exception.
-    func recordFailure(withDescription description: String, inFile filePath: String?, atLine lineNumber: UInt, expected: Bool) {
+    func recordFailure(withDescription description: String, inFile filePath: String?, atLine lineNumber: Int, expected: Bool) {
         guard isStarted else {
             fatalError("Invalid attempt to record a failure for a test run " +
                        "that has not yet been started: \(self)")

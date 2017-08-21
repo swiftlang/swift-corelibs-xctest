@@ -37,7 +37,7 @@ open class XCTestCase: XCTest {
     /// A private setter for the name of this test case.
     private var _name: String
 
-    open override var testCaseCount: UInt {
+    open override var testCaseCount: Int {
         return 1
     }
 
@@ -99,7 +99,7 @@ open class XCTestCase: XCTest {
     /// - Parameter expected: `true` if the failure being reported was the
     ///   result of a failed assertion, `false` if it was the result of an
     ///   uncaught exception.
-    open func recordFailure(withDescription description: String, inFile filePath: String, atLine lineNumber: UInt, expected: Bool) {
+    open func recordFailure(withDescription description: String, inFile filePath: String, atLine lineNumber: Int, expected: Bool) {
         testRun?.recordFailure(
             withDescription: description,
             inFile: filePath,

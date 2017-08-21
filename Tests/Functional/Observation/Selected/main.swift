@@ -21,7 +21,7 @@ class Observer: XCTestObservation {
     }
 
     func testCaseWillStart(_ testCase: XCTestCase) {}
-    func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {}
+    func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: Int) {}
     func testCaseDidFinish(_ testCase: XCTestCase) {}
 
     func testSuiteDidFinish(_ testSuite: XCTestSuite) {
@@ -32,7 +32,7 @@ class Observer: XCTestObservation {
 }
 
 let observer = Observer()
-XCTestObservationCenter.shared().addTestObserver(observer)
+XCTestObservationCenter.shared.addTestObserver(observer)
 
 class SkippedTestCase: XCTestCase {
     static var allTests = {

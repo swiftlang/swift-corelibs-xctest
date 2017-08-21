@@ -32,7 +32,7 @@ class Observer: XCTestObservation {
         startedTestCaseNames.append(testCase.name)
     }
 
-    func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {
+    func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: Int) {
         failureDescriptions.append(description)
     }
 
@@ -50,7 +50,7 @@ class Observer: XCTestObservation {
 }
 
 let observer = Observer()
-XCTestObservationCenter.shared().addTestObserver(observer)
+XCTestObservationCenter.shared.addTestObserver(observer)
 
 // CHECK: Test Suite 'Observation' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
 class Observation: XCTestCase {
@@ -90,7 +90,7 @@ class Observation: XCTestCase {
         XCTAssertEqual(observer.finishedTestCaseNames,["Observation.test_one"])
         XCTAssertEqual(observer.finishedBundlePaths.count, 0)
 
-        XCTestObservationCenter.shared().removeTestObserver(observer)
+        XCTestObservationCenter.shared.removeTestObserver(observer)
     }
 
 // CHECK: Test Case 'Observation.test_three' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
@@ -101,7 +101,7 @@ class Observation: XCTestCase {
         XCTAssertEqual(observer.finishedTestCaseNames,["Observation.test_one"])
         XCTAssertEqual(observer.finishedBundlePaths.count, 0)
 
-        XCTestObservationCenter.shared().addTestObserver(observer)
+        XCTestObservationCenter.shared.addTestObserver(observer)
     }
 }
 

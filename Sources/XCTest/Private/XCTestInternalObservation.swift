@@ -23,10 +23,10 @@ internal protocol XCTestInternalObservation: XCTestObservation {
     ///   reported, if available.
     /// - Parameter line: The line number in the source file where the failure
     ///   was reported.
-    func testCase(_ testCase: XCTestCase, didMeasurePerformanceResults results: String, file: StaticString, line: UInt)
+    func testCase(_ testCase: XCTestCase, didMeasurePerformanceResults results: String, file: StaticString, line: Int)
 }
 
 // All `XCInternalTestObservation` methods are optional, so empty default implementations are provided
 internal extension XCTestInternalObservation {
-    func testCase(_ testCase: XCTestCase, didMeasurePerformanceResults results: String, file: StaticString, line: UInt) {}
+    func testCase(_ testCase: XCTestCase, didMeasurePerformanceResults results: String, file: StaticString, line: Int) {}
 }

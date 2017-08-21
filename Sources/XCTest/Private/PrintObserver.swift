@@ -24,7 +24,7 @@ internal class PrintObserver: XCTestObservation {
         printAndFlush("Test Case '\(testCase.name)' started at \(dateFormatter.string(from: testCase.testRun!.startDate!))")
     }
 
-    func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {
+    func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: Int) {
         let file = filePath ?? "<unknown>"
         printAndFlush("\(file):\(lineNumber): error: \(testCase.name) : \(description)")
     }
@@ -68,7 +68,7 @@ internal class PrintObserver: XCTestObservation {
 }
 
 extension PrintObserver: XCTestInternalObservation {
-    func testCase(_ testCase: XCTestCase, didMeasurePerformanceResults results: String, file: StaticString, line: UInt) {
+    func testCase(_ testCase: XCTestCase, didMeasurePerformanceResults results: String, file: StaticString, line: Int) {
         printAndFlush("\(file):\(line): Test Case '\(testCase.name)' measured \(results)")
     }
 }

@@ -39,7 +39,7 @@ public protocol XCTestObservation: class {
     ///   was reported, if available.
     /// - Parameter lineNumber: The line number in the source file where the
     ///   failure was reported.
-    func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt)
+    func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: Int)
 
     /// Called just after a test finishes executing.
     /// - Parameter testCase: The test case that finished. Its `name` property 
@@ -66,7 +66,7 @@ public extension XCTestObservation {
     func testBundleWillStart(_ testBundle: Bundle) {}
     func testSuiteWillStart(_ testSuite: XCTestSuite) {}
     func testCaseWillStart(_ testCase: XCTestCase) {}
-    func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {}
+    func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: Int) {}
     func testCaseDidFinish(_ testCase: XCTestCase) {}
     func testSuiteDidFinish(_ testSuite: XCTestSuite) {}
     func testBundleDidFinish(_ testBundle: Bundle) {}

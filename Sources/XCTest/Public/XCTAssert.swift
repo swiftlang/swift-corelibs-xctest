@@ -93,7 +93,7 @@ private func _XCTEvaluateAssertion(_ assertion: _XCTAssertion, message: @autoclo
             currentTestCase.recordFailure(
                 withDescription: "\(result.failureDescription(assertion)) - \(message())",
                 inFile: String(describing: file),
-                atLine: line,
+                atLine: Int(line),
                 expected: result.isExpected)
         }
     }

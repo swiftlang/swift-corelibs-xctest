@@ -33,7 +33,7 @@ public extension XCTestCase {
     ///   between these environments. To ensure compatibility of tests between
     ///   swift-corelibs-xctest and Apple XCTest, it is not recommended to pass
     ///   explicit values for `file` and `line`.
-    @discardableResult func expectation(description: String, file: StaticString = #file, line: UInt = #line) -> XCTestExpectation {
+    @discardableResult func expectation(description: String, file: StaticString = #file, line: Int = #line) -> XCTestExpectation {
         let expectation = XCTestExpectation(
             description: description,
             file: file,
@@ -68,7 +68,7 @@ public extension XCTestCase {
     ///   these environments. To ensure compatibility of tests between
     ///   swift-corelibs-xctest and Apple XCTest, it is not recommended to pass
     ///   explicit values for `file` and `line`.
-    func waitForExpectations(timeout: TimeInterval, file: StaticString = #file, line: UInt = #line, handler: XCWaitCompletionHandler? = nil) {
+    func waitForExpectations(timeout: TimeInterval, file: StaticString = #file, line: Int = #line, handler: XCWaitCompletionHandler? = nil) {
         // Mirror Objective-C XCTest behavior; display an unexpected test
         // failure when users wait without having first set expectations.
         // FIXME: Objective-C XCTest raises an exception for most "API
@@ -139,7 +139,7 @@ public extension XCTestCase {
                 // If the test failed, send an error object.
                 error = NSError(
                     domain: XCTestErrorDomain,
-                    code: XCTestErrorCode.timeoutWhileWaiting.rawValue,
+                    code: XCTestError.Code.timeoutWhileWaiting.rawValue,
                     userInfo: [:])
             }
             completionHandler(error)

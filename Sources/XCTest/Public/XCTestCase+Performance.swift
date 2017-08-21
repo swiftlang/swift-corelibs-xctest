@@ -11,8 +11,30 @@
 //  Methods on XCTestCase for testing the performance of code blocks.
 //
 
-/// Records wall clock time in seconds between `startMeasuring`/`stopMeasuring`.
-public let XCTPerformanceMetric_WallClockTime = WallClockTimeMetric.name
+public struct XCTPerformanceMetric : RawRepresentable, Equatable, Hashable {
+    public private(set) var rawValue: String
+
+    public init(_ rawValue: String) {
+        self.rawValue = rawValue
+    }
+
+    public init(rawValue: String) {
+        self.rawValue = rawValue
+    }
+
+    public var hashValue: Int {
+        return rawValue.hashValue
+    }
+
+    public static func ==(_ lhs: XCTPerformanceMetric, _ rhs: XCTPerformanceMetric) -> Bool {
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+public extension XCTPerformanceMetric {
+    /// Records wall clock time in seconds between `startMeasuring`/`stopMeasuring`.
+    public static let wallClockTime = XCTPerformanceMetric(rawValue: WallClockTimeMetric.name)
+}
 
 /// The following methods are called from within a test method to carry out 
 /// performance testing on blocks of code.
@@ -21,11 +43,11 @@ public extension XCTestCase {
     /// The names of the performance metrics to measure when invoking `measure(block:)`. 
     /// Returns `XCTPerformanceMetric_WallClockTime` by default. Subclasses can
     /// override this to change the behavior of `measure(block:)`
-    class func defaultPerformanceMetrics() -> [String] {
-        return [XCTPerformanceMetric_WallClockTime]
+    class var defaultPerformanceMetrics: [XCTPerformanceMetric] {
+        return [.wallClockTime]
     }
 
-    /// Call from a test method to measure resources (`defaultPerformanceMetrics()`)
+    /// Call from a test method to measure resources (`defaultPerformanceMetrics`)
     /// used by the block in the current process.
     ///
     ///     func testPerformanceOfMyFunction() {
@@ -49,8 +71,8 @@ public extension XCTestCase {
     ///   these methods are not exactly identical between these environments. To 
     ///   ensure compatibility of tests between swift-corelibs-xctest and Apple
     ///   XCTest, it is not recommended to pass explicit values for `file` and `line`.
-    func measure(file: StaticString = #file, line: UInt = #line, block: () -> Void) {
-        measureMetrics(type(of: self).defaultPerformanceMetrics(),
+    func measure(file: StaticString = #file, line: Int = #line, block: () -> Void) {
+        measureMetrics(type(of: self).defaultPerformanceMetrics,
                        automaticallyStartMeasuring: true,
                        file: file,
                        line: line,
@@ -66,7 +88,7 @@ public extension XCTestCase {
     /// may interfere the API will measure them separately.
     ///
     ///     func testMyFunction2_WallClockTime() {
-    ///         measureMetrics(type(of: self).defaultPerformanceMetrics(), automaticallyStartMeasuring: false) {
+    ///         measureMetrics(type(of: self).defaultPerformanceMetrics, automaticallyStartMeasuring: false) {
     ///
     ///             // Do setup work that needs to be done for every iteration but
     ///             // you don't want to measure before the call to `startMeasuring()`
@@ -103,12 +125,12 @@ public extension XCTestCase {
     ///   these methods are not exactly identical between these environments. To
     ///   ensure compatibility of tests between swift-corelibs-xctest and Apple
     ///   XCTest, it is not recommended to pass explicit values for `file` and `line`.
-    func measureMetrics(_ metrics: [String], automaticallyStartMeasuring: Bool, file: StaticString = #file, line: UInt = #line, for block: () -> Void) {
+    func measureMetrics(_ metrics: [XCTPerformanceMetric], automaticallyStartMeasuring: Bool, file: StaticString = #file, line: Int = #line, for block: () -> Void) {
         guard _performanceMeter == nil else {
             return recordAPIViolation(description: "Can only record one set of metrics per test method.", file: file, line: line)
         }
 
-        PerformanceMeter.measureMetrics(metrics, delegate: self, file: file, line: line) { meter in
+        PerformanceMeter.measureMetrics(metrics.map({ $0.rawValue }), delegate: self, file: file, line: line) { meter in
             self._performanceMeter = meter
             if automaticallyStartMeasuring {
                 meter.startMeasuring(file: file, line: line)
@@ -125,7 +147,7 @@ public extension XCTestCase {
     ///   these methods are not exactly identical between these environments. To
     ///   ensure compatibility of tests between swift-corelibs-xctest and Apple
     ///   XCTest, it is not recommended to pass explicit values for `file` and `line`.
-    func startMeasuring(file: StaticString = #file, line: UInt = #line) {
+    func startMeasuring(file: StaticString = #file, line: Int = #line) {
         guard let performanceMeter = _performanceMeter, !performanceMeter.didFinishMeasuring else {
             return recordAPIViolation(description: "Cannot start measuring. startMeasuring() is only supported from a block passed to measureMetrics(...).", file: file, line: line)
         }
@@ -140,7 +162,7 @@ public extension XCTestCase {
     ///   these methods are not exactly identical between these environments. To
     ///   ensure compatibility of tests between swift-corelibs-xctest and Apple
     ///   XCTest, it is not recommended to pass explicit values for `file` and `line`.
-    func stopMeasuring(file: StaticString = #file, line: UInt = #line) {
+    func stopMeasuring(file: StaticString = #file, line: Int = #line) {
         guard let performanceMeter = _performanceMeter, !performanceMeter.didFinishMeasuring else {
             return recordAPIViolation(description: "Cannot stop measuring. stopMeasuring() is only supported from a block passed to measureMetrics(...).", file: file, line: line)
         }
@@ -149,18 +171,18 @@ public extension XCTestCase {
 }
 
 extension XCTestCase: PerformanceMeterDelegate {
-    internal func recordAPIViolation(description: String, file: StaticString, line: UInt) {
+    internal func recordAPIViolation(description: String, file: StaticString, line: Int) {
         recordFailure(withDescription: "API violation - \(description)",
                       inFile: String(describing: file),
                       atLine: line,
                       expected: false)
     }
 
-    internal func recordMeasurements(results: String, file: StaticString, line: UInt) {
-        XCTestObservationCenter.shared().testCase(self, didMeasurePerformanceResults: results, file: file, line: line)
+    internal func recordMeasurements(results: String, file: StaticString, line: Int) {
+        XCTestObservationCenter.shared.testCase(self, didMeasurePerformanceResults: results, file: file, line: line)
     }
 
-    internal func recordFailure(description: String, file: StaticString, line: UInt) {
+    internal func recordFailure(description: String, file: StaticString, line: Int) {
         recordFailure(withDescription: "failed: " + description, inFile: String(describing: file), atLine: line, expected: true)
     }
 }

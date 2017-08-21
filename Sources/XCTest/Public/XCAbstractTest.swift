@@ -22,7 +22,7 @@ open class XCTest {
     }
 
     /// Number of test cases. Must be overridden by subclasses.
-    open var testCaseCount: UInt {
+    open var testCaseCount: Int {
         fatalError("Must be overridden by subclasses.")
     }
 

@@ -19,29 +19,29 @@ open class XCTestSuiteRun: XCTestRun {
     }
 
     /// The combined execution count of each test case run in the suite.
-    open override var executionCount: UInt {
+    open override var executionCount: Int {
         return testRuns.reduce(0) { $0 + $1.executionCount }
     }
 
     /// The combined failure count of each test case run in the suite.
-    open override var failureCount: UInt {
+    open override var failureCount: Int {
         return testRuns.reduce(0) { $0 + $1.failureCount }
     }
 
     /// The combined unexpected failure count of each test case run in the
     /// suite.
-    open override var unexpectedExceptionCount: UInt {
+    open override var unexpectedExceptionCount: Int {
         return testRuns.reduce(0) { $0 + $1.unexpectedExceptionCount }
     }
 
     open override func start() {
         super.start()
-        XCTestObservationCenter.shared().testSuiteWillStart(testSuite)
+        XCTestObservationCenter.shared.testSuiteWillStart(testSuite)
     }
 
     open override func stop() {
         super.stop()
-        XCTestObservationCenter.shared().testSuiteDidFinish(testSuite)
+        XCTestObservationCenter.shared.testSuiteDidFinish(testSuite)
     }
 
     /// The test run for each of the tests in this suite.
