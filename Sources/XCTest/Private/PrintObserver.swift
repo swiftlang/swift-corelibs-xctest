@@ -59,7 +59,9 @@ internal class PrintObserver: XCTestObservation {
 
     fileprivate func printAndFlush(_ message: String) {
         print(message)
+        #if !os(Android)
         fflush(stdout)
+        #endif
     }
 
     private func formatTimeInterval(_ timeInterval: TimeInterval) -> String {
