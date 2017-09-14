@@ -200,13 +200,14 @@ class GenericUnixStrategy:
                 libdispatch_args=libdispatch_args,
                 source_paths=" ".join(sourcePaths)))
         run("{swiftc} -emit-library {build_dir}/XCTest.o "
-            "-L {foundation_build_dir} -lswiftGlibc -lswiftCore -lFoundation -lm "
+            "-L {dispatch_build_dir} -L {foundation_build_dir} -lswiftGlibc -lswiftCore -lFoundation -lm "
             # We embed an rpath of `$ORIGIN` to ensure other referenced
             # libraries (like `Foundation`) can be found solely via XCTest.
             "-Xlinker -rpath=\\$ORIGIN "
             "-o {build_dir}/libXCTest.so".format(
                 swiftc=swiftc,
                 build_dir=build_dir,
+                dispatch_build_dir=os.path.join(args.libdispatch_build_dir, 'src', '.libs'),
                 foundation_build_dir=foundation_build_dir))
 
         # Build the static library.
