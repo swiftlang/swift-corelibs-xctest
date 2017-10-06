@@ -49,4 +49,4 @@ However, in order to successfully build the project in Xcode, **you must use an 
 
 > If none of the toolchains available to download are recent enough to build XCTest, you may build your own toolchain by using [the `utils/build-toolchain` script in the Swift repository](https://github.com/apple/swift/blob/master/utils/build-toolchain).
 >
-> Keep in mind that the build script invocation in "Contributing to XCTest" above will always work, regardless of which Swift toolchains you have installed. The Xcode workspace exists simply for the convenience of contibutors. It is not necessary to successfully build this project in Xcode in order to contribute.
+> Keep in mind that the build script invocation in "Contributing to XCTest" above will always work, regardless of which Swift toolchains you have installed. The Xcode workspace exists simply for the convenience of contributors. It is not necessary to successfully build this project in Xcode in order to contribute.
