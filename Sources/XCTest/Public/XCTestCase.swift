@@ -11,12 +11,17 @@
 //  Base class for test cases
 //
 
+/// A block with the test code to be invoked when the test runs.
+///
+/// - Parameter testCase: the test case associated with the current test code.
+public typealias XCTestCaseClosure = (XCTestCase) throws -> Void
+
 /// This is a compound type used by `XCTMain` to represent tests to run. It combines an
 /// `XCTestCase` subclass type with the list of test case methods to invoke on the class.
 /// This type is intended to be produced by the `testCase` helper function.
 /// - seealso: `testCase`
 /// - seealso: `XCTMain`
-public typealias XCTestCaseEntry = (testCaseClass: XCTestCase.Type, allTests: [(String, (XCTestCase) throws -> Void)])
+public typealias XCTestCaseEntry = (testCaseClass: XCTestCase.Type, allTests: [(String, XCTestCaseClosure)])
 
 // A global pointer to the currently running test case. This is required in
 // order for XCTAssert functions to report failures.
@@ -27,7 +32,7 @@ internal var XCTCurrentTestCase: XCTestCase?
 /// methods containing the tests to run.
 /// - seealso: `XCTMain`
 open class XCTestCase: XCTest {
-    private let testClosure: (XCTestCase) throws -> Void
+    private let testClosure: XCTestCaseClosure
 
     /// The name of the test case, consisting of its class name and the method
     /// name it will run.
@@ -68,7 +73,7 @@ open class XCTestCase: XCTest {
     /// - Note: Like the designated initializer for Apple XCTest's XCTestCase,
     ///   `-[XCTestCase initWithInvocation:]`, it's rare for anyone outside of
     ///   XCTest itself to call this initializer.
-    public required init(name: String, testClosure: @escaping (XCTestCase) throws -> Void) {
+    public required init(name: String, testClosure: @escaping XCTestCaseClosure) {
         _name = "\(type(of: self)).\(name)"
         self.testClosure = testClosure
     }
@@ -144,18 +149,18 @@ open class XCTestCase: XCTest {
 /// the signature required by `XCTMain`
 /// - seealso: `XCTMain`
 public func testCase<T: XCTestCase>(_ allTests: [(String, (T) -> () throws -> Void)]) -> XCTestCaseEntry {
-    let tests: [(String, (XCTestCase) throws -> Void)] = allTests.map { ($0.0, test($0.1)) }
+    let tests: [(String, XCTestCaseClosure)] = allTests.map { ($0.0, test($0.1)) }
     return (T.self, tests)
 }
 
 /// Wrapper function for the non-throwing variant of tests.
 /// - seealso: `XCTMain`
 public func testCase<T: XCTestCase>(_ allTests: [(String, (T) -> () -> Void)]) -> XCTestCaseEntry {
-    let tests: [(String, (XCTestCase) throws -> Void)] = allTests.map { ($0.0, test($0.1)) }
+    let tests: [(String, XCTestCaseClosure)] = allTests.map { ($0.0, test($0.1)) }
     return (T.self, tests)
 }
 
-private func test<T: XCTestCase>(_ testFunc: @escaping (T) -> () throws -> Void) -> (XCTestCase) throws -> Void {
+private func test<T: XCTestCase>(_ testFunc: @escaping (T) -> () throws -> Void) -> XCTestCaseClosure {
     return { testCaseType in
         guard let testCase = testCaseType as? T else {
             fatalError("Attempt to invoke test on class \(T.self) with incompatible instance type \(type(of: testCaseType))")
