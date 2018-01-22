@@ -342,8 +342,12 @@ class GenericUnixStrategy:
         include this extra path when linking the installed Swift's
         'usr/lib/swift/linux/libFoundation.so'.
         """
-        return os.path.join(foundation_build_dir,
-                            foundation_install_prefix.strip("/"), 'lib', 'swift')
+        if platform.system() == 'Linux' and platform.machine() == 'x86_64':
+            return os.path.join(foundation_build_dir,
+                                foundation_install_prefix.strip("/"), 'lib64', 'swift')
+        else:
+            return os.path.join(foundation_build_dir,
+                                foundation_install_prefix.strip("/"), 'lib', 'swift')
 
     @staticmethod
     def static_lib_build_dir(build_dir):
