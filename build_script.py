@@ -157,7 +157,7 @@ class GenericUnixStrategy:
         static_lib_build_dir = GenericUnixStrategy.static_lib_build_dir(build_dir)
         foundation_build_dir = os.path.abspath(args.foundation_build_dir)
         core_foundation_build_dir = GenericUnixStrategy.core_foundation_build_dir(
-            foundation_build_dir, args.foundation_install_prefix)
+            foundation_build_dir, args.foundation_install_prefix, args.libdir)
         if args.libdispatch_build_dir:
             libdispatch_build_dir = os.path.abspath(args.libdispatch_build_dir)
         if args.libdispatch_src_dir:
@@ -261,7 +261,7 @@ class GenericUnixStrategy:
         tests_path = os.path.join(SOURCE_DIR, "Tests", "Functional")
         foundation_build_dir = os.path.abspath(args.foundation_build_dir)
         core_foundation_build_dir = GenericUnixStrategy.core_foundation_build_dir(
-            foundation_build_dir, args.foundation_install_prefix)
+            foundation_build_dir, args.foundation_install_prefix, args.libdir)
         if args.libdispatch_build_dir:
             libdispatch_build_dir = os.path.abspath(args.libdispatch_build_dir)
             symlink_force(os.path.join(args.libdispatch_build_dir, "src", ".libs", "libdispatch.so"),
@@ -331,7 +331,7 @@ class GenericUnixStrategy:
                    os.path.join(static_library_install_path, xctest_a)))
 
     @staticmethod
-    def core_foundation_build_dir(foundation_build_dir, foundation_install_prefix):
+    def core_foundation_build_dir(foundation_build_dir, foundation_install_prefix, libdir):
         """
         Given the path to a swift-corelibs-foundation built product directory,
         return the path to CoreFoundation built products.
@@ -342,12 +342,8 @@ class GenericUnixStrategy:
         include this extra path when linking the installed Swift's
         'usr/lib/swift/linux/libFoundation.so'.
         """
-        if platform.system() == 'Linux' and platform.machine() == 'x86_64':
-            return os.path.join(foundation_build_dir,
-                                foundation_install_prefix.strip("/"), 'lib64', 'swift')
-        else:
-            return os.path.join(foundation_build_dir,
-                                foundation_install_prefix.strip("/"), 'lib', 'swift')
+        return os.path.join(foundation_build_dir,
+                            foundation_install_prefix.strip("/"), libdir, 'swift')
 
     @staticmethod
     def static_lib_build_dir(build_dir):
@@ -418,6 +414,10 @@ def main(args=sys.argv[1:]):
              "also be used to build the tests for those built products if the "
              "--test option is specified.",
         required=True)
+    build_parser.add_argument(
+        "--libdir",
+        help="Define library folder name.",
+        default="lib")
     build_parser.add_argument(
         "--build-dir",
         help="Path to the output build directory. If not specified, a "
@@ -499,6 +499,10 @@ def main(args=sys.argv[1:]):
              "'%(default)s' by default.",
         default=os.path.join(os.path.dirname(SOURCE_DIR),
                              "llvm", "utils", "lit", "lit.py"))
+    test_parser.add_argument(
+        "--libdir",
+        help="Define library folder name.",
+        default="lib")
     test_parser.add_argument(
         "--foundation-build-dir",
         help="Path to swift-corelibs-foundation build products, which the "
