@@ -190,7 +190,7 @@ public final class PerformanceMeter {
     }
 
     private func recordFailures() {
-        metrics.flatMap({ $0.failureMessage() }).forEach { message in
+        metrics.compactMap({ $0.failureMessage() }).forEach { message in
             delegate.recordFailure(description: message, file: invocationFile, line: invocationLine)
         }
     }

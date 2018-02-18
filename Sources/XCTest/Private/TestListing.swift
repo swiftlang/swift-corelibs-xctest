@@ -53,7 +53,7 @@ private func moduleName(value: Any) -> String {
 extension XCTestSuite: Listable {
     private var listables: [Listable] {
         return tests
-            .flatMap({ ($0 as? Listable) })
+            .compactMap({ ($0 as? Listable) })
     }
 
     private var listingName: String {
@@ -69,7 +69,7 @@ extension XCTestSuite: Listable {
     }
 
     func dictionaryRepresentation() -> NSDictionary {
-        let listedTests = NSArray(array: tests.flatMap({ ($0 as? Listable)?.dictionaryRepresentation() }))
+        let listedTests = NSArray(array: tests.compactMap({ ($0 as? Listable)?.dictionaryRepresentation() }))
         return NSDictionary(objects: [NSString(string: listingName),
                                       listedTests],
                             forKeys: [NSString(string: "name"),
@@ -80,7 +80,7 @@ extension XCTestSuite: Listable {
         if name.hasSuffix(".xctest") {
             return self
         } else {
-            return tests.flatMap({ ($0 as? XCTestSuite)?.findBundleTestSuite() }).first
+            return tests.compactMap({ ($0 as? XCTestSuite)?.findBundleTestSuite() }).first
         }
     }
 }
