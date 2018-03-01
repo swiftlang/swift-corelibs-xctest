@@ -156,8 +156,9 @@ class GenericUnixStrategy:
         build_dir = os.path.abspath(args.build_dir)
         static_lib_build_dir = GenericUnixStrategy.static_lib_build_dir(build_dir)
         foundation_build_dir = os.path.abspath(args.foundation_build_dir)
-        swift_build_dir = os.path.abspath(args.swift_build_dir)
-        arch = platform.machine()
+        if args.swift_build_dir:
+            swift_build_dir = os.path.abspath(args.swift_build_dir)
+            arch = platform.machine()
         core_foundation_build_dir = GenericUnixStrategy.core_foundation_build_dir(
             foundation_build_dir, args.foundation_install_prefix)
         if args.libdispatch_build_dir:
@@ -201,8 +202,15 @@ class GenericUnixStrategy:
                 core_foundation_build_dir=core_foundation_build_dir,
                 libdispatch_args=libdispatch_args,
                 source_paths=" ".join(sourcePaths)))
+
+        if args.swift_build_dir:
+            swift_build_dir_linker_flag = "-L {} ".format(os.path.join(args.swift_build_dir, 'lib', 'swift', 'linux',
+                arch))
+        else:
+            swift_build_dir_linker_flag = ""
+
         run("{swiftc} -emit-library {build_dir}/XCTest.o "
-            "-L {dispatch_build_dir} -L {foundation_build_dir} -L {swift_build_dir} "
+            "-L {dispatch_build_dir} -L {foundation_build_dir} {swift_build_dir_linker_flag} "
             "-lswiftGlibc -lswiftCore -lFoundation -lm "
             # We embed an rpath of `$ORIGIN` to ensure other referenced
             # libraries (like `Foundation`) can be found solely via XCTest.
@@ -212,7 +220,7 @@ class GenericUnixStrategy:
                 build_dir=build_dir,
                 dispatch_build_dir=os.path.join(args.libdispatch_build_dir, 'src', '.libs'),
                 foundation_build_dir=foundation_build_dir,
-                swift_build_dir=os.path.join(args.swift_build_dir, 'lib', 'swift', 'linux', arch)))
+                swift_build_dir_linker_flag=swift_build_dir_linker_flag))
 
         # Build the static library.
         run("mkdir -p {static_lib_build_dir}".format(static_lib_build_dir=static_lib_build_dir))
