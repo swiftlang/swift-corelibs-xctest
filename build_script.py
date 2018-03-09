@@ -156,6 +156,8 @@ class GenericUnixStrategy:
         build_dir = os.path.abspath(args.build_dir)
         static_lib_build_dir = GenericUnixStrategy.static_lib_build_dir(build_dir)
         foundation_build_dir = os.path.abspath(args.foundation_build_dir)
+        swift_build_dir = os.path.abspath(args.swift_build_dir)
+        arch = platform.machine()
         core_foundation_build_dir = GenericUnixStrategy.core_foundation_build_dir(
             foundation_build_dir, args.foundation_install_prefix, args.libdir)
         if args.libdispatch_build_dir:
@@ -200,7 +202,8 @@ class GenericUnixStrategy:
                 libdispatch_args=libdispatch_args,
                 source_paths=" ".join(sourcePaths)))
         run("{swiftc} -emit-library {build_dir}/XCTest.o "
-            "-L {dispatch_build_dir} -L {foundation_build_dir} -lswiftGlibc -lswiftCore -lFoundation -lm "
+            "-L {dispatch_build_dir} -L {foundation_build_dir} -L {swift_build_dir} "
+            "-lswiftGlibc -lswiftCore -lFoundation -lm "
             # We embed an rpath of `$ORIGIN` to ensure other referenced
             # libraries (like `Foundation`) can be found solely via XCTest.
             "-Xlinker -rpath=\\$ORIGIN "
@@ -208,7 +211,8 @@ class GenericUnixStrategy:
                 swiftc=swiftc,
                 build_dir=build_dir,
                 dispatch_build_dir=os.path.join(args.libdispatch_build_dir, 'src', '.libs'),
-                foundation_build_dir=foundation_build_dir))
+                foundation_build_dir=foundation_build_dir,
+                swift_build_dir=os.path.join(args.swift_build_dir, 'lib', 'swift', 'linux', arch)))
 
         # Build the static library.
         run("mkdir -p {static_lib_build_dir}".format(static_lib_build_dir=static_lib_build_dir))
@@ -435,6 +439,10 @@ def main(args=sys.argv[1:]):
              "dependencies are expected to be found under "
              "FOUNDATION_BUILD_DIR/FOUNDATION_INSTALL_PREFIX.",
         default="/usr")
+    build_parser.add_argument(
+        "--swift-build-dir",
+        help="Path to swift build products, which the built XCTest.so "
+             "will be linked against.")
     build_parser.add_argument(
         "--libdispatch-build-dir",
         help="Path to swift-corelibs-libdispatch build products, which "
