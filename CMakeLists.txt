@@ -47,6 +47,9 @@ add_swift_library(XCTest
                   LINK_FLAGS
                     -L${XCTEST_PATH_TO_LIBDISPATCH_BUILD}/src -ldispatch
                     -L${XCTEST_PATH_TO_FOUNDATION_BUILD} -lFoundation
+
+                    # compatibility with Foundation build_script.py
+                    -L${XCTEST_PATH_TO_FOUNDATION_BUILD}/Foundation
                   SOURCES
                     Sources/XCTest/Private/WallClockTimeMetric.swift
                     Sources/XCTest/Private/TestListing.swift
@@ -85,7 +88,11 @@ add_swift_library(XCTest
                     -Xcc -fblocks
 
                     -I${XCTEST_PATH_TO_FOUNDATION_BUILD}/swift
-                    -Fsystem ${XCTEST_PATH_TO_COREFOUNDATION_BUILD}/System/Library/Frameworks)
+                    -Fsystem ${XCTEST_PATH_TO_COREFOUNDATION_BUILD}/System/Library/Frameworks
+
+                    # compatibility with Foundation build_script.py
+                    -I${XCTEST_PATH_TO_FOUNDATION_BUILD}/Foundation
+                    -I${XCTEST_PATH_TO_FOUNDATION_BUILD}/Foundation/usr/lib/swift)
 
 if(EXISTS ${LLVM_MAIN_SRC_DIR}/utils/lit/lit.py)
   set(LIT_COMMAND "${PYTHON_EXECUTABLE};${LLVM_MAIN_SRC_DIR}/utils/lit/lit.py"
