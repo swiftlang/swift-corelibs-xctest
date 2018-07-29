@@ -63,8 +63,6 @@ public extension XCTestCase {
     ///   after a defaulted arg. See https://bugs.swift.org/browse/SR-1483 This
     ///   API incompatibility with Apple XCTest can be worked around in practice 
     ///   by using trailing closure syntax when calling this method.
-    /// - ToDo: The `block` param should be marked @noescape once Apple XCTest
-    ///   has been updated to do so rdar://26224596
     /// - Note: Whereas Apple XCTest determines the file and line number of
     ///   measurements by using symbolication, this implementation opts to take
     ///   `file` and `line` as parameters instead. As a result, the interface to
@@ -117,8 +115,6 @@ public extension XCTestCase {
     /// - Parameter automaticallyStartMeasuring: If `false`, `XCTestCase` will 
     ///     not take any measurements until -startMeasuring is called.
     /// - Parameter block: A block whose performance to measure.
-    /// - ToDo: The `block` param should be marked @noescape once Apple XCTest
-    ///     has been updated to do so. rdar://26224596
     /// - Note: Whereas Apple XCTest determines the file and line number of
     ///   measurements by using symbolication, this implementation opts to take
     ///   `file` and `line` as parameters instead. As a result, the interface to

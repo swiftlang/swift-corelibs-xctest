@@ -21,6 +21,14 @@ class PredicateExpectationsTestCase: XCTestCase {
         waitForExpectations(timeout: 0.1)
     }
 
+    // CHECK: Test Case 'PredicateExpectationsTestCase.test_immediatelyTruePredicate_standalone_passes' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+    // CHECK: Test Case 'PredicateExpectationsTestCase.test_immediatelyTruePredicate_standalone_passes' passed \(\d+\.\d+ seconds\)
+    func test_immediatelyTruePredicate_standalone_passes() {
+        let predicate = NSPredicate(value: true)
+        let expectation = XCTNSPredicateExpectation(predicate: predicate)
+        wait(for: [expectation], timeout: 0.1)
+    }
+
     // CHECK: Test Case 'PredicateExpectationsTestCase.test_immediatelyFalsePredicate_fails' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
     // CHECK: .*/Tests/Functional/Asynchronous/Predicates/Expectations/main.swift:[[@LINE+5]]: error: PredicateExpectationsTestCase.test_immediatelyFalsePredicate_fails : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: Expect predicate `<NSPredicate: 0x[0-9A-Fa-f]{1,16}>`
     // CHECK: Test Case 'PredicateExpectationsTestCase.test_immediatelyFalsePredicate_fails' failed \(\d+\.\d+ seconds\)
@@ -41,6 +49,7 @@ class PredicateExpectationsTestCase: XCTestCase {
         })
         expectation(for: predicate)
         waitForExpectations(timeout: 0.1)
+        XCTAssertTrue(didEvaluate)
     }
     
     // CHECK: Test Case 'PredicateExpectationsTestCase.test_immediatelyTrueDelayedFalsePredicate_passes' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
@@ -53,9 +62,8 @@ class PredicateExpectationsTestCase: XCTestCase {
             return !didEvaluate
         })
         expectation(for: predicate)
-        XCTAssertTrue(didEvaluate)
-        
         waitForExpectations(timeout: 0.1)
+        XCTAssertTrue(didEvaluate)
     }
 
     // CHECK: Test Case 'PredicateExpectationsTestCase.test_blockPredicateWithNilObject_passes' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
@@ -93,6 +101,7 @@ class PredicateExpectationsTestCase: XCTestCase {
     static var allTests = {
         return [
                    ("test_immediatelyTruePredicate_passes", test_immediatelyTruePredicate_passes),
+                   ("test_immediatelyTruePredicate_standalone_passes", test_immediatelyTruePredicate_standalone_passes),
                    ("test_immediatelyFalsePredicate_fails", test_immediatelyFalsePredicate_fails),
                    ("test_delayedTruePredicate_passes", test_delayedTruePredicate_passes),
                    ("test_immediatelyTrueDelayedFalsePredicate_passes", test_immediatelyTrueDelayedFalsePredicate_passes),
@@ -103,10 +112,10 @@ class PredicateExpectationsTestCase: XCTestCase {
 }
 
 // CHECK: Test Suite 'PredicateExpectationsTestCase' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 6 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 7 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 XCTMain([testCase(PredicateExpectationsTestCase.allTests)])
 
 // CHECK: Test Suite '.*\.xctest' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 6 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 7 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 // CHECK: Test Suite 'All tests' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 6 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 7 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds

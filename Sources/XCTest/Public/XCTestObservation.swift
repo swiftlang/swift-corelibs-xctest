@@ -14,7 +14,7 @@
 /// `XCTestObservation` provides hooks for being notified about progress during a
 /// test run.
 /// - seealso: `XCTestObservationCenter`
-public protocol XCTestObservation: class {
+public protocol XCTestObservation: AnyObject {
 
     /// Sent immediately before tests begin as a hook for any pre-testing setup.
     /// - Parameter testBundle: The bundle containing the tests that were
