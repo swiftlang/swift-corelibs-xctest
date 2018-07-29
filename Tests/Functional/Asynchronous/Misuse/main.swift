@@ -14,11 +14,11 @@
 // CHECK: Test Suite 'MisuseTestCase' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
 class MisuseTestCase: XCTestCase {
 // CHECK: Test Case 'MisuseTestCase.test_whenExpectationsAreMade_butNotWaitedFor_fails' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: .*/Tests/Functional/Asynchronous/Misuse/main.swift:[[@LINE+4]]: error: MisuseTestCase.test_whenExpectationsAreMade_butNotWaitedFor_fails : Failed due to unwaited expectations.
+// CHECK: .*/Tests/Functional/Asynchronous/Misuse/main.swift:[[@LINE+3]]: error: MisuseTestCase.test_whenExpectationsAreMade_butNotWaitedFor_fails : Failed due to unwaited expectations 'the first expectation \(the file and line number for this one are included in the failure message\)', 'the second expectation'
 // CHECK: Test Case 'MisuseTestCase.test_whenExpectationsAreMade_butNotWaitedFor_fails' failed \(\d+\.\d+ seconds\)
     func test_whenExpectationsAreMade_butNotWaitedFor_fails() {
-        self.expectation(description: "the first expectation")
-        self.expectation(description: "the second expectation (the file and line number for this one are included in the failure message")
+        self.expectation(description: "the first expectation (the file and line number for this one are included in the failure message)")
+        self.expectation(description: "the second expectation")
     }
 
 // CHECK: Test Case 'MisuseTestCase.test_whenNoExpectationsAreMade_butTheyAreWaitedFor_fails' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+

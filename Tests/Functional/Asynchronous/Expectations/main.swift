@@ -8,6 +8,8 @@
     import XCTest
 #endif
 
+import CoreFoundation
+
 // CHECK: Test Suite 'All tests' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
 // CHECK: Test Suite '.*\.xctest' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
 
@@ -77,6 +79,414 @@ class ExpectationsTestCase: XCTestCase {
         waitForExpectations(timeout: -1.0)
     }
 
+    // PRAGMA MARK: - Multiple Expectations
+
+// CHECK: Test Case 'ExpectationsTestCase.test_multipleExpectations' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ExpectationsTestCase.test_multipleExpectations' passed \(\d+\.\d+ seconds\)
+    func test_multipleExpectations() {
+        let foo = expectation(description: "foo")
+        let bar = XCTestExpectation(description: "bar")
+        DispatchQueue.global(qos: .default).asyncAfter(wallDeadline: .now() + 0.01) {
+            bar.fulfill()
+        }
+        DispatchQueue.global(qos: .default).asyncAfter(wallDeadline: .now() + 0.01) {
+            foo.fulfill()
+        }
+
+        XCTWaiter(delegate: self).wait(for: [foo, bar], timeout: 1)
+    }
+
+// CHECK: Test Case 'ExpectationsTestCase.test_multipleExpectationsEnforceOrderingCorrect' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ExpectationsTestCase.test_multipleExpectationsEnforceOrderingCorrect' passed \(\d+\.\d+ seconds\)
+    func test_multipleExpectationsEnforceOrderingCorrect() {
+        let foo = expectation(description: "foo")
+        let bar = XCTestExpectation(description: "bar")
+        DispatchQueue.global(qos: .default).asyncAfter(wallDeadline: .now() + 0.01) {
+            foo.fulfill()
+            bar.fulfill()
+        }
+
+        XCTWaiter(delegate: self).wait(for: [foo, bar], timeout: 1, enforceOrder: true)
+    }
+
+// CHECK: Test Case 'ExpectationsTestCase.test_multipleExpectationsEnforceOrderingCorrectBeforeWait' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ExpectationsTestCase.test_multipleExpectationsEnforceOrderingCorrectBeforeWait' passed \(\d+\.\d+ seconds\)
+    func test_multipleExpectationsEnforceOrderingCorrectBeforeWait() {
+        let foo = expectation(description: "foo")
+        let bar = XCTestExpectation(description: "bar")
+        foo.fulfill()
+        bar.fulfill()
+        XCTWaiter(delegate: self).wait(for: [foo, bar], timeout: 1, enforceOrder: true)
+    }
+
+// CHECK: Test Case 'ExpectationsTestCase.test_multipleExpectationsEnforceOrderingIncorrect' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: .*/Tests/Functional/Asynchronous/Expectations/main.swift:[[@LINE+6]]: error: ExpectationsTestCase.test_multipleExpectationsEnforceOrderingIncorrect : Failed due to expectation fulfilled in incorrect order: requires 'foo', actually fulfilled 'bar'
+// CHECK: Test Case 'ExpectationsTestCase.test_multipleExpectationsEnforceOrderingIncorrect' failed \(\d+\.\d+ seconds\)
+    func test_multipleExpectationsEnforceOrderingIncorrect() {
+        let foo = expectation(description: "foo")
+        let bar = XCTestExpectation(description: "bar")
+        DispatchQueue.global(qos: .default).asyncAfter(wallDeadline: .now() + 0.01) {
+            bar.fulfill()
+            foo.fulfill()
+        }
+        XCTWaiter(delegate: self).wait(for: [foo, bar], timeout: 1, enforceOrder: true)
+    }
+
+// CHECK: Test Case 'ExpectationsTestCase.test_multipleExpectationsIncludingInvertedEnforceOrderingIncorrect' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: .*/Tests/Functional/Asynchronous/Expectations/main.swift:[[@LINE+8]]: error: ExpectationsTestCase.test_multipleExpectationsIncludingInvertedEnforceOrderingIncorrect : Failed due to expectation fulfilled in incorrect order: requires 'foo', actually fulfilled 'bar'
+// CHECK: Test Case 'ExpectationsTestCase.test_multipleExpectationsIncludingInvertedEnforceOrderingIncorrect' failed \(\d+\.\d+ seconds\)
+    func test_multipleExpectationsIncludingInvertedEnforceOrderingIncorrect() {
+        let inverted = expectation(description: "inverted")
+        inverted.isInverted = true
+        let foo = expectation(description: "foo")
+        let bar = XCTestExpectation(description: "bar")
+        DispatchQueue.global(qos: .default).asyncAfter(wallDeadline: .now() + 0.01) {
+            bar.fulfill()
+            foo.fulfill()
+        }
+        XCTWaiter(delegate: self).wait(for: [inverted, foo, bar], timeout: 1, enforceOrder: true)
+    }
+
+// CHECK: Test Case 'ExpectationsTestCase.test_multipleExpectationsEnforceOrderingIncorrectBeforeWait' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: .*/Tests/Functional/Asynchronous/Expectations/main.swift:[[@LINE+5]]: error: ExpectationsTestCase.test_multipleExpectationsEnforceOrderingIncorrectBeforeWait : Failed due to expectation fulfilled in incorrect order: requires 'foo', actually fulfilled 'bar'
+// CHECK: Test Case 'ExpectationsTestCase.test_multipleExpectationsEnforceOrderingIncorrectBeforeWait' failed \(\d+\.\d+ seconds\)
+    func test_multipleExpectationsEnforceOrderingIncorrectBeforeWait() {
+        let foo = expectation(description: "foo")
+        let bar = XCTestExpectation(description: "bar")
+        bar.fulfill()
+        foo.fulfill()
+        XCTWaiter(delegate: self).wait(for: [foo, bar], timeout: 1, enforceOrder: true)
+    }
+
+// CHECK: Test Case 'ExpectationsTestCase.test_multipleExpectationsEnforceOrderingStressTest' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ExpectationsTestCase.test_multipleExpectationsEnforceOrderingStressTest' passed \(\d+\.\d+ seconds\)
+    func test_multipleExpectationsEnforceOrderingStressTest() {
+        for _ in 0..<2000 {
+            let expectation1 = XCTestExpectation(description: "expectation1")
+            let expectation2 = XCTestExpectation(description: "expectation2")
+
+            DispatchQueue.global(qos: .default).async {
+                expectation1.fulfill()
+                expectation2.fulfill()
+            }
+
+            wait(for: [expectation1, expectation2], timeout: 5, enforceOrder: true)
+        }
+    }
+
+    // PRAGMA MARK: - Inverse Expectations
+
+// CHECK: Test Case 'ExpectationsTestCase.test_inverseExpectationPass' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ExpectationsTestCase.test_inverseExpectationPass' passed \(\d+\.\d+ seconds\)
+    func test_inverseExpectationPass() {
+        let foo = expectation(description: "foo")
+        foo.isInverted = true
+        waitForExpectations(timeout: 0.1)
+    }
+
+// CHECK: Test Case 'ExpectationsTestCase.test_inverseExpectationFail' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: .*/Tests/Functional/Asynchronous/Expectations/main.swift:[[@LINE+6]]: error: ExpectationsTestCase.test_inverseExpectationFail : Asynchronous wait failed - Fulfilled inverted expectation 'foo'
+// CHECK: Test Case 'ExpectationsTestCase.test_inverseExpectationFail' failed \(\d+\.\d+ seconds\)
+    func test_inverseExpectationFail() {
+        let foo = expectation(description: "foo")
+        foo.isInverted = true
+        DispatchQueue.global(qos: .default).asyncAfter(wallDeadline: .now() + 0.01) {
+            foo.fulfill()
+        }
+        waitForExpectations(timeout: 0.5)
+    }
+
+// CHECK: Test Case 'ExpectationsTestCase.test_inverseExpectationFulfilledBeforeWait' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: .*/Tests/Functional/Asynchronous/Expectations/main.swift:[[@LINE+5]]: error: ExpectationsTestCase.test_inverseExpectationFulfilledBeforeWait : Asynchronous wait failed - Fulfilled inverted expectation 'foo'
+// CHECK: Test Case 'ExpectationsTestCase.test_inverseExpectationFulfilledBeforeWait' failed \(\d+\.\d+ seconds\)
+    func test_inverseExpectationFulfilledBeforeWait() {
+        let foo = expectation(description: "foo")
+        foo.isInverted = true
+        foo.fulfill()
+        wait(for: [foo], timeout: 1)
+    }
+
+// CHECK: Test Case 'ExpectationsTestCase.test_combiningInverseAndStandardExpectationsPass' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ExpectationsTestCase.test_combiningInverseAndStandardExpectationsPass' passed \(\d+\.\d+ seconds\)
+    func test_combiningInverseAndStandardExpectationsPass() {
+        let foo = expectation(description: "foo")
+        foo.isInverted = true
+        let bar = XCTestExpectation(description: "bar")
+        DispatchQueue.global(qos: .default).asyncAfter(wallDeadline: .now() + 0.1) {
+            bar.fulfill()
+        }
+
+        let start = CFAbsoluteTimeGetCurrent()
+        waitForExpectations(timeout: 0.5)
+
+        // Make sure we actually waited long enough.
+        XCTAssertGreaterThanOrEqual(CFAbsoluteTimeGetCurrent() - start, 0.5)
+    }
+
+// CHECK: Test Case 'ExpectationsTestCase.test_combiningInverseAndStandardExpectationsFailWithTimeout' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: .*/Tests/Functional/Asynchronous/Expectations/main.swift:[[@LINE+8]]: error: ExpectationsTestCase.test_combiningInverseAndStandardExpectationsFailWithTimeout : Asynchronous wait failed - Exceeded timeout of 0.5 seconds, with unfulfilled expectations: bar
+// CHECK: Test Case 'ExpectationsTestCase.test_combiningInverseAndStandardExpectationsFailWithTimeout' failed \(\d+\.\d+ seconds\)
+    func test_combiningInverseAndStandardExpectationsFailWithTimeout() {
+        let foo = expectation(description: "foo")
+        foo.isInverted = true
+        expectation(description: "bar")
+
+        let start = CFAbsoluteTimeGetCurrent()
+        waitForExpectations(timeout: 0.5)
+
+        // Make sure we actually waited long enough.
+        XCTAssertGreaterThanOrEqual(CFAbsoluteTimeGetCurrent() - start, 0.5)
+    }
+
+// CHECK: Test Case 'ExpectationsTestCase.test_combiningInverseAndStandardExpectationsFailWithInverseFulfillment' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: .*/Tests/Functional/Asynchronous/Expectations/main.swift:[[@LINE+8]]: error: ExpectationsTestCase.test_combiningInverseAndStandardExpectationsFailWithInverseFulfillment : Asynchronous wait failed - Fulfilled inverted expectation 'foo'
+// CHECK: Test Case 'ExpectationsTestCase.test_combiningInverseAndStandardExpectationsFailWithInverseFulfillment' failed \(\d+\.\d+ seconds\)
+    func test_combiningInverseAndStandardExpectationsFailWithInverseFulfillment() {
+        let foo = expectation(description: "foo")
+        foo.isInverted = true
+        let bar = expectation(description: "bar")
+
+        DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.1) {
+            foo.fulfill()
+            bar.fulfill()
+        }
+
+        waitForExpectations(timeout: 0.5)
+    }
+
+// CHECK: Test Case 'ExpectationsTestCase.test_combiningInverseAndStandardExpectationsWithOrderingEnforcement' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ExpectationsTestCase.test_combiningInverseAndStandardExpectationsWithOrderingEnforcement' passed \(\d+\.\d+ seconds\)
+    func test_combiningInverseAndStandardExpectationsWithOrderingEnforcement() {
+        var a, b, c: XCTestExpectation
+        var start: CFAbsoluteTime
+
+        a = XCTestExpectation(description: "a")
+        a.isInverted = true
+        b = XCTestExpectation(description: "b")
+        c = XCTestExpectation(description: "c")
+        DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.01) {
+            b.fulfill()
+            c.fulfill()
+        }
+
+        start = CFAbsoluteTimeGetCurrent()
+        wait(for: [a, b, c], timeout: 0.2, enforceOrder: true)
+        XCTAssertGreaterThanOrEqual(CFAbsoluteTimeGetCurrent() - start, 0.2)
+
+        a = XCTestExpectation(description: "a")
+        a.isInverted = true
+        b = XCTestExpectation(description: "b")
+        c = XCTestExpectation(description: "c")
+        DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.01) {
+            b.fulfill()
+            c.fulfill()
+        }
+
+        start = CFAbsoluteTimeGetCurrent()
+        wait(for: [b, a, c], timeout: 0.2, enforceOrder: true)
+        XCTAssertGreaterThanOrEqual(CFAbsoluteTimeGetCurrent() - start, 0.2)
+
+        a = XCTestExpectation(description: "a")
+        a.isInverted = true
+        b = XCTestExpectation(description: "b")
+        c = XCTestExpectation(description: "c")
+        DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.01) {
+            b.fulfill()
+            c.fulfill()
+        }
+
+        start = CFAbsoluteTimeGetCurrent()
+        wait(for: [b, c, a], timeout: 0.2, enforceOrder: true)
+        XCTAssertGreaterThanOrEqual(CFAbsoluteTimeGetCurrent() - start, 0.2)
+    }
+
+    // PRAGMA MARK: - Counted Expectations
+
+// CHECK: Test Case 'ExpectationsTestCase.test_countedConditionPass' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ExpectationsTestCase.test_countedConditionPass' passed \(\d+\.\d+ seconds\)
+    func test_countedConditionPass() {
+        let foo = expectation(description: "foo")
+        foo.expectedFulfillmentCount = 2
+        DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.05) {
+            foo.fulfill()
+            DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.05) {
+                foo.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+
+// CHECK: Test Case 'ExpectationsTestCase.test_countedConditionPassBeforeWaiting' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ExpectationsTestCase.test_countedConditionPassBeforeWaiting' passed \(\d+\.\d+ seconds\)
+    func test_countedConditionPassBeforeWaiting() {
+        let foo = expectation(description: "foo")
+        foo.expectedFulfillmentCount = 2
+        foo.fulfill()
+        foo.fulfill()
+        waitForExpectations(timeout: 1)
+    }
+
+// CHECK: Test Case 'ExpectationsTestCase.test_countedConditionFail' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: .*/Tests/Functional/Asynchronous/Expectations/main.swift:[[@LINE+8]]: error: ExpectationsTestCase.test_countedConditionFail : Asynchronous wait failed - Exceeded timeout of 0.2 seconds, with unfulfilled expectations: foo
+// CHECK: Test Case 'ExpectationsTestCase.test_countedConditionFail' failed \(\d+\.\d+ seconds\)
+    func test_countedConditionFail() {
+        let foo = expectation(description: "foo")
+        foo.expectedFulfillmentCount = 2
+        DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.01) {
+            foo.fulfill()
+        }
+        waitForExpectations(timeout: 0.2)
+    }
+
+    // PRAGMA MARK: - Interrupted Waiters
+
+// CHECK: Test Case 'ExpectationsTestCase.test_outerWaiterTimesOut_InnerWaitersAreInterrupted' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: .*/Tests/Functional/Asynchronous/Expectations/main.swift:[[@LINE+22]]: error: ExpectationsTestCase.test_outerWaiterTimesOut_InnerWaitersAreInterrupted : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: outer
+// CHECK: .*/Tests/Functional/Asynchronous/Expectations/main.swift:[[@LINE+11]]: error: ExpectationsTestCase.test_outerWaiterTimesOut_InnerWaitersAreInterrupted : Asynchronous waiter <XCTWaiter expectations: 'inner-1'> failed - Interrupted by timeout of containing waiter <XCTWaiter expectations: 'outer'>
+// CHECK: .*/Tests/Functional/Asynchronous/Expectations/main.swift:[[@LINE+15]]: error: ExpectationsTestCase.test_outerWaiterTimesOut_InnerWaitersAreInterrupted : Asynchronous waiter <XCTWaiter expectations: 'inner-2'> failed - Interrupted by timeout of containing waiter <XCTWaiter expectations: 'outer'>
+// CHECK: Test Case 'ExpectationsTestCase.test_outerWaiterTimesOut_InnerWaitersAreInterrupted' failed \(\d+\.\d+ seconds\)
+    func test_outerWaiterTimesOut_InnerWaitersAreInterrupted() {
+        let outerWaiter = XCTWaiter(delegate: self)
+        let outerExpectation = XCTestExpectation(description: "outer")
+
+        RunLoop.main.perform {
+            do {
+                let innerWaiter = XCTWaiter(delegate: self)
+                let innerExpectation = XCTestExpectation(description: "inner-1")
+                XCTAssertEqual(innerWaiter.wait(for: [innerExpectation], timeout: 1), .interrupted, "waiting for \(innerExpectation.expectationDescription)")
+            }
+            do {
+                let innerWaiter = XCTWaiter(delegate: self)
+                let innerExpectation = XCTestExpectation(description: "inner-2")
+                XCTAssertEqual(innerWaiter.wait(for: [innerExpectation], timeout: 1), .interrupted, "waiting for \(innerExpectation.expectationDescription)")
+            }
+        }
+
+        let start = CFAbsoluteTimeGetCurrent()
+        let result = outerWaiter.wait(for: [outerExpectation], timeout: 0.1)
+        let durationOfOuterWait = CFAbsoluteTimeGetCurrent() - start
+        XCTAssertEqual(result, .timedOut)
+
+        // The theoretical best-case duration in the current implementation is:
+        //     `timeout` (.1) + `kOuterTimeoutSlop` (.25) = .35
+        // Adding some leeway for other system activity brings us to this value for the assertion.
+        XCTAssertLessThanOrEqual(durationOfOuterWait, 0.65)
+    }
+
+// CHECK: Test Case 'ExpectationsTestCase.test_outerWaiterCompletes_InnerWaiterTimesOut' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: .*/Tests/Functional/Asynchronous/Expectations/main.swift:[[@LINE+14]]: error: ExpectationsTestCase.test_outerWaiterCompletes_InnerWaiterTimesOut : Asynchronous wait failed - Exceeded timeout of 1.0 seconds, with unfulfilled expectations: inner
+// CHECK: Test Case 'ExpectationsTestCase.test_outerWaiterCompletes_InnerWaiterTimesOut' failed \(\d+\.\d+ seconds\)
+    func test_outerWaiterCompletes_InnerWaiterTimesOut() {
+        let outerWaiter = XCTWaiter(delegate: self)
+        let outerExpectation = XCTestExpectation(description: "outer")
+
+        var outerExpectationFulfillTime = CFAbsoluteTime(0)
+        RunLoop.main.perform {
+            RunLoop.main.perform {
+                outerExpectationFulfillTime = CFAbsoluteTimeGetCurrent()
+                outerExpectation.fulfill()
+            }
+            let innerWaiter = XCTWaiter(delegate: self)
+            let innerExpectation = XCTestExpectation(description: "inner")
+            XCTAssertEqual(innerWaiter.wait(for: [innerExpectation], timeout: 1), .timedOut)
+        }
+
+        let start = CFAbsoluteTimeGetCurrent()
+        XCTAssertEqual(outerWaiter.wait(for: [outerExpectation], timeout: 1), .completed)
+        XCTAssertLessThanOrEqual(outerExpectationFulfillTime - start, 0.1)
+        XCTAssertGreaterThanOrEqual(CFAbsoluteTimeGetCurrent() - start, 1)
+    }
+
+    // PRAGMA MARK: - Waiter Conveniences
+
+// CHECK: Test Case 'ExpectationsTestCase.test_classWait' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ExpectationsTestCase.test_classWait' passed \(\d+\.\d+ seconds\)
+    func test_classWait() {
+        var a, b: XCTestExpectation
+
+        a = XCTestExpectation(description: "a")
+        b = XCTestExpectation(description: "b")
+        XCTAssertEqual(XCTWaiter.wait(for: [a, b], timeout: 0.01), .timedOut)
+
+        a = XCTestExpectation(description: "a")
+        b = XCTestExpectation(description: "b")
+        a.fulfill()
+        b.fulfill()
+        XCTAssertEqual(XCTWaiter.wait(for: [a, b], timeout: 1), .completed)
+    }
+
+// CHECK: Test Case 'ExpectationsTestCase.test_classWaitEnforcingOrder' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ExpectationsTestCase.test_classWaitEnforcingOrder' passed \(\d+\.\d+ seconds\)
+    func test_classWaitEnforcingOrder() {
+        let a = XCTestExpectation(description: "a")
+        let b = XCTestExpectation(description: "b")
+        b.fulfill()
+        a.fulfill()
+        XCTAssertEqual(XCTWaiter.wait(for: [a, b], timeout: 1, enforceOrder: true), .incorrectOrder)
+    }
+
+// CHECK: Test Case 'ExpectationsTestCase.test_classWaitInverseExpectationFail' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ExpectationsTestCase.test_classWaitInverseExpectationFail' passed \(\d+\.\d+ seconds\)
+    func test_classWaitInverseExpectationFail() {
+        let a = XCTestExpectation(description: "a")
+        a.isInverted = true
+        a.fulfill()
+        XCTAssertEqual(XCTWaiter.wait(for: [a], timeout: 0.001), .invertedFulfillment)
+    }
+
+    // PRAGMA MARK: - Regressions
+
+// CHECK: Test Case 'ExpectationsTestCase.test_fulfillmentOnSecondaryThread' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ExpectationsTestCase.test_fulfillmentOnSecondaryThread' passed \(\d+\.\d+ seconds\)
+    func test_fulfillmentOnSecondaryThread() {
+        let foo = expectation(description: "foo")
+        DispatchQueue.global(qos: .default).async {
+            foo.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+    }
+
+// CHECK: Test Case 'ExpectationsTestCase.test_runLoopInsideDispatch' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: .*/Tests/Functional/Asynchronous/Expectations/main.swift:[[@LINE+8]]: error: ExpectationsTestCase.test_runLoopInsideDispatch : Asynchronous wait failed - Exceeded timeout of 0.5 seconds, with unfulfilled expectations: foo
+// CHECK: Test Case 'ExpectationsTestCase.test_runLoopInsideDispatch' failed \(\d+\.\d+ seconds\)
+    func test_runLoopInsideDispatch() {
+        DispatchQueue.main.async {
+            var foo: XCTestExpectation? = self.expectation(description: "foo")
+            DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.1) {
+                foo?.fulfill()
+            }
+            self.waitForExpectations(timeout: 0.5)
+            foo = nil
+        }
+        RunLoop.main.run(until: Date() + 1)
+    }
+
+// CHECK: Test Case 'ExpectationsTestCase.test_multithreadedXCTestCaseConveniences' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ExpectationsTestCase.test_multithreadedXCTestCaseConveniences' passed \(\d+\.\d+ seconds\)
+    func test_multithreadedXCTestCaseConveniences() {
+        let iterationCount = 10 // Increase for more thorough stress test
+
+        for _ in 0..<iterationCount {
+            let aStarted = XCTestExpectation(description: "Thread A started")
+            let bStarted = XCTestExpectation(description: "Thread B started")
+            let aFinished = XCTestExpectation(description: "Thread A finished")
+            let bFinished = XCTestExpectation(description: "Thread B finished")
+
+            Thread.detachNewThread {
+                aStarted.fulfill()
+                self.wait(for: [bStarted], timeout: 1)
+                aFinished.fulfill()
+            }
+            Thread.detachNewThread {
+                bStarted.fulfill()
+                self.wait(for: [aStarted], timeout: 1)
+                bFinished.fulfill()
+            }
+
+            wait(for: [aFinished, bFinished], timeout: 2)
+        }
+    }
+
     static var allTests = {
         return [
             ("test_waitingForAnUnfulfilledExpectation_fails", test_waitingForAnUnfulfilledExpectation_fails),
@@ -86,15 +496,52 @@ class ExpectationsTestCase: XCTestCase {
             ("test_waitingForAnExpectationFulfilledAfterTheTimeout_fails", test_waitingForAnExpectationFulfilledAfterTheTimeout_fails),
             ("test_whenTimeoutIsImmediate_andAllExpectationsAreFulfilled_passes", test_whenTimeoutIsImmediate_andAllExpectationsAreFulfilled_passes),
             ("test_whenTimeoutIsImmediate_butNotAllExpectationsAreFulfilled_fails", test_whenTimeoutIsImmediate_butNotAllExpectationsAreFulfilled_fails),
+
+            // Multiple Expectations
+            ("test_multipleExpectations", test_multipleExpectations),
+            ("test_multipleExpectationsEnforceOrderingCorrect", test_multipleExpectationsEnforceOrderingCorrect),
+            ("test_multipleExpectationsEnforceOrderingCorrectBeforeWait", test_multipleExpectationsEnforceOrderingCorrectBeforeWait),
+            ("test_multipleExpectationsEnforceOrderingIncorrect", test_multipleExpectationsEnforceOrderingIncorrect),
+            ("test_multipleExpectationsIncludingInvertedEnforceOrderingIncorrect", test_multipleExpectationsIncludingInvertedEnforceOrderingIncorrect),
+            ("test_multipleExpectationsEnforceOrderingIncorrectBeforeWait", test_multipleExpectationsEnforceOrderingIncorrectBeforeWait),
+            ("test_multipleExpectationsEnforceOrderingStressTest", test_multipleExpectationsEnforceOrderingStressTest),
+
+            // Inverse Expectations
+            ("test_inverseExpectationPass", test_inverseExpectationPass),
+            ("test_inverseExpectationFail", test_inverseExpectationFail),
+            ("test_inverseExpectationFulfilledBeforeWait", test_inverseExpectationFulfilledBeforeWait),
+            ("test_combiningInverseAndStandardExpectationsPass", test_combiningInverseAndStandardExpectationsPass),
+            ("test_combiningInverseAndStandardExpectationsFailWithTimeout", test_combiningInverseAndStandardExpectationsFailWithTimeout),
+            ("test_combiningInverseAndStandardExpectationsFailWithInverseFulfillment", test_combiningInverseAndStandardExpectationsFailWithInverseFulfillment),
+            ("test_combiningInverseAndStandardExpectationsWithOrderingEnforcement", test_combiningInverseAndStandardExpectationsWithOrderingEnforcement),
+
+            // Counted Expectations
+            ("test_countedConditionPass", test_countedConditionPass),
+            ("test_countedConditionPassBeforeWaiting", test_countedConditionPassBeforeWaiting),
+            ("test_countedConditionFail", test_countedConditionFail),
+
+            // Interrupted Waiters
+            ("test_outerWaiterTimesOut_InnerWaitersAreInterrupted", test_outerWaiterTimesOut_InnerWaitersAreInterrupted),
+            ("test_outerWaiterCompletes_InnerWaiterTimesOut", test_outerWaiterCompletes_InnerWaiterTimesOut),
+
+            // Waiter Conveniences
+            ("test_classWait", test_classWait),
+            ("test_classWaitEnforcingOrder", test_classWaitEnforcingOrder),
+            ("test_classWaitInverseExpectationFail", test_classWaitInverseExpectationFail),
+
+            // Regressions
+            ("test_fulfillmentOnSecondaryThread", test_fulfillmentOnSecondaryThread),
+            ("test_runLoopInsideDispatch", test_runLoopInsideDispatch),
+            ("test_multithreadedXCTestCaseConveniences", test_multithreadedXCTestCaseConveniences),
         ]
     }()
 }
 // CHECK: Test Suite 'ExpectationsTestCase' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 7 tests, with 4 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 32 tests, with 17 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
 XCTMain([testCase(ExpectationsTestCase.allTests)])
 
 // CHECK: Test Suite '.*\.xctest' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 7 tests, with 4 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 32 tests, with 17 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 // CHECK: Test Suite 'All tests' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 7 tests, with 4 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 32 tests, with 17 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds

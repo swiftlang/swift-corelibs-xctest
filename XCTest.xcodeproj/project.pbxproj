@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		172FF8A72117B74D0059CBC5 /* XCTNSNotificationExpectation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172FF8A62117B74D0059CBC5 /* XCTNSNotificationExpectation.swift */; };
+		17B6C3EB210D5A3900A11ECC /* XCTWaiter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C3EA210D5A3900A11ECC /* XCTWaiter.swift */; };
+		17B6C3ED210F53BE00A11ECC /* WaiterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C3EC210F53BE00A11ECC /* WaiterManager.swift */; };
+		17B6C3EF210F990100A11ECC /* XCTWaiter+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C3EE210F990100A11ECC /* XCTWaiter+Validation.swift */; };
+		17D5B680211216EF00D93239 /* SourceLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D5B67F211216EF00D93239 /* SourceLocation.swift */; };
 		AE2FE0FB1CFE86DB003EF0D7 /* XCAbstractTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE0EA1CFE86DB003EF0D7 /* XCAbstractTest.swift */; };
 		AE2FE0FE1CFE86DB003EF0D7 /* XCTAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE0ED1CFE86DB003EF0D7 /* XCTAssert.swift */; };
 		AE2FE0FF1CFE86DB003EF0D7 /* XCTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE0EE1CFE86DB003EF0D7 /* XCTestCase.swift */; };
@@ -25,17 +30,12 @@
 		AE2FE1181CFE86E6003EF0D7 /* PrintObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE10F1CFE86E6003EF0D7 /* PrintObserver.swift */; };
 		AE2FE1191CFE86E6003EF0D7 /* TestFiltering.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE1101CFE86E6003EF0D7 /* TestFiltering.swift */; };
 		AE2FE11A1CFE86E6003EF0D7 /* WallClockTimeMetric.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE1111CFE86E6003EF0D7 /* WallClockTimeMetric.swift */; };
-		AE2FE11B1CFE86E6003EF0D7 /* XCPredicateExpectation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE1121CFE86E6003EF0D7 /* XCPredicateExpectation.swift */; };
+		AE2FE11B1CFE86E6003EF0D7 /* XCTNSPredicateExpectation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE1121CFE86E6003EF0D7 /* XCTNSPredicateExpectation.swift */; };
 		AE2FE11C1CFE86E6003EF0D7 /* XCTestCaseSuite.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE1131CFE86E6003EF0D7 /* XCTestCaseSuite.swift */; };
 		AE2FE11D1CFE86E6003EF0D7 /* XCTestInternalObservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE1141CFE86E6003EF0D7 /* XCTestInternalObservation.swift */; };
 		AE63767E1D01ED17002C0EA8 /* TestListing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE63767D1D01ED17002C0EA8 /* TestListing.swift */; };
-		DA9D44191D920A3500108768 /* XCNotificationExpectationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9D44141D920A3500108768 /* XCNotificationExpectationHandler.swift */; };
-		DA9D441A1D920A3500108768 /* XCPredicateExpectationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9D44151D920A3500108768 /* XCPredicateExpectationHandler.swift */; };
 		DA9D441B1D920A3500108768 /* XCTestCase+Asynchronous.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9D44161D920A3500108768 /* XCTestCase+Asynchronous.swift */; };
 		DA9D441C1D920A3500108768 /* XCTestExpectation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9D44171D920A3500108768 /* XCTestExpectation.swift */; };
-		DA9D441D1D920A3500108768 /* XCWaitCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9D44181D920A3500108768 /* XCWaitCompletionHandler.swift */; };
-		DA9D441F1D920A5900108768 /* XCTestCase+PredicateExpectation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9D441E1D920A5900108768 /* XCTestCase+PredicateExpectation.swift */; };
-		DA9D44211D920A6400108768 /* XCTestCase+NotificationExpectation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9D44201D920A6400108768 /* XCTestCase+NotificationExpectation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +49,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		172FF8A62117B74D0059CBC5 /* XCTNSNotificationExpectation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTNSNotificationExpectation.swift; sourceTree = "<group>"; };
+		17B6C3EA210D5A3900A11ECC /* XCTWaiter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTWaiter.swift; sourceTree = "<group>"; };
+		17B6C3EC210F53BE00A11ECC /* WaiterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaiterManager.swift; sourceTree = "<group>"; };
+		17B6C3EE210F990100A11ECC /* XCTWaiter+Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTWaiter+Validation.swift"; sourceTree = "<group>"; };
+		17D5B67F211216EF00D93239 /* SourceLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceLocation.swift; sourceTree = "<group>"; };
 		5B5D86DB1BBC74AD00234F36 /* SwiftXCTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftXCTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE2FE0EA1CFE86DB003EF0D7 /* XCAbstractTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCAbstractTest.swift; sourceTree = "<group>"; };
 		AE2FE0ED1CFE86DB003EF0D7 /* XCTAssert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTAssert.swift; sourceTree = "<group>"; };
@@ -68,7 +73,7 @@
 		AE2FE10F1CFE86E6003EF0D7 /* PrintObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrintObserver.swift; sourceTree = "<group>"; };
 		AE2FE1101CFE86E6003EF0D7 /* TestFiltering.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestFiltering.swift; sourceTree = "<group>"; };
 		AE2FE1111CFE86E6003EF0D7 /* WallClockTimeMetric.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WallClockTimeMetric.swift; sourceTree = "<group>"; };
-		AE2FE1121CFE86E6003EF0D7 /* XCPredicateExpectation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCPredicateExpectation.swift; sourceTree = "<group>"; };
+		AE2FE1121CFE86E6003EF0D7 /* XCTNSPredicateExpectation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTNSPredicateExpectation.swift; sourceTree = "<group>"; };
 		AE2FE1131CFE86E6003EF0D7 /* XCTestCaseSuite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestCaseSuite.swift; sourceTree = "<group>"; };
 		AE2FE1141CFE86E6003EF0D7 /* XCTestInternalObservation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestInternalObservation.swift; sourceTree = "<group>"; };
 		AE63767D1D01ED17002C0EA8 /* TestListing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestListing.swift; sourceTree = "<group>"; };
@@ -77,13 +82,8 @@
 		B1384A421C1B3E8700EDF031 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		B1384A431C1B3E8700EDF031 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		DA7805F91C6704A2003C6636 /* SwiftFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftFoundation.framework; path = "../swift-corelibs-foundation/build/Debug/SwiftFoundation.framework"; sourceTree = "<group>"; };
-		DA9D44141D920A3500108768 /* XCNotificationExpectationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCNotificationExpectationHandler.swift; sourceTree = "<group>"; };
-		DA9D44151D920A3500108768 /* XCPredicateExpectationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCPredicateExpectationHandler.swift; sourceTree = "<group>"; };
 		DA9D44161D920A3500108768 /* XCTestCase+Asynchronous.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Asynchronous.swift"; sourceTree = "<group>"; };
 		DA9D44171D920A3500108768 /* XCTestExpectation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestExpectation.swift; sourceTree = "<group>"; };
-		DA9D44181D920A3500108768 /* XCWaitCompletionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCWaitCompletionHandler.swift; sourceTree = "<group>"; };
-		DA9D441E1D920A5900108768 /* XCTestCase+PredicateExpectation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+PredicateExpectation.swift"; sourceTree = "<group>"; };
-		DA9D44201D920A6400108768 /* XCTestCase+NotificationExpectation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+NotificationExpectation.swift"; sourceTree = "<group>"; };
 		EA3E74BB1BF2B6D500635A73 /* build_script.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = build_script.py; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -130,9 +130,10 @@
 				AE2FE1101CFE86E6003EF0D7 /* TestFiltering.swift */,
 				AE63767D1D01ED17002C0EA8 /* TestListing.swift */,
 				AE2FE1111CFE86E6003EF0D7 /* WallClockTimeMetric.swift */,
-				AE2FE1121CFE86E6003EF0D7 /* XCPredicateExpectation.swift */,
 				AE2FE1131CFE86E6003EF0D7 /* XCTestCaseSuite.swift */,
 				AE2FE1141CFE86E6003EF0D7 /* XCTestInternalObservation.swift */,
+				17B6C3EC210F53BE00A11ECC /* WaiterManager.swift */,
+				17D5B67F211216EF00D93239 /* SourceLocation.swift */,
 			);
 			path = Private;
 			sourceTree = "<group>";
@@ -203,13 +204,12 @@
 		DA9D44131D920A3500108768 /* Asynchronous */ = {
 			isa = PBXGroup;
 			children = (
+				17B6C3EA210D5A3900A11ECC /* XCTWaiter.swift */,
+				17B6C3EE210F990100A11ECC /* XCTWaiter+Validation.swift */,
 				DA9D44161D920A3500108768 /* XCTestCase+Asynchronous.swift */,
 				DA9D44171D920A3500108768 /* XCTestExpectation.swift */,
-				DA9D44181D920A3500108768 /* XCWaitCompletionHandler.swift */,
-				DA9D44151D920A3500108768 /* XCPredicateExpectationHandler.swift */,
-				DA9D441E1D920A5900108768 /* XCTestCase+PredicateExpectation.swift */,
-				DA9D44141D920A3500108768 /* XCNotificationExpectationHandler.swift */,
-				DA9D44201D920A6400108768 /* XCTestCase+NotificationExpectation.swift */,
+				AE2FE1121CFE86E6003EF0D7 /* XCTNSPredicateExpectation.swift */,
+				172FF8A62117B74D0059CBC5 /* XCTNSNotificationExpectation.swift */,
 			);
 			path = Asynchronous;
 			sourceTree = "<group>";
@@ -330,30 +330,30 @@
 				AE2FE1011CFE86DB003EF0D7 /* XCTestCase+Performance.swift in Sources */,
 				DA9D441B1D920A3500108768 /* XCTestCase+Asynchronous.swift in Sources */,
 				AE2FE1181CFE86E6003EF0D7 /* PrintObserver.swift in Sources */,
+				17B6C3EB210D5A3900A11ECC /* XCTWaiter.swift in Sources */,
+				17B6C3EF210F990100A11ECC /* XCTWaiter+Validation.swift in Sources */,
 				AE2FE1021CFE86DB003EF0D7 /* XCTestCaseRun.swift in Sources */,
-				DA9D441D1D920A3500108768 /* XCWaitCompletionHandler.swift in Sources */,
-				DA9D441A1D920A3500108768 /* XCPredicateExpectationHandler.swift in Sources */,
 				AE2FE1171CFE86E6003EF0D7 /* PerformanceMeter.swift in Sources */,
 				AE2FE1051CFE86DB003EF0D7 /* XCTestMain.swift in Sources */,
-				AE2FE11B1CFE86E6003EF0D7 /* XCPredicateExpectation.swift in Sources */,
-				DA9D44191D920A3500108768 /* XCNotificationExpectationHandler.swift in Sources */,
-				DA9D44211D920A6400108768 /* XCTestCase+NotificationExpectation.swift in Sources */,
+				AE2FE11B1CFE86E6003EF0D7 /* XCTNSPredicateExpectation.swift in Sources */,
+				17D5B680211216EF00D93239 /* SourceLocation.swift in Sources */,
 				AE63767E1D01ED17002C0EA8 /* TestListing.swift in Sources */,
 				AE2FE1151CFE86E6003EF0D7 /* ArgumentParser.swift in Sources */,
 				AE2FE0FF1CFE86DB003EF0D7 /* XCTestCase.swift in Sources */,
-				DA9D441F1D920A5900108768 /* XCTestCase+PredicateExpectation.swift in Sources */,
 				AE2FE11D1CFE86E6003EF0D7 /* XCTestInternalObservation.swift in Sources */,
 				AE2FE1061CFE86DB003EF0D7 /* XCTestObservation.swift in Sources */,
 				AE2FE0FB1CFE86DB003EF0D7 /* XCAbstractTest.swift in Sources */,
 				AE2FE1081CFE86DB003EF0D7 /* XCTestRun.swift in Sources */,
 				AE2FE10A1CFE86DB003EF0D7 /* XCTestSuiteRun.swift in Sources */,
 				AE2FE1161CFE86E6003EF0D7 /* ObjectWrapper.swift in Sources */,
+				172FF8A72117B74D0059CBC5 /* XCTNSNotificationExpectation.swift in Sources */,
 				AE2FE11A1CFE86E6003EF0D7 /* WallClockTimeMetric.swift in Sources */,
 				AE2FE1191CFE86E6003EF0D7 /* TestFiltering.swift in Sources */,
 				AE2FE1031CFE86DB003EF0D7 /* XCTestErrors.swift in Sources */,
 				AE2FE1091CFE86DB003EF0D7 /* XCTestSuite.swift in Sources */,
 				AE2FE11C1CFE86E6003EF0D7 /* XCTestCaseSuite.swift in Sources */,
 				AE2FE0FE1CFE86DB003EF0D7 /* XCTAssert.swift in Sources */,
+				17B6C3ED210F53BE00A11ECC /* WaiterManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

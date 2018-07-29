@@ -46,8 +46,41 @@ open class XCTestCase: XCTest {
         return 1
     }
 
+    internal var currentWaiter: XCTWaiter?
+
     /// The set of expectations made upon this test case.
-    internal var _allExpectations = [XCTestExpectation]()
+    private var _allExpectations = [XCTestExpectation]()
+
+    internal var expectations: [XCTestExpectation] {
+        return XCTWaiter.subsystemQueue.sync {
+            return _allExpectations
+        }
+    }
+
+    internal func addExpectation(_ expectation: XCTestExpectation) {
+        precondition(Thread.isMainThread, "\(#function) must be called on the main thread")
+        precondition(currentWaiter == nil, "API violation - creating an expectation while already in waiting mode.")
+
+        XCTWaiter.subsystemQueue.sync {
+            _allExpectations.append(expectation)
+        }
+    }
+
+    internal func cleanUpExpectations(_ expectationsToCleanUp: [XCTestExpectation]? = nil) {
+        XCTWaiter.subsystemQueue.sync {
+            if let expectationsToReset = expectationsToCleanUp {
+                for expectation in expectationsToReset {
+                    expectation.cleanUp()
+                    _allExpectations.removeAll(where: { $0 == expectation })
+                }
+            } else {
+                for expectation in _allExpectations {
+                    expectation.cleanUp()
+                }
+                _allExpectations.removeAll()
+            }
+        }
+    }
 
     /// An internal object implementing performance measurements.
     internal var _performanceMeter: PerformanceMeter?
@@ -122,6 +155,11 @@ open class XCTestCase: XCTest {
         if !continueAfterFailure {
             fatalError("Terminating execution due to test failure")
         }
+    }
+
+    // Convenience for recording failure using a SourceLocation
+    func recordFailure(description: String, at sourceLocation: SourceLocation, expected: Bool) {
+        recordFailure(withDescription: description, inFile: sourceLocation.file, atLine: Int(sourceLocation.line), expected: expected)
     }
 
     /// Setup method called before the invocation of any test method in the
