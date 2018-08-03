@@ -13,16 +13,16 @@
 
 internal class XCPredicateExpectation: XCTestExpectation {
     internal let predicate: NSPredicate
-    internal let object: AnyObject
+    internal let object: Any?
     internal var timer: Timer?
     internal let handler: XCPredicateExpectationHandler?
     private let evaluationInterval = 0.01
     
-    internal init(predicate: NSPredicate, object: AnyObject, description: String, file: StaticString, line: Int, testCase: XCTestCase, handler: XCPredicateExpectationHandler? = nil) {
+    internal init(predicate: NSPredicate, object: Any? = nil, file: StaticString, line: Int, testCase: XCTestCase, handler: XCPredicateExpectationHandler? = nil) {
         self.predicate = predicate
         self.object = object
         self.handler = handler
-        self.timer = nil
+        let description = "Expect predicate `\(predicate)`" + (object.map { " for object \($0)" } ?? "")
         super.init(description: description, file: file, line: line, testCase: testCase)
     }
     
