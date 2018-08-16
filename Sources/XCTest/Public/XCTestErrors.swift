@@ -36,10 +36,10 @@ public struct XCTestError : _BridgedStoredNSError {
 public extension XCTestError {
     /// Indicates that one or more expectations failed to be fulfilled in time
     /// during a call to `waitForExpectations(timeout:handler:)`
-    public static var timeoutWhileWaiting: XCTestError.Code { return .timeoutWhileWaiting }
+    static var timeoutWhileWaiting: XCTestError.Code { return .timeoutWhileWaiting }
 
     /// Indicates that a test assertion failed while waiting for expectations
     /// during a call to `waitForExpectations(timeout:handler:)`
     /// FIXME: swift-corelibs-xctest does not currently produce this error code.
-    public static var failureWhileWaiting: XCTestError.Code { return .failureWhileWaiting }
+    static var failureWhileWaiting: XCTestError.Code { return .failureWhileWaiting }
 }

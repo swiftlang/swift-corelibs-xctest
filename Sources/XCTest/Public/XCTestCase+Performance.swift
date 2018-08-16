@@ -33,7 +33,7 @@ public struct XCTPerformanceMetric : RawRepresentable, Equatable, Hashable {
 
 public extension XCTPerformanceMetric {
     /// Records wall clock time in seconds between `startMeasuring`/`stopMeasuring`.
-    public static let wallClockTime = XCTPerformanceMetric(rawValue: WallClockTimeMetric.name)
+    static let wallClockTime = XCTPerformanceMetric(rawValue: WallClockTimeMetric.name)
 }
 
 /// The following methods are called from within a test method to carry out 
