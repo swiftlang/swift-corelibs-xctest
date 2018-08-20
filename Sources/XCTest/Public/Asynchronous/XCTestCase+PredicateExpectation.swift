@@ -19,7 +19,7 @@ public extension XCTestCase {
     /// - Parameter predicate: The predicate that will be used to evaluate the
     ///   object.
     /// - Parameter object: The object that is evaluated against the conditions
-    ///   specified by the predicate.
+    ///   specified by the predicate, if any. Default is nil.
     /// - Parameter file: The file name to use in the error message if
     ///   this expectation is not waited for. Default is the file
     ///   containing the call to this method. It is rare to provide this
@@ -33,11 +33,10 @@ public extension XCTestCase {
     ///   first successful evaluation will fulfill the expectation. If provided,
     ///   the handler can override that behavior which leaves the caller
     ///   responsible for fulfilling the expectation.
-    @discardableResult func expectation(for predicate: NSPredicate, evaluatedWith object: AnyObject, file: StaticString = #file, line: Int = #line, handler: XCPredicateExpectationHandler? = nil) -> XCTestExpectation {
+    @discardableResult func expectation(for predicate: NSPredicate, evaluatedWith object: Any? = nil, file: StaticString = #file, line: Int = #line, handler: XCPredicateExpectationHandler? = nil) -> XCTestExpectation {
         let expectation = XCPredicateExpectation(
             predicate: predicate,
             object: object,
-            description: "Expect `\(predicate)` for object \(object)",
             file: file,
             line: line,
             testCase: self,
