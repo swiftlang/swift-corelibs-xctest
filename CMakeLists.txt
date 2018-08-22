@@ -98,7 +98,7 @@ add_swift_library(XCTest
 # the swiftdoc and swiftmodule to be in the top level.
 # So for now, make a copy so we don't have to do a coordinated commit across
 # all the swift projects to change this assumption.
-add_custom_target(TARGET
+add_custom_command(TARGET
                     XCTest
                   POST_BUILD
                   COMMAND
