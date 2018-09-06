@@ -70,15 +70,15 @@ class ExecutedTestCase: XCTestCase {
 // There's no guarantee as to the order in which these two observers will be
 // called, so we match any order here.
 
-// CHECK: (In testSuiteDidFinish: ExecutedTestCase)|(Test Suite 'ExecutedTestCase' passed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+|\t Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
-// CHECK: (In testSuiteDidFinish: ExecutedTestCase)|(Test Suite 'ExecutedTestCase' passed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+|\t Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
-// CHECK: (In testSuiteDidFinish: ExecutedTestCase)|(Test Suite 'ExecutedTestCase' passed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+|\t Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+// CHECK: (In testSuiteDidFinish\(?_?:\)?:? ExecutedTestCase)|(Test Suite 'ExecutedTestCase' passed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+|\t Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+// CHECK: (In testSuiteDidFinish\(?_?:\)?:? ExecutedTestCase)|(Test Suite 'ExecutedTestCase' passed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+|\t Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+// CHECK: (In testSuiteDidFinish\(?_?:\)?:? ExecutedTestCase)|(Test Suite 'ExecutedTestCase' passed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+|\t Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
 
 XCTMain([
     testCase(SkippedTestCase.allTests),
     testCase(ExecutedTestCase.allTests),
 ])
 
-// CHECK: (In testSuiteDidFinish: Selected tests|Test Suite 'Selected tests' passed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+)|(\t Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
-// CHECK: (In testSuiteDidFinish: Selected tests|Test Suite 'Selected tests' passed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+)|(\t Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
-// CHECK: (In testSuiteDidFinish: Selected tests|Test Suite 'Selected tests' passed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+)|(\t Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+// CHECK: (In testSuiteDidFinish\(?_?:\)?:? Selected tests|Test Suite 'Selected tests' passed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+)|(\t Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+// CHECK: (In testSuiteDidFinish\(?_?:\)?:? Selected tests|Test Suite 'Selected tests' passed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+)|(\t Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+// CHECK: (In testSuiteDidFinish\(?_?:\)?:? Selected tests|Test Suite 'Selected tests' passed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+)|(\t Executed 1 test, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)

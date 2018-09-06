@@ -108,18 +108,18 @@ class Observation: XCTestCase {
 // There's no guarantee as to the order in which these two observers will be
 // called, so we match any order here.
 
-// CHECK: (In testSuiteDidFinish: Observation)|(Test Suite 'Observation' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
-// CHECK: (In testSuiteDidFinish: Observation)|(Test Suite 'Observation' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
-// CHECK: (In testSuiteDidFinish: Observation)|(Test Suite 'Observation' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+// CHECK: (In testSuiteDidFinish\(?_?:\)?:? Observation)|(Test Suite 'Observation' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+// CHECK: (In testSuiteDidFinish\(?_?:\)?:? Observation)|(Test Suite 'Observation' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+// CHECK: (In testSuiteDidFinish\(?_?:\)?:? Observation)|(Test Suite 'Observation' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
 
 XCTMain([testCase(Observation.allTests)])
 
-// CHECK: (In testSuiteDidFinish: .*\.xctest)|(Test Suite '.*\.xctest' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
-// CHECK: (In testSuiteDidFinish: .*\.xctest)|(Test Suite '.*\.xctest' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
-// CHECK: (In testSuiteDidFinish: .*\.xctest)|(Test Suite '.*\.xctest' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+// CHECK: (In testSuiteDidFinish\(?_?:\)?:? .*\.xctest)|(Test Suite '.*\.xctest' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+// CHECK: (In testSuiteDidFinish\(?_?:\)?:? .*\.xctest)|(Test Suite '.*\.xctest' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+// CHECK: (In testSuiteDidFinish\(?_?:\)?:? .*\.xctest)|(Test Suite '.*\.xctest' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
 
-// CHECK: (In testSuiteDidFinish: All tests)|(Test Suite 'All tests' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
-// CHECK: (In testSuiteDidFinish: All tests)|(Test Suite 'All tests' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
-// CHECK: (In testSuiteDidFinish: All tests)|(Test Suite 'All tests' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+// CHECK: (In testSuiteDidFinish\(?_?:\)?:? All tests)|(Test Suite 'All tests' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+// CHECK: (In testSuiteDidFinish\(?_?:\)?:? All tests)|(Test Suite 'All tests' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
+// CHECK: (In testSuiteDidFinish\(?_?:\)?:? All tests)|(Test Suite 'All tests' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+)|(\t Executed 3 tests, with 1 failure \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds)
 
-// CHECK: In testBundleDidFinish
+// CHECK: In testBundleDidFinish\(?_?:?\)?
