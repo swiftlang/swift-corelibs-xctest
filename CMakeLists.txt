@@ -131,11 +131,13 @@ add_custom_target(check-xctest
                     XCTest
                   USES_TERMINAL)
 
+string(TOLOWER ${CMAKE_SYSTEM_NAME} SWIFT_OS)
+
 install(FILES
           ${CMAKE_CURRENT_BINARY_DIR}/swift/XCTest.swiftdoc
           ${CMAKE_CURRENT_BINARY_DIR}/swift/XCTest.swiftmodule
         DESTINATION
-          ${CMAKE_INSTALL_FULL_LIBDIR}/swift/${CMAKE_SYSTEM_NAME}/${CMAKE_SYSTEM_PROCESSOR})
+          ${CMAKE_INSTALL_FULL_LIBDIR}/swift/${SWIFT_OS}/${CMAKE_SYSTEM_PROCESSOR})
 install(FILES
           ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}XCTest${CMAKE_SHARED_LIBRARY_SUFFIX}
         DESTINATION
