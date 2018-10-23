@@ -45,6 +45,7 @@ add_swift_library(XCTest
                   OUTPUT
                     ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}XCTest${CMAKE_SHARED_LIBRARY_SUFFIX}
                   LINK_FLAGS
+                    -L${XCTEST_PATH_TO_LIBDISPATCH_BUILD}
                     -L${XCTEST_PATH_TO_LIBDISPATCH_BUILD}/src -ldispatch
                     -L${XCTEST_PATH_TO_FOUNDATION_BUILD} -lFoundation
 
