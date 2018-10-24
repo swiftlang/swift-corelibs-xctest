@@ -4,7 +4,7 @@ include(CMakeParseArguments)
 function(add_swift_target target)
   set(options LIBRARY)
   set(single_value_options MODULE_NAME;MODULE_LINK_NAME;MODULE_PATH;MODULE_CACHE_PATH;OUTPUT;TARGET)
-  set(multiple_value_options CFLAGS;DEPENDS;LINK_FLAGS;SOURCES;SWIFT_FLAGS)
+  set(multiple_value_options CFLAGS;DEPENDS;LINK_FLAGS;RESOURCES;SOURCES;SWIFT_FLAGS)
 
   cmake_parse_arguments(AST "${options}" "${single_value_options}" "${multiple_value_options}" ${ARGN})
 
@@ -24,6 +24,9 @@ function(add_swift_target target)
   endif()
   if(AST_MODULE_CACHE_PATH)
     list(APPEND flags -module-cache-path;${AST_MODULE_CACHE_PATH})
+  endif()
+  if(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
+    list(APPEND flags -g)
   endif()
   if(AST_SWIFT_FLAGS)
     foreach(flag ${AST_SWIFT_FLAGS})
@@ -78,6 +81,7 @@ function(add_swift_target target)
                          ${doc}
                        DEPENDS
                          ${source}
+                         ${AST_DEPENDS}
                        COMMAND
                          ${CMAKE_SWIFT_COMPILER} -frontend ${flags} -emit-module-path ${mod} -emit-module-doc-path ${doc} -o ${obj} -c ${all_sources})
 
@@ -100,6 +104,7 @@ function(add_swift_target target)
                        DEPENDS
                          ${mods}
                          ${docs}
+                         ${AST_DEPENDS}
                        COMMAND
                          ${CMAKE_SWIFT_COMPILER} -frontend ${flags} -sil-merge-partial-modules -emit-module ${mods} -o ${module} -emit-module-doc-path ${documentation})
   endif()
@@ -111,16 +116,35 @@ function(add_swift_target target)
                        ${AST_OUTPUT}
                      DEPENDS
                        ${objs}
+                       ${AST_DEPENDS}
                      COMMAND
-                       ${CMAKE_SWIFT_COMPILER} ${emit_library} ${link_flags} -o ${AST_OUTPUT} ${objs}
-                     COMMAND
-                       ${CMAKE_COMMAND} -E copy ${AST_OUTPUT} ${CMAKE_CURRENT_BINARY_DIR})
+                       ${CMAKE_SWIFT_COMPILER} ${emit_library} ${link_flags} -o ${AST_OUTPUT} ${objs})
   add_custom_target(${target}
                     ALL
                     DEPENDS
                        ${AST_OUTPUT}
                        ${module}
                        ${documentation})
+
+  if(AST_RESOURCES)
+    add_custom_command(TARGET
+                         ${target}
+                       POST_BUILD
+                       COMMAND
+                         ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/${target}
+                       COMMAND
+                         ${CMAKE_COMMAND} -E copy ${AST_OUTPUT} ${CMAKE_CURRENT_BINARY_DIR}/${target}
+                       COMMAND
+                         ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/${target}/Resources
+                       COMMAND
+                         ${CMAKE_COMMAND} -E copy ${AST_RESOURCES} ${CMAKE_CURRENT_BINARY_DIR}/${target}/Resources)
+  else()
+    add_custom_command(TARGET
+                         ${target}
+                       POST_BUILD
+                       COMMAND
+                         ${CMAKE_COMMAND} -E copy ${AST_OUTPUT} ${CMAKE_CURRENT_BINARY_DIR})
+  endif()
 endfunction()
 
 function(add_swift_library library)
