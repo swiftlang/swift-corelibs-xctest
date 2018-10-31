@@ -17,7 +17,7 @@ class NotificationHandlerTestCase: XCTestCase {
 // CHECK: .*/Tests/Functional/Asynchronous/Notifications/Handler/main.swift:[[@LINE+8]]: error: NotificationHandlerTestCase.test_notificationNameIsObserved_handlerReturnsFalse_andFails : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: Expect notification 'returnFalse' from any object
 // CHECK: Test Case 'NotificationHandlerTestCase.test_notificationNameIsObserved_handlerReturnsFalse_andFails' failed \(\d+\.\d+ seconds\)
     func test_notificationNameIsObserved_handlerReturnsFalse_andFails() {
-        expectation(forNotification: "returnFalse", object: nil, handler: {
+        expectation(forNotification: Notification.Name(rawValue: "returnFalse"), object: nil, handler: {
             notification in
             return false
         })
@@ -25,10 +25,23 @@ class NotificationHandlerTestCase: XCTestCase {
         waitForExpectations(timeout: 0.1)
     }
     
+// CHECK: Test Case 'NotificationHandlerTestCase.test_notificationNameIsObserved_handlerReturnsFalse_andFails_standalone' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: .*/Tests/Functional/Asynchronous/Notifications/Handler/main.swift:[[@LINE+9]]: error: NotificationHandlerTestCase.test_notificationNameIsObserved_handlerReturnsFalse_andFails_standalone : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: Expect notification 'returnFalse' from any object
+// CHECK: Test Case 'NotificationHandlerTestCase.test_notificationNameIsObserved_handlerReturnsFalse_andFails_standalone' failed \(\d+\.\d+ seconds\)
+    func test_notificationNameIsObserved_handlerReturnsFalse_andFails_standalone() {
+        let notificationName = Notification.Name(rawValue: "returnFalse")
+        let expectation = XCTNSNotificationExpectation(name: notificationName)
+        expectation.handler = { _ in
+            return false
+        }
+        NotificationCenter.default.post(name: notificationName, object: nil)
+        wait(for: [expectation], timeout: 0.1)
+    }
+
 // CHECK: Test Case 'NotificationHandlerTestCase.test_notificationNameIsObserved_handlerReturnsTrue_andPasses' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'NotificationHandlerTestCase.test_notificationNameIsObserved_handlerReturnsTrue_andPasses' passed \(\d+\.\d+ seconds\)
     func test_notificationNameIsObserved_handlerReturnsTrue_andPasses() {
-        expectation(forNotification: "returnTrue", object: nil, handler: {
+        expectation(forNotification: Notification.Name(rawValue: "returnTrue"), object: nil, handler: {
             notification in
             return true
         })
@@ -51,18 +64,19 @@ class NotificationHandlerTestCase: XCTestCase {
     static var allTests = {
         return [
                    ("test_notificationNameIsObserved_handlerReturnsFalse_andFails", test_notificationNameIsObserved_handlerReturnsFalse_andFails),
+                   ("test_notificationNameIsObserved_handlerReturnsFalse_andFails_standalone", test_notificationNameIsObserved_handlerReturnsFalse_andFails_standalone),
                    ("test_notificationNameIsObserved_handlerReturnsTrue_andPasses", test_notificationNameIsObserved_handlerReturnsTrue_andPasses),
                    ("test_notificationNameIsObservedAfterTimeout_handlerIsNotCalled", test_notificationNameIsObservedAfterTimeout_handlerIsNotCalled),
         ]
     }()
 }
 // CHECK: Test Suite 'NotificationHandlerTestCase' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 3 tests, with 2 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 4 tests, with 3 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
 
 XCTMain([testCase(NotificationHandlerTestCase.allTests)])
 
 // CHECK: Test Suite '.*\.xctest' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 3 tests, with 2 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 4 tests, with 3 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 // CHECK: Test Suite 'All tests' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 3 tests, with 2 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 4 tests, with 3 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds

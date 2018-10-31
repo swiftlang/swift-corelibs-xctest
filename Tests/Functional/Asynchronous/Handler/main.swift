@@ -22,8 +22,11 @@ class HandlerTestCase: XCTestCase {
         var handlerWasCalled = false
         self.waitForExpectations(timeout: 0.2) { error in
             XCTAssertNotNil(error, "Expectation handlers for unfulfilled expectations should not be nil.")
-            XCTAssertEqual(error?.domain, XCTestErrorDomain, "The error domain should be XCTest's own error domain")
-            XCTAssertEqual(error?.code, XCTestError.Code.timeoutWhileWaiting.rawValue, "The error code should indicate that a timeout occurred")
+            if let xctestError = error as? XCTestError {
+                XCTAssertEqual(xctestError.code, .timeoutWhileWaiting, "The error code should indicate that a timeout occurred")
+            } else {
+                XCTFail("Error is not an XCTestError")
+            }
             handlerWasCalled = true
         }
         XCTAssertTrue(handlerWasCalled)

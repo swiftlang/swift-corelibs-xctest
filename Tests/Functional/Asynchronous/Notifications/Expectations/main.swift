@@ -22,6 +22,16 @@ class NotificationExpectationsTestCase: XCTestCase {
         waitForExpectations(timeout: 0.0)
     }
     
+// CHECK: Test Case 'NotificationExpectationsTestCase.test_observeNotificationWithName_standalone_passes' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'NotificationExpectationsTestCase.test_observeNotificationWithName_standalone_passes' passed \(\d+\.\d+ seconds\)
+    func test_observeNotificationWithName_standalone_passes() {
+        let notificationName = Notification.Name(rawValue: "notificationWithNameTest")
+        let notificationCenter = NotificationCenter()
+        let expectation = XCTNSNotificationExpectation(name: notificationName, notificationCenter: notificationCenter)
+        notificationCenter.post(name: notificationName, object: nil)
+        wait(for: [expectation], timeout: 0.0)
+    }
+
 // CHECK: Test Case 'NotificationExpectationsTestCase.test_observeNotificationWithNameAndObject_passes' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'NotificationExpectationsTestCase.test_observeNotificationWithNameAndObject_passes' passed \(\d+\.\d+ seconds\)
     func test_observeNotificationWithNameAndObject_passes() {
@@ -32,13 +42,25 @@ class NotificationExpectationsTestCase: XCTestCase {
         waitForExpectations(timeout: 0.0)
     }
     
+// CHECK: Test Case 'NotificationExpectationsTestCase.test_observeNotificationWithNameAndObject_standalone_passes' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'NotificationExpectationsTestCase.test_observeNotificationWithNameAndObject_standalone_passes' passed \(\d+\.\d+ seconds\)
+    func test_observeNotificationWithNameAndObject_standalone_passes() {
+        let notificationName = Notification.Name(rawValue: "notificationWithNameAndObjectTest")
+        let notificationCenter = NotificationCenter()
+        let dummyObject = NSObject()
+        let expectation = XCTNSNotificationExpectation(name: notificationName, object: dummyObject, notificationCenter: notificationCenter)
+        notificationCenter.post(name: notificationName, object: dummyObject)
+        wait(for: [expectation], timeout: 0.0)
+    }
+
 // CHECK: Test Case 'NotificationExpectationsTestCase.test_observeNotificationWithNameAndObject_butExpectingNoObject_passes' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'NotificationExpectationsTestCase.test_observeNotificationWithNameAndObject_butExpectingNoObject_passes' passed \(\d+\.\d+ seconds\)
     func test_observeNotificationWithNameAndObject_butExpectingNoObject_passes() {
         let notificationName = "notificationWithNameAndObject_expectNoObjectTest"
-        expectation(forNotification: notificationName, object:nil)
+        let notificationCenter = NotificationCenter()
+        expectation(forNotification: notificationName, object: nil, notificationCenter: notificationCenter)
         let dummyObject = NSObject()
-        NotificationCenter.default.post(name: Notification.Name(rawValue: notificationName), object: dummyObject)
+        notificationCenter.post(name: Notification.Name(rawValue: notificationName), object: dummyObject)
         waitForExpectations(timeout: 0.0)
     }
     
@@ -55,18 +77,20 @@ class NotificationExpectationsTestCase: XCTestCase {
 // CHECK: .*/Tests/Functional/Asynchronous/Notifications/Expectations/main.swift:[[@LINE+8]]: error: NotificationExpectationsTestCase.test_observeNotificationWithIncorrectObject_fails : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: Expect notification 'notificationWithIncorrectObjectTest' from dummyObject
 // CHECK: Test Case 'NotificationExpectationsTestCase.test_observeNotificationWithIncorrectObject_fails' failed \(\d+\.\d+ seconds\)
     func test_observeNotificationWithIncorrectObject_fails() {
-        let notificationName = "notificationWithIncorrectObjectTest"
+        let notificationName = Notification.Name(rawValue: "notificationWithIncorrectObjectTest")
         let dummyObject: NSString = "dummyObject"
         let anotherDummyObject = NSObject()
-        expectation(forNotification: notificationName, object: dummyObject)
-        NotificationCenter.default.post(name: Notification.Name(rawValue: notificationName), object:anotherDummyObject)
-        waitForExpectations(timeout: 0.1)
+        let expectation = XCTNSNotificationExpectation(name: notificationName, object: dummyObject)
+        NotificationCenter.default.post(name: notificationName, object:anotherDummyObject)
+        wait(for: [expectation], timeout: 0.1)
     }
-    
+
     static var allTests = {
         return [
                    ("test_observeNotificationWithName_passes", test_observeNotificationWithName_passes),
+                   ("test_observeNotificationWithName_standalone_passes", test_observeNotificationWithName_standalone_passes),
                    ("test_observeNotificationWithNameAndObject_passes", test_observeNotificationWithNameAndObject_passes),
+                   ("test_observeNotificationWithNameAndObject_standalone_passes", test_observeNotificationWithNameAndObject_standalone_passes),
                    ("test_observeNotificationWithNameAndObject_butExpectingNoObject_passes", test_observeNotificationWithNameAndObject_butExpectingNoObject_passes),
                    ("test_observeNotificationWithIncorrectName_fails", test_observeNotificationWithIncorrectName_fails),
                    ("test_observeNotificationWithIncorrectObject_fails", test_observeNotificationWithIncorrectObject_fails),
@@ -74,11 +98,11 @@ class NotificationExpectationsTestCase: XCTestCase {
     }()
 }
 // CHECK: Test Suite 'NotificationExpectationsTestCase' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 5 tests, with 2 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 7 tests, with 2 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
 XCTMain([testCase(NotificationExpectationsTestCase.allTests)])
 
 // CHECK: Test Suite '.*\.xctest' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 5 tests, with 2 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 7 tests, with 2 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 // CHECK: Test Suite 'All tests' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 5 tests, with 2 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 7 tests, with 2 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds

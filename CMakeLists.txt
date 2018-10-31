@@ -60,7 +60,8 @@ add_swift_library(XCTest
                     Sources/XCTest/Private/PerformanceMeter.swift
                     Sources/XCTest/Private/PrintObserver.swift
                     Sources/XCTest/Private/ArgumentParser.swift
-                    Sources/XCTest/Private/XCPredicateExpectation.swift
+                    Sources/XCTest/Private/SourceLocation.swift
+                    Sources/XCTest/Private/WaiterManager.swift
                     Sources/XCTest/Public/XCTestRun.swift
                     Sources/XCTest/Public/XCTestMain.swift
                     Sources/XCTest/Public/XCTestCase.swift
@@ -73,11 +74,10 @@ add_swift_library(XCTest
                     Sources/XCTest/Public/XCTestObservationCenter.swift
                     Sources/XCTest/Public/XCTestCase+Performance.swift
                     Sources/XCTest/Public/XCTAssert.swift
-                    Sources/XCTest/Public/Asynchronous/XCTestCase+NotificationExpectation.swift
-                    Sources/XCTest/Public/Asynchronous/XCTestCase+PredicateExpectation.swift
-                    Sources/XCTest/Public/Asynchronous/XCPredicateExpectationHandler.swift
-                    Sources/XCTest/Public/Asynchronous/XCWaitCompletionHandler.swift
-                    Sources/XCTest/Public/Asynchronous/XCNotificationExpectationHandler.swift
+                    Sources/XCTest/Public/Asynchronous/XCTNSNotificationExpectation.swift
+                    Sources/XCTest/Public/Asynchronous/XCTNSPredicateExpectation.swift
+                    Sources/XCTest/Public/Asynchronous/XCTWaiter+Validation.swift
+                    Sources/XCTest/Public/Asynchronous/XCTWaiter.swift
                     Sources/XCTest/Public/Asynchronous/XCTestCase+Asynchronous.swift
                     Sources/XCTest/Public/Asynchronous/XCTestExpectation.swift
                   SWIFT_FLAGS
