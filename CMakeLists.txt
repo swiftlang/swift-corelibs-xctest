@@ -45,6 +45,7 @@ add_swift_library(XCTest
                   OUTPUT
                     ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}XCTest${CMAKE_SHARED_LIBRARY_SUFFIX}
                   LINK_FLAGS
+                    -L${XCTEST_PATH_TO_LIBDISPATCH_BUILD}
                     -L${XCTEST_PATH_TO_LIBDISPATCH_BUILD}/src -ldispatch
                     -L${XCTEST_PATH_TO_FOUNDATION_BUILD} -lFoundation
 
@@ -122,7 +123,7 @@ add_custom_target(check-xctest
                     FOUNDATION_BUILT_PRODUCTS_DIR=${XCTEST_PATH_TO_FOUNDATION_BUILD}
                     LIBDISPATCH_SRC_DIR=${XCTEST_PATH_TO_LIBDISPATCH_SOURCE}
                     LIBDISPATCH_BUILD_DIR=${XCTEST_PATH_TO_LIBDISPATCH_BUILD}
-                    LIBDISPATCH_OVERLAY_DIR=${XCTEST_PATH_TO_LIBDISPATCH_BUILD}/swift
+                    LIBDISPATCH_OVERLAY_DIR=${XCTEST_PATH_TO_LIBDISPATCH_BUILD}/src/swift
                     SWIFT_EXEC=${CMAKE_SWIFT_COMPILER}
                     ${LIT_COMMAND} -sv ${CMAKE_SOURCE_DIR}/Tests/Functional
                   COMMENT
