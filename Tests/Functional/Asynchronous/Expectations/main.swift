@@ -461,32 +461,6 @@ class ExpectationsTestCase: XCTestCase {
         RunLoop.main.run(until: Date() + 1)
     }
 
-// CHECK: Test Case 'ExpectationsTestCase.test_multithreadedXCTestCaseConveniences' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: Test Case 'ExpectationsTestCase.test_multithreadedXCTestCaseConveniences' passed \(\d+\.\d+ seconds\)
-    func test_multithreadedXCTestCaseConveniences() {
-        let iterationCount = 10 // Increase for more thorough stress test
-
-        for _ in 0..<iterationCount {
-            let aStarted = XCTestExpectation(description: "Thread A started")
-            let bStarted = XCTestExpectation(description: "Thread B started")
-            let aFinished = XCTestExpectation(description: "Thread A finished")
-            let bFinished = XCTestExpectation(description: "Thread B finished")
-
-            Thread.detachNewThread {
-                aStarted.fulfill()
-                self.wait(for: [bStarted], timeout: 1)
-                aFinished.fulfill()
-            }
-            Thread.detachNewThread {
-                bStarted.fulfill()
-                self.wait(for: [aStarted], timeout: 1)
-                bFinished.fulfill()
-            }
-
-            wait(for: [aFinished, bFinished], timeout: 2)
-        }
-    }
-
     static var allTests = {
         return [
             ("test_waitingForAnUnfulfilledExpectation_fails", test_waitingForAnUnfulfilledExpectation_fails),
@@ -532,16 +506,15 @@ class ExpectationsTestCase: XCTestCase {
             // Regressions
             ("test_fulfillmentOnSecondaryThread", test_fulfillmentOnSecondaryThread),
             ("test_runLoopInsideDispatch", test_runLoopInsideDispatch),
-            ("test_multithreadedXCTestCaseConveniences", test_multithreadedXCTestCaseConveniences),
         ]
     }()
 }
 // CHECK: Test Suite 'ExpectationsTestCase' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 32 tests, with 17 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 31 tests, with 17 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
 XCTMain([testCase(ExpectationsTestCase.allTests)])
 
 // CHECK: Test Suite '.*\.xctest' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 32 tests, with 17 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 31 tests, with 17 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 // CHECK: Test Suite 'All tests' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 32 tests, with 17 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 31 tests, with 17 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
