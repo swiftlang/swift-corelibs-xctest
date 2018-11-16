@@ -155,11 +155,11 @@ private func _XCTEvaluateAssertion(_ assertion: _XCTAssertion, message: @autoclo
 ///  Now calling failures in `AssertEmpty` will be reported in the file and on
 ///  the line that the assert function is *called*, not where it is defined.
 public func XCTAssert(_ expression: @autoclosure () throws -> Bool, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
-    XCTAssertTrue(expression, message, file: file, line: line)
+    XCTAssertTrue(try expression(), message(), file: file, line: line)
 }
 
 public func XCTAssertEqual<T: Equatable>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
-    _XCTEvaluateAssertion(.equal, message: message, file: file, line: line) {
+    _XCTEvaluateAssertion(.equal, message: message(), file: file, line: line) {
         let (value1, value2) = (try expression1(), try expression2())
         if value1 == value2 {
             return .success
@@ -170,7 +170,7 @@ public func XCTAssertEqual<T: Equatable>(_ expression1: @autoclosure () throws -
 }
 
 public func XCTAssertEqual<T: FloatingPoint>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, accuracy: T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
-    _XCTEvaluateAssertion(.equalWithAccuracy, message: message, file: file, line: line) {
+    _XCTEvaluateAssertion(.equalWithAccuracy, message: message(), file: file, line: line) {
         let (value1, value2) = (try expression1(), try expression2())
         if abs(value1.distance(to: value2)) <= abs(accuracy.distance(to: T(0))) {
             return .success
@@ -182,11 +182,11 @@ public func XCTAssertEqual<T: FloatingPoint>(_ expression1: @autoclosure () thro
 
 @available(*, deprecated, renamed: "XCTAssertEqual(_:_:accuracy:file:line:)")
 public func XCTAssertEqualWithAccuracy<T: FloatingPoint>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, accuracy: T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
-    XCTAssertEqual(expression1, expression2, accuracy: accuracy, message, file: file, line: line)
+    XCTAssertEqual(try expression1(), try expression2(), accuracy: accuracy, message(), file: file, line: line)
 }
 
 public func XCTAssertFalse(_ expression: @autoclosure () throws -> Bool, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
-    _XCTEvaluateAssertion(.`false`, message: message, file: file, line: line) {
+    _XCTEvaluateAssertion(.`false`, message: message(), file: file, line: line) {
         let value = try expression()
         if !value {
             return .success
@@ -197,7 +197,7 @@ public func XCTAssertFalse(_ expression: @autoclosure () throws -> Bool, _ messa
 }
 
 public func XCTAssertGreaterThan<T: Comparable>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
-    _XCTEvaluateAssertion(.greaterThan, message: message, file: file, line: line) {
+    _XCTEvaluateAssertion(.greaterThan, message: message(), file: file, line: line) {
         let (value1, value2) = (try expression1(), try expression2())
         if value1 > value2 {
             return .success
@@ -208,7 +208,7 @@ public func XCTAssertGreaterThan<T: Comparable>(_ expression1: @autoclosure () t
 }
 
 public func XCTAssertGreaterThanOrEqual<T: Comparable>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
-    _XCTEvaluateAssertion(.greaterThanOrEqual, message: message, file: file, line: line) {
+    _XCTEvaluateAssertion(.greaterThanOrEqual, message: message(), file: file, line: line) {
         let (value1, value2) = (try expression1(), try expression2())
         if value1 >= value2 {
             return .success
@@ -219,7 +219,7 @@ public func XCTAssertGreaterThanOrEqual<T: Comparable>(_ expression1: @autoclosu
 }
 
 public func XCTAssertLessThan<T: Comparable>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
-    _XCTEvaluateAssertion(.lessThan, message: message, file: file, line: line) {
+    _XCTEvaluateAssertion(.lessThan, message: message(), file: file, line: line) {
         let (value1, value2) = (try expression1(), try expression2())
         if value1 < value2 {
             return .success
@@ -230,7 +230,7 @@ public func XCTAssertLessThan<T: Comparable>(_ expression1: @autoclosure () thro
 }
 
 public func XCTAssertLessThanOrEqual<T: Comparable>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
-    _XCTEvaluateAssertion(.lessThanOrEqual, message: message, file: file, line: line) {
+    _XCTEvaluateAssertion(.lessThanOrEqual, message: message(), file: file, line: line) {
         let (value1, value2) = (try expression1(), try expression2())
         if value1 <= value2 {
             return .success
@@ -241,7 +241,7 @@ public func XCTAssertLessThanOrEqual<T: Comparable>(_ expression1: @autoclosure 
 }
 
 public func XCTAssertNil(_ expression: @autoclosure () throws -> Any?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
-    _XCTEvaluateAssertion(.`nil`, message: message, file: file, line: line) {
+    _XCTEvaluateAssertion(.`nil`, message: message(), file: file, line: line) {
         let value = try expression()
         if value == nil {
             return .success
@@ -252,7 +252,7 @@ public func XCTAssertNil(_ expression: @autoclosure () throws -> Any?, _ message
 }
 
 public func XCTAssertNotEqual<T: Equatable>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
-    _XCTEvaluateAssertion(.notEqual, message: message, file: file, line: line) {
+    _XCTEvaluateAssertion(.notEqual, message: message(), file: file, line: line) {
         let (value1, value2) = (try expression1(), try expression2())
         if value1 != value2 {
             return .success
@@ -263,7 +263,7 @@ public func XCTAssertNotEqual<T: Equatable>(_ expression1: @autoclosure () throw
 }
 
 public func XCTAssertNotEqual<T: FloatingPoint>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, accuracy: T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
-    _XCTEvaluateAssertion(.notEqualWithAccuracy, message: message, file: file, line: line) {
+    _XCTEvaluateAssertion(.notEqualWithAccuracy, message: message(), file: file, line: line) {
         let (value1, value2) = (try expression1(), try expression2())
         if abs(value1.distance(to: value2)) > abs(accuracy.distance(to: T(0))) {
             return .success
@@ -275,11 +275,11 @@ public func XCTAssertNotEqual<T: FloatingPoint>(_ expression1: @autoclosure () t
 
 @available(*, deprecated, renamed: "XCTAssertNotEqual(_:_:accuracy:file:line:)")
 public func XCTAssertNotEqualWithAccuracy<T: FloatingPoint>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ accuracy: T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
-    XCTAssertNotEqual(expression1, expression2, accuracy: accuracy, message, file: file, line: line)
+    XCTAssertNotEqual(try expression1(), try expression2(), accuracy: accuracy, message(), file: file, line: line)
 }
 
 public func XCTAssertNotNil(_ expression: @autoclosure () throws -> Any?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
-    _XCTEvaluateAssertion(.notNil, message: message, file: file, line: line) {
+    _XCTEvaluateAssertion(.notNil, message: message(), file: file, line: line) {
         let value = try expression()
         if value != nil {
             return .success
@@ -290,7 +290,7 @@ public func XCTAssertNotNil(_ expression: @autoclosure () throws -> Any?, _ mess
 }
 
 public func XCTAssertTrue(_ expression: @autoclosure () throws -> Bool, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
-    _XCTEvaluateAssertion(.`true`, message: message, file: file, line: line) {
+    _XCTEvaluateAssertion(.`true`, message: message(), file: file, line: line) {
         let value = try expression()
         if value {
             return .success
@@ -307,7 +307,7 @@ public func XCTFail(_ message: String = "", file: StaticString = #file, line: UI
 }
 
 public func XCTAssertThrowsError<T>(_ expression: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line, _ errorHandler: (_ error: Swift.Error) -> Void = { _ in }) {
-    _XCTEvaluateAssertion(.throwsError, message: message, file: file, line: line) {
+    _XCTEvaluateAssertion(.throwsError, message: message(), file: file, line: line) {
         var caughtErrorOptional: Swift.Error?
         do {
             _ = try expression()
@@ -325,7 +325,7 @@ public func XCTAssertThrowsError<T>(_ expression: @autoclosure () throws -> T, _
 }
 
 public func XCTAssertNoThrow<T>(_ expression: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
-    _XCTEvaluateAssertion(.noThrow, message: message, file: file, line: line) {
+    _XCTEvaluateAssertion(.noThrow, message: message(), file: file, line: line) {
         do {
              _ = try expression()
             return .success
