@@ -83,7 +83,6 @@ add_swift_library(XCTest
                     Sources/XCTest/Public/Asynchronous/XCTestExpectation.swift
                   SWIFT_FLAGS
                     ${swift_optimization_flags}
-                    -swift-version 4
 
                     -I${XCTEST_PATH_TO_LIBDISPATCH_SOURCE}
                     -I${XCTEST_PATH_TO_LIBDISPATCH_BUILD}/src/swift
