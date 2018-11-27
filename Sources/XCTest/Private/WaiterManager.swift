@@ -26,7 +26,7 @@ extension DispatchWorkItem: ManageableWaiterWatchdog {}
 /// This class manages the XCTWaiter instances which are currently waiting on a particular thread.
 /// It facilitates "nested" waiters, allowing an outer waiter to interrupt inner waiters if it times
 /// out.
-internal final class WaiterManager<WaiterType: ManageableWaiter> {
+internal final class WaiterManager<WaiterType: ManageableWaiter> : NSObject {
 
     /// The current thread's waiter manager. This is the only supported way to access an instance of
     /// this class, since each instance is bound to a particular thread and is only concerned with
@@ -53,7 +53,7 @@ internal final class WaiterManager<WaiterType: ManageableWaiter> {
     private let queue = DispatchQueue(label: "org.swift.XCTest.WaiterManager")
 
     // Use `WaiterManager.current` to access the thread-specific instance
-    private init() {}
+    private override init() {}
 
     deinit {
         assert(managedWaiterStack.isEmpty, "Waiters still registered when WaiterManager is deallocating.")
