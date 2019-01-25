@@ -362,7 +362,7 @@ private extension XCTWaiter {
         let timeIntervalToRun = min(0.1, timeout)
 
         // RunLoop.run(mode:before:) should have @discardableResult <rdar://problem/45371901>
-        _ = runLoop.run(mode: .defaultRunLoopMode, before: Date(timeIntervalSinceNow: timeIntervalToRun))
+        _ = runLoop.run(mode: .default, before: Date(timeIntervalSinceNow: timeIntervalToRun))
     }
 
     func cancelPrimitiveWait() {
