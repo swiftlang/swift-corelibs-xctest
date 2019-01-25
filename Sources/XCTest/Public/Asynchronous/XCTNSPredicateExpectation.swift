@@ -95,7 +95,7 @@ open class XCTNSPredicateExpectation: XCTestExpectation {
             }
         }
 
-        runLoop.add(timer, forMode: .default)
+        runLoop.add(timer, forMode: .defaultRunLoopMode)
         queue.async {
             self.timer = timer
         }
