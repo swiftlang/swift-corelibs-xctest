@@ -35,6 +35,16 @@ if(CMAKE_BUILD_TYPE MATCHES Release)
   set(swift_optimization_flags -O)
 endif()
 
+if(CMAKE_SYSTEM_NAME STREQUAL Android OR CMAKE_SYSTEM_NAME STREQUAL Linux)
+  set(deployment_target -DDEPLOYMENT_TARGET_LINUX)
+elseif(CMAKE_SYSTEM_NAME STREQUAL Darwin)
+  set(deployment_target -DDEPLOYMENT_TARGET_MACOSX)
+elseif(CMAKE_SYSTEM_NAME STREQUAL FreeBSD)
+  set(deployment_target -DDEPLOYMENT_TARGET_FREEBSD)
+elseif(CMAKE_SYSTEM_NAME STREQUAL Windows)
+  set(deployment_target -DDEPLOYMENT_TARGET_WINDOWS)
+endif()
+
 add_swift_library(XCTest
                   MODULE_NAME
                     XCTest
@@ -81,6 +91,8 @@ add_swift_library(XCTest
                     Sources/XCTest/Public/Asynchronous/XCTWaiter.swift
                     Sources/XCTest/Public/Asynchronous/XCTestCase+Asynchronous.swift
                     Sources/XCTest/Public/Asynchronous/XCTestExpectation.swift
+                  CFLAGS
+                    ${deployment_target}
                   SWIFT_FLAGS
                     ${swift_optimization_flags}
 
