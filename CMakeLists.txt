@@ -43,6 +43,8 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL FreeBSD)
   set(deployment_target -DDEPLOYMENT_TARGET_FREEBSD)
 elseif(CMAKE_SYSTEM_NAME STREQUAL Windows)
   set(deployment_target -DDEPLOYMENT_TARGET_WINDOWS)
+  set(WORKAROUND_SR9138 -Xlinker;-ignore:4217)
+  set(WORKAROUND_SR9995 -Xlinker;-nodefaultlib:libcmt)
 endif()
 
 add_swift_library(XCTest
@@ -61,6 +63,9 @@ add_swift_library(XCTest
 
                     # compatibility with Foundation build_script.py
                     -L${XCTEST_PATH_TO_FOUNDATION_BUILD}/Foundation
+
+                    ${WORKAROUND_SR9138}
+                    ${WORKAROUND_SR9995}
                   SOURCES
                     Sources/XCTest/Private/WallClockTimeMetric.swift
                     Sources/XCTest/Private/TestListing.swift
