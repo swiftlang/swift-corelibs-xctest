@@ -1,3 +1,4 @@
+.*.sw[nop]
 .DS_Store
 xcuserdata
 *.xcscmblueprint
