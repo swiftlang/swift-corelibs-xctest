@@ -24,7 +24,7 @@ class PredicateHandlerTestCase: XCTestCase {
         waitForExpectations(timeout: 0.1)
     }
     // CHECK: Test Case 'PredicateHandlerTestCase.test_predicateIsTrue_handlerReturnsFalse_fails' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-    // CHECK: .*/Tests/Functional/Asynchronous/Predicates/Handler/main.swift:[[@LINE+8]]: error: PredicateHandlerTestCase.test_predicateIsTrue_handlerReturnsFalse_fails : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: Expect predicate `<NSPredicate: 0x[0-9a-fA-F]{1,16}>` for object <NSObject: 0x[0-9a-fA-F]{1,16}>
+    // CHECK: .*[/\\]Tests[/\\]Functional[/\\]Asynchronous[/\\]Predicates[/\\]Handler[/\\]main.swift:[[@LINE+8]]: error: PredicateHandlerTestCase.test_predicateIsTrue_handlerReturnsFalse_fails : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: Expect predicate `<NSPredicate: 0x[0-9a-fA-F]{1,16}>` for object <NSObject: 0x[0-9a-fA-F]{1,16}>
     // CHECK: Test Case 'PredicateHandlerTestCase.test_predicateIsTrue_handlerReturnsFalse_fails' failed \(\d+\.\d+ seconds\)
     func test_predicateIsTrue_handlerReturnsFalse_fails() {
         let predicate = NSPredicate(value: true)
@@ -36,7 +36,7 @@ class PredicateHandlerTestCase: XCTestCase {
     }
     
     // CHECK: Test Case 'PredicateHandlerTestCase.test_predicateIsTrue_handlerReturnsFalse_fails_standalone' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-    // CHECK: .*/Tests/Functional/Asynchronous/Predicates/Handler/main.swift:[[@LINE+9]]: error: PredicateHandlerTestCase.test_predicateIsTrue_handlerReturnsFalse_fails_standalone : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: Expect predicate `<NSPredicate: 0x[0-9a-fA-F]{1,16}>` for object <NSObject: 0x[0-9a-fA-F]{1,16}>
+    // CHECK: .*[/\\]Tests[/\\]Functional[/\\]Asynchronous[/\\]Predicates[/\\]Handler[/\\]main.swift:[[@LINE+9]]: error: PredicateHandlerTestCase.test_predicateIsTrue_handlerReturnsFalse_fails_standalone : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: Expect predicate `<NSPredicate: 0x[0-9a-fA-F]{1,16}>` for object <NSObject: 0x[0-9a-fA-F]{1,16}>
     // CHECK: Test Case 'PredicateHandlerTestCase.test_predicateIsTrue_handlerReturnsFalse_fails_standalone' failed \(\d+\.\d+ seconds\)
     func test_predicateIsTrue_handlerReturnsFalse_fails_standalone() {
         let predicate = NSPredicate(value: true)
@@ -49,7 +49,7 @@ class PredicateHandlerTestCase: XCTestCase {
     }
 
     // CHECK: Test Case 'PredicateHandlerTestCase.test_predicateIsTrueAfterTimeout_handlerIsNotCalled_fails' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-    // CHECK: .*/Tests/Functional/Asynchronous/Predicates/Handler/main.swift:[[@LINE+14]]: error: PredicateHandlerTestCase.test_predicateIsTrueAfterTimeout_handlerIsNotCalled_fails : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: Expect predicate `<NSPredicate: 0x[0-9a-fA-F]{1,16}>` for object \d{4}-\d{2}-\d{2} \d+:\d+:\d+ \+\d+
+    // CHECK: .*[/\\]Tests[/\\]Functional[/\\]Asynchronous[/\\]Predicates[/\\]Handler[/\\]main.swift:[[@LINE+14]]: error: PredicateHandlerTestCase.test_predicateIsTrueAfterTimeout_handlerIsNotCalled_fails : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: Expect predicate `<NSPredicate: 0x[0-9a-fA-F]{1,16}>` for object \d{4}-\d{2}-\d{2} \d+:\d+:\d+ \+\d+
     // CHECK: Test Case 'PredicateHandlerTestCase.test_predicateIsTrueAfterTimeout_handlerIsNotCalled_fails' failed \(\d+\.\d+ seconds\)
     func test_predicateIsTrueAfterTimeout_handlerIsNotCalled_fails() {
         let halfSecLaterDate = NSDate(timeIntervalSinceNow: 0.2)

@@ -63,7 +63,7 @@ class Observation: XCTestCase {
     }()
 
 // CHECK: Test Case 'Observation.test_one' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: .*/Observation/All/main.swift:[[@LINE+12]]: error: Observation.test_one : failed - fail!
+// CHECK: .*[/\\]Observation[/\\]All[/\\]main.swift:[[@LINE+12]]: error: Observation.test_one : failed - fail!
 // CHECK: Test Case 'Observation.test_one' failed \(\d+\.\d+ seconds\)
     func test_one() {
         XCTAssertEqual(observer.startedBundlePaths.count, 1)

@@ -65,7 +65,7 @@ class NotificationExpectationsTestCase: XCTestCase {
     }
     
 // CHECK: Test Case 'NotificationExpectationsTestCase.test_observeNotificationWithIncorrectName_fails' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: .*/Tests/Functional/Asynchronous/Notifications/Expectations/main.swift:[[@LINE+5]]: error: NotificationExpectationsTestCase.test_observeNotificationWithIncorrectName_fails : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: Expect notification 'expectedName' from any object
+// CHECK: .*[/\\]Tests[/\\]Functional[/\\]Asynchronous[/\\]Notifications[/\\]Expectations[/\\]main.swift:[[@LINE+5]]: error: NotificationExpectationsTestCase.test_observeNotificationWithIncorrectName_fails : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: Expect notification 'expectedName' from any object
 // CHECK: Test Case 'NotificationExpectationsTestCase.test_observeNotificationWithIncorrectName_fails' failed \(\d+\.\d+ seconds\)
     func test_observeNotificationWithIncorrectName_fails() {
         expectation(forNotification: "expectedName", object: nil)
@@ -74,7 +74,7 @@ class NotificationExpectationsTestCase: XCTestCase {
     }
     
 // CHECK: Test Case 'NotificationExpectationsTestCase.test_observeNotificationWithIncorrectObject_fails' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: .*/Tests/Functional/Asynchronous/Notifications/Expectations/main.swift:[[@LINE+8]]: error: NotificationExpectationsTestCase.test_observeNotificationWithIncorrectObject_fails : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: Expect notification 'notificationWithIncorrectObjectTest' from dummyObject
+// CHECK: .*[/\\]Tests[/\\]Functional[/\\]Asynchronous[/\\]Notifications[/\\]Expectations[/\\]main.swift:[[@LINE+8]]: error: NotificationExpectationsTestCase.test_observeNotificationWithIncorrectObject_fails : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: Expect notification 'notificationWithIncorrectObjectTest' from dummyObject
 // CHECK: Test Case 'NotificationExpectationsTestCase.test_observeNotificationWithIncorrectObject_fails' failed \(\d+\.\d+ seconds\)
     func test_observeNotificationWithIncorrectObject_fails() {
         let notificationName = Notification.Name(rawValue: "notificationWithIncorrectObjectTest")

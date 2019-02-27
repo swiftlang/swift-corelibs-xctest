@@ -31,7 +31,7 @@ class NegativeAccuracyTestCase: XCTestCase {
     }
 
 // CHECK: Test Case 'NegativeAccuracyTestCase.test_equalWithAccuracy_fails' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: .*/NegativeAccuracyTestCase/main.swift:[[@LINE+3]]: error: NegativeAccuracyTestCase.test_equalWithAccuracy_fails : XCTAssertEqual failed: \(\"0\.0\"\) is not equal to \(\"0\.2\"\) \+\/- \(\"-0\.1\"\) - $
+// CHECK: .*[/\\]NegativeAccuracyTestCase[/\\]main.swift:[[@LINE+3]]: error: NegativeAccuracyTestCase.test_equalWithAccuracy_fails : XCTAssertEqual failed: \(\"0\.0\"\) is not equal to \(\"0\.2\"\) \+\/- \(\"-0\.1\"\) - $
 // CHECK: Test Case 'NegativeAccuracyTestCase.test_equalWithAccuracy_fails' failed \(\d+\.\d+ seconds\)
     func test_equalWithAccuracy_fails() {
         XCTAssertEqual(0, 0.2, accuracy: -0.1)
@@ -44,7 +44,7 @@ class NegativeAccuracyTestCase: XCTestCase {
     }
 
 // CHECK: Test Case 'NegativeAccuracyTestCase.test_notEqualWithAccuracy_fails' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: .*/NegativeAccuracyTestCase/main.swift:[[@LINE+3]]: error: NegativeAccuracyTestCase.test_notEqualWithAccuracy_fails : XCTAssertNotEqual failed: \("1\.0"\) is equal to \("2\.0"\) \+/- \("-1\.0"\) - $
+// CHECK: .*[/\\]NegativeAccuracyTestCase[/\\]main.swift:[[@LINE+3]]: error: NegativeAccuracyTestCase.test_notEqualWithAccuracy_fails : XCTAssertNotEqual failed: \("1\.0"\) is equal to \("2\.0"\) \+/- \("-1\.0"\) - $
 // CHECK: Test Case 'NegativeAccuracyTestCase.test_notEqualWithAccuracy_fails' failed \(\d+\.\d+ seconds\)
     func test_notEqualWithAccuracy_fails() {
         XCTAssertNotEqual(1, 2, accuracy: -1)
