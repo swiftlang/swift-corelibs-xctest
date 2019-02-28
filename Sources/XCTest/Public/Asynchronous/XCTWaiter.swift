@@ -217,9 +217,9 @@ open class XCTWaiter {
         self.manager = manager
 
         // Begin the core wait loop.
-        let timeoutTimestamp = CFAbsoluteTimeGetCurrent() + timeout
+        let timeoutTimestamp = Date.timeIntervalSinceReferenceDate + timeout
         while !isFinished {
-            let remaining = timeoutTimestamp - CFAbsoluteTimeGetCurrent()
+            let remaining = timeoutTimestamp - Date.timeIntervalSinceReferenceDate
             if remaining <= 0 {
                 break
             }
