@@ -129,11 +129,12 @@ add_custom_command(TARGET
                     "Copying swiftmodule/swiftdoc to build directory")
 
 if(EXISTS ${LLVM_MAIN_SRC_DIR}/utils/lit/lit.py)
-  set(LIT_COMMAND "${PYTHON_EXECUTABLE};${LLVM_MAIN_SRC_DIR}/utils/lit/lit.py"
+  set(LIT_COMMAND "${LLVM_MAIN_SRC_DIR}/utils/lit/lit.py"
       CACHE STRING "command used to spawn llvm-lit")
 else()
   find_program(LIT_COMMAND NAMES llvm-lit lit.py lit)
 endif()
+find_package(PythonInterp)
 add_custom_target(check-xctest
                   COMMAND
                   ${CMAKE_COMMAND} -E env
@@ -144,7 +145,7 @@ add_custom_target(check-xctest
                     LIBDISPATCH_BUILD_DIR=${XCTEST_PATH_TO_LIBDISPATCH_BUILD}
                     LIBDISPATCH_OVERLAY_DIR=${XCTEST_PATH_TO_LIBDISPATCH_BUILD}/src/swift
                     SWIFT_EXEC=${CMAKE_SWIFT_COMPILER}
-                    ${LIT_COMMAND} -sv ${CMAKE_SOURCE_DIR}/Tests/Functional
+                    ${PYTHON_EXECUTABLE} ${LIT_COMMAND} -sv ${CMAKE_SOURCE_DIR}/Tests/Functional
                   COMMENT
                     "Running XCTest functional test suite"
                   DEPENDS
