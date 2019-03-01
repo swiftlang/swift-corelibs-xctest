@@ -8,6 +8,8 @@ project(XCTest
         LANGUAGES
           C)
 
+option(BUILD_SHARED_LIBS "Build shared libraries" ON)
+
 option(XCTEST_PATH_TO_LIBDISPATCH_SOURCE "Path to libdispatch source" "")
 option(XCTEST_PATH_TO_LIBDISPATCH_BUILD "Path to libdispatch build" "")
 
