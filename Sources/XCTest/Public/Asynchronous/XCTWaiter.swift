@@ -367,7 +367,11 @@ private extension XCTWaiter {
 
     func cancelPrimitiveWait() {
         guard let runLoop = runLoop else { return }
+#if os(Windows)
+        runLoop._stop()
+#else
         CFRunLoopStop(runLoop.getCFRunLoop())
+#endif
     }
 }
 
