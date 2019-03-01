@@ -216,11 +216,11 @@ class ExpectationsTestCase: XCTestCase {
             bar.fulfill()
         }
 
-        let start = CFAbsoluteTimeGetCurrent()
+        let start = Date.timeIntervalSinceReferenceDate
         waitForExpectations(timeout: 0.5)
 
         // Make sure we actually waited long enough.
-        XCTAssertGreaterThanOrEqual(CFAbsoluteTimeGetCurrent() - start, 0.5)
+        XCTAssertGreaterThanOrEqual(Date.timeIntervalSinceReferenceDate - start, 0.5)
     }
 
 // CHECK: Test Case 'ExpectationsTestCase.test_combiningInverseAndStandardExpectationsFailWithTimeout' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
@@ -231,11 +231,11 @@ class ExpectationsTestCase: XCTestCase {
         foo.isInverted = true
         expectation(description: "bar")
 
-        let start = CFAbsoluteTimeGetCurrent()
+        let start = Date.timeIntervalSinceReferenceDate
         waitForExpectations(timeout: 0.5)
 
         // Make sure we actually waited long enough.
-        XCTAssertGreaterThanOrEqual(CFAbsoluteTimeGetCurrent() - start, 0.5)
+        XCTAssertGreaterThanOrEqual(Date.timeIntervalSinceReferenceDate - start, 0.5)
     }
 
 // CHECK: Test Case 'ExpectationsTestCase.test_combiningInverseAndStandardExpectationsFailWithInverseFulfillment' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
@@ -269,9 +269,9 @@ class ExpectationsTestCase: XCTestCase {
             c.fulfill()
         }
 
-        start = CFAbsoluteTimeGetCurrent()
+        start = Date.timeIntervalSinceReferenceDate
         wait(for: [a, b, c], timeout: 0.2, enforceOrder: true)
-        XCTAssertGreaterThanOrEqual(CFAbsoluteTimeGetCurrent() - start, 0.2)
+        XCTAssertGreaterThanOrEqual(Date.timeIntervalSinceReferenceDate - start, 0.2)
 
         a = XCTestExpectation(description: "a")
         a.isInverted = true
@@ -282,9 +282,9 @@ class ExpectationsTestCase: XCTestCase {
             c.fulfill()
         }
 
-        start = CFAbsoluteTimeGetCurrent()
+        start = Date.timeIntervalSinceReferenceDate
         wait(for: [b, a, c], timeout: 0.2, enforceOrder: true)
-        XCTAssertGreaterThanOrEqual(CFAbsoluteTimeGetCurrent() - start, 0.2)
+        XCTAssertGreaterThanOrEqual(Date.timeIntervalSinceReferenceDate - start, 0.2)
 
         a = XCTestExpectation(description: "a")
         a.isInverted = true
@@ -295,9 +295,9 @@ class ExpectationsTestCase: XCTestCase {
             c.fulfill()
         }
 
-        start = CFAbsoluteTimeGetCurrent()
+        start = Date.timeIntervalSinceReferenceDate
         wait(for: [b, c, a], timeout: 0.2, enforceOrder: true)
-        XCTAssertGreaterThanOrEqual(CFAbsoluteTimeGetCurrent() - start, 0.2)
+        XCTAssertGreaterThanOrEqual(Date.timeIntervalSinceReferenceDate - start, 0.2)
     }
 
     // PRAGMA MARK: - Counted Expectations
@@ -362,9 +362,9 @@ class ExpectationsTestCase: XCTestCase {
             }
         }
 
-        let start = CFAbsoluteTimeGetCurrent()
+        let start = Date.timeIntervalSinceReferenceDate
         let result = outerWaiter.wait(for: [outerExpectation], timeout: 0.1)
-        let durationOfOuterWait = CFAbsoluteTimeGetCurrent() - start
+        let durationOfOuterWait = Date.timeIntervalSinceReferenceDate - start
         XCTAssertEqual(result, .timedOut)
 
         // The theoretical best-case duration in the current implementation is:
@@ -383,7 +383,7 @@ class ExpectationsTestCase: XCTestCase {
         var outerExpectationFulfillTime = CFAbsoluteTime(0)
         RunLoop.main.perform {
             RunLoop.main.perform {
-                outerExpectationFulfillTime = CFAbsoluteTimeGetCurrent()
+                outerExpectationFulfillTime = Date.timeIntervalSinceReferenceDate
                 outerExpectation.fulfill()
             }
             let innerWaiter = XCTWaiter(delegate: self)
@@ -391,10 +391,10 @@ class ExpectationsTestCase: XCTestCase {
             XCTAssertEqual(innerWaiter.wait(for: [innerExpectation], timeout: 1), .timedOut)
         }
 
-        let start = CFAbsoluteTimeGetCurrent()
+        let start = Date.timeIntervalSinceReferenceDate
         XCTAssertEqual(outerWaiter.wait(for: [outerExpectation], timeout: 1), .completed)
         XCTAssertLessThanOrEqual(outerExpectationFulfillTime - start, 0.1)
-        XCTAssertGreaterThanOrEqual(CFAbsoluteTimeGetCurrent() - start, 1)
+        XCTAssertGreaterThanOrEqual(Date.timeIntervalSinceReferenceDate - start, 1)
     }
 
     // PRAGMA MARK: - Waiter Conveniences
