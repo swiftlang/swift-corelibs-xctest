@@ -65,7 +65,9 @@ class PerformanceTestCase: XCTestCase {
     // CHECK: .*[/\\]Performance[/\\]main.swift:[[@LINE+3]]: Test Case 'PerformanceTestCase.test_printsValuesAfterMeasuring' measured \[Time, seconds\] average: \d+.\d{3}, relative standard deviation: \d+.\d{3}%, values: \[\d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}, \d+.\d{6}\], performanceMetricID:org.swift.XCTPerformanceMetric_WallClockTime, maxPercentRelativeStandardDeviation: \d+.\d{3}%, maxStandardDeviation: \d.\d{3}
     // CHECK: Test Case 'PerformanceTestCase.test_printsValuesAfterMeasuring' passed \(\d+\.\d+ seconds\)
     func test_printsValuesAfterMeasuring() {
-        measure {}
+        measure {
+          Thread.sleep(forTimeInterval: 1)
+        }
     }
 
     // CHECK: Test Case 'PerformanceTestCase.test_abortsMeasurementsAfterTestFailure' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
