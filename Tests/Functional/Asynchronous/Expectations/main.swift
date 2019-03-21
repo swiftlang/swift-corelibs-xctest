@@ -340,11 +340,14 @@ class ExpectationsTestCase: XCTestCase {
 
     // PRAGMA MARK: - Interrupted Waiters
 
-// CHECK: Test Case 'ExpectationsTestCase.test_outerWaiterTimesOut_InnerWaitersAreInterrupted' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: .*[/\\]Tests[/\\]Functional[/\\]Asynchronous[/\\]Expectations[/\\]main.swift:[[@LINE+22]]: error: ExpectationsTestCase.test_outerWaiterTimesOut_InnerWaitersAreInterrupted : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: outer
-// CHECK: .*[/\\]Tests[/\\]Functional[/\\]Asynchronous[/\\]Expectations[/\\]main.swift:[[@LINE+11]]: error: ExpectationsTestCase.test_outerWaiterTimesOut_InnerWaitersAreInterrupted : Asynchronous waiter <XCTWaiter expectations: 'inner-1'> failed - Interrupted by timeout of containing waiter <XCTWaiter expectations: 'outer'>
-// CHECK: .*[/\\]Tests[/\\]Functional[/\\]Asynchronous[/\\]Expectations[/\\]main.swift:[[@LINE+15]]: error: ExpectationsTestCase.test_outerWaiterTimesOut_InnerWaitersAreInterrupted : Asynchronous waiter <XCTWaiter expectations: 'inner-2'> failed - Interrupted by timeout of containing waiter <XCTWaiter expectations: 'outer'>
-// CHECK: Test Case 'ExpectationsTestCase.test_outerWaiterTimesOut_InnerWaitersAreInterrupted' failed \(\d+\.\d+ seconds\)
+    // Disabled due to non-deterministic ordering of XCTWaiterDelegate callbacks, see [SR-10034] and <rdar://problem/49123061>
+/*
+    CHECK: Test Case 'ExpectationsTestCase.test_outerWaiterTimesOut_InnerWaitersAreInterrupted' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+    CHECK: .*[/\\]Tests[/\\]Functional[/\\]Asynchronous[/\\]Expectations[/\\]main.swift:[[@LINE+22]]: error: ExpectationsTestCase.test_outerWaiterTimesOut_InnerWaitersAreInterrupted : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: outer
+    CHECK: .*[/\\]Tests[/\\]Functional[/\\]Asynchronous[/\\]Expectations[/\\]main.swift:[[@LINE+11]]: error: ExpectationsTestCase.test_outerWaiterTimesOut_InnerWaitersAreInterrupted : Asynchronous waiter <XCTWaiter expectations: 'inner-1'> failed - Interrupted by timeout of containing waiter <XCTWaiter expectations: 'outer'>
+    CHECK: .*[/\\]Tests[/\\]Functional[/\\]Asynchronous[/\\]Expectations[/\\]main.swift:[[@LINE+15]]: error: ExpectationsTestCase.test_outerWaiterTimesOut_InnerWaitersAreInterrupted : Asynchronous waiter <XCTWaiter expectations: 'inner-2'> failed - Interrupted by timeout of containing waiter <XCTWaiter expectations: 'outer'>
+    CHECK: Test Case 'ExpectationsTestCase.test_outerWaiterTimesOut_InnerWaitersAreInterrupted' failed \(\d+\.\d+ seconds\)
+ */
     func test_outerWaiterTimesOut_InnerWaitersAreInterrupted() {
         let outerWaiter = XCTWaiter(delegate: self)
         let outerExpectation = XCTestExpectation(description: "outer")
@@ -495,7 +498,7 @@ class ExpectationsTestCase: XCTestCase {
             ("test_countedConditionFail", test_countedConditionFail),
 
             // Interrupted Waiters
-            ("test_outerWaiterTimesOut_InnerWaitersAreInterrupted", test_outerWaiterTimesOut_InnerWaitersAreInterrupted),
+//            ("test_outerWaiterTimesOut_InnerWaitersAreInterrupted", test_outerWaiterTimesOut_InnerWaitersAreInterrupted),
             ("test_outerWaiterCompletes_InnerWaiterTimesOut", test_outerWaiterCompletes_InnerWaiterTimesOut),
 
             // Waiter Conveniences
@@ -510,11 +513,11 @@ class ExpectationsTestCase: XCTestCase {
     }()
 }
 // CHECK: Test Suite 'ExpectationsTestCase' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 31 tests, with 17 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 30 tests, with 14 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
 XCTMain([testCase(ExpectationsTestCase.allTests)])
 
 // CHECK: Test Suite '.*\.xctest' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 31 tests, with 17 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 30 tests, with 14 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 // CHECK: Test Suite 'All tests' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 31 tests, with 17 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 30 tests, with 14 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
