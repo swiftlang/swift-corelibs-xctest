@@ -341,36 +341,46 @@ class ExpectationsTestCase: XCTestCase {
     // PRAGMA MARK: - Interrupted Waiters
 
 // CHECK: Test Case 'ExpectationsTestCase.test_outerWaiterTimesOut_InnerWaitersAreInterrupted' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: .*[/\\]Tests[/\\]Functional[/\\]Asynchronous[/\\]Expectations[/\\]main.swift:[[@LINE+22]]: error: ExpectationsTestCase.test_outerWaiterTimesOut_InnerWaitersAreInterrupted : Asynchronous wait failed - Exceeded timeout of 0.1 seconds, with unfulfilled expectations: outer
-// CHECK: .*[/\\]Tests[/\\]Functional[/\\]Asynchronous[/\\]Expectations[/\\]main.swift:[[@LINE+11]]: error: ExpectationsTestCase.test_outerWaiterTimesOut_InnerWaitersAreInterrupted : Asynchronous waiter <XCTWaiter expectations: 'inner-1'> failed - Interrupted by timeout of containing waiter <XCTWaiter expectations: 'outer'>
-// CHECK: .*[/\\]Tests[/\\]Functional[/\\]Asynchronous[/\\]Expectations[/\\]main.swift:[[@LINE+15]]: error: ExpectationsTestCase.test_outerWaiterTimesOut_InnerWaitersAreInterrupted : Asynchronous waiter <XCTWaiter expectations: 'inner-2'> failed - Interrupted by timeout of containing waiter <XCTWaiter expectations: 'outer'>
+// CHECK: .*[/\\]Tests[/\\]Functional[/\\]Asynchronous[/\\]Expectations[/\\]main.swift:[[@LINE+27]]: error: ExpectationsTestCase.test_outerWaiterTimesOut_InnerWaitersAreInterrupted : Asynchronous wait failed - Exceeded timeout of 2.0 seconds, with unfulfilled expectations: outer
+// CHECK: .*[/\\]Tests[/\\]Functional[/\\]Asynchronous[/\\]Expectations[/\\]main.swift:[[@LINE+15]]: error: ExpectationsTestCase.test_outerWaiterTimesOut_InnerWaitersAreInterrupted : Asynchronous waiter <XCTWaiter expectations: 'inner-1'> failed - Interrupted by timeout of containing waiter <XCTWaiter expectations: 'outer'>
+// CHECK: .*[/\\]Tests[/\\]Functional[/\\]Asynchronous[/\\]Expectations[/\\]main.swift:[[@LINE+19]]: error: ExpectationsTestCase.test_outerWaiterTimesOut_InnerWaitersAreInterrupted : Asynchronous waiter <XCTWaiter expectations: 'inner-2'> failed - Interrupted by timeout of containing waiter <XCTWaiter expectations: 'outer'>
 // CHECK: Test Case 'ExpectationsTestCase.test_outerWaiterTimesOut_InnerWaitersAreInterrupted' failed \(\d+\.\d+ seconds\)
     func test_outerWaiterTimesOut_InnerWaitersAreInterrupted() {
-        let outerWaiter = XCTWaiter(delegate: self)
-        let outerExpectation = XCTestExpectation(description: "outer")
+        let testFinishedExpectation = XCTestExpectation(description: "Test finished")
 
-        RunLoop.main.perform {
-            do {
-                let innerWaiter = XCTWaiter(delegate: self)
-                let innerExpectation = XCTestExpectation(description: "inner-1")
-                XCTAssertEqual(innerWaiter.wait(for: [innerExpectation], timeout: 1), .interrupted, "waiting for \(innerExpectation.expectationDescription)")
+        // Run this test on a background queue because the main run loop has a tendency to get clogged up with unrelated callouts which interfere with the timing assertion near the end of this test
+        DispatchQueue.global(qos: .userInitiated).async {
+            let outerWaiter = XCTWaiter(delegate: self)
+            let outerExpectation = XCTestExpectation(description: "outer")
+
+            RunLoop.current.perform {
+                do {
+                    let innerWaiter = XCTWaiter(delegate: self)
+                    let innerExpectation = XCTestExpectation(description: "inner-1")
+                    XCTAssertEqual(innerWaiter.wait(for: [innerExpectation], timeout: 5), .interrupted, "waiting for \(innerExpectation.expectationDescription)")
+                }
+                do {
+                    let innerWaiter = XCTWaiter(delegate: self)
+                    let innerExpectation = XCTestExpectation(description: "inner-2")
+                    XCTAssertEqual(innerWaiter.wait(for: [innerExpectation], timeout: 5), .interrupted, "waiting for \(innerExpectation.expectationDescription)")
+                }
             }
-            do {
-                let innerWaiter = XCTWaiter(delegate: self)
-                let innerExpectation = XCTestExpectation(description: "inner-2")
-                XCTAssertEqual(innerWaiter.wait(for: [innerExpectation], timeout: 1), .interrupted, "waiting for \(innerExpectation.expectationDescription)")
-            }
+
+            let start = Date.timeIntervalSinceReferenceDate
+            let outerTimeout = 2.0
+            let result = outerWaiter.wait(for: [outerExpectation], timeout: outerTimeout)
+            let durationOfOuterWait = Date.timeIntervalSinceReferenceDate - start
+            XCTAssertEqual(result, .timedOut)
+
+            // The theoretical best-case duration in the current implementation is:
+            //     `outerTimeout` (2.0) + `outerTimeoutSlop` (0.25) = 2.25
+            // Adding some leeway for other system activity brings us to this value for the assertion.
+            XCTAssertLessThanOrEqual(durationOfOuterWait, 3.0)
+
+            testFinishedExpectation.fulfill()
         }
 
-        let start = Date.timeIntervalSinceReferenceDate
-        let result = outerWaiter.wait(for: [outerExpectation], timeout: 0.1)
-        let durationOfOuterWait = Date.timeIntervalSinceReferenceDate - start
-        XCTAssertEqual(result, .timedOut)
-
-        // The theoretical best-case duration in the current implementation is:
-        //     `timeout` (.1) + `kOuterTimeoutSlop` (.25) = .35
-        // Adding some leeway for other system activity brings us to this value for the assertion.
-        XCTAssertLessThanOrEqual(durationOfOuterWait, 0.65)
+        wait(for: [testFinishedExpectation], timeout: 10)
     }
 
 // CHECK: Test Case 'ExpectationsTestCase.test_outerWaiterCompletes_InnerWaiterTimesOut' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
