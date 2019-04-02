@@ -106,6 +106,7 @@ add_swift_library(XCTest
                     -Xcc -fblocks
 
                     -I${XCTEST_PATH_TO_FOUNDATION_BUILD}/swift
+                    -Fsystem ${XCTEST_PATH_TO_FOUNDATION_BUILD}
                     -Fsystem ${XCTEST_PATH_TO_COREFOUNDATION_BUILD}/System/Library/Frameworks
 
                     # compatibility with Foundation build_script.py
