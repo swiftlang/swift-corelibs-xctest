@@ -15,8 +15,6 @@ option(XCTEST_PATH_TO_LIBDISPATCH_BUILD "Path to libdispatch build" "")
 
 option(XCTEST_PATH_TO_FOUNDATION_BUILD "Path to Foundation build" "")
 
-option(XCTEST_PATH_TO_COREFOUNDATION_BUILD "Path to CoreFoundation build" "")
-
 find_package(LLVM CONFIG)
 if(NOT LLVM_FOUND)
   message(SEND_ERROR "Could not find LLVM; configure with -DCMAKE_PREFIX_PATH=/path/to/llvm/install")
@@ -107,7 +105,6 @@ add_swift_library(XCTest
 
                     -I${XCTEST_PATH_TO_FOUNDATION_BUILD}/swift
                     -Fsystem ${XCTEST_PATH_TO_FOUNDATION_BUILD}
-                    -Fsystem ${XCTEST_PATH_TO_COREFOUNDATION_BUILD}/System/Library/Frameworks
 
                     # compatibility with Foundation build_script.py
                     -I${XCTEST_PATH_TO_FOUNDATION_BUILD}/Foundation
@@ -138,7 +135,6 @@ add_custom_target(check-xctest
                   COMMAND
                   ${CMAKE_COMMAND} -E env
                     BUILT_PRODUCTS_DIR=${CMAKE_BINARY_DIR}
-                    CORE_FOUNDATION_BUILT_PRODUCTS_DIR=${XCTEST_PATH_TO_COREFOUNDATION_BUILD}
                     FOUNDATION_BUILT_PRODUCTS_DIR=${XCTEST_PATH_TO_FOUNDATION_BUILD}
                     LIBDISPATCH_SRC_DIR=${XCTEST_PATH_TO_LIBDISPATCH_SOURCE}
                     LIBDISPATCH_BUILD_DIR=${XCTEST_PATH_TO_LIBDISPATCH_BUILD}
