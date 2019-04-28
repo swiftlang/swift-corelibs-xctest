@@ -17,7 +17,9 @@ internal struct ObjectWrapper<T>: Hashable {
     let object: T
     let objectIdentifier: ObjectIdentifier
 
-    var hashValue: Int { return objectIdentifier.hashValue }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(objectIdentifier)
+    }
 }
 
 internal func ==<T>(lhs: ObjectWrapper<T>, rhs: ObjectWrapper<T>) -> Bool {
