@@ -163,13 +163,31 @@ install(FILES
           ${CMAKE_CURRENT_BINARY_DIR}/swift/XCTest.swiftmodule
         DESTINATION
           ${CMAKE_INSTALL_FULL_LIBDIR}/swift/${swift_os}/${swift_host_arch})
-install(FILES
-          ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}XCTest${CMAKE_SHARED_LIBRARY_SUFFIX}
-        DESTINATION
-          ${CMAKE_INSTALL_FULL_LIBDIR})
-# NOTE(compnerd) stage a compatibility copy in the swift resource dir
-install(FILES
-          ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}XCTest${CMAKE_SHARED_LIBRARY_SUFFIX}
-        DESTINATION
-          ${CMAKE_INSTALL_FULL_LIBDIR}/swift/${swift_os})
 
+if(BUILD_SHARED_LIBS)
+  set(library_kind SHARED)
+  set(swift_dir swift)
+else()
+  set(library_kind STATIC)
+  set(swift_dir swift_static)
+endif()
+
+set(XCTest_OUTPUT_FILE
+    ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_${library_kind}_LIBRARY_PREFIX}XCTest${CMAKE_${library_kind}_LIBRARY_SUFFIX})
+
+if(CMAKE_SYSTEM_NAME STREQUAL Windows AND BUILD_SHARED_LIBS)
+  install(FILES
+            ${XCTest_OUTPUT_FILE}
+          DESTINATION
+            ${CMAKE_INSTALL_FULL_BINDIR})
+  install(FILES
+            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_IMPORT_LIBRARY_PREFIX}XCTest${CMAKE_IMPORT_LIBRARY_SUFFIX}
+          DESTINATION
+            ${CMAKE_INSTALL_FULL_LIBDIR}/${swift_dir}/${swift_os})
+else()
+  # NOTE(compnerd) stage a compatibility copy in the swift resource dir
+  install(FILES
+            ${XCTest_OUTPUT_FILE}
+          DESTINATION
+            ${CMAKE_INSTALL_FULL_LIBDIR}/${swift_dir}/${swift_os})
+endif()
