@@ -12,7 +12,7 @@
 //
 
 public struct XCTPerformanceMetric : RawRepresentable, Equatable, Hashable {
-    public private(set) var rawValue: String
+    public let rawValue: String
 
     public init(_ rawValue: String) {
         self.rawValue = rawValue
@@ -20,14 +20,6 @@ public struct XCTPerformanceMetric : RawRepresentable, Equatable, Hashable {
 
     public init(rawValue: String) {
         self.rawValue = rawValue
-    }
-
-    public var hashValue: Int {
-        return rawValue.hashValue
-    }
-
-    public static func ==(_ lhs: XCTPerformanceMetric, _ rhs: XCTPerformanceMetric) -> Bool {
-        return lhs.rawValue == rhs.rawValue
     }
 }
 
