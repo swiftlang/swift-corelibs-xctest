@@ -15,7 +15,7 @@
 /// call `setUp` and `tearDown` on the class itself before and after invoking
 /// all of the test cases making up the class.
 internal class XCTestCaseSuite: XCTestSuite {
-    private let testCaseClass: XCTestCase.Type?
+    private let testCaseClass: XCTestCase.Type
 
     init(testCaseEntry: XCTestCaseEntry) {
         let testCaseClass = testCaseEntry.testCaseClass
@@ -29,14 +29,10 @@ internal class XCTestCaseSuite: XCTestSuite {
     }
 
     override func setUp() {
-        if let testCaseClass = testCaseClass {
-            testCaseClass.setUp()
-        }
+        testCaseClass.setUp()
     }
 
     override func tearDown() {
-        if let testCaseClass = testCaseClass {
-            testCaseClass.tearDown()
-        }
+        testCaseClass.tearDown()
     }
 }
