@@ -107,20 +107,6 @@ add_swift_library(XCTest
                     -I${XCTEST_PATH_TO_FOUNDATION_BUILD}/Foundation
                     -I${XCTEST_PATH_TO_FOUNDATION_BUILD}/Foundation/usr/lib/swift)
 
-# Temporary staging; the various swift projects that depend on XCTest all expect
-# the swiftdoc and swiftmodule to be in the top level.
-# So for now, make a copy so we don't have to do a coordinated commit across
-# all the swift projects to change this assumption.
-add_custom_command(TARGET
-                    XCTest
-                  POST_BUILD
-                  COMMAND
-                    ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/swift/XCTest.swiftdoc ${CMAKE_CURRENT_BINARY_DIR}
-                  COMMAND
-                    ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/swift/XCTest.swiftmodule ${CMAKE_CURRENT_BINARY_DIR}
-                  COMMENT
-                    "Copying swiftmodule/swiftdoc to build directory")
-
 if(ENABLE_TESTING)
   if(EXISTS ${LLVM_MAIN_SRC_DIR}/utils/lit/lit.py)
     set(LIT_COMMAND "${LLVM_MAIN_SRC_DIR}/utils/lit/lit.py"
