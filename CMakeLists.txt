@@ -36,11 +36,6 @@ endif()
 include(SwiftSupport)
 include(GNUInstallDirs)
 
-set(swift_optimization_flags)
-if(CMAKE_BUILD_TYPE MATCHES Release)
-  set(swift_optimization_flags -O)
-endif()
-
 if(CMAKE_SYSTEM_NAME STREQUAL Windows)
   set(WORKAROUND_SR9138 -Xlinker;-ignore:4217)
   set(WORKAROUND_SR9995 -Xlinker;-nodefaultlib:libcmt)
@@ -94,7 +89,7 @@ add_swift_library(XCTest
                     Sources/XCTest/Public/Asynchronous/XCTestCase+Asynchronous.swift
                     Sources/XCTest/Public/Asynchronous/XCTestExpectation.swift
                   SWIFT_FLAGS
-                    ${swift_optimization_flags}
+                    $<$<NOT:$<CONFIG:Debug>>:-O>
 
                     -I${XCTEST_PATH_TO_LIBDISPATCH_SOURCE}
                     -I${XCTEST_PATH_TO_LIBDISPATCH_BUILD}/src/swift
