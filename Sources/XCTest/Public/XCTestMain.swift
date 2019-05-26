@@ -20,9 +20,9 @@
     @_exported import Foundation
 #endif
 
-#if os(macOS)
+#if canImport(Darwin)
     import Darwin
-#elseif os(Linux) || os(FreeBSD)
+#elseif canImport(Glibc)
     import Glibc
 #endif
 
