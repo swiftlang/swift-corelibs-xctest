@@ -9,7 +9,7 @@ function(add_swift_target target)
   cmake_parse_arguments(AST "${options}" "${single_value_options}" "${multiple_value_options}" ${ARGN})
 
   set(compile_flags ${CMAKE_SWIFT_FLAGS})
-  set(link_flags)
+  set(link_flags ${CMAKE_SWIFT_LINK_FLAGS})
 
   if(AST_TARGET)
     list(APPEND compile_flags -target;${AST_TARGET})
@@ -219,7 +219,7 @@ function(add_swift_executable executable)
   add_swift_target(${executable} ${ARGN})
 endfunction()
 
-# Returns the current achitecture name in a variable
+# Returns the current architecture name in a variable
 #
 # Usage:
 #   get_swift_host_arch(result_var_name)
@@ -240,6 +240,8 @@ function(get_swift_host_arch result_var_name)
   elseif("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "armv6l")
     set("${result_var_name}" "armv6" PARENT_SCOPE)
   elseif("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "armv7l")
+    set("${result_var_name}" "armv7" PARENT_SCOPE)
+  elseif("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "armv7-a")
     set("${result_var_name}" "armv7" PARENT_SCOPE)
   elseif("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "AMD64")
     set("${result_var_name}" "x86_64" PARENT_SCOPE)

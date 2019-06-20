@@ -88,6 +88,8 @@ add_swift_library(XCTest
                     Sources/XCTest/Public/Asynchronous/XCTWaiter.swift
                     Sources/XCTest/Public/Asynchronous/XCTestCase+Asynchronous.swift
                     Sources/XCTest/Public/Asynchronous/XCTestExpectation.swift
+                  TARGET
+                    ${CMAKE_C_COMPILER_TARGET}
                   SWIFT_FLAGS
                     $<$<NOT:$<CONFIG:Debug>>:-O>
 
