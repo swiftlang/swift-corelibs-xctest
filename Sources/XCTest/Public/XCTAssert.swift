@@ -21,6 +21,7 @@ private enum _XCTAssertion {
     case notEqualWithAccuracy
     case `nil`
     case notNil
+    case unwrap
     case `true`
     case `false`
     case fail
@@ -39,6 +40,7 @@ private enum _XCTAssertion {
         case .notEqualWithAccuracy: return "XCTAssertNotEqual"
         case .`nil`: return "XCTAssertNil"
         case .notNil: return "XCTAssertNotNil"
+        case .unwrap: return "XCTUnwrap"
         case .`true`: return "XCTAssertTrue"
         case .`false`: return "XCTAssertFalse"
         case .throwsError: return "XCTAssertThrowsError"
@@ -286,6 +288,47 @@ public func XCTAssertNotNil(_ expression: @autoclosure () throws -> Any?, _ mess
         } else {
             return .expectedFailure(nil)
         }
+    }
+}
+
+/// Asserts that an expression is not `nil`, and returns its unwrapped value.
+///
+/// Generates a failure if `expression` returns `nil`.
+///
+/// - Parameters:
+///   - expression: An expression of type `T?` to compare against `nil`. Its type will determine the type of the
+///     returned value.
+///   - message: An optional description of the failure.
+///   - file: The file in which failure occurred. Defaults to the file name of the test case in which this function was
+///     called.
+///   - line: The line number on which failure occurred. Defaults to the line number on which this function was called.
+/// - Returns: A value of type `T`, the result of evaluating and unwrapping the given `expression`.
+/// - Throws: An error if `expression` returns `nil`. If `expression` throws an error, then that error will be rethrown instead.
+public func XCTUnwrap<T>(_ expression: @autoclosure () throws -> T?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) throws -> T {
+    var value: T?
+    var caughtErrorOptional: Swift.Error?
+
+    _XCTEvaluateAssertion(.unwrap, message: message(), file: file, line: line) {
+        do {
+            value = try expression()
+        } catch {
+            caughtErrorOptional = error
+            return .unexpectedFailure(error)
+        }
+
+        if value != nil {
+            return .success
+        } else {
+            return .expectedFailure("expected non-nil value of type \"\(T.self)\"")
+        }
+    }
+
+    if let unwrappedValue = value {
+        return unwrappedValue
+    } else if let error = caughtErrorOptional {
+        throw error
+    } else {
+        throw XCTestErrorWhileUnwrappingOptional()
     }
 }
 
