@@ -118,11 +118,19 @@ open class XCTestCase: XCTest {
         do {
             try testClosure(self)
         } catch {
-            recordFailure(
-                withDescription: "threw error \"\(error)\"",
-                inFile: "<EXPR>",
-                atLine: 0,
-                expected: false)
+            var shouldIgnore = false
+            if let userInfo = (error as? CustomNSError)?.errorUserInfo,
+                let shouldIgnoreValue = userInfo[XCTestErrorUserInfoKeyShouldIgnore] as? NSNumber {
+                shouldIgnore = shouldIgnoreValue.boolValue
+            }
+
+            if !shouldIgnore {
+                recordFailure(
+                    withDescription: "threw error \"\(error)\"",
+                    inFile: "<EXPR>",
+                    atLine: 0,
+                    expected: false)
+            }
         }
         tearDown()
     }
