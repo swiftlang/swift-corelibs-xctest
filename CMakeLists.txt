@@ -50,7 +50,9 @@ add_swift_library(XCTest
                     ${CMAKE_CURRENT_BINARY_DIR}/swift/XCTest.swiftmodule
                   LINK_FLAGS
                     -L${XCTEST_PATH_TO_LIBDISPATCH_BUILD}
+                    -L${XCTEST_PATH_TO_LIBDISPATCH_BUILD}/bin
                     -L${XCTEST_PATH_TO_LIBDISPATCH_BUILD}/src -ldispatch
+                    -L${XCTEST_PATH_TO_LIBDISPATCH_BUILD}/src/BlocksRuntime
                     -L${XCTEST_PATH_TO_FOUNDATION_BUILD} -lFoundation
 
                     # compatibility with Foundation build_script.py
