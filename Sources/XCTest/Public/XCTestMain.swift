@@ -28,7 +28,7 @@
 
 /// Starts a test run for the specified test cases.
 ///
-/// This function will not return. If the test cases pass, then it will call `exit(0)`. If there is a failure, then it will call `exit(1)`.
+/// This function will not return. If the test cases pass, then it will call `exit(EXIT_SUCCESS)`. If there is a failure, then it will call `exit(EXIT_FAILURE)`.
 /// Example usage:
 ///
 ///     class TestFoo: XCTestCase {
@@ -83,10 +83,41 @@ public func XCTMain(_ testCases: [XCTestCaseEntry]) -> Never {
     switch executionMode {
     case .list(type: .humanReadable):
         TestListing(testSuite: rootTestSuite).printTestList()
-        exit(0)
+        exit(EXIT_SUCCESS)
     case .list(type: .json):
         TestListing(testSuite: rootTestSuite).printTestJSON()
-        exit(0)
+        exit(EXIT_SUCCESS)
+    case let .help(invalidOption):
+        if let invalid = invalidOption {
+            let errMsg = "Error: Invalid option \"\(invalid)\"\n"
+            FileHandle.standardError.write(errMsg.data(using: .utf8) ?? Data())
+        }
+        let exeName = CommandLine.arguments[0].lastPathComponent
+        let sampleTest = rootTestSuite.list().first ?? "Tests.FooTestCase/testFoo"
+        let sampleTests = sampleTest.prefix(while: { $0 != "/" })
+        print("""
+              Usage: \(exeName) [OPTION]
+                     \(exeName) [TESTCASE]
+              Run and report results of test cases.
+
+              With no OPTION or TESTCASE, runs all test cases.
+
+              OPTIONS:
+
+              -l, --list-test              List tests line by line to standard output
+                  --dump-tests-json        List tests in JSON to standard output
+
+              TESTCASES:
+
+                 Run a single test
+
+                     > \(exeName) \(sampleTest)
+
+                 Run all the tests in \(sampleTests)
+
+                     > \(exeName) \(sampleTests)
+              """)
+        exit(invalidOption == nil ? EXIT_SUCCESS : EXIT_FAILURE)
     case .run(selectedTestName: _):
         // Add a test observer that prints test progress to stdout.
         let observationCenter = XCTestObservationCenter.shared
@@ -96,6 +127,6 @@ public func XCTMain(_ testCases: [XCTestCaseEntry]) -> Never {
         rootTestSuite.run()
         observationCenter.testBundleDidFinish(testBundle)
 
-        exit(rootTestSuite.testRun!.totalFailureCount == 0 ? 0 : 1)
+        exit(rootTestSuite.testRun!.totalFailureCount == 0 ? EXIT_SUCCESS : EXIT_FAILURE)
     }
 }
