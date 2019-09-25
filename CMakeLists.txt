@@ -98,6 +98,7 @@ add_swift_library(XCTest
 
                     -I${XCTEST_PATH_TO_LIBDISPATCH_SOURCE}
                     -I${XCTEST_PATH_TO_LIBDISPATCH_BUILD}/src/swift
+                    -I${XCTEST_PATH_TO_LIBDISPATCH_BUILD}/src/swift/swift
                     -Xcc -fblocks
 
                     -I${XCTEST_PATH_TO_FOUNDATION_BUILD}/swift
