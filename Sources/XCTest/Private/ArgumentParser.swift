@@ -36,6 +36,9 @@ internal struct ArgumentParser {
         /// Print a list of all the tests in the suite.
         case list(type: ListType)
 
+        /// Print Help
+        case help(invalidOption: String?)
+
         var selectedTestName: String? {
             if case .run(let name) = self {
                 return name
@@ -58,6 +61,10 @@ internal struct ArgumentParser {
             return .list(type: .humanReadable)
         } else if arguments[1] == "--dump-tests-json" {
             return .list(type: .json)
+        } else if arguments[1] == "--help" || arguments[1] == "-h" {
+            return .help(invalidOption: nil)
+        } else if let fst = arguments[1].first, fst == "-" {
+            return .help(invalidOption: arguments[1])
         } else {
             return .run(selectedTestName: arguments[1])
         }
