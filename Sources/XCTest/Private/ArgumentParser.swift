@@ -17,10 +17,10 @@ internal struct ArgumentParser {
 
     /// The basic operations that can be performed by an XCTest runner executable
     enum ExecutionMode {
-        /// Run a test or test suite, printing results to stdout and exiting with
-        /// a non-0 return code if any tests failed. The name of a test or class
-        /// may be provided to only run a subset of test cases.
-        case run(selectedTestName: String?)
+        /// Run tests or test cases, printing results to stdout and exiting with
+        /// a non-0 return code if any tests failed. The names of tests or test cases
+        /// may be provided to only run a subset of them.
+        case run(selectedTestNames: [String]?)
 
         /// The different ways that the tests can be represented when they are listed
         enum ListType {
@@ -39,9 +39,9 @@ internal struct ArgumentParser {
         /// Print Help
         case help(invalidOption: String?)
 
-        var selectedTestName: String? {
-            if case .run(let name) = self {
-                return name
+        var selectedTestNames: [String]? {
+            if case .run(let names) = self {
+                return names
             } else {
                 return nil
             }
@@ -56,7 +56,7 @@ internal struct ArgumentParser {
 
     var executionMode: ExecutionMode {
         if arguments.count <= 1 {
-            return .run(selectedTestName: nil)
+            return .run(selectedTestNames: nil)
         } else if arguments[1] == "--list-tests" || arguments[1] == "-l" {
             return .list(type: .humanReadable)
         } else if arguments[1] == "--dump-tests-json" {
@@ -66,7 +66,7 @@ internal struct ArgumentParser {
         } else if let fst = arguments[1].first, fst == "-" {
             return .help(invalidOption: arguments[1])
         } else {
-            return .run(selectedTestName: arguments[1])
+            return .run(selectedTestNames: arguments[1].split(separator: ",").map(String.init))
         }
     }
 }
