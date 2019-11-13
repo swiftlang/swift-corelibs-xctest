@@ -1,24 +1,62 @@
 
-cmake_minimum_required(VERSION 3.4.3)
+cmake_minimum_required(VERSION 3.15.1)
 
-list(APPEND CMAKE_MODULE_PATH
-     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
-project(XCTest
-        LANGUAGES
-          C)
-
-enable_testing()
-option(ENABLE_TESTING "Build tests" YES)
+project(XCTest LANGUAGES Swift)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 
-option(XCTEST_PATH_TO_LIBDISPATCH_SOURCE "Path to libdispatch source" "")
-option(XCTEST_PATH_TO_LIBDISPATCH_BUILD "Path to libdispatch build" "")
+if(NOT CMAKE_SYSTEM_NAME STREQUAL Darwin)
+  find_package(dispatch CONFIG REQUIRED)
+  find_package(Foundation CONFIG REQUIRED)
+endif()
 
-option(XCTEST_PATH_TO_FOUNDATION_BUILD "Path to Foundation build" "")
+include(SwiftSupport)
+include(GNUInstallDirs)
+
+add_library(XCTest
+  Sources/XCTest/Private/WallClockTimeMetric.swift
+  Sources/XCTest/Private/TestListing.swift
+  Sources/XCTest/Private/XCTestCaseSuite.swift
+  Sources/XCTest/Private/TestFiltering.swift
+  Sources/XCTest/Private/XCTestInternalObservation.swift
+  Sources/XCTest/Private/ObjectWrapper.swift
+  Sources/XCTest/Private/PerformanceMeter.swift
+  Sources/XCTest/Private/PrintObserver.swift
+  Sources/XCTest/Private/ArgumentParser.swift
+  Sources/XCTest/Private/SourceLocation.swift
+  Sources/XCTest/Private/WaiterManager.swift
+  Sources/XCTest/Private/IgnoredErrors.swift
+  Sources/XCTest/Public/XCTestRun.swift
+  Sources/XCTest/Public/XCTestMain.swift
+  Sources/XCTest/Public/XCTestCase.swift
+  Sources/XCTest/Public/XCTestSuite.swift
+  Sources/XCTest/Public/XCTestSuiteRun.swift
+  Sources/XCTest/Public/XCTestErrors.swift
+  Sources/XCTest/Public/XCTestObservation.swift
+  Sources/XCTest/Public/XCTestCaseRun.swift
+  Sources/XCTest/Public/XCAbstractTest.swift
+  Sources/XCTest/Public/XCTestObservationCenter.swift
+  Sources/XCTest/Public/XCTestCase+Performance.swift
+  Sources/XCTest/Public/XCTAssert.swift
+  Sources/XCTest/Public/Asynchronous/XCTNSNotificationExpectation.swift
+  Sources/XCTest/Public/Asynchronous/XCTNSPredicateExpectation.swift
+  Sources/XCTest/Public/Asynchronous/XCTWaiter+Validation.swift
+  Sources/XCTest/Public/Asynchronous/XCTWaiter.swift
+  Sources/XCTest/Public/Asynchronous/XCTestCase+Asynchronous.swift
+  Sources/XCTest/Public/Asynchronous/XCTestExpectation.swift)
+target_link_libraries(XCTest PRIVATE
+  dispatch
+  Foundation)
+set_target_properties(XCTest PROPERTIES
+  Swift_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/swift
+  INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_BINARY_DIR}/swift)
+
 
 if(ENABLE_TESTING)
+  enable_testing()
+
   find_package(LLVM CONFIG)
   if(LLVM_FOUND)
     message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
@@ -31,91 +69,16 @@ if(ENABLE_TESTING)
   elseif(NOT DEFINED LLVM_MAIN_SRC_DIR OR NOT EXISTS ${LLVM_MAIN_SRC_DIR})
     message(SEND_ERROR "LLVM not found and LLVM_MAIN_SRC_DIR not defined - required for testing")
   endif()
-endif()
 
-include(SwiftSupport)
-include(GNUInstallDirs)
-
-if(CMAKE_SYSTEM_NAME STREQUAL Windows)
-  set(WORKAROUND_SR9138 -Xlinker;-ignore:4217)
-  set(WORKAROUND_SR9995 -Xlinker;-nodefaultlib:libcmt)
-endif()
-
-add_swift_library(XCTest
-                  MODULE_NAME
-                    XCTest
-                  MODULE_LINK_NAME
-                    XCTest
-                  MODULE_PATH
-                    ${CMAKE_CURRENT_BINARY_DIR}/swift/XCTest.swiftmodule
-                  LINK_FLAGS
-                    -L${XCTEST_PATH_TO_LIBDISPATCH_BUILD}
-                    -L${XCTEST_PATH_TO_LIBDISPATCH_BUILD}/bin
-                    -L${XCTEST_PATH_TO_LIBDISPATCH_BUILD}/src -ldispatch
-                    -L${XCTEST_PATH_TO_LIBDISPATCH_BUILD}/src/BlocksRuntime
-                    -L${XCTEST_PATH_TO_FOUNDATION_BUILD} -lFoundation
-
-                    # compatibility with Foundation build_script.py
-                    -L${XCTEST_PATH_TO_FOUNDATION_BUILD}/Foundation
-
-                    ${WORKAROUND_SR9138}
-                    ${WORKAROUND_SR9995}
-                  SOURCES
-                    Sources/XCTest/Private/WallClockTimeMetric.swift
-                    Sources/XCTest/Private/TestListing.swift
-                    Sources/XCTest/Private/XCTestCaseSuite.swift
-                    Sources/XCTest/Private/TestFiltering.swift
-                    Sources/XCTest/Private/XCTestInternalObservation.swift
-                    Sources/XCTest/Private/ObjectWrapper.swift
-                    Sources/XCTest/Private/PerformanceMeter.swift
-                    Sources/XCTest/Private/PrintObserver.swift
-                    Sources/XCTest/Private/ArgumentParser.swift
-                    Sources/XCTest/Private/SourceLocation.swift
-                    Sources/XCTest/Private/WaiterManager.swift
-                    Sources/XCTest/Private/IgnoredErrors.swift
-                    Sources/XCTest/Public/XCTestRun.swift
-                    Sources/XCTest/Public/XCTestMain.swift
-                    Sources/XCTest/Public/XCTestCase.swift
-                    Sources/XCTest/Public/XCTestSuite.swift
-                    Sources/XCTest/Public/XCTestSuiteRun.swift
-                    Sources/XCTest/Public/XCTestErrors.swift
-                    Sources/XCTest/Public/XCTestObservation.swift
-                    Sources/XCTest/Public/XCTestCaseRun.swift
-                    Sources/XCTest/Public/XCAbstractTest.swift
-                    Sources/XCTest/Public/XCTestObservationCenter.swift
-                    Sources/XCTest/Public/XCTestCase+Performance.swift
-                    Sources/XCTest/Public/XCTAssert.swift
-                    Sources/XCTest/Public/Asynchronous/XCTNSNotificationExpectation.swift
-                    Sources/XCTest/Public/Asynchronous/XCTNSPredicateExpectation.swift
-                    Sources/XCTest/Public/Asynchronous/XCTWaiter+Validation.swift
-                    Sources/XCTest/Public/Asynchronous/XCTWaiter.swift
-                    Sources/XCTest/Public/Asynchronous/XCTestCase+Asynchronous.swift
-                    Sources/XCTest/Public/Asynchronous/XCTestExpectation.swift
-                  TARGET
-                    ${CMAKE_C_COMPILER_TARGET}
-                  SWIFT_FLAGS
-                    $<$<NOT:$<CONFIG:Debug>>:-O>
-
-                    -I${XCTEST_PATH_TO_LIBDISPATCH_SOURCE}
-                    -I${XCTEST_PATH_TO_LIBDISPATCH_BUILD}/src/swift
-                    -I${XCTEST_PATH_TO_LIBDISPATCH_BUILD}/src/swift/swift
-                    -Xcc -fblocks
-
-                    -I${XCTEST_PATH_TO_FOUNDATION_BUILD}/swift
-                    -Fsystem ${XCTEST_PATH_TO_FOUNDATION_BUILD}
-
-                    # compatibility with Foundation build_script.py
-                    -I${XCTEST_PATH_TO_FOUNDATION_BUILD}/Foundation
-                    -I${XCTEST_PATH_TO_FOUNDATION_BUILD}/Foundation/usr/lib/swift)
-
-if(ENABLE_TESTING)
   if(EXISTS ${LLVM_MAIN_SRC_DIR}/utils/lit/lit.py)
     set(LIT_COMMAND "${LLVM_MAIN_SRC_DIR}/utils/lit/lit.py"
         CACHE STRING "command used to spawn llvm-lit")
   else()
     find_program(LIT_COMMAND NAMES llvm-lit lit.py lit)
   endif()
+
   find_package(PythonInterp)
+
   add_custom_target(check-xctest
                     COMMAND
                     ${CMAKE_COMMAND} -E env
@@ -133,39 +96,13 @@ if(ENABLE_TESTING)
                     USES_TERMINAL)
 endif()
 
-string(TOLOWER ${CMAKE_SYSTEM_NAME} swift_os)
-get_swift_host_arch(swift_host_arch)
 
+get_swift_host_arch(swift_arch)
+install(TARGETS XCTest
+  ARCHIVE DESTINATION lib/swift$<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:_static>/$<LOWER_CASE:${CMAKE_SYSTEM_NAME}>
+  LIBRARY DESTINATION lib/swift$<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:_static>/$<LOWER_CASE:${CMAKE_SYSTEM_NAME}>
+  RUNTIME DESTINATION bin)
 install(FILES
-          ${CMAKE_CURRENT_BINARY_DIR}/swift/XCTest.swiftdoc
-          ${CMAKE_CURRENT_BINARY_DIR}/swift/XCTest.swiftmodule
-        DESTINATION
-          ${CMAKE_INSTALL_FULL_LIBDIR}/swift/${swift_os}/${swift_host_arch})
-
-if(BUILD_SHARED_LIBS)
-  set(library_kind SHARED)
-  set(swift_dir swift)
-else()
-  set(library_kind STATIC)
-  set(swift_dir swift_static)
-endif()
-
-set(XCTest_OUTPUT_FILE
-    ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_${library_kind}_LIBRARY_PREFIX}XCTest${CMAKE_${library_kind}_LIBRARY_SUFFIX})
-
-if(CMAKE_SYSTEM_NAME STREQUAL Windows AND BUILD_SHARED_LIBS)
-  install(FILES
-            ${XCTest_OUTPUT_FILE}
-          DESTINATION
-            ${CMAKE_INSTALL_FULL_BINDIR})
-  install(FILES
-            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_IMPORT_LIBRARY_PREFIX}XCTest${CMAKE_IMPORT_LIBRARY_SUFFIX}
-          DESTINATION
-            ${CMAKE_INSTALL_FULL_LIBDIR}/${swift_dir}/${swift_os})
-else()
-  # NOTE(compnerd) stage a compatibility copy in the swift resource dir
-  install(FILES
-            ${XCTest_OUTPUT_FILE}
-          DESTINATION
-            ${CMAKE_INSTALL_FULL_LIBDIR}/${swift_dir}/${swift_os})
-endif()
+  ${CMAKE_CURRENT_BINARY_DIR}/swift/XCTest.swiftdoc
+  ${CMAKE_CURRENT_BINARY_DIR}/swift/XCTest.swiftmodule
+  DESTINATION lib/swift$<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:_static>/$<LOWER_CASE:${CMAKE_SYSTEM_NAME}>/${swift_arch})
