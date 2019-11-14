@@ -1,0 +1,4 @@
+
+if(NOT TARGET XCTest)
+  include(@XCTest_EXPORTS_FILE@)
+endif()
