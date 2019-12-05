@@ -480,9 +480,9 @@ def main(args=sys.argv[1:]):
     build_parser.add_argument(
         "--test",
         help="Whether to run tests after building. Note that you must have "
-             "cloned https://github.com/apple/swift-llvm at {} in order to "
+             "cloned https://github.com/apple/llvm-project at {} in order to "
              "run this command.".format(os.path.join(
-                 os.path.dirname(SOURCE_DIR), 'llvm')),
+                 os.path.dirname(SOURCE_DIR), 'llvm-project')),
         action="store_true")
 
     test_parser = subparsers.add_parser(
@@ -502,7 +502,7 @@ def main(args=sys.argv[1:]):
         help="Path to the 'lit' tester tool used to run the test suite. "
              "'%(default)s' by default.",
         default=os.path.join(os.path.dirname(SOURCE_DIR),
-                             "llvm", "utils", "lit", "lit.py"))
+                             "llvm-project", "llvm", "utils", "lit", "lit.py"))
     test_parser.add_argument(
         "--foundation-build-dir",
         help="Path to swift-corelibs-foundation build products, which the "
