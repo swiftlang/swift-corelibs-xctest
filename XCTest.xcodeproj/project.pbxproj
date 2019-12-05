@@ -244,7 +244,7 @@
 			buildConfigurationList = DAA333B81C267AD6000CC115 /* Build configuration list for PBXLegacyTarget "SwiftXCTestFunctionalTests" */;
 			buildPhases = (
 			);
-			buildToolPath = "$(SRCROOT)/../llvm/utils/lit/lit.py";
+			buildToolPath = "$(SRCROOT)/../llvm-project/llvm/utils/lit/lit.py";
 			buildWorkingDirectory = "";
 			dependencies = (
 				DAA333BA1C267AF3000CC115 /* PBXTargetDependency */,
