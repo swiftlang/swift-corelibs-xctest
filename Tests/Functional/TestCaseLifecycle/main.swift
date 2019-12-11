@@ -86,12 +86,62 @@ class NewInstanceForEachTestTestCase: XCTestCase {
 // CHECK: \t Executed 2 tests, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
 
+// CHECK: Test Suite 'TeardownBlocksTestCase' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+class TeardownBlocksTestCase: XCTestCase {
+    static var allTests = {
+        return [
+            ("test_withoutTeardownBlocks", test_withoutTeardownBlocks),
+            ("test_withATeardownBlock", test_withATeardownBlock),
+            ("test_withSeveralTeardownBlocks", test_withSeveralTeardownBlocks),
+        ]
+    }()
+
+    override func tearDown() {
+        print("In tearDown function")
+    }
+
+    // CHECK: Test Case 'TeardownBlocksTestCase.test_withoutTeardownBlocks' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+    // CHECK: In tearDown function
+    // CHECK: Test Case 'TeardownBlocksTestCase.test_withoutTeardownBlocks' passed \(\d+\.\d+ seconds\)
+    func test_withoutTeardownBlocks() {
+        // Intentionally blank
+    }
+
+    // CHECK: Test Case 'TeardownBlocksTestCase.test_withATeardownBlock' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+    // CHECK: In teardown block A
+    // CHECK: In tearDown function
+    // CHECK: Test Case 'TeardownBlocksTestCase.test_withATeardownBlock' passed \(\d+\.\d+ seconds\)
+    func test_withATeardownBlock() {
+        addTeardownBlock {
+            print("In teardown block A")
+        }
+    }
+
+    // CHECK: Test Case 'TeardownBlocksTestCase.test_withSeveralTeardownBlocks' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+    // CHECK: In teardown block C
+    // CHECK: In teardown block B
+    // CHECK: In tearDown function
+    // CHECK: Test Case 'TeardownBlocksTestCase.test_withSeveralTeardownBlocks' passed \(\d+\.\d+ seconds\)
+    func test_withSeveralTeardownBlocks() {
+        addTeardownBlock {
+            print("In teardown block B")
+        }
+        addTeardownBlock {
+            print("In teardown block C")
+        }
+    }
+}
+// CHECK: Test Suite 'TeardownBlocksTestCase' passed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: \t Executed 3 tests, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+
+
 XCTMain([
     testCase(SetUpTearDownTestCase.allTests),
-    testCase(NewInstanceForEachTestTestCase.allTests)
+    testCase(NewInstanceForEachTestTestCase.allTests),
+    testCase(TeardownBlocksTestCase.allTests),
 ])
 
 // CHECK: Test Suite '.*\.xctest' passed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 3 tests, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 6 tests, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 // CHECK: Test Suite 'All tests' passed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 3 tests, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 6 tests, with 0 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
