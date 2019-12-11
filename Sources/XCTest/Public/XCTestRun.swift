@@ -119,13 +119,21 @@ open class XCTestRun {
     ///   result of a failed assertion, `false` if it was the result of an
     ///   uncaught exception.
     func recordFailure(withDescription description: String, inFile filePath: String?, atLine lineNumber: Int, expected: Bool) {
+        func failureLocation() -> String {
+            if let filePath = filePath {
+                return "\(test.name) (\(filePath):\(lineNumber))"
+            } else {
+                return "\(test.name)"
+            }
+        }
+
         guard isStarted else {
             fatalError("Invalid attempt to record a failure for a test run " +
-                       "that has not yet been started: \(self)")
+                       "that has not yet been started: \(failureLocation())")
         }
         guard !isStopped else {
             fatalError("Invalid attempt to record a failure for a test run " +
-                       "that has already been stopped: \(self)")
+                       "that has already been stopped: \(failureLocation())")
         }
 
         if expected {
