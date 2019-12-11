@@ -132,6 +132,7 @@ open class XCTestCase: XCTest {
                     expected: false)
             }
         }
+        runTeardownBlocks()
         tearDown()
     }
 
@@ -177,6 +178,32 @@ open class XCTestCase: XCTest {
     /// Teardown method called after the invocation of every test method in the
     /// class.
     open class func tearDown() {}
+
+    private var teardownBlocks: [() -> Void] = []
+    private var teardownBlocksDequeued: Bool = false
+    private let teardownBlocksQueue: DispatchQueue = DispatchQueue(label: "org.swift.XCTest.XCTestCase.teardownBlocks")
+
+    /// Registers a block of teardown code to be run after the current test
+    /// method ends.
+    open func addTeardownBlock(_ block: @escaping () -> Void) {
+        teardownBlocksQueue.sync {
+            precondition(!self.teardownBlocksDequeued, "API violation -- attempting to add a teardown block after teardown blocks have been dequeued")
+            self.teardownBlocks.append(block)
+        }
+    }
+
+    private func runTeardownBlocks() {
+        let blocks = teardownBlocksQueue.sync { () -> [() -> Void] in
+            self.teardownBlocksDequeued = true
+            let blocks = self.teardownBlocks
+            self.teardownBlocks = []
+            return blocks
+        }
+
+        for block in blocks.reversed() {
+            block()
+        }
+    }
 
     open var continueAfterFailure: Bool {
         get {
