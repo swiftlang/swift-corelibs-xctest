@@ -14,21 +14,20 @@
 internal typealias TestFilter = (XCTestCase.Type, String) -> Bool
 
 internal struct TestFiltering {
-    private let selectedTestName: String?
+    private let selectedTestNames: [String]?
 
-    init(selectedTestName: String?) {
-        self.selectedTestName = selectedTestName
+    init(selectedTestNames: [String]?) {
+        self.selectedTestNames = selectedTestNames
     }
 
     var selectedTestFilter: TestFilter {
-        guard let selectedTestName = selectedTestName else { return includeAllFilter() }
-        guard let selectedTest = SelectedTest(selectedTestName: selectedTestName) else { return excludeAllFilter() }
+        guard let selectedTestNames = selectedTestNames else { return includeAllFilter() }
+        let selectedTests = Set(selectedTestNames.compactMap { SelectedTest(selectedTestName: $0) })
 
-        return selectedTest.matches
-    }
-
-    private func excludeAllFilter() -> TestFilter {
-        return { _,_ in false }
+        return { testCaseClass, testCaseMethodName in
+            return selectedTests.contains(SelectedTest(testCaseClass: testCaseClass, testCaseMethodName: testCaseMethodName)) ||
+                   selectedTests.contains(SelectedTest(testCaseClass: testCaseClass, testCaseMethodName: nil))
+        }
     }
 
     private func includeAllFilter() -> TestFilter {
@@ -47,7 +46,7 @@ internal struct TestFiltering {
 }
 
 /// A selected test can be a single test case, or an entire class of test cases
-private struct SelectedTest {
+private struct SelectedTest : Hashable {
     let testCaseClassName: String
     let testCaseMethodName: String?
 }
@@ -67,7 +66,7 @@ private extension SelectedTest {
         }
     }
 
-    func matches(testCaseClass: XCTestCase.Type, testCaseMethodName: String) -> Bool {
-        return String(reflecting: testCaseClass) == testCaseClassName && (self.testCaseMethodName == nil || testCaseMethodName == self.testCaseMethodName)
+    init(testCaseClass: XCTestCase.Type, testCaseMethodName: String?) {
+        self.init(testCaseClassName: String(reflecting: testCaseClass), testCaseMethodName: testCaseMethodName)
     }
 }

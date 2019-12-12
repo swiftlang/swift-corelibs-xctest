@@ -66,7 +66,7 @@ public func XCTMain(_ testCases: [XCTestCaseEntry]) -> Never {
     // - An `XCTestSuite` representing the .xctest test bundle is not included.
     let rootTestSuite: XCTestSuite
     let currentTestSuite: XCTestSuite
-    if executionMode.selectedTestName == nil {
+    if executionMode.selectedTestNames == nil {
         rootTestSuite = XCTestSuite(name: "All tests")
         currentTestSuite = XCTestSuite(name: "\(testBundle.bundleURL.lastPathComponent).xctest")
         rootTestSuite.addTest(currentTestSuite)
@@ -75,7 +75,7 @@ public func XCTMain(_ testCases: [XCTestCaseEntry]) -> Never {
         currentTestSuite = rootTestSuite
     }
 
-    let filter = TestFiltering(selectedTestName: executionMode.selectedTestName)
+    let filter = TestFiltering(selectedTestNames: executionMode.selectedTestNames)
     TestFiltering.filterTests(testCases, filter: filter.selectedTestFilter)
         .map(XCTestCaseSuite.init)
         .forEach(currentTestSuite.addTest)
@@ -118,7 +118,7 @@ public func XCTMain(_ testCases: [XCTestCaseEntry]) -> Never {
                      > \(exeName) \(sampleTests)
               """)
         exit(invalidOption == nil ? EXIT_SUCCESS : EXIT_FAILURE)
-    case .run(selectedTestName: _):
+    case .run(selectedTestNames: _):
         // Add a test observer that prints test progress to stdout.
         let observationCenter = XCTestObservationCenter.shared
         observationCenter.addTestObserver(PrintObserver())

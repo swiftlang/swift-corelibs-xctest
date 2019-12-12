@@ -72,8 +72,9 @@ The `XCTMain` function does not return, and will cause your test executable to e
 * A particular test or test case can be selected to execute. For example:
 
 ```
-$ ./FooTests Tests.FooTestCase/testFoo  # Run a single test case
-$ ./FooTests Tests.FooTestCase          # Run all the tests in FooTestCase
+$ ./FooTests Tests.FooTestCase/testFoo                            # Run a single test method
+$ ./FooTests Tests.FooTestCase                                    # Run all the tests in FooTestCase
+$ ./FooTests Tests.FooTestCase/testFoo,Tests.FooTestCase/testBar  # Run multiple test methods
 ```
 * Tests can be listed, instead of executed.
 
