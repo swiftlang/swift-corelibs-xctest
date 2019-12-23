@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		172FF8A72117B74D0059CBC5 /* XCTNSNotificationExpectation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172FF8A62117B74D0059CBC5 /* XCTNSNotificationExpectation.swift */; };
+		1748FE3723AFD2D80014DB87 /* XCTSkip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1748FE3623AFD2D80014DB87 /* XCTSkip.swift */; };
 		17B6C3EB210D5A3900A11ECC /* XCTWaiter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C3EA210D5A3900A11ECC /* XCTWaiter.swift */; };
 		17B6C3ED210F53BE00A11ECC /* WaiterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C3EC210F53BE00A11ECC /* WaiterManager.swift */; };
 		17B6C3EF210F990100A11ECC /* XCTWaiter+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C3EE210F990100A11ECC /* XCTWaiter+Validation.swift */; };
@@ -51,6 +52,7 @@
 
 /* Begin PBXFileReference section */
 		172FF8A62117B74D0059CBC5 /* XCTNSNotificationExpectation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTNSNotificationExpectation.swift; sourceTree = "<group>"; };
+		1748FE3623AFD2D80014DB87 /* XCTSkip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTSkip.swift; sourceTree = "<group>"; };
 		17B6C3EA210D5A3900A11ECC /* XCTWaiter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTWaiter.swift; sourceTree = "<group>"; };
 		17B6C3EC210F53BE00A11ECC /* WaiterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaiterManager.swift; sourceTree = "<group>"; };
 		17B6C3EE210F990100A11ECC /* XCTWaiter+Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTWaiter+Validation.swift"; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 				DA9D44131D920A3500108768 /* Asynchronous */,
 				AE2FE0EA1CFE86DB003EF0D7 /* XCAbstractTest.swift */,
 				AE2FE0ED1CFE86DB003EF0D7 /* XCTAssert.swift */,
+				1748FE3623AFD2D80014DB87 /* XCTSkip.swift */,
 				AE2FE0EE1CFE86DB003EF0D7 /* XCTestCase.swift */,
 				AE2FE0F01CFE86DB003EF0D7 /* XCTestCase+Performance.swift */,
 				AE2FE0F11CFE86DB003EF0D7 /* XCTestCaseRun.swift */,
@@ -343,6 +346,7 @@
 				AE2FE11B1CFE86E6003EF0D7 /* XCTNSPredicateExpectation.swift in Sources */,
 				17D5B680211216EF00D93239 /* SourceLocation.swift in Sources */,
 				AE63767E1D01ED17002C0EA8 /* TestListing.swift in Sources */,
+				1748FE3723AFD2D80014DB87 /* XCTSkip.swift in Sources */,
 				AE2FE1151CFE86E6003EF0D7 /* ArgumentParser.swift in Sources */,
 				AE2FE0FF1CFE86DB003EF0D7 /* XCTestCase.swift in Sources */,
 				AE2FE11D1CFE86E6003EF0D7 /* XCTestInternalObservation.swift in Sources */,

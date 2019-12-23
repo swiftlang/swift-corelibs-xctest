@@ -49,6 +49,11 @@ open class XCTestRun {
     /// The number of test executions recorded during the run.
     open private(set) var executionCount: Int = 0
 
+    /// The number of test skips recorded during the run.
+    open var skipCount: Int {
+        hasBeenSkipped ? 1 : 0
+    }
+
     /// The number of test failures recorded during the run.
     open private(set) var failureCount: Int = 0
 
@@ -69,6 +74,9 @@ open class XCTestRun {
         }
         return totalFailureCount == 0
     }
+
+    /// `true` if the test was skipped, otherwise `false`.
+    open private(set) var hasBeenSkipped = false
 
     /// Designated initializer for the XCTestRun class.
     /// - Parameter test: An XCTest instance.
@@ -141,6 +149,31 @@ open class XCTestRun {
         } else {
             unexpectedExceptionCount += 1
         }
+    }
+
+    func recordSkip(description: String, sourceLocation: SourceLocation?) {
+        func failureLocation() -> String {
+            if let sourceLocation = sourceLocation {
+                return "\(test.name) (\(sourceLocation.file):\(sourceLocation.line))"
+            } else {
+                return "\(test.name)"
+            }
+        }
+
+        guard isStarted else {
+            fatalError("Invalid attempt to record a skip for a test run " +
+                       "that has not yet been started: \(failureLocation())")
+        }
+        guard !hasBeenSkipped else {
+            fatalError("Invalid attempt to record a skip for a test run " +
+                       "that has already been skipped: \(failureLocation())")
+        }
+        guard !isStopped else {
+            fatalError("Invalid attempt to record a skip for a test run " +
+                       "has already been stopped: \(failureLocation())")
+        }
+
+        hasBeenSkipped = true
     }
 
     private var isStarted: Bool {
