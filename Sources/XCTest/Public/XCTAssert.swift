@@ -171,10 +171,10 @@ public func XCTAssertEqual<T: Equatable>(_ expression1: @autoclosure () throws -
     }
 }
 
-public func XCTAssertEqual<T: FloatingPoint>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, accuracy: T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
+public func XCTAssertEqual<T: Strideable & Numeric>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, accuracy: T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
     _XCTEvaluateAssertion(.equalWithAccuracy, message: message(), file: file, line: line) {
         let (value1, value2) = (try expression1(), try expression2())
-        if abs(value1.distance(to: value2)) <= abs(accuracy.distance(to: T(0))) {
+        if abs(value1.distance(to: value2)) <= abs(accuracy.distance(to: T.zero)) {
             return .success
         } else {
             return .expectedFailure("(\"\(value1)\") is not equal to (\"\(value2)\") +/- (\"\(accuracy)\")")
@@ -264,10 +264,10 @@ public func XCTAssertNotEqual<T: Equatable>(_ expression1: @autoclosure () throw
     }
 }
 
-public func XCTAssertNotEqual<T: FloatingPoint>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, accuracy: T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
+public func XCTAssertNotEqual<T: Strideable & Numeric>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, accuracy: T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
     _XCTEvaluateAssertion(.notEqualWithAccuracy, message: message(), file: file, line: line) {
         let (value1, value2) = (try expression1(), try expression2())
-        if abs(value1.distance(to: value2)) > abs(accuracy.distance(to: T(0))) {
+        if abs(value1.distance(to: value2)) > abs(accuracy.distance(to: T.zero)) {
             return .success
         } else {
             return .expectedFailure("(\"\(value1)\") is equal to (\"\(value2)\") +/- (\"\(accuracy)\")")
