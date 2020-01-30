@@ -15,7 +15,11 @@
 // Note that we are re-exporting Foundation so tests importing XCTest don't need
 // to import it themselves. This is consistent with the behavior of Apple XCTest
 #if os(macOS)
+    #if USE_FOUNDATION_FRAMEWORK
+    @_exported import Foundation
+    #else
     @_exported import SwiftFoundation
+    #endif
 #else
     @_exported import Foundation
 #endif
@@ -92,7 +96,7 @@ public func XCTMain(_ testCases: [XCTestCaseEntry]) -> Never {
             let errMsg = "Error: Invalid option \"\(invalid)\"\n"
             FileHandle.standardError.write(errMsg.data(using: .utf8) ?? Data())
         }
-        let exeName = CommandLine.arguments[0].lastPathComponent
+        let exeName = URL(fileURLWithPath: CommandLine.arguments[0]).lastPathComponent
         let sampleTest = rootTestSuite.list().first ?? "Tests.FooTestCase/testFoo"
         let sampleTests = sampleTest.prefix(while: { $0 != "/" })
         print("""
