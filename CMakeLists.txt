@@ -46,9 +46,11 @@ add_library(XCTest
   Sources/XCTest/Public/Asynchronous/XCTWaiter.swift
   Sources/XCTest/Public/Asynchronous/XCTestCase+Asynchronous.swift
   Sources/XCTest/Public/Asynchronous/XCTestExpectation.swift)
-target_link_libraries(XCTest PRIVATE
-  dispatch
-  Foundation)
+if(NOT CMAKE_SYSTEM_NAME STREQUAL Darwin)
+  target_link_libraries(XCTest PRIVATE
+    dispatch
+    Foundation)
+endif()
 set_target_properties(XCTest PROPERTIES
   Swift_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/swift
   INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_BINARY_DIR}/swift)
