@@ -6,6 +6,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 project(XCTest LANGUAGES Swift)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
+option(USE_FOUNDATION_FRAMEWORK "Use Foundation.framework on Darwin" NO)
 
 if(NOT CMAKE_SYSTEM_NAME STREQUAL Darwin)
   find_package(dispatch CONFIG REQUIRED)
@@ -46,6 +47,10 @@ add_library(XCTest
   Sources/XCTest/Public/Asynchronous/XCTWaiter.swift
   Sources/XCTest/Public/Asynchronous/XCTestCase+Asynchronous.swift
   Sources/XCTest/Public/Asynchronous/XCTestExpectation.swift)
+if(USE_FOUNDATION_FRAMEWORK)
+  target_compile_definitions(XCTest PRIVATE
+    USE_FOUNDATION_FRAMEWORK)
+endif()
 if(NOT CMAKE_SYSTEM_NAME STREQUAL Darwin)
   target_link_libraries(XCTest PRIVATE
     dispatch
