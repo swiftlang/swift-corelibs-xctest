@@ -34,6 +34,8 @@ internal var XCTCurrentTestCase: XCTestCase?
 open class XCTestCase: XCTest {
     private let testClosure: XCTestCaseClosure
 
+    private var skip: XCTSkip?
+
     /// The name of the test case, consisting of its class name and the method
     /// name it will run.
     open override var name: String {
@@ -114,26 +116,31 @@ open class XCTestCase: XCTest {
     /// Invoking a test performs its setUp, invocation, and tearDown. In
     /// general this should not be called directly.
     open func invokeTest() {
-        setUp()
+        performSetUpSequence()
+
         do {
-            try testClosure(self)
+            if skip == nil {
+                try testClosure(self)
+            }
         } catch {
-            var shouldIgnore = false
-            if let userInfo = (error as? CustomNSError)?.errorUserInfo,
-                let shouldIgnoreValue = userInfo[XCTestErrorUserInfoKeyShouldIgnore] as? NSNumber {
-                shouldIgnore = shouldIgnoreValue.boolValue
+            if error.xct_shouldRecordAsTestFailure {
+                recordFailure(for: error)
             }
 
-            if !shouldIgnore {
-                recordFailure(
-                    withDescription: "threw error \"\(error)\"",
-                    inFile: "<EXPR>",
-                    atLine: 0,
-                    expected: false)
+            if error.xct_shouldRecordAsTestSkip {
+                if let skip = error as? XCTSkip {
+                    self.skip = skip
+                } else {
+                    self.skip = XCTSkip(error: error, message: nil, sourceLocation: nil)
+                }
             }
         }
-        runTeardownBlocks()
-        tearDown()
+
+        if let skip = skip {
+            testRun?.recordSkip(description: skip.summary, sourceLocation: skip.sourceLocation)
+        }
+
+        performTearDownSequence()
     }
 
     /// Records a failure in the execution of the test and is used by all test
@@ -171,6 +178,15 @@ open class XCTestCase: XCTest {
         recordFailure(withDescription: description, inFile: sourceLocation.file, atLine: Int(sourceLocation.line), expected: expected)
     }
 
+    // Convenience for recording a failure for a caught Error
+    private func recordFailure(for error: Error) {
+        recordFailure(
+            withDescription: "threw error \"\(error)\"",
+            inFile: "<EXPR>",
+            atLine: 0,
+            expected: false)
+    }
+
     /// Setup method called before the invocation of any test method in the
     /// class.
     open class func setUp() {}
@@ -189,6 +205,40 @@ open class XCTestCase: XCTest {
         teardownBlocksQueue.sync {
             precondition(!self.teardownBlocksDequeued, "API violation -- attempting to add a teardown block after teardown blocks have been dequeued")
             self.teardownBlocks.append(block)
+        }
+    }
+
+    private func performSetUpSequence() {
+        do {
+            try setUpWithError()
+        } catch {
+            if error.xct_shouldRecordAsTestFailure {
+                recordFailure(for: error)
+            }
+
+            if error.xct_shouldSkipTestInvocation {
+                if let skip = error as? XCTSkip {
+                    self.skip = skip
+                } else {
+                    self.skip = XCTSkip(error: error, message: nil, sourceLocation: nil)
+                }
+            }
+        }
+
+        setUp()
+    }
+
+    private func performTearDownSequence() {
+        runTeardownBlocks()
+
+        tearDown()
+
+        do {
+            try tearDownWithError()
+        } catch {
+            if error.xct_shouldRecordAsTestFailure {
+                recordFailure(for: error)
+            }
         }
     }
 
