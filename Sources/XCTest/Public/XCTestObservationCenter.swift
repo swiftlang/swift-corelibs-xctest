@@ -54,6 +54,10 @@ public class XCTestObservationCenter {
         forEachObserver { $0.testCase(testCase, didFailWithDescription: description, inFile: filePath, atLine: lineNumber) }
     }
 
+    internal func testCase(_ testCase: XCTestCase, wasSkippedWithDescription description: String, at sourceLocation: SourceLocation?) {
+        forEachInternalObserver { $0.testCase(testCase, wasSkippedWithDescription: description, at: sourceLocation) }
+    }
+
     internal func testCaseDidFinish(_ testCase: XCTestCase) {
         forEachObserver { $0.testCaseDidFinish(testCase) }
     }

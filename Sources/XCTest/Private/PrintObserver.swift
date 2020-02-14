@@ -31,7 +31,18 @@ internal class PrintObserver: XCTestObservation {
 
     func testCaseDidFinish(_ testCase: XCTestCase) {
         let testRun = testCase.testRun!
-        let verb = testRun.hasSucceeded ? "passed" : "failed"
+
+        let verb: String
+        if testRun.hasSucceeded {
+            if testRun.hasBeenSkipped {
+                verb = "skipped"
+            } else {
+                verb = "passed"
+            }
+        } else {
+            verb = "failed"
+        }
+
         printAndFlush("Test Case '\(testCase.name)' \(verb) (\(formatTimeInterval(testRun.totalDuration)) seconds)")
     }
 
@@ -41,11 +52,16 @@ internal class PrintObserver: XCTestObservation {
         printAndFlush("Test Suite '\(testSuite.name)' \(verb) at \(dateFormatter.string(from: testRun.stopDate!))")
 
         let tests = testRun.executionCount == 1 ? "test" : "tests"
+        let skipped = testRun.skipCount > 0 ? "\(testRun.skipCount) test\(testRun.skipCount != 1 ? "s" : "") skipped and " : ""
         let failures = testRun.totalFailureCount == 1 ? "failure" : "failures"
-        printAndFlush(
-            "\t Executed \(testRun.executionCount) \(tests), " +
-            "with \(testRun.totalFailureCount) \(failures) (\(testRun.unexpectedExceptionCount) unexpected) " +
-            "in \(formatTimeInterval(testRun.testDuration)) (\(formatTimeInterval(testRun.totalDuration))) seconds"
+
+        printAndFlush("""
+            \t Executed \(testRun.executionCount) \(tests), \
+            with \(skipped)\
+            \(testRun.totalFailureCount) \(failures) \
+            (\(testRun.unexpectedExceptionCount) unexpected) \
+            in \(formatTimeInterval(testRun.testDuration)) (\(formatTimeInterval(testRun.totalDuration))) seconds
+            """
         )
     }
 
@@ -70,6 +86,12 @@ internal class PrintObserver: XCTestObservation {
 }
 
 extension PrintObserver: XCTestInternalObservation {
+    func testCase(_ testCase: XCTestCase, wasSkippedWithDescription description: String, at sourceLocation: SourceLocation?) {
+        let file = sourceLocation?.file ?? "<unknown>"
+        let line = sourceLocation?.line ?? 0
+        printAndFlush("\(file):\(line): \(testCase.name) : \(description)")
+    }
+
     func testCase(_ testCase: XCTestCase, didMeasurePerformanceResults results: String, file: StaticString, line: Int) {
         printAndFlush("\(file):\(line): Test Case '\(testCase.name)' measured \(results)")
     }

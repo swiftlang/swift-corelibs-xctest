@@ -36,6 +36,15 @@ open class XCTestCaseRun: XCTestRun {
             atLine: lineNumber)
     }
 
+    override func recordSkip(description: String, sourceLocation: SourceLocation?) {
+        super.recordSkip(description: description, sourceLocation: sourceLocation)
+
+        XCTestObservationCenter.shared.testCase(
+            testCase,
+            wasSkippedWithDescription: description,
+            at: sourceLocation)
+    }
+
     private var testCase: XCTestCase {
         return test as! XCTestCase
     }

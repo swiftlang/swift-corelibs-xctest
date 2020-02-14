@@ -23,6 +23,11 @@ open class XCTestSuiteRun: XCTestRun {
         return testRuns.reduce(0) { $0 + $1.executionCount }
     }
 
+    /// The combined skip count of each test case run in the suite.
+    open override var skipCount: Int {
+        testRuns.reduce(0) { $0 + $1.skipCount }
+    }
+
     /// The combined failure count of each test case run in the suite.
     open override var failureCount: Int {
         return testRuns.reduce(0) { $0 + $1.failureCount }
