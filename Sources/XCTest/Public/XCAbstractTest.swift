@@ -52,6 +52,10 @@ open class XCTest {
         perform(testRun!)
     }
 
+    /// Setup method called before the invocation of `setUp` and the test method
+    /// for each test method in the class.
+    open func setUpWithError() throws {}
+
     /// Setup method called before the invocation of each test method in the
     /// class.
     open func setUp() {}
@@ -59,6 +63,10 @@ open class XCTest {
     /// Teardown method called after the invocation of each test method in the
     /// class.
     open func tearDown() {}
+
+    /// Teardown method called after the invocation of the test method and `tearDown`
+    /// for each test method in the class.
+    open func tearDownWithError() throws {}
 
     // FIXME: This initializer is required due to a Swift compiler bug on Linux.
     //        It should be removed once the bug is fixed.
