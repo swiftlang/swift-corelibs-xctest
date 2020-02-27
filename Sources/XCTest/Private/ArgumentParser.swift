@@ -50,7 +50,7 @@ internal struct ArgumentParser {
 
     private let arguments: [String]
 
-    init(arguments: [String] = CommandLine.arguments) {
+    init(arguments: [String]) {
         self.arguments = arguments
     }
 

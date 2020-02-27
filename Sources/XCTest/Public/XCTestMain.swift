@@ -60,9 +60,12 @@
 /// - Parameter testCases: An array of test cases run, each produced by a call to the `testCase` function
 /// - seealso: `testCase`
 public func XCTMain(_ testCases: [XCTestCaseEntry]) -> Never {
+    XCTMain(testCases, arguments: CommandLine.arguments)
+}
+public func XCTMain(_ testCases: [XCTestCaseEntry], arguments: [String]) -> Never {
     let testBundle = Bundle.main
 
-    let executionMode = ArgumentParser().executionMode
+    let executionMode = ArgumentParser(arguments: arguments).executionMode
 
     // Apple XCTest behaves differently if tests have been filtered:
     // - The root `XCTestSuite` is named "Selected tests" instead of
@@ -96,7 +99,7 @@ public func XCTMain(_ testCases: [XCTestCaseEntry]) -> Never {
             let errMsg = "Error: Invalid option \"\(invalid)\"\n"
             FileHandle.standardError.write(errMsg.data(using: .utf8) ?? Data())
         }
-        let exeName = URL(fileURLWithPath: CommandLine.arguments[0]).lastPathComponent
+        let exeName = URL(fileURLWithPath: arguments[0]).lastPathComponent
         let sampleTest = rootTestSuite.list().first ?? "Tests.FooTestCase/testFoo"
         let sampleTests = sampleTest.prefix(while: { $0 != "/" })
         print("""
