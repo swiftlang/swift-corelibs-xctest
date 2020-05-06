@@ -56,6 +56,9 @@ if(NOT CMAKE_SYSTEM_NAME STREQUAL Darwin)
   target_link_libraries(XCTest PRIVATE
     dispatch
     Foundation)
+  if(NOT CMAKE_SYSTEM_NAME STREQUAL Windows)
+    target_link_options(XCTest PRIVATE "SHELL:-no-toolchain-stdlib-rpath")
+  endif()
 endif()
 set_target_properties(XCTest PROPERTIES
   Swift_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/swift
