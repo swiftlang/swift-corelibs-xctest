@@ -118,6 +118,7 @@ open class XCTWaiter {
     private weak var manager: WaiterManager<XCTWaiter>?
     private var runLoop: RunLoop?
 
+    private var runLoopSource: CFRunLoopSource?
     private weak var _delegate: XCTWaiterDelegate?
     private let delegateQueue = DispatchQueue(label: "org.swift.XCTest.XCTWaiter.delegate")
 
@@ -217,14 +218,7 @@ open class XCTWaiter {
         self.manager = manager
 
         // Begin the core wait loop.
-        let timeoutTimestamp = Date.timeIntervalSinceReferenceDate + timeout
-        while !isFinished {
-            let remaining = timeoutTimestamp - Date.timeIntervalSinceReferenceDate
-            if remaining <= 0 {
-                break
-            }
-            primitiveWait(using: runLoop, duration: remaining)
-        }
+        primitiveWait(using: runLoop, duration: timeout)
 
         manager.stopManaging(self)
         self.manager = nil
@@ -356,13 +350,20 @@ open class XCTWaiter {
 
 private extension XCTWaiter {
     func primitiveWait(using runLoop: RunLoop, duration timeout: TimeInterval) {
-        // The contract for `primitiveWait(for:)` explicitly allows waiting for a shorter period than requested
-        // by the `timeout` argument. Only run for a short time in case `cancelPrimitiveWait()` was called and
-        // issued `CFRunLoopStop` just before we reach this point.
-        let timeIntervalToRun = min(0.1, timeout)
+        var context: CFRunLoopSourceContext   = CFRunLoopSourceContext(version: 0,
+                                                               info: nil,
+                                                               retain: nil,
+                                                               release: nil,
+                                                               copyDescription: nil,
+                                                               equal: nil,
+                                                               hash: nil,
+                                                               schedule: { _, _, _ in },
+                                                               cancel: {  _, runLoop, _ in  },
+                                                               perform: { _ in })
 
-        // RunLoop.run(mode:before:) should have @discardableResult <rdar://problem/45371901>
-        _ = runLoop.run(mode: .default, before: Date(timeIntervalSinceNow: timeIntervalToRun))
+        runLoopSource = CFRunLoopSourceCreate(nil, 0, &context)
+        CFRunLoopAddSource(runLoop.getCFRunLoop() , runLoopSource, CFRunLoopMode.defaultMode)
+        _ = runLoop.run(until: .init(timeIntervalSinceNow: timeout))
     }
 
     func cancelPrimitiveWait() {
@@ -370,7 +371,8 @@ private extension XCTWaiter {
 #if os(Windows)
         runLoop._stop()
 #else
-        CFRunLoopStop(runLoop.getCFRunLoop())
+        guard let runLoopSource = runLoopSource else { return }
+        CFRunLoopRemoveSource(runLoop.getCFRunLoop(), runLoopSource, CFRunLoopMode.defaultMode)
 #endif
     }
 }
@@ -405,7 +407,7 @@ extension XCTWaiter: ManageableWaiter {
         dispatchPrecondition(condition: .onQueue(XCTWaiter.subsystemQueue))
 
         queue_validateExpectationFulfillment(dueToTimeout: true)
-        manager!.queue_handleWatchdogTimeout(of: self)
+        manager?.queue_handleWatchdogTimeout(of: self)
         cancelPrimitiveWait()
     }
 
