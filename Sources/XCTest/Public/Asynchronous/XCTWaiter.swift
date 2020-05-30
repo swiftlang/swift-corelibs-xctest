@@ -117,8 +117,7 @@ open class XCTWaiter {
     internal var waitSourceLocation: SourceLocation?
     private weak var manager: WaiterManager<XCTWaiter>?
     private var runLoop: RunLoop?
-
-    private var runLoopSource: CFRunLoopSource?
+    private var runLoopSource: RunLoop._Source?
     private weak var _delegate: XCTWaiterDelegate?
     private let delegateQueue = DispatchQueue(label: "org.swift.XCTest.XCTWaiter.delegate")
 
@@ -350,29 +349,19 @@ open class XCTWaiter {
 
 private extension XCTWaiter {
     func primitiveWait(using runLoop: RunLoop, duration timeout: TimeInterval) {
-        var context: CFRunLoopSourceContext   = CFRunLoopSourceContext(version: 0,
-                                                               info: nil,
-                                                               retain: nil,
-                                                               release: nil,
-                                                               copyDescription: nil,
-                                                               equal: nil,
-                                                               hash: nil,
-                                                               schedule: { _, _, _ in },
-                                                               cancel: {  _, runLoop, _ in  },
-                                                               perform: { _ in })
-
-        runLoopSource = CFRunLoopSourceCreate(nil, 0, &context)
-        CFRunLoopAddSource(runLoop.getCFRunLoop() , runLoopSource, CFRunLoopMode.defaultMode)
-        _ = runLoop.run(until: .init(timeIntervalSinceNow: timeout))
+        
+        self.runLoopSource = RunLoop._Source()
+        self.runLoop?._add(self.runLoopSource!, forMode: .default)
+        _ = self.runLoop?.run(until: .init(timeIntervalSinceNow: timeout))
     }
 
     func cancelPrimitiveWait() {
-        guard let runLoop = runLoop else { return }
+        
 #if os(Windows)
+        guard let runLoop = runLoop else { return }
         runLoop._stop()
 #else
-        guard let runLoopSource = runLoopSource else { return }
-        CFRunLoopRemoveSource(runLoop.getCFRunLoop(), runLoopSource, CFRunLoopMode.defaultMode)
+        runLoopSource?.invalidate()
 #endif
     }
 }
