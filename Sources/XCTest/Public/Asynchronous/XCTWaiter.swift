@@ -349,14 +349,12 @@ open class XCTWaiter {
 
 private extension XCTWaiter {
     func primitiveWait(using runLoop: RunLoop, duration timeout: TimeInterval) {
-        
         self.runLoopSource = RunLoop._Source()
         self.runLoop?._add(self.runLoopSource!, forMode: .default)
         _ = self.runLoop?.run(until: .init(timeIntervalSinceNow: timeout))
     }
 
     func cancelPrimitiveWait() {
-        
         runLoopSource?.invalidate()
     }
 }
