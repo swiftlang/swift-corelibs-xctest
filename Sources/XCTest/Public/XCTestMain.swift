@@ -64,13 +64,13 @@ public func XCTMain(_ testCases: [XCTestCaseEntry]) -> Never {
 }
 
 public func XCTMain(_ testCases: [XCTestCaseEntry], arguments: [String]) -> Never {
-  XCTMain(testCases, arguments: arguments, observation: PrintObserver())
+  XCTMain(testCases, arguments: arguments, observers: [PrintObserver()])
 }
 
 public func XCTMain(
   _ testCases: [XCTestCaseEntry],
   arguments: [String],
-  observation: XCTestObservation
+  observers: [XCTestObservation]
 ) -> Never {
     let testBundle = Bundle.main
 
@@ -137,7 +137,9 @@ public func XCTMain(
     case .run(selectedTestNames: _):
         // Add a test observer that prints test progress to stdout.
         let observationCenter = XCTestObservationCenter.shared
-        observationCenter.addTestObserver(observation)
+        for observer in observers {
+          observationCenter.addTestObserver(observer)
+        }
 
         observationCenter.testBundleWillStart(testBundle)
         rootTestSuite.run()
