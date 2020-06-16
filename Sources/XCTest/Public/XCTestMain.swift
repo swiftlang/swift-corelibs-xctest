@@ -62,7 +62,16 @@
 public func XCTMain(_ testCases: [XCTestCaseEntry]) -> Never {
     XCTMain(testCases, arguments: CommandLine.arguments)
 }
+
 public func XCTMain(_ testCases: [XCTestCaseEntry], arguments: [String]) -> Never {
+    XCTMain(testCases, arguments: arguments, observers: [PrintObserver()])
+}
+
+public func XCTMain(
+    _ testCases: [XCTestCaseEntry],
+    arguments: [String],
+    observers: [XCTestObservation]
+) -> Never {
     let testBundle = Bundle.main
 
     let executionMode = ArgumentParser(arguments: arguments).executionMode
@@ -128,7 +137,9 @@ public func XCTMain(_ testCases: [XCTestCaseEntry], arguments: [String]) -> Neve
     case .run(selectedTestNames: _):
         // Add a test observer that prints test progress to stdout.
         let observationCenter = XCTestObservationCenter.shared
-        observationCenter.addTestObserver(PrintObserver())
+        for observer in observers {
+            observationCenter.addTestObserver(observer)
+        }
 
         observationCenter.testBundleWillStart(testBundle)
         rootTestSuite.run()
