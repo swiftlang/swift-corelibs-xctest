@@ -174,7 +174,9 @@ public func XCTAssertEqual<T: Equatable>(_ expression1: @autoclosure () throws -
 public func XCTAssertEqual<T: FloatingPoint>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, accuracy: T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
     _XCTEvaluateAssertion(.equalWithAccuracy, message: message(), file: file, line: line) {
         let (value1, value2) = (try expression1(), try expression2())
-        if abs(value1.distance(to: value2)) <= abs(accuracy.distance(to: T(0))) {
+        // Test with equality first to handle comparing inf/-inf with itself.
+        if value1 == value2 ||
+             abs(value1.distance(to: value2)) <= abs(accuracy.distance(to: T(0))) {
             return .success
         } else {
             return .expectedFailure("(\"\(value1)\") is not equal to (\"\(value2)\") +/- (\"\(accuracy)\")")
