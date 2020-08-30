@@ -64,4 +64,11 @@ internal struct XCTestErrorWhileUnwrappingOptional: Error, XCTCustomErrorHandlin
         false
     }
 
+    var shouldSkipTestInvocation: Bool {
+        // This error is only used for control flow, but otherwise XCTUnwrap behaves more like
+        // an assertion rather than a typical thrown error, so it should not cause the test
+        // invocation to be skipped.
+        false
+    }
+
 }

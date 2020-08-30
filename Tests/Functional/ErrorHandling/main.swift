@@ -35,6 +35,7 @@ class ErrorHandling: XCTestCase {
             ("test_shouldNotThrowErrorOnUnwrapSuccess", test_shouldNotThrowErrorOnUnwrapSuccess),
             ("test_shouldThrowErrorOnUnwrapFailure", test_shouldThrowErrorOnUnwrapFailure),
             ("test_shouldThrowErrorOnEvaluationFailure", test_shouldThrowErrorOnEvaluationFailure),
+            ("test_shouldInvokeTestDespiteUnwrapFailureInSetUp", test_shouldInvokeTestDespiteUnwrapFailureInSetUp),
             ("test_implicitlyUnwrappedOptional_notNil", test_implicitlyUnwrappedOptional_notNil),
             ("test_implicitlyUnwrappedOptional_nil", test_implicitlyUnwrappedOptional_nil),
             ("test_unwrapAnyOptional_notNil", test_unwrapAnyOptional_notNil),
@@ -57,6 +58,15 @@ class ErrorHandling: XCTestCase {
     
     func functionThatDoesThrowError() throws {
         throw SomeError.anError("an error message")
+    }
+
+    override func setUpWithError() throws {
+        if name == "ErrorHandling.test_shouldInvokeTestDespiteUnwrapFailureInSetUp" {
+            let value: String? = nil
+            #sourceLocation(file: "ErrorHandling/main.swift", line: 10001)
+            _ = try XCTUnwrap(value)
+            #sourceLocation()
+        }
     }
 
 // CHECK: Test Case 'ErrorHandling.test_shouldButDoesNotThrowErrorInAssertion' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
@@ -174,6 +184,14 @@ class ErrorHandling: XCTestCase {
 
         // Should not be reached:
         throw SomeError.shouldNotBeReached
+    }
+
+// CHECK: Test Case 'ErrorHandling.test_shouldInvokeTestDespiteUnwrapFailureInSetUp' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: ErrorHandling[/\\]main.swift:10001: error: ErrorHandling.test_shouldInvokeTestDespiteUnwrapFailureInSetUp : XCTUnwrap failed: expected non-nil value of type "String" -
+// CHECK: Here is proof the test was invoked
+// CHECK: Test Case 'ErrorHandling.test_shouldInvokeTestDespiteUnwrapFailureInSetUp' failed \(\d+\.\d+ seconds\)
+    func test_shouldInvokeTestDespiteUnwrapFailureInSetUp() {
+        print("Here is proof the test was invoked")
     }
 
 // CHECK: Test Case 'ErrorHandling.test_implicitlyUnwrappedOptional_notNil' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
