@@ -10,7 +10,9 @@
 //  XCTWaiter.swift
 //
 
+#if !os(Windows)
 import CoreFoundation
+#endif
 
 /// Events are reported to the waiter's delegate via these methods. XCTestCase conforms to this
 /// protocol and will automatically report timeouts and other unexpected events as test failures.
