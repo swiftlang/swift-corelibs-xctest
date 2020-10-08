@@ -9,6 +9,10 @@
 # See http://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
 
 import re
+try:
+    from itertools import zip_longest
+except ImportError:
+    from itertools import izip_longest as zip_longest
 
 from .error import XCTestCheckerError
 from .line import replace_offsets
@@ -63,8 +67,7 @@ def compare(actual, expected, check_prefix):
     file, raises an AssertionError. Also raises an AssertionError if the number
     of lines in the two files differ.
     """
-    for actual_line, expected_line_and_number in map(
-            None,
+    for actual_line, expected_line_and_number in zip_longest(
             _actual_lines(actual),
             _expected_lines_and_line_numbers(expected, check_prefix)):
 

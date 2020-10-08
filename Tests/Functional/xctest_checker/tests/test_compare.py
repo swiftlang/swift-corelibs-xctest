@@ -36,7 +36,7 @@ class CompareTestCase(unittest.TestCase):
         with self.assertRaises(XCTestCheckerError) as cm:
             compare.compare(open(actual, 'r'), expected, check_prefix='c: ')
 
-        self.assertIn('{}:{}'.format(expected, 1), cm.exception.message)
+        self.assertIn('{}:{}'.format(expected, 1), str(cm.exception))
 
     def test_too_many_expected_raises_and_excess_check_line_in_error(self):
         actual = _tmpfile('foo\nbar\n')
@@ -44,7 +44,7 @@ class CompareTestCase(unittest.TestCase):
         with self.assertRaises(XCTestCheckerError) as cm:
             compare.compare(open(actual, 'r'), expected, check_prefix='c: ')
 
-        self.assertIn('{}:{}'.format(expected, 3), cm.exception.message)
+        self.assertIn('{}:{}'.format(expected, 3), str(cm.exception))
 
     def test_match_does_not_raise(self):
         actual = _tmpfile('foo\nbar\nbaz\n')
@@ -62,7 +62,7 @@ class CompareTestCase(unittest.TestCase):
         with self.assertRaises(XCTestCheckerError) as cm:
             compare.compare(open(actual, 'r'), expected, check_prefix='c: ')
 
-        self.assertIn('{}:{}'.format(expected, 2), cm.exception.message)
+        self.assertIn('{}:{}'.format(expected, 2), str(cm.exception))
 
     def test_check_prefix_in_run_line_ignored(self):
         actual = _tmpfile('flim\n')
@@ -75,7 +75,7 @@ class CompareTestCase(unittest.TestCase):
         with self.assertRaises(XCTestCheckerError) as cm:
             compare.compare(open(actual, 'r'), expected, check_prefix='c: ')
 
-        self.assertIn("{}:{}:".format(expected, 2), cm.exception.message)
+        self.assertIn("{}:{}:".format(expected, 2), str(cm.exception))
 
     def test_matching_ignores_leading_and_trailing_whitespace(self):
         actual = _tmpfile('foo\nbar\nbaz\n')
