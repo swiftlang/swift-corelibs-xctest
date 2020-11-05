@@ -81,6 +81,9 @@ if(ENABLE_TESTING)
   if(EXISTS ${LLVM_MAIN_SRC_DIR}/utils/lit/lit.py)
     set(LIT_COMMAND "${LLVM_MAIN_SRC_DIR}/utils/lit/lit.py"
         CACHE STRING "command used to spawn llvm-lit")
+  elseif(LLVM_DEFAULT_EXTERNAL_LIT)
+    set(LIT_COMMAND "${LLVM_DEFAULT_EXTERNAL_LIT}"
+        CACHE STRING "command used to spawn llvm-lit")
   else()
     find_program(LIT_COMMAND NAMES llvm-lit lit.py lit)
   endif()
