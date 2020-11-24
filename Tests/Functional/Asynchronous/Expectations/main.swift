@@ -338,6 +338,39 @@ class ExpectationsTestCase: XCTestCase {
         waitForExpectations(timeout: 0.2)
     }
 
+    // PRAGMA MARK: - assertForOverFulfill
+
+// CHECK: Test Case 'ExpectationsTestCase.test_assertForOverfulfill_disabled' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ExpectationsTestCase.test_assertForOverfulfill_disabled' passed \(\d+\.\d+ seconds\)
+    func test_assertForOverfulfill_disabled() {
+        let foo = XCTestExpectation(description: "foo")
+        XCTAssertFalse(foo.assertForOverFulfill, "assertForOverFulfill should be disabled by default")
+        foo.fulfill()
+        foo.fulfill()
+    }
+
+// CHECK: Test Case 'ExpectationsTestCase.test_assertForOverfulfill_failure' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: .*[/\\]Tests[/\\]Functional[/\\]Asynchronous[/\\]Expectations[/\\]main.swift:[[@LINE+7]]: error: ExpectationsTestCase.test_assertForOverfulfill_failure : API violation - multiple calls made to XCTestExpectation.fulfill\(\) for rob.
+// CHECK: .*[/\\]Tests[/\\]Functional[/\\]Asynchronous[/\\]Expectations[/\\]main.swift:[[@LINE+16]]: error: ExpectationsTestCase.test_assertForOverfulfill_failure : API violation - multiple calls made to XCTestExpectation.fulfill\(\) for rob.
+// CHECK: Test Case 'ExpectationsTestCase.test_assertForOverfulfill_failure' failed \(\d+\.\d+ seconds\)
+    func test_assertForOverfulfill_failure() {
+        let expectation = self.expectation(description: "rob")
+        expectation.assertForOverFulfill = true
+        expectation.fulfill()
+        expectation.fulfill()
+        // FIXME: The behavior here is subtly different from Objective-C XCTest.
+        //        Objective-C XCTest would stop executing the test on the line
+        //        above, and so would not report a failure for this line below.
+        //        In total, it would highlight one line as a failure in this
+        //        test.
+        //
+        //        swift-corelibs-xctest continues to execute the test, and so
+        //        highlights both the lines above and below as failures.
+        //        This should be fixed such that the behavior is identical.
+        expectation.fulfill()
+        self.waitForExpectations(timeout: 0.1)
+    }
+
     // PRAGMA MARK: - Interrupted Waiters
 
     // Disabled due to non-deterministic ordering of XCTWaiterDelegate callbacks, see [SR-10034] and <rdar://problem/49123061>
@@ -497,6 +530,10 @@ class ExpectationsTestCase: XCTestCase {
             ("test_countedConditionPassBeforeWaiting", test_countedConditionPassBeforeWaiting),
             ("test_countedConditionFail", test_countedConditionFail),
 
+            // assertForOverFulfill
+            ("test_assertForOverfulfill_disabled", test_assertForOverfulfill_disabled),
+            ("test_assertForOverfulfill_failure", test_assertForOverfulfill_failure),
+
             // Interrupted Waiters
 //            ("test_outerWaiterTimesOut_InnerWaitersAreInterrupted", test_outerWaiterTimesOut_InnerWaitersAreInterrupted),
             ("test_outerWaiterCompletes_InnerWaiterTimesOut", test_outerWaiterCompletes_InnerWaiterTimesOut),
@@ -513,11 +550,11 @@ class ExpectationsTestCase: XCTestCase {
     }()
 }
 // CHECK: Test Suite 'ExpectationsTestCase' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 30 tests, with 14 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 32 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
 XCTMain([testCase(ExpectationsTestCase.allTests)])
 
 // CHECK: Test Suite '.*\.xctest' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 30 tests, with 14 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 32 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 // CHECK: Test Suite 'All tests' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 30 tests, with 14 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 32 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
