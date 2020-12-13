@@ -171,12 +171,29 @@ public func XCTAssertEqual<T: Equatable>(_ expression1: @autoclosure () throws -
     }
 }
 
+private func areEqual<T: Numeric>(_ exp1: T, _ exp2: T, accuracy: T) -> Bool {
+    // Test with equality first to handle comparing inf/-inf with itself.
+    if exp1 == exp2 {
+        return true
+    } else {
+        // NaN values are handled implicitly, since the <= operator returns false when comparing any value to NaN.
+        let difference = (exp1.magnitude > exp2.magnitude) ? exp1 - exp2 : exp2 - exp1
+        return difference.magnitude <= accuracy.magnitude
+    }
+}
+
 public func XCTAssertEqual<T: FloatingPoint>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, accuracy: T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
+    _XCTAssertEqual(try expression1(), try expression2(), accuracy: accuracy, message(), file: file, line: line)
+}
+
+public func XCTAssertEqual<T: Numeric>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, accuracy: T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
+    _XCTAssertEqual(try expression1(), try expression2(), accuracy: accuracy, message(), file: file, line: line)
+}
+
+private func _XCTAssertEqual<T: Numeric>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, accuracy: T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
     _XCTEvaluateAssertion(.equalWithAccuracy, message: message(), file: file, line: line) {
         let (value1, value2) = (try expression1(), try expression2())
-        // Test with equality first to handle comparing inf/-inf with itself.
-        if value1 == value2 ||
-             abs(value1.distance(to: value2)) <= abs(accuracy.distance(to: T(0))) {
+        if areEqual(value1, value2, accuracy: accuracy) {
             return .success
         } else {
             return .expectedFailure("(\"\(value1)\") is not equal to (\"\(value2)\") +/- (\"\(accuracy)\")")
@@ -267,9 +284,17 @@ public func XCTAssertNotEqual<T: Equatable>(_ expression1: @autoclosure () throw
 }
 
 public func XCTAssertNotEqual<T: FloatingPoint>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, accuracy: T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
+    _XCTAssertNotEqual(try expression1(), try expression2(), accuracy: accuracy, message(), file: file, line: line)
+}
+
+public func XCTAssertNotEqual<T: Numeric>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, accuracy: T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
+    _XCTAssertNotEqual(try expression1(), try expression2(), accuracy: accuracy, message(), file: file, line: line)
+}
+
+private func _XCTAssertNotEqual<T: Numeric>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, accuracy: T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
     _XCTEvaluateAssertion(.notEqualWithAccuracy, message: message(), file: file, line: line) {
         let (value1, value2) = (try expression1(), try expression2())
-        if abs(value1.distance(to: value2)) > abs(accuracy.distance(to: T(0))) {
+        if !areEqual(value1, value2, accuracy: accuracy) {
             return .success
         } else {
             return .expectedFailure("(\"\(value1)\") is equal to (\"\(value2)\") +/- (\"\(accuracy)\")")
