@@ -377,6 +377,12 @@ public func XCTFail(_ message: String = "", file: StaticString = #file, line: UI
 }
 
 public func XCTAssertThrowsError<T>(_ expression: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line, _ errorHandler: (_ error: Swift.Error) -> Void = { _ in }) {
+    let rethrowsOverload: (() throws -> T, () -> String, StaticString, UInt, (Swift.Error) throws -> Void) throws -> Void = XCTAssertThrowsError
+
+    try? rethrowsOverload(expression, message, file, line, errorHandler)
+}
+
+public func XCTAssertThrowsError<T>(_ expression: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line, _ errorHandler: (_ error: Swift.Error) throws -> Void = { _ in }) rethrows {
     _XCTEvaluateAssertion(.throwsError, message: message(), file: file, line: line) {
         var caughtErrorOptional: Swift.Error?
         do {
@@ -386,7 +392,7 @@ public func XCTAssertThrowsError<T>(_ expression: @autoclosure () throws -> T, _
         }
 
         if let caughtError = caughtErrorOptional {
-            errorHandler(caughtError)
+            try errorHandler(caughtError)
             return .success
         } else {
             return .expectedFailure("did not throw error")
