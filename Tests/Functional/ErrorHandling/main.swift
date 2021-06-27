@@ -16,6 +16,8 @@ class ErrorHandling: XCTestCase {
     static var allTests = {
         return [
             // Tests for XCTAssertThrowsError
+            ("test_shouldRethrowErrorFromHandler", test_shouldRethrowErrorFromHandler),
+            ("test_shouldNotRethrowWhenHandlerDoesNotThrow", test_shouldNotRethrowWhenHandlerDoesNotThrow),
             ("test_shouldButDoesNotThrowErrorInAssertion", test_shouldButDoesNotThrowErrorInAssertion),
             ("test_shouldThrowErrorInAssertion", test_shouldThrowErrorInAssertion),
             ("test_throwsErrorInAssertionButFailsWhenCheckingError", test_throwsErrorInAssertionButFailsWhenCheckingError),
@@ -57,6 +59,19 @@ class ErrorHandling: XCTestCase {
     
     func functionThatDoesThrowError() throws {
         throw SomeError.anError("an error message")
+    }
+
+// CHECK: Test Case 'ErrorHandling.test_shouldRethrowErrorFromHandler' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: .*[/\\]ErrorHandling[/\\]main.swift:[[@LINE+3]]: error: ErrorHandling.test_shouldRethrowErrorFromHandler : XCTAssertThrowsError threw error "anError\("an error message"\)" -
+// CHECK: Test Case 'ErrorHandling.test_shouldRethrowErrorFromHandler' failed \(\d+\.\d+ seconds\)
+    func test_shouldRethrowErrorFromHandler() throws {
+        try XCTAssertThrowsError(try functionThatDoesThrowError()) {_ in try functionThatDoesThrowError() }
+    }
+
+// CHECK: Test Case 'ErrorHandling.test_shouldNotRethrowWhenHandlerDoesNotThrow' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ErrorHandling.test_shouldNotRethrowWhenHandlerDoesNotThrow' passed \(\d+\.\d+ seconds\)
+    func test_shouldNotRethrowWhenHandlerDoesNotThrow() throws {
+        try XCTAssertThrowsError(try functionThatDoesThrowError()) {_ in try functionThatDoesNotThrowError() }
     }
 
 // CHECK: Test Case 'ErrorHandling.test_shouldButDoesNotThrowErrorInAssertion' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
@@ -278,11 +293,11 @@ class ErrorHandling: XCTestCase {
 }
 
 // CHECK: Test Suite 'ErrorHandling' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed \d+ tests, with \d+ failures \(5 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed \d+ tests, with \d+ failures \(6 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
 XCTMain([testCase(ErrorHandling.allTests)])
 
 // CHECK: Test Suite '.*\.xctest' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed \d+ tests, with \d+ failures \(5 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed \d+ tests, with \d+ failures \(6 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 // CHECK: Test Suite 'All tests' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed \d+ tests, with \d+ failures \(5 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed \d+ tests, with \d+ failures \(6 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
