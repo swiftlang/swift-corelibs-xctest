@@ -28,6 +28,8 @@ class FailureMessagesTestCase: XCTestCase {
             ("testAssertFalse", testAssertFalse),
             ("testAssertGreaterThan", testAssertGreaterThan),
             ("testAssertGreaterThanOrEqual", testAssertGreaterThanOrEqual),
+            ("testAssertIdentical", testAssertIdentical),
+            ("testAssertNotIdentical", testAssertNotIdentical),
             ("testAssertLessThan", testAssertLessThan),
             ("testAssertLessThanOrEqual", testAssertLessThanOrEqual),
             ("testAssertNil", testAssertNil),
@@ -119,6 +121,27 @@ class FailureMessagesTestCase: XCTestCase {
 // CHECK: Test Case 'FailureMessagesTestCase.testAssertGreaterThanOrEqual' failed \(\d+\.\d+ seconds\)
     func testAssertGreaterThanOrEqual() {
         XCTAssertGreaterThanOrEqual(-1, 0, "message", file: "test.swift")
+    }
+
+// CHECK: Test Case 'FailureMessagesTestCase.testAssertIdentical' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: test.swift:[[@LINE+7]]: error: FailureMessagesTestCase.testAssertIdentical : XCTAssertIdentical failed: \("a"\) is not identical to \("b"\) - message
+// CHECK: Test Case 'FailureMessagesTestCase.testAssertIdentical' failed \(\d+\.\d+ seconds\)
+    func testAssertIdentical() {
+        let object = XCTestExpectation()
+        XCTAssertIdentical(object, object)
+        XCTAssertIdentical(nil, nil)
+        XCTAssertIdentical(true as AnyObject, true as AnyObject)
+        XCTAssertIdentical("a" as AnyObject, "b" as AnyObject, "message", file: "test.swift")
+    }
+
+// CHECK: Test Case 'FailureMessagesTestCase.testAssertNotIdentical' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: test.swift:[[@LINE+6]]: error: FailureMessagesTestCase.testAssertNotIdentical : XCTAssertNotIdentical failed: \("nil"\) is identical to \("nil"\) - message
+// CHECK: Test Case 'FailureMessagesTestCase.testAssertNotIdentical' failed \(\d+\.\d+ seconds\)
+    func testAssertNotIdentical() {
+        XCTAssertNotIdentical("a" as AnyObject, "b" as AnyObject)
+        XCTAssertNotIdentical(true as AnyObject, false as AnyObject)
+        XCTAssertNotIdentical(XCTestExpectation(), XCTestExpectation())
+        XCTAssertNotIdentical(nil, nil, "message", file: "test.swift")
     }
 
 // CHECK: Test Case 'FailureMessagesTestCase.testAssertLessThan' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
@@ -213,11 +236,11 @@ class FailureMessagesTestCase: XCTestCase {
     }
 }
 // CHECK: Test Suite 'FailureMessagesTestCase' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 24 tests, with 24 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 26 tests, with 26 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
 XCTMain([testCase(FailureMessagesTestCase.allTests)])
 
 // CHECK: Test Suite '.*\.xctest' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 24 tests, with 24 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 26 tests, with 26 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 // CHECK: Test Suite 'All tests' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 24 tests, with 24 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 26 tests, with 26 failures \(0 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
