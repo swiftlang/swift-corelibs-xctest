@@ -42,14 +42,14 @@ class AsyncAwaitTests: XCTestCase {
     
     static let allTests = {
         return [
-            ("test_explicitFailures_withinAsyncTests_areReported",        adapt(test_explicitFailures_withinAsyncTests_areReported)),
-            ("test_asyncAnnotatedFunctionsCanPass",                       adapt(test_asyncAnnotatedFunctionsCanPass)),
-            ("test_actorsAreSupported",                                   adapt(test_actorsAreSupported)),
-            ("test_asyncErrors_withinTestMethods_areReported",            adapt(test_asyncErrors_withinTestMethods_areReported)),
-            ("test_asyncAwaitCalls_withinTeardownBlocks_areSupported",    adapt(test_asyncAwaitCalls_withinTeardownBlocks_areSupported)),
-            ("test_asyncErrors_withinTeardownBlocks_areReported",         adapt(test_asyncErrors_withinTeardownBlocks_areReported)),
-            ("test_somethingAsyncWithDelay",                              adapt(test_somethingAsyncWithDelay)),
-            ("test_syncWithinClassWithAsyncTestMethods",                  adapt(test_syncWithinClassWithAsyncTestMethods)),
+            ("test_explicitFailures_withinAsyncTests_areReported",        asyncTest(test_explicitFailures_withinAsyncTests_areReported)),
+            ("test_asyncAnnotatedFunctionsCanPass",                       asyncTest(test_asyncAnnotatedFunctionsCanPass)),
+            ("test_actorsAreSupported",                                   asyncTest(test_actorsAreSupported)),
+            ("test_asyncErrors_withinTestMethods_areReported",            asyncTest(test_asyncErrors_withinTestMethods_areReported)),
+            ("test_asyncAwaitCalls_withinTeardownBlocks_areSupported",    asyncTest(test_asyncAwaitCalls_withinTeardownBlocks_areSupported)),
+            ("test_asyncErrors_withinTeardownBlocks_areReported",         asyncTest(test_asyncErrors_withinTeardownBlocks_areReported)),
+            ("test_somethingAsyncWithDelay",                              asyncTest(test_somethingAsyncWithDelay)),
+            ("test_syncWithinClassWithAsyncTestMethods",                  asyncTest(test_syncWithinClassWithAsyncTestMethods)),
         ]
     }()
     
@@ -172,9 +172,7 @@ private extension AsyncAwaitTests {
 // CHECK: Test Suite '.*\.xctest' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
 // CHECK: \t Executed 8 tests, with 3 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
-let tests = [testCase(AsyncAwaitTests.self,
-                      AsyncAwaitTests.allTests)]
-XCTMain(tests)
+XCTMain([testCase(AsyncAwaitTests.allTests)])
 
 // CHECK: Test Suite 'All tests' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
 // CHECK: \t Executed 8 tests, with 3 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
