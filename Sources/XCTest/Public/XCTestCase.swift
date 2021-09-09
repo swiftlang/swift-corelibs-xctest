@@ -209,11 +209,9 @@ open class XCTestCase: XCTest {
     }
 
     private func performSetUpSequence() {
-        do {
-            try setUpWithError()
-        } catch {
+        func handleErrorDuringSetUp(_ error: Error) {
             if error.xct_shouldRecordAsTestFailure {
-                recordFailure(for: error)
+                self.recordFailure(for: error)
             }
 
             if error.xct_shouldSkipTestInvocation {
@@ -225,10 +223,30 @@ open class XCTestCase: XCTest {
             }
         }
 
-        setUp()
+        do {
+            try awaitUsingExpectation {
+                try await self.setUp()
+            }
+        } catch {
+            handleErrorDuringSetUp(error)
+        }
+
+        do {
+            try self.setUpWithError()
+        } catch {
+            handleErrorDuringSetUp(error)
+        }
+
+        self.setUp()
     }
 
     private func performTearDownSequence() {
+        func handleErrorDuringTearDown(_ error: Error) {
+            if error.xct_shouldRecordAsTestFailure {
+                recordFailure(for: error)
+            }
+        }
+
         runTeardownBlocks()
 
         tearDown()
@@ -236,9 +254,15 @@ open class XCTestCase: XCTest {
         do {
             try tearDownWithError()
         } catch {
-            if error.xct_shouldRecordAsTestFailure {
-                recordFailure(for: error)
+            handleErrorDuringTearDown(error)
+        }
+
+        do {
+            try awaitUsingExpectation {
+                try await self.tearDown()
             }
+        } catch {
+            handleErrorDuringTearDown(error)
         }
     }
 
@@ -292,3 +316,57 @@ private func test<T: XCTestCase>(_ testFunc: @escaping (T) -> () throws -> Void)
         try testFunc(testCase)()
     }
 }
+
+public func asyncTest<T: XCTestCase>(
+    _ testClosureGenerator: @escaping (T) -> () async throws -> Void
+) -> (T) -> () throws -> Void {
+    return { (testType: T) in
+        let testClosure = testClosureGenerator(testType)
+        return {
+            try awaitUsingExpectation(testClosure)
+        }
+    }
+}
+
+private func awaitUsingExpectation(
+    _ closure: @escaping () async throws -> Void
+) throws -> Void {
+    let expectation = XCTestExpectation(description: "async test completion")
+    let thrownErrorWrapper = ThrownErrorWrapper()
+
+    Task {
+        defer { expectation.fulfill() }
+
+        do {
+            try await closure()
+        } catch {
+            thrownErrorWrapper.error = error
+        }
+    }
+
+    _ = XCTWaiter.wait(for: [expectation], timeout: asyncTestTimeout)
+
+    if let error = thrownErrorWrapper.error {
+        throw error
+    }
+}
+
+private final class ThrownErrorWrapper: @unchecked Sendable {
+
+    private var _error: Error?
+
+    var error: Error? {
+        get {
+            XCTWaiter.subsystemQueue.sync { _error }
+        }
+        set {
+            XCTWaiter.subsystemQueue.sync { _error = newValue }
+        }
+    }
+}
+
+
+// This time interval is set to a very large value due to their being no real native timeout functionality within corelibs-xctest.
+// With the introduction of async/await support, the framework now relies on XCTestExpectations internally to coordinate the addition async portions of setup and tear down.
+// This time interval is the timeout corelibs-xctest uses with XCTestExpectations.
+private let asyncTestTimeout: TimeInterval = 60 * 60 * 24 * 30
