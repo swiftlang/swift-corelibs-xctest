@@ -251,17 +251,17 @@ open class XCTestCase: XCTest {
             }
         }
         
-        func runTeardownBlocks(errorHandler: @escaping (Error) -> Void) {
+        func runTeardownBlocks() {
             for block in self.teardownBlocksState.finalize().reversed() {
                 do {
                     try block()
                 } catch {
-                    errorHandler(error)
+                    handleErrorDuringTearDown(error)
                 }
             }
         }
         
-        runTeardownBlocks(errorHandler: handleErrorDuringTearDown(_:))
+        runTeardownBlocks()
 
         tearDown()
 
