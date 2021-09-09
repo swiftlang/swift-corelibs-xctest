@@ -206,7 +206,7 @@ open class XCTestCase: XCTest {
     /// method ends.
     @available(macOS 12.0, *)
     open func addTeardownBlock(_ block: @Sendable @escaping () async throws -> Void) {
-        teardownBlocksState.append(block)
+        teardownBlocksState.appendAsync(block)
     }
 
     private func performSetUpSequence() {

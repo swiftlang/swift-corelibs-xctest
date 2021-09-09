@@ -6,32 +6,33 @@
 // See http://swift.org/LICENSE.txt for license information
 // See http://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
 //
-//
-//  XCTestCase.ClosureType.swift
-//  Extension on XCTestCase which encapsulates ClosureType
-//
-
-///  XCTestCase.TeardownBlocksState
-///  A class which encapsulates teardown blocks which are registered via the `addTearDownBlock(_block:)` method.
-///  Supports async and sync throwing methods
+//  XCTestCase.TeardownBlocksState
+//  A class which encapsulates teardown blocks which are registered via the `addTearDownBlock(_block:)` method.
+//  Supports async and sync throwing methods
 
 extension XCTestCase {
     final class TeardownBlocksState {
-        
+
         private var wasFinalized = false
         private var blocks: [() throws -> Void] = []
-        
+
         @available(macOS 12, *)
-        func append(_ block: @Sendable @escaping () async throws -> Void) {
+        
+        // We don't want to overload append(_:) below because of how Swift will implicitly promote sync closures to async closures,
+        // which can unexpectedly change their semantics in difficult to track down ways.
+        //
+        // Because of this, we chose the unusual decision to forgo overloading (which is a super sweet language feature <3) to prevent this issue from surprising any contributors to corelibs-xctest
+        func appendAsync(_ block: @Sendable @escaping () async throws -> Void) {
             self.append {
                 try awaitUsingExpectation { try await block() }
             }
         }
-        
+
         func append(_ block: @escaping () throws -> Void) {
             XCTWaiter.subsystemQueue.sync {
                 precondition(wasFinalized == false, "API violation -- attempting to add a teardown block after teardown blocks have been dequeued")
-                blocks.append(block)            }
+                blocks.append(block)
+            }
         }
         
         func finalize() -> [() throws -> Void] {

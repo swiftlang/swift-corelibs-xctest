@@ -138,6 +138,7 @@
 				AE63767D1D01ED17002C0EA8 /* TestListing.swift */,
 				AE2FE1111CFE86E6003EF0D7 /* WallClockTimeMetric.swift */,
 				AE2FE1131CFE86E6003EF0D7 /* XCTestCaseSuite.swift */,
+				A53D646626EA8F0E00F48361 /* XCTestCase.TearDownBlocksState.swift */,
 				AE2FE1141CFE86E6003EF0D7 /* XCTestInternalObservation.swift */,
 				17B6C3EC210F53BE00A11ECC /* WaiterManager.swift */,
 				17D5B67F211216EF00D93239 /* SourceLocation.swift */,
@@ -162,7 +163,6 @@
 				AE2FE0F71CFE86DB003EF0D7 /* XCTestRun.swift */,
 				AE2FE0F81CFE86DB003EF0D7 /* XCTestSuite.swift */,
 				AE2FE0F91CFE86DB003EF0D7 /* XCTestSuiteRun.swift */,
-				A53D646626EA8F0E00F48361 /* XCTestCase.TearDownBlocksState.swift */,
 			);
 			path = Public;
 			sourceTree = "<group>";
