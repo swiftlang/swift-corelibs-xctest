@@ -224,8 +224,10 @@ open class XCTestCase: XCTest {
         }
 
         do {
-            try awaitUsingExpectation {
-                try await self.setUp()
+            if #available(macOS 12.0, *) {
+                try awaitUsingExpectation {
+                    try await self.setUp()
+                }
             }
         } catch {
             handleErrorDuringSetUp(error)
@@ -258,8 +260,10 @@ open class XCTestCase: XCTest {
         }
 
         do {
-            try awaitUsingExpectation {
-                try await self.tearDown()
+            if #available(macOS 12.0, *) {
+                try awaitUsingExpectation {
+                    try await self.tearDown()
+                }
             }
         } catch {
             handleErrorDuringTearDown(error)
@@ -317,6 +321,7 @@ private func test<T: XCTestCase>(_ testFunc: @escaping (T) -> () throws -> Void)
     }
 }
 
+@available(macOS 12.0, *)
 public func asyncTest<T: XCTestCase>(
     _ testClosureGenerator: @escaping (T) -> () async throws -> Void
 ) -> (T) -> () throws -> Void {
@@ -328,6 +333,7 @@ public func asyncTest<T: XCTestCase>(
     }
 }
 
+@available(macOS 12.0, *)
 private func awaitUsingExpectation(
     _ closure: @escaping () async throws -> Void
 ) throws -> Void {
