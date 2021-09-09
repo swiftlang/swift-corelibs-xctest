@@ -35,7 +35,7 @@ open class XCTestCase: XCTest {
     private let testClosure: XCTestCaseClosure
 
     private var skip: XCTSkip?
-    private let teardownBlocksState: XCTestCase.TeardownBlocksState
+    private let teardownBlocksState = XCTestCase.TeardownBlocksState()
 
     /// The name of the test case, consisting of its class name and the method
     /// name it will run.
@@ -201,6 +201,13 @@ open class XCTestCase: XCTest {
     open func addTeardownBlock(_ block: @escaping () -> Void) {
         teardownBlocksState.append(block)
     }
+    
+    /// Registers a block of teardown code to be run after the current test
+    /// method ends.
+    @available(macOS 12.0, *)
+    open func addTeardownBlock(_ block: @escaping () async throws -> Void) {
+        teardownBlocksState.append(block)
+    }
 
     private func performSetUpSequence() {
         func handleErrorDuringSetUp(_ error: Error) {
@@ -236,35 +243,25 @@ open class XCTestCase: XCTest {
         self.setUp()
     }
     
-    static let asyncTestTimeout = 5
     
-    @available(macOS 12.0.0, *)
     private func performTearDownSequence() {
-        @Sendable func handleErrorDuringTearDown(_ error: Error) {
+        func handleErrorDuringTearDown(_ error: Error) {
             if error.xct_shouldRecordAsTestFailure {
                 recordFailure(for: error)
             }
         }
         
-        @Sendable func runTeardownBlocks(errorHandler: @escaping (Error) -> Void) async {
-            for block in teardownBlocks.finalize().reversed() {
+        func runTeardownBlocks(errorHandler: @escaping (Error) -> Void) {
+            for block in self.teardownBlocksState.finalize().reversed() {
                 do {
-                    try await block()
+                    try block()
                 } catch {
                     errorHandler(error)
                 }
             }
         }
         
-        let runTeardownBlocksExpectation = XCTestExpectation(description: "runTeardownBlocksExpectation")
-        Task {
-            defer { runTeardownBlocksExpectation.fulfill() }
-            await runTeardownBlocks(errorHandler: handleErrorDuringTearDown(_:))
-        }
-        _ = XCTWaiter.wait(for: [runTeardownBlocksExpectation], timeout: Self.asyncTestTimeout)
-        
-        
-        runTeardownBlocks()
+        runTeardownBlocks(errorHandler: handleErrorDuringTearDown(_:))
 
         tearDown()
 
@@ -282,19 +279,6 @@ open class XCTestCase: XCTest {
             }
         } catch {
             handleErrorDuringTearDown(error)
-        }
-    }
-
-    private func runTeardownBlocks() {
-        let blocks = teardownBlocksQueue.sync { () -> [() -> Void] in
-            self.teardownBlocksDequeued = true
-            let blocks = self.teardownBlocks
-            self.teardownBlocks = []
-            return blocks
-        }
-
-        for block in blocks.reversed() {
-            block()
         }
     }
 

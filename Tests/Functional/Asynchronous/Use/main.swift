@@ -49,7 +49,7 @@ class AsyncAwaitTests: XCTestCase {
             ("test_asyncAwaitCalls_withinTeardownBlocks_areSupported",    asyncTest(test_asyncAwaitCalls_withinTeardownBlocks_areSupported)),
             ("test_asyncErrors_withinTeardownBlocks_areReported",         asyncTest(test_asyncErrors_withinTeardownBlocks_areReported)),
             ("test_somethingAsyncWithDelay",                              asyncTest(test_somethingAsyncWithDelay)),
-            ("test_syncWithinClassWithAsyncTestMethods",                  asyncTest(test_syncWithinClassWithAsyncTestMethods)),
+            ("test_syncWithinClassWithAsyncTestMethods",                  test_syncWithinClassWithAsyncTestMethods),
         ]
     }()
     
@@ -97,7 +97,8 @@ class AsyncAwaitTests: XCTestCase {
     
     // CHECK: Test Case 'AsyncAwaitTests.test_asyncAwaitCalls_withinTeardownBlocks_areSupported' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
     // CHECK: In teardown block\n
-    // CHECK: Test Case 'AsyncAwaitTests.test_asyncAwaitCalls_withinTeardownBlocks_areSupported' passed \(\d+\.\d+ seconds\)
+    // CHECK: \<EXPR\>:0: error: AsyncAwaitTests.test_asyncAwaitCalls_withinTeardownBlocks_areSupported : threw error "example"
+    // CHECK: Test Case 'AsyncAwaitTests.test_asyncAwaitCalls_withinTeardownBlocks_areSupported' failed \(\d+\.\d+ seconds\)
     func test_asyncAwaitCalls_withinTeardownBlocks_areSupported() async throws {
         addTeardownBlock {
             print("In teardown block")
@@ -168,12 +169,12 @@ private extension AsyncAwaitTests {
 }
 
 // CHECK: Test Suite 'AsyncAwaitTests' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 8 tests, with 3 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 8 tests, with 4 failures \(3 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 // CHECK: Test Suite '.*\.xctest' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 8 tests, with 3 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 8 tests, with 4 failures \(3 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
 XCTMain([testCase(AsyncAwaitTests.allTests)])
 
 // CHECK: Test Suite 'All tests' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 8 tests, with 3 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 8 tests, with 4 failures \(3 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
