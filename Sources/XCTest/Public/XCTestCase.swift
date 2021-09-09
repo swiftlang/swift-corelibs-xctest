@@ -205,7 +205,7 @@ open class XCTestCase: XCTest {
     /// Registers a block of teardown code to be run after the current test
     /// method ends.
     @available(macOS 12.0, *)
-    open func addTeardownBlock(_ block: @escaping () async throws -> Void) {
+    open func addTeardownBlock(_ block: @Sendable @escaping () async throws -> Void) {
         teardownBlocksState.append(block)
     }
 
