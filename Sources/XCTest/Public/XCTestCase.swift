@@ -35,7 +35,7 @@ open class XCTestCase: XCTest {
     private let testClosure: XCTestCaseClosure
 
     private var skip: XCTSkip?
-    private let teardownBlocksState = XCTestCase.TeardownBlocksState()
+    private let teardownBlocksState = TeardownBlocksState()
 
     /// The name of the test case, consisting of its class name and the method
     /// name it will run.
