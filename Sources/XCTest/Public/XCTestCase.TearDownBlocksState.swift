@@ -23,11 +23,8 @@ extension XCTestCase {
         
         @available(macOS 12, *)
         func append(_ block: @Sendable @escaping () async throws -> Void) {
-            XCTWaiter.subsystemQueue.sync {
-                precondition(wasFinalized == false, "API violation -- attempting to add a teardown block after teardown blocks have been dequeued")
-                blocks.append {
-                    try awaitUsingExpectation { try await block() }
-                }
+            self.append {
+                try awaitUsingExpectation { try await block() }
             }
         }
         
