@@ -52,7 +52,7 @@ open class XCTest {
         perform(testRun!)
     }
 
-    /// Async setup method called before the invocation of `setUp` for each test method in the class.
+    /// Async setup method called before the invocation of `setUpWithError` for each test method in the class.
     @available(macOS 12.0, *)
     open func setUp() async throws {}
 

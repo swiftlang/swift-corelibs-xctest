@@ -5,23 +5,21 @@
 //
 // See http://swift.org/LICENSE.txt for license information
 // See http://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
-//
-//  XCTestCase.TeardownBlocksState
-//  A class which encapsulates teardown blocks which are registered via the `addTearDownBlock(_block:)` method.
-//  Supports async and sync throwing methods
 
 extension XCTestCase {
+
+    /// A class which encapsulates teardown blocks which are registered via the `addTeardownBlock(_:)` method.
+    /// Supports async and sync throwing methods.
     final class TeardownBlocksState {
 
         private var wasFinalized = false
         private var blocks: [() throws -> Void] = []
 
-        @available(macOS 12, *)
-        
         // We don't want to overload append(_:) below because of how Swift will implicitly promote sync closures to async closures,
         // which can unexpectedly change their semantics in difficult to track down ways.
         //
         // Because of this, we chose the unusual decision to forgo overloading (which is a super sweet language feature <3) to prevent this issue from surprising any contributors to corelibs-xctest
+        @available(macOS 12.0, *)
         func appendAsync(_ block: @Sendable @escaping () async throws -> Void) {
             self.append {
                 try awaitUsingExpectation { try await block() }

@@ -35,7 +35,6 @@ open class XCTestCase: XCTest {
     private let testClosure: XCTestCaseClosure
 
     private var skip: XCTSkip?
-    private let teardownBlocksState = TeardownBlocksState()
 
     /// The name of the test case, consisting of its class name and the method
     /// name it will run.
@@ -195,13 +194,15 @@ open class XCTestCase: XCTest {
     /// Teardown method called after the invocation of every test method in the
     /// class.
     open class func tearDown() {}
-    
+
+    private let teardownBlocksState = TeardownBlocksState()
+
     /// Registers a block of teardown code to be run after the current test
     /// method ends.
     open func addTeardownBlock(_ block: @escaping () -> Void) {
         teardownBlocksState.append(block)
     }
-    
+
     /// Registers a block of teardown code to be run after the current test
     /// method ends.
     @available(macOS 12.0, *)
@@ -212,7 +213,7 @@ open class XCTestCase: XCTest {
     private func performSetUpSequence() {
         func handleErrorDuringSetUp(_ error: Error) {
             if error.xct_shouldRecordAsTestFailure {
-                self.recordFailure(for: error)
+                recordFailure(for: error)
             }
 
             if error.xct_shouldSkipTestInvocation {
@@ -235,22 +236,21 @@ open class XCTestCase: XCTest {
         }
 
         do {
-            try self.setUpWithError()
+            try setUpWithError()
         } catch {
             handleErrorDuringSetUp(error)
         }
 
-        self.setUp()
+        setUp()
     }
-    
-    
+
     private func performTearDownSequence() {
         func handleErrorDuringTearDown(_ error: Error) {
             if error.xct_shouldRecordAsTestFailure {
                 recordFailure(for: error)
             }
         }
-        
+
         func runTeardownBlocks() {
             for block in self.teardownBlocksState.finalize().reversed() {
                 do {
@@ -260,7 +260,7 @@ open class XCTestCase: XCTest {
                 }
             }
         }
-        
+
         runTeardownBlocks()
 
         tearDown()
