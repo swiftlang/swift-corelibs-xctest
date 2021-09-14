@@ -83,7 +83,7 @@ private enum _XCTAssertionResult {
     }
 }
 
-private func _XCTEvaluateAssertion(_ assertion: _XCTAssertion, message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line, expression: () throws -> _XCTAssertionResult) {
+private func _XCTEvaluateAssertion(_ assertion: _XCTAssertion, message: @autoclosure () -> String, file: StaticString, line: UInt, expression: () throws -> _XCTAssertionResult) {
     let result: _XCTAssertionResult
     do {
         result = try expression()
@@ -194,7 +194,7 @@ public func XCTAssertEqual<T: Numeric>(_ expression1: @autoclosure () throws -> 
     _XCTAssertEqual(try expression1(), try expression2(), accuracy: accuracy, message(), file: file, line: line)
 }
 
-private func _XCTAssertEqual<T: Numeric>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, accuracy: T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
+private func _XCTAssertEqual<T: Numeric>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, accuracy: T, _ message: @autoclosure () -> String, file: StaticString, line: UInt) {
     _XCTEvaluateAssertion(.equalWithAccuracy, message: message(), file: file, line: line) {
         let (value1, value2) = (try expression1(), try expression2())
         if areEqual(value1, value2, accuracy: accuracy) {
@@ -323,7 +323,7 @@ public func XCTAssertNotEqual<T: Numeric>(_ expression1: @autoclosure () throws 
     _XCTAssertNotEqual(try expression1(), try expression2(), accuracy: accuracy, message(), file: file, line: line)
 }
 
-private func _XCTAssertNotEqual<T: Numeric>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, accuracy: T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
+private func _XCTAssertNotEqual<T: Numeric>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, accuracy: T, _ message: @autoclosure () -> String, file: StaticString, line: UInt) {
     _XCTEvaluateAssertion(.notEqualWithAccuracy, message: message(), file: file, line: line) {
         let (value1, value2) = (try expression1(), try expression2())
         if !areEqual(value1, value2, accuracy: accuracy) {
