@@ -1,7 +1,7 @@
 // RUN: %{swiftc} %s -o %T/Use
 // RUN: %T/Use > %t || true
 // RUN: %{xctest_checker} %t %s
-// REQUIRES: OS=macosx
+// REQUIRES: concurrency_runtime
 
 #if os(macOS)
     import SwiftXCTest
