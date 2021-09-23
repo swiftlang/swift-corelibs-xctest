@@ -29,6 +29,7 @@ add_library(XCTest
   Sources/XCTest/Private/SourceLocation.swift
   Sources/XCTest/Private/WaiterManager.swift
   Sources/XCTest/Private/IgnoredErrors.swift
+  Sources/XCTest/Private/XCTestCase.TearDownBlocksState.swift
   Sources/XCTest/Public/XCTestRun.swift
   Sources/XCTest/Public/XCTestMain.swift
   Sources/XCTest/Public/XCTestCase.swift
