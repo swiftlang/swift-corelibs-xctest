@@ -514,6 +514,7 @@
 				"OTHER_LDFLAGS[sdk=macosx*]" = (
 					"-framework",
 					SwiftFoundation,
+					"-weak-lswift_Concurrency",
 				);
 				PRODUCT_BUNDLE_PACKAGE_TYPE = FMWK;
 				SKIP_INSTALL = YES;
@@ -538,6 +539,7 @@
 				"OTHER_LDFLAGS[sdk=macosx*]" = (
 					"-framework",
 					SwiftFoundation,
+					"-weak-lswift_Concurrency",
 				);
 				PRODUCT_BUNDLE_PACKAGE_TYPE = FMWK;
 				SKIP_INSTALL = YES;
