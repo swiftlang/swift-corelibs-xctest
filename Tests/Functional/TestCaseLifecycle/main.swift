@@ -25,17 +25,20 @@ class SetUpTearDownTestCase: XCTestCase {
     override class func setUp() {
         super.setUp()
         print("In class \(#function)")
+        XCTAssert(Thread.isMainThread, "Expected to be ran on the main thread, but wasn't.")
     }
 
     override func setUp() {
         super.setUp()
         print("In \(#function)")
         value = 42
+        XCTAssert(Thread.isMainThread, "Expected to be ran on the main thread, but wasn't.")
     }
 
     override func tearDown() {
         super.tearDown()
         print("In \(#function)")
+        XCTAssert(Thread.isMainThread, "Expected to be ran on the main thread, but wasn't.")
     }
 
 // CHECK: Test Case 'SetUpTearDownTestCase.test_hasValueFromSetUp' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
@@ -52,6 +55,7 @@ class SetUpTearDownTestCase: XCTestCase {
     override class func tearDown() {
         super.tearDown()
         print("In class \(#function)")
+        XCTAssert(Thread.isMainThread, "Expected to be ran on the main thread, but wasn't.")
     }
 }
 // CHECK: Test Suite 'SetUpTearDownTestCase' passed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
@@ -95,16 +99,21 @@ class TeardownBlocksTestCase: XCTestCase {
             ("test_withSeveralTeardownBlocks", test_withSeveralTeardownBlocks),
         ]
     }()
+    
+    override func setUp() {
+        XCTAssert(Thread.isMainThread, "Expected to be ran on the main thread, but wasn't.")
+    }
 
     override func tearDown() {
         print("In tearDown function")
+        XCTAssert(Thread.isMainThread, "Expected to be ran on the main thread, but wasn't.")
     }
 
     // CHECK: Test Case 'TeardownBlocksTestCase.test_withoutTeardownBlocks' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
     // CHECK: In tearDown function
     // CHECK: Test Case 'TeardownBlocksTestCase.test_withoutTeardownBlocks' passed \(\d+\.\d+ seconds\)
     func test_withoutTeardownBlocks() {
-        // Intentionally blank
+        XCTAssert(Thread.isMainThread, "Expected to be ran on the main thread, but wasn't.")
     }
 
     // CHECK: Test Case 'TeardownBlocksTestCase.test_withATeardownBlock' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
@@ -114,6 +123,7 @@ class TeardownBlocksTestCase: XCTestCase {
     func test_withATeardownBlock() {
         addTeardownBlock {
             print("In teardown block A")
+            XCTAssert(Thread.isMainThread, "Expected to be ran on the main thread, but wasn't.")
         }
     }
 
@@ -125,9 +135,11 @@ class TeardownBlocksTestCase: XCTestCase {
     func test_withSeveralTeardownBlocks() {
         addTeardownBlock {
             print("In teardown block B")
+            XCTAssert(Thread.isMainThread, "Expected to be ran on the main thread, but wasn't.")
         }
         addTeardownBlock {
             print("In teardown block C")
+            XCTAssert(Thread.isMainThread, "Expected to be ran on the main thread, but wasn't.")
         }
     }
 }

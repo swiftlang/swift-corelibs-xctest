@@ -13,6 +13,7 @@
 		17B6C3ED210F53BE00A11ECC /* WaiterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C3EC210F53BE00A11ECC /* WaiterManager.swift */; };
 		17B6C3EF210F990100A11ECC /* XCTWaiter+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C3EE210F990100A11ECC /* XCTWaiter+Validation.swift */; };
 		17D5B680211216EF00D93239 /* SourceLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D5B67F211216EF00D93239 /* SourceLocation.swift */; };
+		A53D646726EA8F0E00F48361 /* XCTestCase.TearDownBlocksState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53D646626EA8F0E00F48361 /* XCTestCase.TearDownBlocksState.swift */; };
 		AE2FE0FB1CFE86DB003EF0D7 /* XCAbstractTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE0EA1CFE86DB003EF0D7 /* XCAbstractTest.swift */; };
 		AE2FE0FE1CFE86DB003EF0D7 /* XCTAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE0ED1CFE86DB003EF0D7 /* XCTAssert.swift */; };
 		AE2FE0FF1CFE86DB003EF0D7 /* XCTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2FE0EE1CFE86DB003EF0D7 /* XCTestCase.swift */; };
@@ -58,6 +59,7 @@
 		17B6C3EE210F990100A11ECC /* XCTWaiter+Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTWaiter+Validation.swift"; sourceTree = "<group>"; };
 		17D5B67F211216EF00D93239 /* SourceLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceLocation.swift; sourceTree = "<group>"; };
 		5B5D86DB1BBC74AD00234F36 /* SwiftXCTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftXCTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A53D646626EA8F0E00F48361 /* XCTestCase.TearDownBlocksState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestCase.TearDownBlocksState.swift; sourceTree = "<group>"; };
 		AE2FE0EA1CFE86DB003EF0D7 /* XCAbstractTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCAbstractTest.swift; sourceTree = "<group>"; };
 		AE2FE0ED1CFE86DB003EF0D7 /* XCTAssert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTAssert.swift; sourceTree = "<group>"; };
 		AE2FE0EE1CFE86DB003EF0D7 /* XCTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestCase.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				AE63767D1D01ED17002C0EA8 /* TestListing.swift */,
 				AE2FE1111CFE86E6003EF0D7 /* WallClockTimeMetric.swift */,
 				AE2FE1131CFE86E6003EF0D7 /* XCTestCaseSuite.swift */,
+				A53D646626EA8F0E00F48361 /* XCTestCase.TearDownBlocksState.swift */,
 				AE2FE1141CFE86E6003EF0D7 /* XCTestInternalObservation.swift */,
 				17B6C3EC210F53BE00A11ECC /* WaiterManager.swift */,
 				17D5B67F211216EF00D93239 /* SourceLocation.swift */,
@@ -355,6 +358,7 @@
 				AE2FE1081CFE86DB003EF0D7 /* XCTestRun.swift in Sources */,
 				AE2FE10A1CFE86DB003EF0D7 /* XCTestSuiteRun.swift in Sources */,
 				AE2FE1161CFE86E6003EF0D7 /* ObjectWrapper.swift in Sources */,
+				A53D646726EA8F0E00F48361 /* XCTestCase.TearDownBlocksState.swift in Sources */,
 				172FF8A72117B74D0059CBC5 /* XCTNSNotificationExpectation.swift in Sources */,
 				AE2FE11A1CFE86E6003EF0D7 /* WallClockTimeMetric.swift in Sources */,
 				AE2FE1191CFE86E6003EF0D7 /* TestFiltering.swift in Sources */,
@@ -510,6 +514,7 @@
 				"OTHER_LDFLAGS[sdk=macosx*]" = (
 					"-framework",
 					SwiftFoundation,
+					"-weak-lswift_Concurrency",
 				);
 				PRODUCT_BUNDLE_PACKAGE_TYPE = FMWK;
 				SKIP_INSTALL = YES;
@@ -534,6 +539,7 @@
 				"OTHER_LDFLAGS[sdk=macosx*]" = (
 					"-framework",
 					SwiftFoundation,
+					"-weak-lswift_Concurrency",
 				);
 				PRODUCT_BUNDLE_PACKAGE_TYPE = FMWK;
 				SKIP_INSTALL = YES;
