@@ -3,6 +3,8 @@
 // RUN: %{xctest_checker} %t %s
 // REQUIRES: concurrency_runtime
 
+// UNSUPPORTED: OS=windows
+
 #if os(macOS)
     import SwiftXCTest
 #else
@@ -57,7 +59,7 @@ class AsyncAwaitTests: XCTestCase {
     override func setUp() async throws {}
     
     override func tearDown() async throws {}
-    
+
     // CHECK: Test Case 'AsyncAwaitTests.test_explicitFailures_withinAsyncTests_areReported' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
     // CHECK: .*[/\\]Asynchronous[/\\]Use[/\\]main.swift:[[@LINE+3]]: error: AsyncAwaitTests.test_explicitFailures_withinAsyncTests_areReported : XCTAssertTrue failed -
     // CHECK: Test Case 'AsyncAwaitTests.test_explicitFailures_withinAsyncTests_areReported' failed \(\d+\.\d+ seconds\)
