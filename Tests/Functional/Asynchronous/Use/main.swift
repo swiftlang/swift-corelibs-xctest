@@ -3,8 +3,6 @@
 // RUN: %{xctest_checker} %t %s
 // REQUIRES: concurrency_runtime
 
-// UNSUPPORTED: OS=windows
-
 #if os(macOS)
     import SwiftXCTest
 #else
