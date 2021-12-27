@@ -482,6 +482,45 @@ class ExpectationsTestCase: XCTestCase {
         waitForExpectations(timeout: 1)
     }
 
+// CHECK: Test Case 'ExpectationsTestCase.test_expectationCreationOnSecondaryThread' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ExpectationsTestCase.test_expectationCreationOnSecondaryThread' passed \(\d+\.\d+ seconds\)
+    func test_expectationCreationOnSecondaryThread() {
+        DispatchQueue.global().sync {
+            let foo = self.expectation(description: "foo")
+            foo.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        // Also test using an "explicit" wait API (which accepts an array of expectations) to wait on an
+        // expectation created on a non-main thread.
+        let foo: XCTestExpectation = DispatchQueue.global().sync {
+            let foo = self.expectation(description: "foo")
+            foo.fulfill()
+            return foo
+        }
+        wait(for: [foo], timeout: 1)
+    }
+
+// CHECK: Test Case 'ExpectationsTestCase.test_expectationCreationWhileWaiting' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ExpectationsTestCase.test_expectationCreationWhileWaiting' passed \(\d+\.\d+ seconds\)
+    func test_expectationCreationWhileWaiting() {
+        let foo = expectation(description: "foo")
+
+        DispatchQueue.main.async {
+            let bar = self.expectation(description: "bar")
+            bar.fulfill()
+
+            foo.fulfill()
+        }
+
+        // Waits on `foo` with a generous timeout, since we want to ensure we don't proceed until the dispatched block has completed.
+        waitForExpectations(timeout: 100)
+
+        // Waits on `bar` with a zero timeout, since by this point we expect the dispatched block to have completed and thus
+        // the second expectation should already be fulfilled.
+        waitForExpectations(timeout: 0)
+    }
+
 // CHECK: Test Case 'ExpectationsTestCase.test_runLoopInsideDispatch' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
 // CHECK: .*[/\\]Tests[/\\]Functional[/\\]Asynchronous[/\\]Expectations[/\\]main.swift:[[@LINE+8]]: error: ExpectationsTestCase.test_runLoopInsideDispatch : Asynchronous wait failed - Exceeded timeout of 0.5 seconds, with unfulfilled expectations: foo
 // CHECK: Test Case 'ExpectationsTestCase.test_runLoopInsideDispatch' failed \(\d+\.\d+ seconds\)
@@ -545,16 +584,18 @@ class ExpectationsTestCase: XCTestCase {
 
             // Regressions
             ("test_fulfillmentOnSecondaryThread", test_fulfillmentOnSecondaryThread),
+            ("test_expectationCreationOnSecondaryThread", test_expectationCreationOnSecondaryThread),
+            ("test_expectationCreationWhileWaiting", test_expectationCreationWhileWaiting),
             ("test_runLoopInsideDispatch", test_runLoopInsideDispatch),
         ]
     }()
 }
 // CHECK: Test Suite 'ExpectationsTestCase' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 32 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 34 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
 XCTMain([testCase(ExpectationsTestCase.allTests)])
 
 // CHECK: Test Suite '.*\.xctest' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 32 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 34 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 // CHECK: Test Suite 'All tests' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 32 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 34 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds

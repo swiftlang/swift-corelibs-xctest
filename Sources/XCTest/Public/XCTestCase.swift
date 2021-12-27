@@ -48,6 +48,7 @@ open class XCTestCase: XCTest {
         return 1
     }
 
+    // FIXME: Once `waitForExpectations(timeout:...handler:)` gains `@MainActor`, this may be able to add it as well.
     internal var currentWaiter: XCTWaiter?
 
     /// The set of expectations made upon this test case.
@@ -60,9 +61,6 @@ open class XCTestCase: XCTest {
     }
 
     internal func addExpectation(_ expectation: XCTestExpectation) {
-        precondition(Thread.isMainThread, "\(#function) must be called on the main thread")
-        precondition(currentWaiter == nil, "API violation - creating an expectation while already in waiting mode.")
-
         XCTWaiter.subsystemQueue.sync {
             _allExpectations.append(expectation)
         }
@@ -99,7 +97,10 @@ open class XCTestCase: XCTest {
         XCTCurrentTestCase = self
         testRun.start()
         invokeTest()
-        failIfExpectationsNotWaitedFor(_allExpectations)
+
+        let allExpectations = XCTWaiter.subsystemQueue.sync { _allExpectations }
+        failIfExpectationsNotWaitedFor(allExpectations)
+
         testRun.stop()
         XCTCurrentTestCase = nil
     }
