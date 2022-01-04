@@ -41,6 +41,7 @@ public extension XCTestCase {
     ///   these environments. To ensure compatibility of tests between
     ///   swift-corelibs-xctest and Apple XCTest, it is not recommended to pass
     ///   explicit values for `file` and `line`.
+    // FIXME: This should have `@MainActor` to match Xcode XCTest, but adding it causes errors in tests authored pre-Swift Concurrency which don't typically have `@MainActor`.
     func waitForExpectations(timeout: TimeInterval, file: StaticString = #file, line: Int = #line, handler: XCWaitCompletionHandler? = nil) {
         precondition(Thread.isMainThread, "\(#function) must be called on the main thread")
         if currentWaiter != nil {
@@ -58,7 +59,7 @@ public extension XCTestCase {
 
         currentWaiter = nil
 
-        cleanUpExpectations()
+        cleanUpExpectations(expectations)
 
         // The handler is invoked regardless of whether the test passed.
         if let handler = handler {
