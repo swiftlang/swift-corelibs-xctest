@@ -215,7 +215,7 @@ private func describe(_ object: AnyObject?) -> String {
 }
 
 /// Asserts that two values are identical.
-public func XCTAssertIdentical(_ expression1: @autoclosure () throws -> AnyObject?, _ expression2: @autoclosure () throws -> AnyObject?, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) {
+public func XCTAssertIdentical(_ expression1: @autoclosure () throws -> AnyObject?, _ expression2: @autoclosure () throws -> AnyObject?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
     _XCTEvaluateAssertion(.identical, message: message(), file: file, line: line) {
         let (value1, value2) = (try expression1(), try expression2())
         if value1 === value2 {
@@ -227,7 +227,7 @@ public func XCTAssertIdentical(_ expression1: @autoclosure () throws -> AnyObjec
 }
 
 /// Asserts that two values aren't identical.
-public func XCTAssertNotIdentical(_ expression1: @autoclosure () throws -> AnyObject?, _ expression2: @autoclosure () throws -> AnyObject?, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) {
+public func XCTAssertNotIdentical(_ expression1: @autoclosure () throws -> AnyObject?, _ expression2: @autoclosure () throws -> AnyObject?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
     _XCTEvaluateAssertion(.notIdentical, message: message(), file: file, line: line) {
         let (value1, value2) = (try expression1(), try expression2())
         if value1 !== value2 {
