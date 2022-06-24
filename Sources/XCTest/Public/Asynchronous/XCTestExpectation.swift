@@ -11,7 +11,7 @@
 //
 
 /// Expectations represent specific conditions in asynchronous testing.
-open class XCTestExpectation {
+open class XCTestExpectation: @unchecked Sendable {
 
     private static var currentMonotonicallyIncreasingToken: UInt64 = 0
     private static func queue_nextMonotonicallyIncreasingToken() -> UInt64 {
