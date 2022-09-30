@@ -206,7 +206,7 @@ open class XCTestCase: XCTest {
 
     /// Registers a block of teardown code to be run after the current test
     /// method ends.
-    @available(macOS 12.0, *)
+    @available(macOS 10.15, *)
     public func addTeardownBlock(_ block: @Sendable @escaping () async throws -> Void) {
         teardownBlocksState.appendAsync(block)
     }
@@ -227,7 +227,7 @@ open class XCTestCase: XCTest {
         }
 
         do {
-            if #available(macOS 12.0, *) {
+            if #available(macOS 10.15, *) {
                 try awaitUsingExpectation {
                     try await self.setUp()
                 }
@@ -273,7 +273,7 @@ open class XCTestCase: XCTest {
         }
 
         do {
-            if #available(macOS 12.0, *) {
+            if #available(macOS 10.15, *) {
                 try awaitUsingExpectation {
                     try await self.tearDown()
                 }
@@ -321,7 +321,7 @@ private func test<T: XCTestCase>(_ testFunc: @escaping (T) -> () throws -> Void)
     }
 }
 
-@available(macOS 12.0, *)
+@available(macOS 10.15, *)
 public func asyncTest<T: XCTestCase>(
     _ testClosureGenerator: @escaping (T) -> () async throws -> Void
 ) -> (T) -> () throws -> Void {
@@ -333,7 +333,7 @@ public func asyncTest<T: XCTestCase>(
     }
 }
 
-@available(macOS 12.0, *)
+@available(macOS 10.15, *)
 func awaitUsingExpectation(
     _ closure: @escaping () async throws -> Void
 ) throws -> Void {
