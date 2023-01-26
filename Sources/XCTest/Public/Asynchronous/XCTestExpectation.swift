@@ -253,7 +253,7 @@ open class XCTestExpectation: @unchecked Sendable {
     open func fulfill(_ file: StaticString = #file, line: Int = #line) {
         let sourceLocation = SourceLocation(file: file, line: line)
 
-        let didFulfillHandler: (() -> Void)? = XCTWaiter.subsystemQueue.sync {
+        let didFulfillHandler: () -> Void = XCTWaiter.subsystemQueue.sync {
             // FIXME: Objective-C XCTest emits failures when expectations are
             //        fulfilled after the test cases that generated those
             //        expectations have completed. Similarly, this should cause an
