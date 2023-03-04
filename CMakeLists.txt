@@ -104,6 +104,7 @@ if(ENABLE_TESTING)
                       LIBDISPATCH_BUILD_DIR=${XCTEST_PATH_TO_LIBDISPATCH_BUILD}
                       LIBDISPATCH_OVERLAY_DIR=${XCTEST_PATH_TO_LIBDISPATCH_BUILD}/src/swift
                       SWIFT_EXEC=${CMAKE_Swift_COMPILER}
+                      SWIFT_FLAGS=${CMAKE_Swift_FLAGS}
                       $<TARGET_FILE:Python3::Interpreter> ${LIT_COMMAND} -sv ${CMAKE_SOURCE_DIR}/Tests/Functional
                     COMMENT
                       "Running XCTest functional test suite"
