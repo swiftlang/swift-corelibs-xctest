@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # xctest_checker/main.py - Entry point for xctest_checker -*- python -*-
 #
 # This source file is part of the Swift.org open source project
