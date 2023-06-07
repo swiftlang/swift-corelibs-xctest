@@ -1,5 +1,5 @@
 // RUN: %{swiftc} %s -g -o %T/TestCaseLifecycleMisuse
-// RUN: %T/TestCaseLifecycleMisuse > %t || true
+// RUN: env SWIFT_BACKTRACE=enable=no %T/TestCaseLifecycleMisuse > %t || true
 // RUN: %{xctest_checker} %t %s
 
 #if os(macOS)
