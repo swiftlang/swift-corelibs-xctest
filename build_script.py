@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # build_script.py - Build, install, and test XCTest -*- python -*-
 #
 # This source file is part of the Swift.org open source project
