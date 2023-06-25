@@ -551,7 +551,37 @@ class ExpectationsTestCase: XCTestCase {
         RunLoop.main.run(until: Date() + 1)
     }
 
-    static var allTests = {
+// CHECK: Test Case 'ExpectationsTestCase.test_waitForExpectationsFromMainActor' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ExpectationsTestCase.test_waitForExpectationsFromMainActor' failed \(\d+\.\d+ seconds\)
+    func test_waitForExpectationsAsync() async {
+      // Basic check that waitForExpectations() is functional when used with the
+      // await keyword in an async function.
+      let expectation = self.expectation(description: "foo")
+      expectation.fulfill()
+      await self.waitForExpectations(timeout: 0.0)
+    }
+
+// CHECK: Test Case 'ExpectationsTestCase.test_waitForExpectationsFromMainActor' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ExpectationsTestCase.test_waitForExpectationsFromMainActor' failed \(\d+\.\d+ seconds\)
+    @MainActor func test_waitForExpectationsFromMainActor() {
+      // Basic check that waitForExpectations() is functional and does not need
+      // the await keyword when used from a main-actor-isolated test function.
+      let expectation = self.expectation(description: "foo")
+      expectation.fulfill()
+      self.waitForExpectations(timeout: 0.0)
+    }
+
+// CHECK: Test Case 'ExpectationsTestCase.test_waitForExpectationsFromMainActor_async' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ExpectationsTestCase.test_waitForExpectationsFromMainActor_async' failed \(\d+\.\d+ seconds\)
+    @MainActor func test_waitForExpectationsFromMainActor_async() async {
+      // Basic check that waitForExpectations() is functional and does not need
+      // the await keyword when used from a main-actor-isolated test function.
+      let expectation = self.expectation(description: "foo")
+      expectation.fulfill()
+      self.waitForExpectations(timeout: 0.0)
+    }
+
+    static var allTests: [(String, (ExpectationsTestCase) -> () throws -> Void)] = {
         return [
             ("test_waitingForAnUnfulfilledExpectation_fails", test_waitingForAnUnfulfilledExpectation_fails),
             ("test_waitingForUnfulfilledExpectations_outputsAllExpectations_andFails", test_waitingForUnfulfilledExpectations_outputsAllExpectations_andFails),
@@ -603,15 +633,20 @@ class ExpectationsTestCase: XCTestCase {
             ("test_expectationCreationOnSecondaryThread", test_expectationCreationOnSecondaryThread),
             ("test_expectationCreationWhileWaiting", test_expectationCreationWhileWaiting),
             ("test_runLoopInsideDispatch", test_runLoopInsideDispatch),
+
+            // waitForExpectations() + @MainActor
+            ("test_waitForExpectationsAsync", asyncTest(test_waitForExpectationsAsync)),
+            ("test_waitForExpectationsFromMainActor", asyncTest { test_waitForExpectationsFromMainActor($0) }),
+            ("test_waitForExpectationsFromMainActor_async", asyncTest { test_waitForExpectationsFromMainActor_async($0) }),
         ]
     }()
 }
 // CHECK: Test Suite 'ExpectationsTestCase' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 35 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 38 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
 XCTMain([testCase(ExpectationsTestCase.allTests)])
 
 // CHECK: Test Suite '.*\.xctest' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 35 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 38 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 // CHECK: Test Suite 'All tests' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 35 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 38 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
