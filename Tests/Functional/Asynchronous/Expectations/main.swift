@@ -96,6 +96,21 @@ class ExpectationsTestCase: XCTestCase {
         XCTWaiter(delegate: self).wait(for: [foo, bar], timeout: 1)
     }
 
+// CHECK: Test Case 'ExpectationsTestCase.test_multipleExpectations_async' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ExpectationsTestCase.test_multipleExpectations_async' passed \(\d+\.\d+ seconds\)
+    func test_multipleExpectations_async() async {
+        let foo = expectation(description: "foo")
+        let bar = XCTestExpectation(description: "bar")
+        DispatchQueue.global(qos: .default).asyncAfter(wallDeadline: .now() + 0.01) {
+            bar.fulfill()
+        }
+        DispatchQueue.global(qos: .default).asyncAfter(wallDeadline: .now() + 0.01) {
+            foo.fulfill()
+        }
+
+        await XCTWaiter(delegate: self).fulfillment(of: [foo, bar], timeout: 1)
+    }
+
 // CHECK: Test Case 'ExpectationsTestCase.test_multipleExpectationsEnforceOrderingCorrect' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'ExpectationsTestCase.test_multipleExpectationsEnforceOrderingCorrect' passed \(\d+\.\d+ seconds\)
     func test_multipleExpectationsEnforceOrderingCorrect() {
