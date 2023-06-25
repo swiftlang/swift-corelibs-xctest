@@ -563,6 +563,7 @@ class ExpectationsTestCase: XCTestCase {
 
             // Multiple Expectations
             ("test_multipleExpectations", test_multipleExpectations),
+            ("test_multipleExpectations_async", asyncTest(test_multipleExpectations_async)),
             ("test_multipleExpectationsEnforceOrderingCorrect", test_multipleExpectationsEnforceOrderingCorrect),
             ("test_multipleExpectationsEnforceOrderingCorrectBeforeWait", test_multipleExpectationsEnforceOrderingCorrectBeforeWait),
             ("test_multipleExpectationsEnforceOrderingIncorrect", test_multipleExpectationsEnforceOrderingIncorrect),
