@@ -276,7 +276,8 @@ open class XCTWaiter {
     ///   these environments. To ensure compatibility of tests between
     ///   swift-corelibs-xctest and Apple XCTest, it is not recommended to pass
     ///   explicit values for `file` and `line`.
-    @available(macOS 12.0, *) @discardableResult
+    @available(macOS 12.0, *)
+    @discardableResult
     open func fulfillment(of expectations: [XCTestExpectation], timeout: TimeInterval, enforceOrder: Bool = false, file: StaticString = #file, line: Int = #line) async -> Result {
         return await withCheckedContinuation { continuation in
             // This function operates by blocking a background thread instead of one owned by libdispatch or by the
