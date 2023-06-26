@@ -554,34 +554,34 @@ class ExpectationsTestCase: XCTestCase {
 // CHECK: Test Case 'ExpectationsTestCase.test_waitForExpectationsAsync' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'ExpectationsTestCase.test_waitForExpectationsAsync' failed \(\d+\.\d+ seconds\)
     func test_waitForExpectationsAsync() async {
-      // Basic check that waitForExpectations() is functional when used with the
-      // await keyword in an async function.
-      let expectation = self.expectation(description: "foo")
-      expectation.fulfill()
-      await self.waitForExpectations(timeout: 0.0)
+        // Basic check that waitForExpectations() is functional when used with the
+        // await keyword in an async function.
+        let expectation = self.expectation(description: "foo")
+        expectation.fulfill()
+        await self.waitForExpectations(timeout: 0.0)
     }
 
 // CHECK: Test Case 'ExpectationsTestCase.test_waitForExpectationsFromMainActor' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'ExpectationsTestCase.test_waitForExpectationsFromMainActor' failed \(\d+\.\d+ seconds\)
     @MainActor func test_waitForExpectationsFromMainActor() {
-      // Basic check that waitForExpectations() is functional and does not need
-      // the await keyword when used from a main-actor-isolated test function.
-      let expectation = self.expectation(description: "foo")
-      expectation.fulfill()
-      self.waitForExpectations(timeout: 0.0)
+        // Basic check that waitForExpectations() is functional and does not need
+        // the await keyword when used from a main-actor-isolated test function.
+        let expectation = self.expectation(description: "foo")
+        expectation.fulfill()
+        self.waitForExpectations(timeout: 0.0)
     }
 
 // CHECK: Test Case 'ExpectationsTestCase.test_waitForExpectationsFromMainActor_async' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'ExpectationsTestCase.test_waitForExpectationsFromMainActor_async' failed \(\d+\.\d+ seconds\)
     @MainActor func test_waitForExpectationsFromMainActor_async() async {
-      // Basic check that waitForExpectations() is functional and does not need
-      // the await keyword when used from a main-actor-isolated test function.
-      let expectation = self.expectation(description: "foo")
-      expectation.fulfill()
-      self.waitForExpectations(timeout: 0.0)
+        // Basic check that waitForExpectations() is functional and does not need
+        // the await keyword when used from a main-actor-isolated test function.
+        let expectation = self.expectation(description: "foo")
+        expectation.fulfill()
+        self.waitForExpectations(timeout: 0.0)
     }
 
-    static var allTests: [(String, (ExpectationsTestCase) -> () throws -> Void)] = {
+    static var allTests = {
         return [
             ("test_waitingForAnUnfulfilledExpectation_fails", test_waitingForAnUnfulfilledExpectation_fails),
             ("test_waitingForUnfulfilledExpectations_outputsAllExpectations_andFails", test_waitingForUnfulfilledExpectations_outputsAllExpectations_andFails),
@@ -636,8 +636,8 @@ class ExpectationsTestCase: XCTestCase {
 
             // waitForExpectations() + @MainActor
             ("test_waitForExpectationsAsync", asyncTest(test_waitForExpectationsAsync)),
-            ("test_waitForExpectationsFromMainActor", asyncTest { test_waitForExpectationsFromMainActor($0) }),
-            ("test_waitForExpectationsFromMainActor_async", asyncTest { test_waitForExpectationsFromMainActor_async($0) }),
+            ("test_waitForExpectationsFromMainActor", asyncTest(test_waitForExpectationsFromMainActor)),
+            ("test_waitForExpectationsFromMainActor_async", asyncTest(test_waitForExpectationsFromMainActor_async)),
         ]
     }()
 }
