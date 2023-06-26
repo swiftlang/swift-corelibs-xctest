@@ -551,8 +551,8 @@ class ExpectationsTestCase: XCTestCase {
         RunLoop.main.run(until: Date() + 1)
     }
 
-// CHECK: Test Case 'ExpectationsTestCase.test_waitForExpectationsFromMainActor' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: Test Case 'ExpectationsTestCase.test_waitForExpectationsFromMainActor' failed \(\d+\.\d+ seconds\)
+// CHECK: Test Case 'ExpectationsTestCase.test_waitForExpectationsAsync' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ExpectationsTestCase.test_waitForExpectationsAsync' failed \(\d+\.\d+ seconds\)
     func test_waitForExpectationsAsync() async {
       // Basic check that waitForExpectations() is functional when used with the
       // await keyword in an async function.
