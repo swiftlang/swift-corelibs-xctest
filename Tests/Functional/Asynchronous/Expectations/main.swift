@@ -636,17 +636,18 @@ class ExpectationsTestCase: XCTestCase {
 
             // waitForExpectations() + @MainActor
             ("test_waitForExpectationsAsync", asyncTest(test_waitForExpectationsAsync)),
-            ("test_waitForExpectationsFromMainActor", asyncTest(test_waitForExpectationsFromMainActor)),
-            ("test_waitForExpectationsFromMainActor_async", asyncTest(test_waitForExpectationsFromMainActor_async)),
+            // Disabled due to a SILGen crash: <rdar://111340003>
+            // ("test_waitForExpectationsFromMainActor", asyncTest(test_waitForExpectationsFromMainActor)),
+            // ("test_waitForExpectationsFromMainActor_async", asyncTest(test_waitForExpectationsFromMainActor_async)),
         ]
     }()
 }
 // CHECK: Test Suite 'ExpectationsTestCase' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 38 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 36 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
 XCTMain([testCase(ExpectationsTestCase.allTests)])
 
 // CHECK: Test Suite '.*\.xctest' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 38 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 36 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 // CHECK: Test Suite 'All tests' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 38 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 36 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
