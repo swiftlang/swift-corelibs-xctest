@@ -187,6 +187,7 @@ open class XCTWaiter {
     ///   these environments. To ensure compatibility of tests between
     ///   swift-corelibs-xctest and Apple XCTest, it is not recommended to pass
     ///   explicit values for `file` and `line`.
+    @available(*, noasync, message: "Use await fulfillment(of:timeout:enforceOrder:) instead.")
     @discardableResult
     open func wait(for expectations: [XCTestExpectation], timeout: TimeInterval, enforceOrder: Bool = false, file: StaticString = #file, line: Int = #line) -> Result {
         precondition(Set(expectations).count == expectations.count, "API violation - each expectation can appear only once in the 'expectations' parameter.")
@@ -252,6 +253,43 @@ open class XCTWaiter {
         return result
     }
 
+    /// Wait on an array of expectations for up to the specified timeout, and optionally specify whether they
+    /// must be fulfilled in the given order. May return early based on fulfillment of the waited on expectations.
+    ///
+    /// - Parameter expectations: The expectations to wait on.
+    /// - Parameter timeout: The maximum total time duration to wait on all expectations.
+    /// - Parameter enforceOrder: Specifies whether the expectations must be fulfilled in the order
+    ///   they are specified in the `expectations` Array. Default is false.
+    /// - Parameter file: The file name to use in the error message if
+    ///   expectations are not fulfilled before the given timeout. Default is the file
+    ///   containing the call to this method. It is rare to provide this
+    ///   parameter when calling this method.
+    /// - Parameter line: The line number to use in the error message if the
+    ///   expectations are not fulfilled before the given timeout. Default is the line
+    ///   number of the call to this method in the calling file. It is rare to
+    ///   provide this parameter when calling this method.
+    ///
+    /// - Note: Whereas Objective-C XCTest determines the file and line
+    ///   number of the "wait" call using symbolication, this implementation
+    ///   opts to take `file` and `line` as parameters instead. As a result,
+    ///   the interface to these methods are not exactly identical between
+    ///   these environments. To ensure compatibility of tests between
+    ///   swift-corelibs-xctest and Apple XCTest, it is not recommended to pass
+    ///   explicit values for `file` and `line`.
+    @available(macOS 12.0, *)
+    @discardableResult
+    open func fulfillment(of expectations: [XCTestExpectation], timeout: TimeInterval, enforceOrder: Bool = false, file: StaticString = #file, line: Int = #line) async -> Result {
+        return await withCheckedContinuation { continuation in
+            // This function operates by blocking a background thread instead of one owned by libdispatch or by the
+            // Swift runtime (as used by Swift concurrency.) To ensure we use a thread owned by neither subsystem, use
+            // Foundation's Thread.detachNewThread(_:).
+            Thread.detachNewThread { [self] in
+                let result = wait(for: expectations, timeout: timeout, enforceOrder: enforceOrder, file: file, line: line)
+                continuation.resume(returning: result)
+            }
+        }
+    }
+
     /// Convenience API to create an XCTWaiter which then waits on an array of expectations for up to the specified timeout, and optionally specify whether they
     /// must be fulfilled in the given order. May return early based on fulfillment of the waited on expectations. The waiter
     /// is discarded when the wait completes.
@@ -268,8 +306,30 @@ open class XCTWaiter {
     ///   expectations are not fulfilled before the given timeout. Default is the line
     ///   number of the call to this method in the calling file. It is rare to
     ///   provide this parameter when calling this method.
+    @available(*, noasync, message: "Use await fulfillment(of:timeout:enforceOrder:) instead.")
     open class func wait(for expectations: [XCTestExpectation], timeout: TimeInterval, enforceOrder: Bool = false, file: StaticString = #file, line: Int = #line) -> Result {
         return XCTWaiter().wait(for: expectations, timeout: timeout, enforceOrder: enforceOrder, file: file, line: line)
+    }
+
+    /// Convenience API to create an XCTWaiter which then waits on an array of expectations for up to the specified timeout, and optionally specify whether they
+    /// must be fulfilled in the given order. May return early based on fulfillment of the waited on expectations. The waiter
+    /// is discarded when the wait completes.
+    ///
+    /// - Parameter expectations: The expectations to wait on.
+    /// - Parameter timeout: The maximum total time duration to wait on all expectations.
+    /// - Parameter enforceOrder: Specifies whether the expectations must be fulfilled in the order
+    ///   they are specified in the `expectations` Array. Default is false.
+    /// - Parameter file: The file name to use in the error message if
+    ///   expectations are not fulfilled before the given timeout. Default is the file
+    ///   containing the call to this method. It is rare to provide this
+    ///   parameter when calling this method.
+    /// - Parameter line: The line number to use in the error message if the
+    ///   expectations are not fulfilled before the given timeout. Default is the line
+    ///   number of the call to this method in the calling file. It is rare to
+    ///   provide this parameter when calling this method.
+    @available(macOS 12.0, *)
+    open class func fulfillment(of expectations: [XCTestExpectation], timeout: TimeInterval, enforceOrder: Bool = false, file: StaticString = #file, line: Int = #line) async -> Result {
+        return await XCTWaiter().fulfillment(of: expectations, timeout: timeout, enforceOrder: enforceOrder, file: file, line: line)
     }
 
     deinit {

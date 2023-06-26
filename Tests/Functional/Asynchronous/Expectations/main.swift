@@ -96,6 +96,21 @@ class ExpectationsTestCase: XCTestCase {
         XCTWaiter(delegate: self).wait(for: [foo, bar], timeout: 1)
     }
 
+// CHECK: Test Case 'ExpectationsTestCase.test_multipleExpectations_async' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ExpectationsTestCase.test_multipleExpectations_async' passed \(\d+\.\d+ seconds\)
+    func test_multipleExpectations_async() async {
+        let foo = expectation(description: "foo")
+        let bar = XCTestExpectation(description: "bar")
+        DispatchQueue.global(qos: .default).asyncAfter(wallDeadline: .now() + 0.01) {
+            bar.fulfill()
+        }
+        DispatchQueue.global(qos: .default).asyncAfter(wallDeadline: .now() + 0.01) {
+            foo.fulfill()
+        }
+
+        await XCTWaiter(delegate: self).fulfillment(of: [foo, bar], timeout: 1)
+    }
+
 // CHECK: Test Case 'ExpectationsTestCase.test_multipleExpectationsEnforceOrderingCorrect' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'ExpectationsTestCase.test_multipleExpectationsEnforceOrderingCorrect' passed \(\d+\.\d+ seconds\)
     func test_multipleExpectationsEnforceOrderingCorrect() {
@@ -548,6 +563,7 @@ class ExpectationsTestCase: XCTestCase {
 
             // Multiple Expectations
             ("test_multipleExpectations", test_multipleExpectations),
+            ("test_multipleExpectations_async", asyncTest(test_multipleExpectations_async)),
             ("test_multipleExpectationsEnforceOrderingCorrect", test_multipleExpectationsEnforceOrderingCorrect),
             ("test_multipleExpectationsEnforceOrderingCorrectBeforeWait", test_multipleExpectationsEnforceOrderingCorrectBeforeWait),
             ("test_multipleExpectationsEnforceOrderingIncorrect", test_multipleExpectationsEnforceOrderingIncorrect),
@@ -591,11 +607,11 @@ class ExpectationsTestCase: XCTestCase {
     }()
 }
 // CHECK: Test Suite 'ExpectationsTestCase' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 34 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 35 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
 XCTMain([testCase(ExpectationsTestCase.allTests)])
 
 // CHECK: Test Suite '.*\.xctest' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 34 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 35 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 // CHECK: Test Suite 'All tests' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed 34 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed 35 tests, with 16 failures \(2 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
