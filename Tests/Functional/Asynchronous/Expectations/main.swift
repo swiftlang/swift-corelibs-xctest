@@ -563,22 +563,14 @@ class ExpectationsTestCase: XCTestCase {
 
 // CHECK: Test Case 'ExpectationsTestCase.test_waitForExpectationsFromMainActor' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
 // CHECK: Test Case 'ExpectationsTestCase.test_waitForExpectationsFromMainActor' passed \(\d+\.\d+ seconds\)
-    @MainActor func test_waitForExpectationsFromMainActor() {
-        // Basic check that waitForExpectations() is functional and does not need
-        // the await keyword when used from a main-actor-isolated test function.
-        let expectation = self.expectation(description: "foo")
-        expectation.fulfill()
-        self.waitForExpectations(timeout: 0.0)
-    }
-
-// CHECK: Test Case 'ExpectationsTestCase.test_waitForExpectationsFromMainActor_async' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: Test Case 'ExpectationsTestCase.test_waitForExpectationsFromMainActor_async' passed \(\d+\.\d+ seconds\)
-    @MainActor func test_waitForExpectationsFromMainActor_async() async {
-        // Basic check that waitForExpectations() is functional and does not need
-        // the await keyword when used from a main-actor-isolated test function.
-        let expectation = self.expectation(description: "foo")
-        expectation.fulfill()
-        self.waitForExpectations(timeout: 0.0)
+    func test_waitForExpectationsFromMainActor() async {
+        await MainActor.run {
+            // Basic check that waitForExpectations() is functional and does not need
+            // the await keyword when used from a main-actor-isolated test function.
+            let expectation = self.expectation(description: "foo")
+            expectation.fulfill()
+            self.waitForExpectations(timeout: 0.0)
+        }
     }
 
     static var allTests = {
@@ -636,9 +628,7 @@ class ExpectationsTestCase: XCTestCase {
 
             // waitForExpectations() + @MainActor
             ("test_waitForExpectationsAsync", asyncTest(test_waitForExpectationsAsync)),
-            // Disabled due to a SILGen crash: <rdar://111340003>
-            // ("test_waitForExpectationsFromMainActor", asyncTest(test_waitForExpectationsFromMainActor)),
-            // ("test_waitForExpectationsFromMainActor_async", asyncTest(test_waitForExpectationsFromMainActor_async)),
+            ("test_waitForExpectationsFromMainActor", asyncTest(test_waitForExpectationsFromMainActor)),
         ]
     }()
 }
