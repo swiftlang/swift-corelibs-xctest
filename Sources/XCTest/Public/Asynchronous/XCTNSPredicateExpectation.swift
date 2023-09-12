@@ -18,7 +18,7 @@ open class XCTNSPredicateExpectation: XCTestExpectation {
     /// - Returns: `true` if the expectation should be fulfilled, `false` if it should not.
     ///
     /// - SeeAlso: `XCTNSPredicateExpectation.handler`
-    public typealias Handler = () -> Bool
+    public typealias Handler = @Sendable () -> Bool
 
     private let queue = DispatchQueue(label: "org.swift.XCTest.XCTNSPredicateExpectation")
 

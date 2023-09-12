@@ -41,7 +41,7 @@ public extension XCTestCase {
     ///   these environments. To ensure compatibility of tests between
     ///   swift-corelibs-xctest and Apple XCTest, it is not recommended to pass
     ///   explicit values for `file` and `line`.
-    // FIXME: This should have `@MainActor` to match Xcode XCTest, but adding it causes errors in tests authored pre-Swift Concurrency which don't typically have `@MainActor`.
+    @preconcurrency @MainActor
     func waitForExpectations(timeout: TimeInterval, file: StaticString = #file, line: Int = #line, handler: XCWaitCompletionHandler? = nil) {
         precondition(Thread.isMainThread, "\(#function) must be called on the main thread")
         if currentWaiter != nil {
@@ -85,9 +85,35 @@ public extension XCTestCase {
     ///   provide this parameter when calling this method.
     ///
     /// - SeeAlso: XCTWaiter
+    @available(*, noasync, message: "Use await fulfillment(of:timeout:enforceOrder:) instead.")
     func wait(for expectations: [XCTestExpectation], timeout: TimeInterval, enforceOrder: Bool = false, file: StaticString = #file, line: Int = #line) {
         let waiter = XCTWaiter(delegate: self)
         waiter.wait(for: expectations, timeout: timeout, enforceOrder: enforceOrder, file: file, line: line)
+
+        cleanUpExpectations(expectations)
+    }
+
+    /// Wait on an array of expectations for up to the specified timeout, and optionally specify whether they
+    /// must be fulfilled in the given order. May return early based on fulfillment of the waited on expectations.
+    ///
+    /// - Parameter expectations: The expectations to wait on.
+    /// - Parameter timeout: The maximum total time duration to wait on all expectations.
+    /// - Parameter enforceOrder: Specifies whether the expectations must be fulfilled in the order
+    ///   they are specified in the `expectations` Array. Default is false.
+    /// - Parameter file: The file name to use in the error message if
+    ///   expectations are not fulfilled before the given timeout. Default is the file
+    ///   containing the call to this method. It is rare to provide this
+    ///   parameter when calling this method.
+    /// - Parameter line: The line number to use in the error message if the
+    ///   expectations are not fulfilled before the given timeout. Default is the line
+    ///   number of the call to this method in the calling file. It is rare to
+    ///   provide this parameter when calling this method.
+    ///
+    /// - SeeAlso: XCTWaiter
+    @available(macOS 12.0, *)
+    func fulfillment(of expectations: [XCTestExpectation], timeout: TimeInterval, enforceOrder: Bool = false, file: StaticString = #file, line: Int = #line) async {
+        let waiter = XCTWaiter(delegate: self)
+        await waiter.fulfillment(of: expectations, timeout: timeout, enforceOrder: enforceOrder, file: file, line: line)
 
         cleanUpExpectations(expectations)
     }

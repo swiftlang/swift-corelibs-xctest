@@ -48,7 +48,7 @@ open class XCTestCase: XCTest {
         return 1
     }
 
-    // FIXME: Once `waitForExpectations(timeout:...handler:)` gains `@MainActor`, this may be able to add it as well.
+    @MainActor
     internal var currentWaiter: XCTWaiter?
 
     /// The set of expectations made upon this test case.

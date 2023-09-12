@@ -19,7 +19,7 @@ open class XCTNSNotificationExpectation: XCTestExpectation {
     /// - Returns: `true` if the expectation should be fulfilled, `false` if it should not.
     ///
     /// - SeeAlso: `XCTNSNotificationExpectation.handler`
-    public typealias Handler = (Notification) -> Bool
+    public typealias Handler = @Sendable (Notification) -> Bool
 
     private let queue = DispatchQueue(label: "org.swift.XCTest.XCTNSNotificationExpectation")
 
