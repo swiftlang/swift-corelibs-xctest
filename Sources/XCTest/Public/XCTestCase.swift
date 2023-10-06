@@ -199,7 +199,7 @@ open class XCTestCase: XCTest {
         let isExpected = issue.type == .assertionFailure || issue.type == .performanceRegression
         recordFailure(
             withDescription: issue.compactDescription,
-            inFile: file,
+            inFile: String(file),
             atLine: line,
             expected: isExpected
         )
