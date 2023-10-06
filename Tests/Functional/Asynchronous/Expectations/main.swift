@@ -1,4 +1,4 @@
-// RUN: %{swiftc} %s -o %T/Asynchronous
+// RUN: %{swiftc} -Xfrontend -disable-autolink-framework -Xfrontend CoreFoundation %s -o %T/Asynchronous
 // RUN: %T/Asynchronous > %t || true
 // RUN: %{xctest_checker} %t %s
 
