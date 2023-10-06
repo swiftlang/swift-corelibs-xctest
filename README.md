@@ -19,42 +19,6 @@ The Swift Package Manager integrates directly with XCTest to provide a streamlin
 
 For more information about using XCTest with SwiftPM, see its [documentation](https://github.com/apple/swift-package-manager).
 
-### Test Method Discovery
-
-Unlike the version of XCTest included with Xcode, this version does not use the Objective-C runtime to automatically discover test methods because that runtime is not available on all platforms Swift supports. This means that in certain configurations, the full set of test methods must be explicitly provided to XCTest.
-
-When using XCTest via SwiftPM on macOS, this is not necessary because SwiftPM uses the version of XCTest included with Xcode to run tests. But when using this version of XCTest _without_ SwiftPM, or _with_ SwiftPM on a platform other than macOS (including Linux), the full set of test methods cannot be discovered automatically, and your test target must tell XCTest about them explicitly.
-
-The recommended way to do this is to create a static property in each of your `XCTestCase` subclasses. By convention, this property is named `allTests`, and should contain all of the tests in the class. For example:
-
-```swift
-class TestNSURL : XCTestCase {
-    static var allTests = {
-        return [
-            ("test_bestNumber", test_bestNumber),
-            ("test_URLStrings", test_URLStrings),
-            ("test_fileURLWithPath", test_fileURLWithPath),
-            // Other tests go here
-        ]
-    }()
-
-    func test_bestNumber() {
-        // Write your test here. Most of the XCTAssert functions you are familiar with are available.
-        XCTAssertTrue(theBestNumber == 42, "The number is wrong")
-    }
-
-    // Other tests go here
-}
-```
-
-After creating an `allTests` property in each `XCTestCase` subclass, you must tell XCTest about those classes' tests.
-
-If the project is a SwiftPM package which supports macOS, the easiest way to do this is to run `swift test --generate-linuxmain` from a macOS machine. This command generates files within the package's `Tests` subdirectory which contains the necessary source code for passing all test classes and methods to XCTest. These files should be committed to source control and re-generated whenever `XCTestCase` subclasses or test methods are added to or removed from your package's test suite.
-
-If the project is a SwiftPM package but does not support macOS, you may edit the package's default  `LinuxMain.swift` file manually to add all `XCTestCase` subclasses.
-
-If the project is not a SwiftPM package, follow the steps in the next section to create an executable which calls the `XCTMain` function manually.
-
 ### Standalone Command Line Usage
 
 When used by itself, without SwiftPM, this version of XCTest does not use the external `xctest` CLI test runner included with Xcode to run tests. Instead, you must create your own executable which links `libXCTest.so`, and in your `main.swift`, invoke the `XCTMain` function with an array of the tests from all `XCTestCase` subclasses that you wish to run, wrapped by the `testCase` helper function. For example:
