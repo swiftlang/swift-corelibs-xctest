@@ -77,8 +77,6 @@ public struct XCTIssue: Sendable {
     }
 }
 
-extension XCTIssue: Equatable, Hashable {}
-
 extension XCTIssue: CustomStringConvertible {
     public var description: String {
         "\(type.stringRepresentation): \(compactDescription)"
