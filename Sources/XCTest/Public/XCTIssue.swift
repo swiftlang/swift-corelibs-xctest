@@ -42,8 +42,6 @@ public struct XCTIssue: Sendable {
                 "Performance Regression"
             case .system:
                 "System Error"
-            case .warning:
-                "Warning"
             case .unmatchedExpectedFailure:
                 "Unmatched Expected Failure"
             }

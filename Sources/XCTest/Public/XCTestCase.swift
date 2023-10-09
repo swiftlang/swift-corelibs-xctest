@@ -195,11 +195,11 @@ open class XCTestCase: XCTest {
     ///
     /// Overrides of this method should call `super` unless they wish to suppress the issue.
     /// `super` can be invoked with a different `issue` object.
-    open func record(_ issue: XCTIssue, file: StaticString = #file, line: Int = #line) {
+    open func record(_ issue: XCTIssue, file: String = #file, line: Int = #line) {
         let isExpected = issue.type == .assertionFailure || issue.type == .performanceRegression
         recordFailure(
             withDescription: issue.compactDescription,
-            inFile: String(file),
+            inFile: file,
             atLine: line,
             expected: isExpected
         )
