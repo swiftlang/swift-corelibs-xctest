@@ -293,7 +293,7 @@ class ErrorHandling: XCTestCase {
     }
 
     // CHECK: Test Case 'ErrorHandling.test_canRecordIssue' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-    // CHECK: .*[/\\]ErrorHandling[/\\]main.swift:[[@LINE+10]]: error: ErrorHandling.test_canRecordIssue : Performance Regression: ABC 123
+    // CHECK: .*[/\\]ErrorHandling[/\\]main.swift:[[@LINE+10]]: error: ErrorHandling.test_canRecordIssue : ABC 123
     // CHECK: Test Case 'ErrorHandling.test_canRecordIssue' failed \(\d+\.\d+ seconds\)
     func test_canRecordIssue() {
         struct MyError: Error {}
