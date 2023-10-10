@@ -51,6 +51,12 @@ open class XCTestCase: XCTest {
     @MainActor
     internal var currentWaiter: XCTWaiter?
 
+    /// The thread on which the test function was initially invoked.
+    ///
+    /// Note that asynchronous test functions will typically hop off this thread
+    /// immediately.
+    internal private(set) weak var primaryThread: Thread?
+
     /// The set of expectations made upon this test case.
     private var _allExpectations = [XCTestExpectation]()
 
@@ -117,6 +123,11 @@ open class XCTestCase: XCTest {
     /// Invoking a test performs its setUp, invocation, and tearDown. In
     /// general this should not be called directly.
     open func invokeTest() {
+        primaryThread = .current
+        defer {
+            primaryThread = nil
+        }
+        
         performSetUpSequence()
 
         do {

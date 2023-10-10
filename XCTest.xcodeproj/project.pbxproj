@@ -40,6 +40,7 @@
 		DA9D441C1D920A3500108768 /* XCTestExpectation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9D44171D920A3500108768 /* XCTestExpectation.swift */; };
 		E1495C80224276A600CDEB7D /* IgnoredErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1495C7F224276A600CDEB7D /* IgnoredErrors.swift */; };
 		FCF8F7132AD069A80074FC0F /* XCTIssue.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF8F7122AD069A80074FC0F /* XCTIssue.swift */; };
+		FCF8F7172AD435200074FC0F /* XCTExpectedFailure.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF8F7162AD435200074FC0F /* XCTExpectedFailure.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +94,7 @@
 		E1495C7F224276A600CDEB7D /* IgnoredErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IgnoredErrors.swift; sourceTree = "<group>"; };
 		EA3E74BB1BF2B6D500635A73 /* build_script.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = build_script.py; sourceTree = "<group>"; };
 		FCF8F7122AD069A80074FC0F /* XCTIssue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTIssue.swift; sourceTree = "<group>"; };
+		FCF8F7162AD435200074FC0F /* XCTExpectedFailure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTExpectedFailure.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +168,7 @@
 				AE2FE0F71CFE86DB003EF0D7 /* XCTestRun.swift */,
 				AE2FE0F81CFE86DB003EF0D7 /* XCTestSuite.swift */,
 				AE2FE0F91CFE86DB003EF0D7 /* XCTestSuiteRun.swift */,
+				FCF8F7162AD435200074FC0F /* XCTExpectedFailure.swift */,
 			);
 			path = Public;
 			sourceTree = "<group>";
@@ -343,6 +346,7 @@
 				AE2FE1011CFE86DB003EF0D7 /* XCTestCase+Performance.swift in Sources */,
 				DA9D441B1D920A3500108768 /* XCTestCase+Asynchronous.swift in Sources */,
 				AE2FE1181CFE86E6003EF0D7 /* PrintObserver.swift in Sources */,
+				FCF8F7172AD435200074FC0F /* XCTExpectedFailure.swift in Sources */,
 				17B6C3EB210D5A3900A11ECC /* XCTWaiter.swift in Sources */,
 				17B6C3EF210F990100A11ECC /* XCTWaiter+Validation.swift in Sources */,
 				AE2FE1021CFE86DB003EF0D7 /* XCTestCaseRun.swift in Sources */,
