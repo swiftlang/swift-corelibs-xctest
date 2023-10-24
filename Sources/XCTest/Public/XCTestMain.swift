@@ -32,7 +32,6 @@
 
 /// Starts a test run for the specified test cases.
 ///
-/// This function will not return. If the test cases pass, then it will call `exit(EXIT_SUCCESS)`. If there is a failure, then it will call `exit(EXIT_FAILURE)`.
 /// Example usage:
 ///
 ///     class TestFoo: XCTestCase {
@@ -50,15 +49,26 @@
 ///         // etc...
 ///     }
 ///
-///     XCTMain([ testCase(TestFoo.allTests) ])
+///     let exitCode = XCTMain([ testCase(TestFoo.allTests) ])
 ///
-/// Command line arguments can be used to select a particular test case or class to execute. For example:
+/// Command line arguments can be used to select a particular test case or class
+/// to execute. For example:
 ///
 ///     ./FooTests FooTestCase/testFoo  # Run a single test case
 ///     ./FooTests FooTestCase          # Run all the tests in FooTestCase
 ///
-/// - Parameter testCases: An array of test cases run, each produced by a call to the `testCase` function
-/// - seealso: `testCase`
+/// - Parameters:
+///     - testCases: An array of test cases run, each produced by a call to the
+///         `testCase` function.
+///     - arguments: Command-line arguments to pass to XCTest. By default, the
+///         arguments passed to the process are used.
+///     - observers: Zero or more observers that should observe events that
+///         occur while testing. If `nil` (the default), events are written to
+///         the console.
+///
+/// - Returns: The exit code to use when the process terminates. `EXIT_SUCCESS`
+///     indicates success, while any other value (including `EXIT_FAILURE`)
+///     indicates failure.
 @_disfavoredOverload
 public func XCTMain(
     _ testCases: [XCTestCaseEntry],
@@ -144,10 +154,20 @@ public func XCTMain(
 }
 
 // @available(*, deprecated, message: "Call the overload of XCTMain() that returns an exit code instead.")
+public func XCTMain(_ testCases: [XCTestCaseEntry]) -> Never {
+    exit(XCTMain(testCases, arguments: CommandLine.arguments, observers: nil) as CInt)
+}
+
+// @available(*, deprecated, message: "Call the overload of XCTMain() that returns an exit code instead.")
+public func XCTMain(_ testCases: [XCTestCaseEntry], arguments: [String]) -> Never {
+    exit(XCTMain(testCases, arguments: arguments, observers: nil) as CInt)
+}
+
+// @available(*, deprecated, message: "Call the overload of XCTMain() that returns an exit code instead.")
 public func XCTMain(
     _ testCases: [XCTestCaseEntry],
-    arguments: [String] = CommandLine.arguments,
-    observers: [XCTestObservation]? = nil
+    arguments: [String],
+    observers: [XCTestObservation]
 ) -> Never {
     exit(XCTMain(testCases, arguments: arguments, observers: observers) as CInt)
 }
