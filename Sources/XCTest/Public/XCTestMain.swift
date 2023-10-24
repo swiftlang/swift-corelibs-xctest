@@ -59,19 +59,13 @@
 ///
 /// - Parameter testCases: An array of test cases run, each produced by a call to the `testCase` function
 /// - seealso: `testCase`
-public func XCTMain(_ testCases: [XCTestCaseEntry]) -> Never {
-    XCTMain(testCases, arguments: CommandLine.arguments)
-}
-
-public func XCTMain(_ testCases: [XCTestCaseEntry], arguments: [String]) -> Never {
-    XCTMain(testCases, arguments: arguments, observers: [PrintObserver()])
-}
-
+@_disfavoredOverload
 public func XCTMain(
     _ testCases: [XCTestCaseEntry],
-    arguments: [String],
-    observers: [XCTestObservation]
-) -> Never {
+    arguments: [String] = CommandLine.arguments,
+    observers: [XCTestObservation]? = nil
+) -> CInt {
+    let observers = observers ?? [PrintObserver()]
     let testBundle = Bundle.main
 
     let executionMode = ArgumentParser(arguments: arguments).executionMode
@@ -99,10 +93,10 @@ public func XCTMain(
     switch executionMode {
     case .list(type: .humanReadable):
         TestListing(testSuite: rootTestSuite).printTestList()
-        exit(EXIT_SUCCESS)
+        return EXIT_SUCCESS
     case .list(type: .json):
         TestListing(testSuite: rootTestSuite).printTestJSON()
-        exit(EXIT_SUCCESS)
+        return EXIT_SUCCESS
     case let .help(invalidOption):
         if let invalid = invalidOption {
             let errMsg = "Error: Invalid option \"\(invalid)\"\n"
@@ -133,7 +127,7 @@ public func XCTMain(
 
                      > \(exeName) \(sampleTests)
               """)
-        exit(invalidOption == nil ? EXIT_SUCCESS : EXIT_FAILURE)
+        return invalidOption == nil ? EXIT_SUCCESS : EXIT_FAILURE
     case .run(selectedTestNames: _):
         // Add a test observer that prints test progress to stdout.
         let observationCenter = XCTestObservationCenter.shared
@@ -145,6 +139,15 @@ public func XCTMain(
         rootTestSuite.run()
         observationCenter.testBundleDidFinish(testBundle)
 
-        exit(rootTestSuite.testRun!.totalFailureCount == 0 ? EXIT_SUCCESS : EXIT_FAILURE)
+        return rootTestSuite.testRun!.totalFailureCount == 0 ? EXIT_SUCCESS : EXIT_FAILURE
     }
+}
+
+// @available(*, deprecated, message: "Call the overload of XCTMain() that returns an exit code instead.")
+public func XCTMain(
+    _ testCases: [XCTestCaseEntry],
+    arguments: [String] = CommandLine.arguments,
+    observers: [XCTestObservation]? = nil
+) -> Never {
+    exit(XCTMain(testCases, arguments: arguments, observers: observers) as CInt)
 }
