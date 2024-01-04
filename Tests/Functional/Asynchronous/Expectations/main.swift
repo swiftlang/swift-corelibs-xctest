@@ -1,4 +1,4 @@
-// RUN: %{swiftc} -Xfrontend -disable-autolink-framework -Xfrontend CoreFoundation %s -o %T/Asynchronous
+// RUN: %{swiftc} %s -o %T/Asynchronous
 // RUN: %T/Asynchronous > %t || true
 // RUN: %{xctest_checker} %t %s
 
@@ -7,8 +7,6 @@
 #else
     import XCTest
 #endif
-
-import CoreFoundation
 
 // CHECK: Test Suite 'All tests' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
 // CHECK: Test Suite '.*\.xctest' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
@@ -273,7 +271,7 @@ class ExpectationsTestCase: XCTestCase {
 // CHECK: Test Case 'ExpectationsTestCase.test_combiningInverseAndStandardExpectationsWithOrderingEnforcement' passed \(\d+\.\d+ seconds\)
     func test_combiningInverseAndStandardExpectationsWithOrderingEnforcement() {
         var a, b, c: XCTestExpectation
-        var start: CFAbsoluteTime
+        var start: TimeInterval
 
         a = XCTestExpectation(description: "a")
         a.isInverted = true
@@ -431,7 +429,7 @@ class ExpectationsTestCase: XCTestCase {
         let outerWaiter = XCTWaiter(delegate: self)
         let outerExpectation = XCTestExpectation(description: "outer")
 
-        var outerExpectationFulfillTime = CFAbsoluteTime(0)
+        var outerExpectationFulfillTime = TimeInterval(0)
         RunLoop.main.perform {
             RunLoop.main.perform {
                 outerExpectationFulfillTime = Date.timeIntervalSinceReferenceDate
