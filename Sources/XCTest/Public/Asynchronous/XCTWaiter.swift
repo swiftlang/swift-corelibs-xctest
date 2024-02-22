@@ -10,7 +10,7 @@
 //  XCTWaiter.swift
 //
 
-#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
+#if (os(macOS) || os(iOS) || os(tvOS) || os(watchOS)) && USE_FOUNDATION_FRAMEWORK
 import CoreFoundation
 #endif
 
@@ -429,7 +429,7 @@ private extension XCTWaiter {
 
     func cancelPrimitiveWait() {
         guard let runLoop = runLoop else { return }
-#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
+#if (os(macOS) || os(iOS) || os(tvOS) || os(watchOS)) && USE_FOUNDATION_FRAMEWORK
         CFRunLoopStop(runLoop.getCFRunLoop())
 #else
         runLoop._stop()
