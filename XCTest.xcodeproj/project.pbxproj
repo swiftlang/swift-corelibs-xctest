@@ -521,6 +521,7 @@
 					"-nodefaultlibs",
 					"-lpthread",
 				);
+				OTHER_SWIFT_FLAGS = "-Xfrontend -disable-autolink-library -Xfrontend swiftCoreFoundation";
 				PRODUCT_BUNDLE_PACKAGE_TYPE = FMWK;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator macosx watchos watchsimulator";
@@ -548,6 +549,7 @@
 					"-nodefaultlibs",
 					"-lpthread",
 				);
+				OTHER_SWIFT_FLAGS = "-Xfrontend -disable-autolink-library -Xfrontend swiftCoreFoundation";
 				PRODUCT_BUNDLE_PACKAGE_TYPE = FMWK;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator macosx watchos watchsimulator";
