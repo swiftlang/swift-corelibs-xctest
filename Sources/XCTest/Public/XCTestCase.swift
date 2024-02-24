@@ -36,6 +36,12 @@ open class XCTestCase: XCTest {
 
     private var skip: XCTSkip?
 
+#if USE_SWIFT_CONCURRENCY_WAITER
+    /// A task that ends when the test closure has actually finished running.
+    /// This is used to ensure that all async work has completed.
+    fileprivate var testClosureTask: Task<Void, Error>?
+#endif
+
     /// The name of the test case, consisting of its class name and the method
     /// name it will run.
     open override var name: String {
@@ -89,6 +95,20 @@ open class XCTestCase: XCTest {
         return XCTestCaseRun.self
     }
 
+    #if USE_SWIFT_CONCURRENCY_WAITER
+    override func _performAsync(_ run: XCTestRun) async {
+        guard let testRun = run as? XCTestCaseRun else {
+            fatalError("Wrong XCTestRun class.")
+        }
+
+        XCTCurrentTestCase = self
+        testRun.start()
+        await _invokeTestAsync()
+
+        testRun.stop()
+        XCTCurrentTestCase = nil
+    }
+    #else
     open override func perform(_ run: XCTestRun) {
         guard let testRun = run as? XCTestCaseRun else {
             fatalError("Wrong XCTestRun class.")
@@ -104,6 +124,7 @@ open class XCTestCase: XCTest {
         testRun.stop()
         XCTCurrentTestCase = nil
     }
+    #endif
 
     /// The designated initializer for SwiftXCTest's XCTestCase.
     /// - Note: Like the designated initializer for Apple XCTest's XCTestCase,
@@ -114,9 +135,46 @@ open class XCTestCase: XCTest {
         self.testClosure = testClosure
     }
 
+    #if USE_SWIFT_CONCURRENCY_WAITER
+    internal func _invokeTestAsync() async {
+        await performSetUpSequence()
+
+        do {
+            if skip == nil {
+                try testClosure(self)
+            }
+            if let task = testClosureTask {
+                _ = try await task.value
+            }
+        } catch {
+            if error.xct_shouldRecordAsTestFailure {
+                recordFailure(for: error)
+            }
+
+            if error.xct_shouldRecordAsTestSkip {
+                if let skip = error as? XCTSkip {
+                    self.skip = skip
+                } else {
+                    self.skip = XCTSkip(error: error, message: nil, sourceLocation: nil)
+                }
+            }
+        }
+
+        if let skip = skip {
+            testRun?.recordSkip(description: skip.summary, sourceLocation: skip.sourceLocation)
+        }
+
+        await performTearDownSequence()
+    }
+    #endif
+
     /// Invoking a test performs its setUp, invocation, and tearDown. In
     /// general this should not be called directly.
+    #if USE_SWIFT_CONCURRENCY_WAITER
+    @available(*, unavailable)
+    #endif
     open func invokeTest() {
+        #if !USE_SWIFT_CONCURRENCY_WAITER
         performSetUpSequence()
 
         do {
@@ -142,6 +200,7 @@ open class XCTestCase: XCTest {
         }
 
         performTearDownSequence()
+        #endif
     }
 
     /// Records a failure in the execution of the test and is used by all test
@@ -211,31 +270,21 @@ open class XCTestCase: XCTest {
         teardownBlocksState.appendAsync(block)
     }
 
-    private func performSetUpSequence() {
-        func handleErrorDuringSetUp(_ error: Error) {
-            if error.xct_shouldRecordAsTestFailure {
-                recordFailure(for: error)
-            }
-
-            if error.xct_shouldSkipTestInvocation {
-                if let skip = error as? XCTSkip {
-                    self.skip = skip
-                } else {
-                    self.skip = XCTSkip(error: error, message: nil, sourceLocation: nil)
-                }
-            }
+    private func handleErrorDuringSetUp(_ error: Error) {
+        if error.xct_shouldRecordAsTestFailure {
+            recordFailure(for: error)
         }
 
-        do {
-            if #available(macOS 12.0, *) {
-                try awaitUsingExpectation {
-                    try await self.setUp()
-                }
+        if error.xct_shouldSkipTestInvocation {
+            if let skip = error as? XCTSkip {
+                self.skip = skip
+            } else {
+                self.skip = XCTSkip(error: error, message: nil, sourceLocation: nil)
             }
-        } catch {
-            handleErrorDuringSetUp(error)
         }
+    }
 
+    private func performPostSetup() {
         do {
             try setUpWithError()
         } catch {
@@ -245,32 +294,73 @@ open class XCTestCase: XCTest {
         setUp()
     }
 
-    private func performTearDownSequence() {
-        func handleErrorDuringTearDown(_ error: Error) {
-            if error.xct_shouldRecordAsTestFailure {
-                recordFailure(for: error)
+    private func handleErrorDuringTearDown(_ error: Error) {
+        if error.xct_shouldRecordAsTestFailure {
+            recordFailure(for: error)
+        }
+    }
+
+    private func runTeardownBlocks() {
+        for block in self.teardownBlocksState.finalize().reversed() {
+            do {
+                try block()
+            } catch {
+                handleErrorDuringTearDown(error)
             }
         }
+    }
 
-        func runTeardownBlocks() {
-            for block in self.teardownBlocksState.finalize().reversed() {
-                do {
-                    try block()
-                } catch {
-                    handleErrorDuringTearDown(error)
-                }
-            }
-        }
-
+    private func performPreTearDown() {
         runTeardownBlocks()
 
-        tearDown()
+        func syncTearDown() { tearDown() }
+        syncTearDown()
 
         do {
             try tearDownWithError()
         } catch {
             handleErrorDuringTearDown(error)
         }
+    }
+
+    #if USE_SWIFT_CONCURRENCY_WAITER
+    private func performSetUpSequence() async {
+        do {
+            if #available(macOS 12.0, *) {
+                try await self.setUp()
+            }
+        } catch {
+            handleErrorDuringSetUp(error)
+        }
+
+        performPostSetup()
+    }
+
+    private func performTearDownSequence() async {
+        performPreTearDown()
+
+        do {
+            try await self.tearDown()
+        } catch {
+            handleErrorDuringTearDown(error)
+        }
+    }
+    #else
+    private func performSetUpSequence() {
+        do {
+            if #available(macOS 12.0, *) {
+                try awaitUsingExpectation {
+                    try await self.setUp()
+                }
+            }
+        } catch {
+            handleErrorDuringSetUp(error)
+        }
+        performPostSetup()
+    }
+
+    private func performTearDownSequence() {
+        performPreTearDown()
 
         do {
             if #available(macOS 12.0, *) {
@@ -282,6 +372,7 @@ open class XCTestCase: XCTest {
             handleErrorDuringTearDown(error)
         }
     }
+    #endif
 
     open var continueAfterFailure: Bool {
         get {
@@ -325,18 +416,31 @@ private func test<T: XCTestCase>(_ testFunc: @escaping (T) -> () throws -> Void)
 public func asyncTest<T: XCTestCase>(
     _ testClosureGenerator: @escaping (T) -> () async throws -> Void
 ) -> (T) -> () throws -> Void {
+#if USE_SWIFT_CONCURRENCY_WAITER
+    return { (testType: T) in
+        let testClosure = testClosureGenerator(testType)
+        return {
+            assert(testType.testClosureTask == nil, "Async test case \(testType) cannot be run more than once")
+            testType.testClosureTask = Task {
+                try await testClosure()
+            }
+        }
+    }
+#else
     return { (testType: T) in
         let testClosure = testClosureGenerator(testType)
         return {
             try awaitUsingExpectation(testClosure)
         }
     }
+#endif
 }
 
 @available(macOS 12.0, *)
 func awaitUsingExpectation(
     _ closure: @escaping () async throws -> Void
 ) throws -> Void {
+#if !USE_SWIFT_CONCURRENCY_WAITER
     let expectation = XCTestExpectation(description: "async test completion")
     let thrownErrorWrapper = ThrownErrorWrapper()
 
@@ -355,6 +459,7 @@ func awaitUsingExpectation(
     if let error = thrownErrorWrapper.error {
         throw error
     }
+#endif
 }
 
 private final class ThrownErrorWrapper: @unchecked Sendable {

@@ -38,6 +38,27 @@ open class XCTestSuite: XCTest {
         return XCTestSuiteRun.self
     }
 
+    #if USE_SWIFT_CONCURRENCY_WAITER
+    override func _performAsync(_ run: XCTestRun) async {
+        guard let testRun = run as? XCTestSuiteRun else {
+            fatalError("Wrong XCTestRun class.")
+        }
+
+        run.start()
+        func syncSetUp() { setUp() }
+        syncSetUp()
+        for test in tests {
+            await test._runAsync()
+            if let childPerformTask = test.performTask {
+                _ = await childPerformTask.value
+            }
+            testRun.addTestRun(test.testRun!)
+        }
+        func syncTearDown() { tearDown() }
+        syncTearDown()
+        run.stop()
+    }
+    #else
     open override func perform(_ run: XCTestRun) {
         guard let testRun = run as? XCTestSuiteRun else {
             fatalError("Wrong XCTestRun class.")
@@ -52,6 +73,7 @@ open class XCTestSuite: XCTest {
         tearDown()
         run.stop()
     }
+    #endif
 
     public init(name: String) {
         _name = name

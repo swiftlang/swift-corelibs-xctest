@@ -10,6 +10,8 @@
 //  XCTNSPredicateExpectation.swift
 //
 
+#if !USE_SWIFT_CONCURRENCY_WAITER
+
 /// Expectation subclass for waiting on a condition defined by an NSPredicate and an optional object.
 open class XCTNSPredicateExpectation: XCTestExpectation {
 
@@ -133,3 +135,4 @@ open class XCTNSPredicateExpectation: XCTestExpectation {
 /// - SeeAlso: `XCTNSPredicateExpectation.handler`
 @available(*, deprecated, renamed: "XCTNSPredicateExpectation.Handler")
 public typealias XCPredicateExpectationHandler = XCTNSPredicateExpectation.Handler
+#endif

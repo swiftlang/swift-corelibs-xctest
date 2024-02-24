@@ -36,20 +36,43 @@ open class XCTest {
     /// testRunClass. If the test has not yet been run, this will be nil.
     open private(set) var testRun: XCTestRun? = nil
 
+    internal var performTask: Task<Void, Never>?
+
+    #if USE_SWIFT_CONCURRENCY_WAITER
+    internal func _performAsync(_ run: XCTestRun) async {
+        fatalError("Must be overridden by subclasses.")
+    }
+    internal func _runAsync() async {
+        guard let testRunType = testRunClass as? XCTestRun.Type else {
+            fatalError("XCTest.testRunClass must be a kind of XCTestRun.")
+        }
+        testRun = testRunType.init(test: self)
+        await _performAsync(testRun!)
+    }
+    #endif
+
     /// The method through which tests are executed. Must be overridden by
     /// subclasses.
+    #if USE_SWIFT_CONCURRENCY_WAITER
+    @available(*, unavailable)
+    #endif
     open func perform(_ run: XCTestRun) {
         fatalError("Must be overridden by subclasses.")
     }
 
     /// Creates an instance of the `testRunClass` and passes it as a parameter
     /// to `perform()`.
+    #if USE_SWIFT_CONCURRENCY_WAITER
+    @available(*, unavailable)
+    #endif
     open func run() {
+        #if !USE_SWIFT_CONCURRENCY_WAITER
         guard let testRunType = testRunClass as? XCTestRun.Type else {
             fatalError("XCTest.testRunClass must be a kind of XCTestRun.")
         }
         testRun = testRunType.init(test: self)
         perform(testRun!)
+        #endif
     }
 
     /// Async setup method called before the invocation of `setUpWithError` for each test method in the class.

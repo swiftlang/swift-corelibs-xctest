@@ -10,6 +10,8 @@
 //  XCTNSNotificationExpectation.swift
 //
 
+#if !USE_SWIFT_CONCURRENCY_WAITER
+
 /// Expectation subclass for waiting on a condition defined by a Foundation Notification instance.
 open class XCTNSNotificationExpectation: XCTestExpectation {
 
@@ -114,3 +116,5 @@ open class XCTNSNotificationExpectation: XCTestExpectation {
 /// - SeeAlso: `XCTNSNotificationExpectation.handler`
 @available(*, deprecated, renamed: "XCTNSNotificationExpectation.Handler")
 public typealias XCNotificationExpectationHandler = XCTNSNotificationExpectation.Handler
+
+#endif

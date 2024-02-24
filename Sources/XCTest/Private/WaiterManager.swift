@@ -9,6 +9,7 @@
 //
 //  WaiterManager.swift
 //
+#if !USE_SWIFT_CONCURRENCY_WAITER
 
 internal protocol ManageableWaiter: AnyObject, Equatable {
     var isFinished: Bool { get }
@@ -143,3 +144,5 @@ internal final class WaiterManager<WaiterType: ManageableWaiter> : NSObject {
     }
 
 }
+
+#endif
