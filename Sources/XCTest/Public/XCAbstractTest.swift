@@ -53,7 +53,7 @@ open class XCTest {
     }
 
     /// Async setup method called before the invocation of `setUpWithError` for each test method in the class.
-    @available(macOS 12.0, *)
+    @available(macOS 10.15, *)
     open func setUp() async throws {}
     /// Setup method called before the invocation of `setUp` and the test method
     /// for each test method in the class.
@@ -73,7 +73,7 @@ open class XCTest {
 
     /// Async teardown method which is called after the invocation of `tearDownWithError`
     /// for each test method in the class.
-    @available(macOS 12.0, *)
+    @available(macOS 10.15, *)
     open func tearDown() async throws {}
     // FIXME: This initializer is required due to a Swift compiler bug on Linux.
     //        It should be removed once the bug is fixed.

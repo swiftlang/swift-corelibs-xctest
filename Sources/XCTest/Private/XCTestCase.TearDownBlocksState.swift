@@ -19,7 +19,7 @@ extension XCTestCase {
         // which can unexpectedly change their semantics in difficult to track down ways.
         //
         // Because of this, we chose the unusual decision to forgo overloading (which is a super sweet language feature <3) to prevent this issue from surprising any contributors to corelibs-xctest
-        @available(macOS 12.0, *)
+        @available(macOS 10.15, *)
         func appendAsync(_ block: @Sendable @escaping () async throws -> Void) {
             self.append {
                 try awaitUsingExpectation { try await block() }
