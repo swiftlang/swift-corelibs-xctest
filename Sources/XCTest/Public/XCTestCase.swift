@@ -54,7 +54,23 @@ open class XCTestCase: XCTest {
         return 1
     }
 
-    internal static let subsystemQueue = DispatchQueue(label: "org.swift.XCTestCase")
+    #if DISABLE_XCTWAITER && os(WASI)
+    /// Single-threaded queue without any actual queueing
+    struct SubsystemQueue {
+        init(label: String) {}
+
+        func sync<T>(_ body: () -> T) -> T {
+            body()
+        }
+        func async(_ body: @escaping () -> Void) {
+            body()
+        }
+    }
+    #else
+    typealias SubsystemQueue = DispatchQueue
+    #endif
+
+    internal static let subsystemQueue = SubsystemQueue(label: "org.swift.XCTestCase")
 
     #if !DISABLE_XCTWAITER
     @MainActor
