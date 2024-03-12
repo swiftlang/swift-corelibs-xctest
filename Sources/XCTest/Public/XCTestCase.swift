@@ -300,21 +300,8 @@ open class XCTestCase: XCTest {
         }
     }
 
-    private func runTeardownBlocks() {
-        for block in self.teardownBlocksState.finalize().reversed() {
-            do {
-                try block()
-            } catch {
-                handleErrorDuringTearDown(error)
-            }
-        }
-    }
-
-    private func performPreTearDown() {
-        runTeardownBlocks()
-
-        func syncTearDown() { tearDown() }
-        syncTearDown()
+    private func performSyncTearDown() {
+        tearDown()
 
         do {
             try tearDownWithError()
@@ -324,6 +311,16 @@ open class XCTestCase: XCTest {
     }
 
     #if USE_SWIFT_CONCURRENCY_WAITER
+    private func runTeardownBlocks() async {
+        for block in self.teardownBlocksState.finalize().reversed() {
+            do {
+                try await block()
+            } catch {
+                handleErrorDuringTearDown(error)
+            }
+        }
+    }
+
     private func performSetUpSequence() async {
         do {
             if #available(macOS 12.0, *) {
@@ -337,7 +334,8 @@ open class XCTestCase: XCTest {
     }
 
     private func performTearDownSequence() async {
-        performPreTearDown()
+        await runTeardownBlocks()
+        performSyncTearDown()
 
         do {
             try await self.tearDown()
@@ -346,6 +344,16 @@ open class XCTestCase: XCTest {
         }
     }
     #else
+    private func runTeardownBlocks() {
+        for block in self.teardownBlocksState.finalize().reversed() {
+            do {
+                try block()
+            } catch {
+                handleErrorDuringTearDown(error)
+            }
+        }
+    }
+
     private func performSetUpSequence() {
         do {
             if #available(macOS 12.0, *) {
@@ -360,7 +368,8 @@ open class XCTestCase: XCTest {
     }
 
     private func performTearDownSequence() {
-        performPreTearDown()
+        runTeardownBlocks()
+        performSyncTearDown()
 
         do {
             if #available(macOS 12.0, *) {
@@ -436,11 +445,11 @@ public func asyncTest<T: XCTestCase>(
 #endif
 }
 
+#if !USE_SWIFT_CONCURRENCY_WAITER
 @available(macOS 12.0, *)
 func awaitUsingExpectation(
     _ closure: @escaping () async throws -> Void
 ) throws -> Void {
-#if !USE_SWIFT_CONCURRENCY_WAITER
     let expectation = XCTestExpectation(description: "async test completion")
     let thrownErrorWrapper = ThrownErrorWrapper()
 
@@ -459,8 +468,8 @@ func awaitUsingExpectation(
     if let error = thrownErrorWrapper.error {
         throw error
     }
-#endif
 }
+#endif
 
 private final class ThrownErrorWrapper: @unchecked Sendable {
 
