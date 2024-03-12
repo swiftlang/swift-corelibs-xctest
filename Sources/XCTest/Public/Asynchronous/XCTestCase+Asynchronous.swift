@@ -11,7 +11,7 @@
 //  Methods on XCTestCase for testing asynchronous operations
 //
 
-#if !USE_SWIFT_CONCURRENCY_WAITER
+#if !DISABLE_XCTWAITER
 
 public extension XCTestCase {
 

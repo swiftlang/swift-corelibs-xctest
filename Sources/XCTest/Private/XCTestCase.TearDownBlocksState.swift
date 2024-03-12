@@ -12,7 +12,7 @@ extension XCTestCase {
     /// Supports async and sync throwing methods.
     final class TeardownBlocksState {
 
-        #if USE_SWIFT_CONCURRENCY_WAITER
+        #if DISABLE_XCTWAITER
         typealias TeardownBlock = @Sendable () async throws -> Void
         #else
         typealias TeardownBlock = () throws -> Void
@@ -27,7 +27,7 @@ extension XCTestCase {
         // Because of this, we chose the unusual decision to forgo overloading (which is a super sweet language feature <3) to prevent this issue from surprising any contributors to corelibs-xctest
         @available(macOS 12.0, *)
         func appendAsync(_ block: @Sendable @escaping () async throws -> Void) {
-            #if USE_SWIFT_CONCURRENCY_WAITER
+            #if DISABLE_XCTWAITER
             XCTWaiter.subsystemQueue.sync {
                 precondition(wasFinalized == false, "API violation -- attempting to add a teardown block after teardown blocks have been dequeued")
                 blocks.append(block)

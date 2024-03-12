@@ -10,7 +10,7 @@
 //  XCTNSPredicateExpectation.swift
 //
 
-#if !USE_SWIFT_CONCURRENCY_WAITER
+#if !DISABLE_XCTWAITER
 
 /// Expectation subclass for waiting on a condition defined by an NSPredicate and an optional object.
 open class XCTNSPredicateExpectation: XCTestExpectation {

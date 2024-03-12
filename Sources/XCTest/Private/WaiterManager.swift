@@ -9,7 +9,7 @@
 //
 //  WaiterManager.swift
 //
-#if !USE_SWIFT_CONCURRENCY_WAITER
+#if !DISABLE_XCTWAITER
 
 internal protocol ManageableWaiter: AnyObject, Equatable {
     var isFinished: Bool { get }

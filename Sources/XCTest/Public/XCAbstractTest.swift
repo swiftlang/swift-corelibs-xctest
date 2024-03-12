@@ -36,7 +36,7 @@ open class XCTest {
     /// testRunClass. If the test has not yet been run, this will be nil.
     open private(set) var testRun: XCTestRun? = nil
 
-    #if USE_SWIFT_CONCURRENCY_WAITER
+    #if DISABLE_XCTWAITER
     internal var performTask: Task<Void, Never>?
 
     internal func _performAsync(_ run: XCTestRun) async {
@@ -53,7 +53,7 @@ open class XCTest {
 
     /// The method through which tests are executed. Must be overridden by
     /// subclasses.
-    #if USE_SWIFT_CONCURRENCY_WAITER
+    #if DISABLE_XCTWAITER
     @available(*, unavailable)
     #endif
     open func perform(_ run: XCTestRun) {
@@ -62,11 +62,11 @@ open class XCTest {
 
     /// Creates an instance of the `testRunClass` and passes it as a parameter
     /// to `perform()`.
-    #if USE_SWIFT_CONCURRENCY_WAITER
+    #if DISABLE_XCTWAITER
     @available(*, unavailable)
     #endif
     open func run() {
-        #if !USE_SWIFT_CONCURRENCY_WAITER
+        #if !DISABLE_XCTWAITER
         guard let testRunType = testRunClass as? XCTestRun.Type else {
             fatalError("XCTest.testRunClass must be a kind of XCTestRun.")
         }

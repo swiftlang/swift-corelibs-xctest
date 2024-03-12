@@ -117,7 +117,7 @@ open class XCTWaiter {
     private var state = State.ready
     internal var timeout: TimeInterval = 0
     internal var waitSourceLocation: SourceLocation?
-    #if !USE_SWIFT_CONCURRENCY_WAITER
+    #if !DISABLE_XCTWAITER
     private weak var manager: WaiterManager<XCTWaiter>?
     #endif
     private var runLoop: RunLoop?
@@ -189,14 +189,14 @@ open class XCTWaiter {
     ///   these environments. To ensure compatibility of tests between
     ///   swift-corelibs-xctest and Apple XCTest, it is not recommended to pass
     ///   explicit values for `file` and `line`.
-    #if USE_SWIFT_CONCURRENCY_WAITER
+    #if DISABLE_XCTWAITER
     @available(*, unavailable, message: "Expectation-based waiting is not available when using the Swift concurrency waiter.")
     #else
     @available(*, noasync, message: "Use await fulfillment(of:timeout:enforceOrder:) instead.")
     #endif
     @discardableResult
     open func wait(for expectations: [XCTestExpectation], timeout: TimeInterval, enforceOrder: Bool = false, file: StaticString = #file, line: Int = #line) -> Result {
-        #if USE_SWIFT_CONCURRENCY_WAITER
+        #if DISABLE_XCTWAITER
         fatalError("This method is not available when using the Swift concurrency waiter.")
         #else
         precondition(Set(expectations).count == expectations.count, "API violation - each expectation can appear only once in the 'expectations' parameter.")
@@ -286,14 +286,14 @@ open class XCTWaiter {
     ///   these environments. To ensure compatibility of tests between
     ///   swift-corelibs-xctest and Apple XCTest, it is not recommended to pass
     ///   explicit values for `file` and `line`.
-    #if USE_SWIFT_CONCURRENCY_WAITER
+    #if DISABLE_XCTWAITER
     @available(*, unavailable, message: "Expectation-based waiting is not available when using the Swift concurrency waiter.")
     #else
     @available(macOS 12.0, *)
     #endif
     @discardableResult
     open func fulfillment(of expectations: [XCTestExpectation], timeout: TimeInterval, enforceOrder: Bool = false, file: StaticString = #file, line: Int = #line) async -> Result {
-#if USE_SWIFT_CONCURRENCY_WAITER
+#if DISABLE_XCTWAITER
         fatalError("This method is not available when using the Swift concurrency waiter.")
 #else
         return await withCheckedContinuation { continuation in
@@ -324,13 +324,13 @@ open class XCTWaiter {
     ///   expectations are not fulfilled before the given timeout. Default is the line
     ///   number of the call to this method in the calling file. It is rare to
     ///   provide this parameter when calling this method.
-    #if USE_SWIFT_CONCURRENCY_WAITER
+    #if DISABLE_XCTWAITER
     @available(*, unavailable, message: "Expectation-based waiting is not available when using the Swift concurrency waiter.")
     #else
     @available(*, noasync, message: "Use await fulfillment(of:timeout:enforceOrder:) instead.")
     #endif
     open class func wait(for expectations: [XCTestExpectation], timeout: TimeInterval, enforceOrder: Bool = false, file: StaticString = #file, line: Int = #line) -> Result {
-#if USE_SWIFT_CONCURRENCY_WAITER
+#if DISABLE_XCTWAITER
         fatalError("This method is not available when using the Swift concurrency waiter.")
 #else
         return XCTWaiter().wait(for: expectations, timeout: timeout, enforceOrder: enforceOrder, file: file, line: line)
@@ -353,13 +353,13 @@ open class XCTWaiter {
     ///   expectations are not fulfilled before the given timeout. Default is the line
     ///   number of the call to this method in the calling file. It is rare to
     ///   provide this parameter when calling this method.
-    #if USE_SWIFT_CONCURRENCY_WAITER
+    #if DISABLE_XCTWAITER
     @available(*, unavailable, message: "Expectation-based waiting is not available when using the Swift concurrency waiter.")
     #else
     @available(macOS 12.0, *)
     #endif
     open class func fulfillment(of expectations: [XCTestExpectation], timeout: TimeInterval, enforceOrder: Bool = false, file: StaticString = #file, line: Int = #line) async -> Result {
-#if USE_SWIFT_CONCURRENCY_WAITER
+#if DISABLE_XCTWAITER
         fatalError("This method is not available when using the Swift concurrency waiter.")
 #else
         return await XCTWaiter().fulfillment(of: expectations, timeout: timeout, enforceOrder: enforceOrder, file: file, line: line)
@@ -372,7 +372,7 @@ open class XCTWaiter {
         }
     }
 
-#if !USE_SWIFT_CONCURRENCY_WAITER
+#if !DISABLE_XCTWAITER
     private func queue_configureExpectations(_ expectations: [XCTestExpectation]) {
         dispatchPrecondition(condition: .onQueue(XCTWaiter.subsystemQueue))
 
@@ -452,7 +452,7 @@ open class XCTWaiter {
 
 }
 
-#if !USE_SWIFT_CONCURRENCY_WAITER
+#if !DISABLE_XCTWAITER
 private extension XCTWaiter {
     func primitiveWait(using runLoop: RunLoop, duration timeout: TimeInterval) {
         // The contract for `primitiveWait(for:)` explicitly allows waiting for a shorter period than requested
@@ -491,7 +491,7 @@ extension XCTWaiter: CustomStringConvertible {
     }
 }
 
-#if !USE_SWIFT_CONCURRENCY_WAITER
+#if !DISABLE_XCTWAITER
 extension XCTWaiter: ManageableWaiter {
     var isFinished: Bool {
         return XCTWaiter.subsystemQueue.sync {

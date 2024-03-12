@@ -69,7 +69,7 @@
 /// - Returns: The exit code to use when the process terminates. `EXIT_SUCCESS`
 ///     indicates success, while any other value (including `EXIT_FAILURE`)
 ///     indicates failure.
-#if USE_SWIFT_CONCURRENCY_WAITER
+#if DISABLE_XCTWAITER
 @_disfavoredOverload
 public func XCTMain(
     _ testCases: [XCTestCaseEntry],
@@ -201,7 +201,7 @@ internal func XCTMainMisc(
     }
 }
 
-#if USE_SWIFT_CONCURRENCY_WAITER
+#if DISABLE_XCTWAITER
 // @available(*, deprecated, message: "Call the overload of XCTMain() that returns an exit code instead.")
 public func XCTMain(_ testCases: [XCTestCaseEntry]) async -> Never {
     exit(await XCTMain(testCases, arguments: CommandLine.arguments, observers: nil) as CInt)

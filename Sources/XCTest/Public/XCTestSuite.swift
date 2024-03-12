@@ -38,7 +38,7 @@ open class XCTestSuite: XCTest {
         return XCTestSuiteRun.self
     }
 
-    #if USE_SWIFT_CONCURRENCY_WAITER
+    #if DISABLE_XCTWAITER
     override func _performAsync(_ run: XCTestRun) async {
         guard let testRun = run as? XCTestSuiteRun else {
             fatalError("Wrong XCTestRun class.")

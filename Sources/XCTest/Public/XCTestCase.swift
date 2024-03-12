@@ -36,7 +36,7 @@ open class XCTestCase: XCTest {
 
     private var skip: XCTSkip?
 
-#if USE_SWIFT_CONCURRENCY_WAITER
+#if DISABLE_XCTWAITER
     /// A task that ends when the test closure has actually finished running.
     /// This is used to ensure that all async work has completed.
     fileprivate var testClosureTask: Task<Void, Error>?
@@ -95,7 +95,7 @@ open class XCTestCase: XCTest {
         return XCTestCaseRun.self
     }
 
-    #if USE_SWIFT_CONCURRENCY_WAITER
+    #if DISABLE_XCTWAITER
     override func _performAsync(_ run: XCTestRun) async {
         guard let testRun = run as? XCTestCaseRun else {
             fatalError("Wrong XCTestRun class.")
@@ -135,7 +135,7 @@ open class XCTestCase: XCTest {
         self.testClosure = testClosure
     }
 
-    #if USE_SWIFT_CONCURRENCY_WAITER
+    #if DISABLE_XCTWAITER
     @MainActor internal func _invokeTestAsync() async {
         await performSetUpSequence()
 
@@ -170,11 +170,11 @@ open class XCTestCase: XCTest {
 
     /// Invoking a test performs its setUp, invocation, and tearDown. In
     /// general this should not be called directly.
-    #if USE_SWIFT_CONCURRENCY_WAITER
+    #if DISABLE_XCTWAITER
     @available(*, unavailable)
     #endif
     open func invokeTest() {
-        #if !USE_SWIFT_CONCURRENCY_WAITER
+        #if !DISABLE_XCTWAITER
         performSetUpSequence()
 
         do {
@@ -310,7 +310,7 @@ open class XCTestCase: XCTest {
         }
     }
 
-    #if USE_SWIFT_CONCURRENCY_WAITER
+    #if DISABLE_XCTWAITER
     @MainActor private func runTeardownBlocks() async {
         for block in self.teardownBlocksState.finalize().reversed() {
             do {
@@ -425,7 +425,7 @@ private func test<T: XCTestCase>(_ testFunc: @escaping (T) -> () throws -> Void)
 public func asyncTest<T: XCTestCase>(
     _ testClosureGenerator: @escaping (T) -> () async throws -> Void
 ) -> (T) -> () throws -> Void {
-#if USE_SWIFT_CONCURRENCY_WAITER
+#if DISABLE_XCTWAITER
     return { (testType: T) in
         let testClosure = testClosureGenerator(testType)
         return {
@@ -445,7 +445,7 @@ public func asyncTest<T: XCTestCase>(
 #endif
 }
 
-#if !USE_SWIFT_CONCURRENCY_WAITER
+#if !DISABLE_XCTWAITER
 @available(macOS 12.0, *)
 func awaitUsingExpectation(
     _ closure: @escaping () async throws -> Void
