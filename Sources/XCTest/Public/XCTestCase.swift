@@ -136,7 +136,7 @@ open class XCTestCase: XCTest {
     }
 
     #if USE_SWIFT_CONCURRENCY_WAITER
-    internal func _invokeTestAsync() async {
+    @MainActor internal func _invokeTestAsync() async {
         await performSetUpSequence()
 
         do {
@@ -311,7 +311,7 @@ open class XCTestCase: XCTest {
     }
 
     #if USE_SWIFT_CONCURRENCY_WAITER
-    private func runTeardownBlocks() async {
+    @MainActor private func runTeardownBlocks() async {
         for block in self.teardownBlocksState.finalize().reversed() {
             do {
                 try await block()
@@ -321,7 +321,7 @@ open class XCTestCase: XCTest {
         }
     }
 
-    private func performSetUpSequence() async {
+    @MainActor private func performSetUpSequence() async {
         do {
             if #available(macOS 12.0, *) {
                 try await self.setUp()
@@ -333,7 +333,7 @@ open class XCTestCase: XCTest {
         performPostSetup()
     }
 
-    private func performTearDownSequence() async {
+    @MainActor private func performTearDownSequence() async {
         await runTeardownBlocks()
         performSyncTearDown()
 
