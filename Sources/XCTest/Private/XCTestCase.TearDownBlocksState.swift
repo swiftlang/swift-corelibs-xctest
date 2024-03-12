@@ -13,7 +13,7 @@ extension XCTestCase {
     final class TeardownBlocksState {
 
         #if DISABLE_XCTWAITER
-        typealias TeardownBlock = @Sendable () async throws -> Void
+        typealias TeardownBlock = @Sendable @MainActor () async throws -> Void
         #else
         typealias TeardownBlock = () throws -> Void
         #endif
