@@ -9,6 +9,7 @@
 //
 //  XCTestExpectation.swift
 //
+#if !DISABLE_XCTWAITER
 
 /// Expectations represent specific conditions in asynchronous testing.
 open class XCTestExpectation: @unchecked Sendable {
@@ -320,3 +321,5 @@ extension XCTestExpectation: CustomStringConvertible {
         return expectationDescription
     }
 }
+
+#endif

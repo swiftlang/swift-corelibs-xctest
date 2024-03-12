@@ -54,6 +54,9 @@ open class XCTestCase: XCTest {
         return 1
     }
 
+    internal static let subsystemQueue = DispatchQueue(label: "org.swift.XCTestCase")
+
+    #if !DISABLE_XCTWAITER
     @MainActor
     internal var currentWaiter: XCTWaiter?
 
@@ -87,6 +90,7 @@ open class XCTestCase: XCTest {
             }
         }
     }
+    #endif
 
     /// An internal object implementing performance measurements.
     internal var _performanceMeter: PerformanceMeter?
@@ -477,10 +481,10 @@ private final class ThrownErrorWrapper: @unchecked Sendable {
 
     var error: Error? {
         get {
-            XCTWaiter.subsystemQueue.sync { _error }
+            XCTestCase.subsystemQueue.sync { _error }
         }
         set {
-            XCTWaiter.subsystemQueue.sync { _error = newValue }
+            XCTestCase.subsystemQueue.sync { _error = newValue }
         }
     }
 }

@@ -9,6 +9,7 @@
 //
 //  XCTWaiter.swift
 //
+#if !DISABLE_XCTWAITER
 
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
 import CoreFoundation
@@ -117,9 +118,7 @@ open class XCTWaiter {
     private var state = State.ready
     internal var timeout: TimeInterval = 0
     internal var waitSourceLocation: SourceLocation?
-    #if !DISABLE_XCTWAITER
     private weak var manager: WaiterManager<XCTWaiter>?
-    #endif
     private var runLoop: RunLoop?
 
     private weak var _delegate: XCTWaiterDelegate?
@@ -189,16 +188,9 @@ open class XCTWaiter {
     ///   these environments. To ensure compatibility of tests between
     ///   swift-corelibs-xctest and Apple XCTest, it is not recommended to pass
     ///   explicit values for `file` and `line`.
-    #if DISABLE_XCTWAITER
-    @available(*, unavailable, message: "Expectation-based waiting is not available when using the Swift concurrency waiter.")
-    #else
     @available(*, noasync, message: "Use await fulfillment(of:timeout:enforceOrder:) instead.")
-    #endif
     @discardableResult
     open func wait(for expectations: [XCTestExpectation], timeout: TimeInterval, enforceOrder: Bool = false, file: StaticString = #file, line: Int = #line) -> Result {
-        #if DISABLE_XCTWAITER
-        fatalError("This method is not available when using the Swift concurrency waiter.")
-        #else
         precondition(Set(expectations).count == expectations.count, "API violation - each expectation can appear only once in the 'expectations' parameter.")
 
         self.timeout = timeout
@@ -260,7 +252,6 @@ open class XCTWaiter {
         }
 
         return result
-        #endif
     }
 
     /// Wait on an array of expectations for up to the specified timeout, and optionally specify whether they
@@ -286,16 +277,9 @@ open class XCTWaiter {
     ///   these environments. To ensure compatibility of tests between
     ///   swift-corelibs-xctest and Apple XCTest, it is not recommended to pass
     ///   explicit values for `file` and `line`.
-    #if DISABLE_XCTWAITER
-    @available(*, unavailable, message: "Expectation-based waiting is not available when using the Swift concurrency waiter.")
-    #else
     @available(macOS 12.0, *)
-    #endif
     @discardableResult
     open func fulfillment(of expectations: [XCTestExpectation], timeout: TimeInterval, enforceOrder: Bool = false, file: StaticString = #file, line: Int = #line) async -> Result {
-#if DISABLE_XCTWAITER
-        fatalError("This method is not available when using the Swift concurrency waiter.")
-#else
         return await withCheckedContinuation { continuation in
             // This function operates by blocking a background thread instead of one owned by libdispatch or by the
             // Swift runtime (as used by Swift concurrency.) To ensure we use a thread owned by neither subsystem, use
@@ -305,7 +289,6 @@ open class XCTWaiter {
                 continuation.resume(returning: result)
             }
         }
-#endif
     }
 
     /// Convenience API to create an XCTWaiter which then waits on an array of expectations for up to the specified timeout, and optionally specify whether they
@@ -324,17 +307,9 @@ open class XCTWaiter {
     ///   expectations are not fulfilled before the given timeout. Default is the line
     ///   number of the call to this method in the calling file. It is rare to
     ///   provide this parameter when calling this method.
-    #if DISABLE_XCTWAITER
-    @available(*, unavailable, message: "Expectation-based waiting is not available when using the Swift concurrency waiter.")
-    #else
     @available(*, noasync, message: "Use await fulfillment(of:timeout:enforceOrder:) instead.")
-    #endif
     open class func wait(for expectations: [XCTestExpectation], timeout: TimeInterval, enforceOrder: Bool = false, file: StaticString = #file, line: Int = #line) -> Result {
-#if DISABLE_XCTWAITER
-        fatalError("This method is not available when using the Swift concurrency waiter.")
-#else
         return XCTWaiter().wait(for: expectations, timeout: timeout, enforceOrder: enforceOrder, file: file, line: line)
-#endif
     }
 
     /// Convenience API to create an XCTWaiter which then waits on an array of expectations for up to the specified timeout, and optionally specify whether they
@@ -353,17 +328,9 @@ open class XCTWaiter {
     ///   expectations are not fulfilled before the given timeout. Default is the line
     ///   number of the call to this method in the calling file. It is rare to
     ///   provide this parameter when calling this method.
-    #if DISABLE_XCTWAITER
-    @available(*, unavailable, message: "Expectation-based waiting is not available when using the Swift concurrency waiter.")
-    #else
     @available(macOS 12.0, *)
-    #endif
     open class func fulfillment(of expectations: [XCTestExpectation], timeout: TimeInterval, enforceOrder: Bool = false, file: StaticString = #file, line: Int = #line) async -> Result {
-#if DISABLE_XCTWAITER
-        fatalError("This method is not available when using the Swift concurrency waiter.")
-#else
         return await XCTWaiter().fulfillment(of: expectations, timeout: timeout, enforceOrder: enforceOrder, file: file, line: line)
-#endif
     }
 
     deinit {
@@ -372,7 +339,6 @@ open class XCTWaiter {
         }
     }
 
-#if !DISABLE_XCTWAITER
     private func queue_configureExpectations(_ expectations: [XCTestExpectation]) {
         dispatchPrecondition(condition: .onQueue(XCTWaiter.subsystemQueue))
 
@@ -448,11 +414,9 @@ open class XCTWaiter {
             queue_validateExpectationFulfillment(dueToTimeout: false)
         }
     }
-#endif
 
 }
 
-#if !DISABLE_XCTWAITER
 private extension XCTWaiter {
     func primitiveWait(using runLoop: RunLoop, duration timeout: TimeInterval) {
         // The contract for `primitiveWait(for:)` explicitly allows waiting for a shorter period than requested
@@ -473,7 +437,6 @@ private extension XCTWaiter {
 #endif
     }
 }
-#endif
 
 extension XCTWaiter: Equatable {
     public static func == (lhs: XCTWaiter, rhs: XCTWaiter) -> Bool {
@@ -491,7 +454,6 @@ extension XCTWaiter: CustomStringConvertible {
     }
 }
 
-#if !DISABLE_XCTWAITER
 extension XCTWaiter: ManageableWaiter {
     var isFinished: Bool {
         return XCTWaiter.subsystemQueue.sync {

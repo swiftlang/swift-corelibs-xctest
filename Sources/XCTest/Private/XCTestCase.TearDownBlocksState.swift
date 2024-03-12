@@ -28,7 +28,7 @@ extension XCTestCase {
         @available(macOS 12.0, *)
         func appendAsync(_ block: @Sendable @escaping () async throws -> Void) {
             #if DISABLE_XCTWAITER
-            XCTWaiter.subsystemQueue.sync {
+            XCTestCase.subsystemQueue.sync {
                 precondition(wasFinalized == false, "API violation -- attempting to add a teardown block after teardown blocks have been dequeued")
                 blocks.append(block)
             }
@@ -40,14 +40,14 @@ extension XCTestCase {
         }
 
         func append(_ block: @escaping () throws -> Void) {
-            XCTWaiter.subsystemQueue.sync {
+            XCTestCase.subsystemQueue.sync {
                 precondition(wasFinalized == false, "API violation -- attempting to add a teardown block after teardown blocks have been dequeued")
                 blocks.append(block)
             }
         }
         
         func finalize() -> [TeardownBlock] {
-            XCTWaiter.subsystemQueue.sync {
+            XCTestCase.subsystemQueue.sync {
                 precondition(wasFinalized == false, "API violation -- attempting to run teardown blocks after they've already run")
                 wasFinalized = true
                 return blocks
