@@ -36,9 +36,9 @@ open class XCTest {
     /// testRunClass. If the test has not yet been run, this will be nil.
     open private(set) var testRun: XCTestRun? = nil
 
+    #if USE_SWIFT_CONCURRENCY_WAITER
     internal var performTask: Task<Void, Never>?
 
-    #if USE_SWIFT_CONCURRENCY_WAITER
     internal func _performAsync(_ run: XCTestRun) async {
         fatalError("Must be overridden by subclasses.")
     }
