@@ -11,6 +11,8 @@
 //  Methods on XCTestCase for testing asynchronous operations
 //
 
+#if !DISABLE_XCTWAITER
+
 public extension XCTestCase {
 
     /// Creates a point of synchronization in the flow of a test. Only one
@@ -265,3 +267,4 @@ internal extension XCTestCase {
             expected: false)
     }
 }
+#endif

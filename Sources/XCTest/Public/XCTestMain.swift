@@ -69,12 +69,70 @@
 /// - Returns: The exit code to use when the process terminates. `EXIT_SUCCESS`
 ///     indicates success, while any other value (including `EXIT_FAILURE`)
 ///     indicates failure.
+#if DISABLE_XCTWAITER
+@_disfavoredOverload
+public func XCTMain(
+    _ testCases: [XCTestCaseEntry],
+    arguments: [String] = CommandLine.arguments,
+    observers: [XCTestObservation]? = nil
+) async -> CInt {
+    // Async-version of XCTMain()
+    switch XCTMainMisc(testCases, arguments: arguments, observers: observers) {
+    case .exitCode(let code):
+        return code
+    case .testSuite(let rootTestSuite, let testBundle, let observers):
+        // Add a test observer that prints test progress to stdout.
+        let observationCenter = XCTestObservationCenter.shared
+        for observer in observers {
+            observationCenter.addTestObserver(observer)
+        }
+
+        observationCenter.testBundleWillStart(testBundle)
+        await rootTestSuite._runAsync()
+        observationCenter.testBundleDidFinish(testBundle)
+
+        return rootTestSuite.testRun!.totalFailureCount == 0 ? EXIT_SUCCESS : EXIT_FAILURE
+    }
+}
+#else
 @_disfavoredOverload
 public func XCTMain(
     _ testCases: [XCTestCaseEntry],
     arguments: [String] = CommandLine.arguments,
     observers: [XCTestObservation]? = nil
 ) -> CInt {
+    // Sync-version of XCTMain()
+    switch XCTMainMisc(testCases, arguments: arguments, observers: observers) {
+    case .exitCode(let code):
+        return code
+    case .testSuite(let rootTestSuite, let testBundle, let observers):
+        // Add a test observer that prints test progress to stdout.
+        let observationCenter = XCTestObservationCenter.shared
+        for observer in observers {
+            observationCenter.addTestObserver(observer)
+        }
+
+        observationCenter.testBundleWillStart(testBundle)
+        rootTestSuite.run()
+        observationCenter.testBundleDidFinish(testBundle)
+
+        return rootTestSuite.testRun!.totalFailureCount == 0 ? EXIT_SUCCESS : EXIT_FAILURE
+    }
+}
+#endif
+
+internal enum TestSuiteOrExitCode {
+    case testSuite(rootTestSuite: XCTestSuite, testBundle: Bundle, observers: [XCTestObservation])
+    case exitCode(CInt)
+}
+
+/// Returns a test suite to be run or an exit code for the specified test cases and
+/// command-line arguments.
+internal func XCTMainMisc(
+    _ testCases: [XCTestCaseEntry],
+    arguments: [String] = CommandLine.arguments,
+    observers: [XCTestObservation]?
+) -> TestSuiteOrExitCode {
     let observers = observers ?? [PrintObserver()]
     let testBundle = Bundle.main
 
@@ -103,10 +161,10 @@ public func XCTMain(
     switch executionMode {
     case .list(type: .humanReadable):
         TestListing(testSuite: rootTestSuite).printTestList()
-        return EXIT_SUCCESS
+        return .exitCode(EXIT_SUCCESS)
     case .list(type: .json):
         TestListing(testSuite: rootTestSuite).printTestJSON()
-        return EXIT_SUCCESS
+        return .exitCode(EXIT_SUCCESS)
     case let .help(invalidOption):
         if let invalid = invalidOption {
             let errMsg = "Error: Invalid option \"\(invalid)\"\n"
@@ -137,22 +195,32 @@ public func XCTMain(
 
                      > \(exeName) \(sampleTests)
               """)
-        return invalidOption == nil ? EXIT_SUCCESS : EXIT_FAILURE
+        return .exitCode(invalidOption == nil ? EXIT_SUCCESS : EXIT_FAILURE)
     case .run(selectedTestNames: _):
-        // Add a test observer that prints test progress to stdout.
-        let observationCenter = XCTestObservationCenter.shared
-        for observer in observers {
-            observationCenter.addTestObserver(observer)
-        }
-
-        observationCenter.testBundleWillStart(testBundle)
-        rootTestSuite.run()
-        observationCenter.testBundleDidFinish(testBundle)
-
-        return rootTestSuite.testRun!.totalFailureCount == 0 ? EXIT_SUCCESS : EXIT_FAILURE
+        return .testSuite(rootTestSuite: rootTestSuite, testBundle: testBundle, observers: observers)
     }
 }
 
+#if DISABLE_XCTWAITER
+// @available(*, deprecated, message: "Call the overload of XCTMain() that returns an exit code instead.")
+public func XCTMain(_ testCases: [XCTestCaseEntry]) async -> Never {
+    exit(await XCTMain(testCases, arguments: CommandLine.arguments, observers: nil) as CInt)
+}
+
+// @available(*, deprecated, message: "Call the overload of XCTMain() that returns an exit code instead.")
+public func XCTMain(_ testCases: [XCTestCaseEntry], arguments: [String]) async -> Never {
+    exit(await XCTMain(testCases, arguments: arguments, observers: nil) as CInt)
+}
+
+// @available(*, deprecated, message: "Call the overload of XCTMain() that returns an exit code instead.")
+public func XCTMain(
+    _ testCases: [XCTestCaseEntry],
+    arguments: [String],
+    observers: [XCTestObservation]
+) async -> Never {
+    exit(await XCTMain(testCases, arguments: arguments, observers: observers) as CInt)
+}
+#else
 // @available(*, deprecated, message: "Call the overload of XCTMain() that returns an exit code instead.")
 public func XCTMain(_ testCases: [XCTestCaseEntry]) -> Never {
     exit(XCTMain(testCases, arguments: CommandLine.arguments, observers: nil) as CInt)
@@ -171,3 +239,4 @@ public func XCTMain(
 ) -> Never {
     exit(XCTMain(testCases, arguments: arguments, observers: observers) as CInt)
 }
+#endif

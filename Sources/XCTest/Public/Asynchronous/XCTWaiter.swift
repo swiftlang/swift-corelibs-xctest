@@ -9,6 +9,7 @@
 //
 //  XCTWaiter.swift
 //
+#if !DISABLE_XCTWAITER
 
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
 import CoreFoundation
@@ -479,3 +480,5 @@ extension XCTWaiter: ManageableWaiter {
         }
     }
 }
+
+#endif

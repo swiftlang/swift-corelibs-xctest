@@ -9,6 +9,7 @@
 //
 //  XCTWaiter+Validation.swift
 //
+#if !DISABLE_XCTWAITER
 
 protocol XCTWaiterValidatableExpectation: Equatable {
     var isFulfilled: Bool { get }
@@ -87,3 +88,5 @@ extension XCTWaiter {
         return .incomplete
     }
 }
+
+#endif

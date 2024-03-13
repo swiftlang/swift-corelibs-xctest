@@ -8,7 +8,15 @@ project(XCTest LANGUAGES Swift)
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(USE_FOUNDATION_FRAMEWORK "Use Foundation.framework on Darwin" NO)
 
-if(NOT CMAKE_SYSTEM_NAME STREQUAL Darwin)
+set(DISABLE_XCTWAITER_default NO)
+
+if(CMAKE_SYSTEM_PROCESSOR STREQUAL wasm32)
+  set(DISABLE_XCTWAITER_default ON)
+endif()
+
+option(DISABLE_XCTWAITER "Disable XCTWaiter" "${DISABLE_XCTWAITER_default}")
+
+if(NOT CMAKE_SYSTEM_NAME STREQUAL Darwin AND NOT DISABLE_XCTWAITER)
   find_package(dispatch CONFIG REQUIRED)
   find_package(Foundation CONFIG REQUIRED)
 endif()
@@ -49,6 +57,12 @@ add_library(XCTest
   Sources/XCTest/Public/Asynchronous/XCTWaiter.swift
   Sources/XCTest/Public/Asynchronous/XCTestCase+Asynchronous.swift
   Sources/XCTest/Public/Asynchronous/XCTestExpectation.swift)
+
+if(DISABLE_XCTWAITER)
+  target_compile_definitions(XCTest PRIVATE
+    DISABLE_XCTWAITER)
+endif()
+
 if(USE_FOUNDATION_FRAMEWORK)
   target_compile_definitions(XCTest PRIVATE
     USE_FOUNDATION_FRAMEWORK)

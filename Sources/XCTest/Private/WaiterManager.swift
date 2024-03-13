@@ -9,6 +9,7 @@
 //
 //  WaiterManager.swift
 //
+#if !DISABLE_XCTWAITER
 
 internal protocol ManageableWaiter: AnyObject, Equatable {
     var isFinished: Bool { get }
@@ -143,3 +144,5 @@ internal final class WaiterManager<WaiterType: ManageableWaiter> : NSObject {
     }
 
 }
+
+#endif
