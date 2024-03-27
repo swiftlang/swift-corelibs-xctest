@@ -277,7 +277,7 @@ open class XCTWaiter {
     ///   swift-corelibs-xctest and Apple XCTest, it is not recommended to pass
     ///   explicit values for `file` and `line`.
     @available(macOS 12.0, *)
-    @discardableResult
+    @discardableResult @_unsafeInheritExecutor
     open func fulfillment(of expectations: [XCTestExpectation], timeout: TimeInterval, enforceOrder: Bool = false, file: StaticString = #file, line: Int = #line) async -> Result {
         return await withCheckedContinuation { continuation in
             // This function operates by blocking a background thread instead of one owned by libdispatch or by the
@@ -327,7 +327,7 @@ open class XCTWaiter {
     ///   expectations are not fulfilled before the given timeout. Default is the line
     ///   number of the call to this method in the calling file. It is rare to
     ///   provide this parameter when calling this method.
-    @available(macOS 12.0, *)
+    @available(macOS 12.0, *) @_unsafeInheritExecutor
     open class func fulfillment(of expectations: [XCTestExpectation], timeout: TimeInterval, enforceOrder: Bool = false, file: StaticString = #file, line: Int = #line) async -> Result {
         return await XCTWaiter().fulfillment(of: expectations, timeout: timeout, enforceOrder: enforceOrder, file: file, line: line)
     }

@@ -110,7 +110,7 @@ public extension XCTestCase {
     ///   provide this parameter when calling this method.
     ///
     /// - SeeAlso: XCTWaiter
-    @available(macOS 12.0, *)
+    @available(macOS 12.0, *) @_unsafeInheritExecutor
     func fulfillment(of expectations: [XCTestExpectation], timeout: TimeInterval, enforceOrder: Bool = false, file: StaticString = #file, line: Int = #line) async {
         let waiter = XCTWaiter(delegate: self)
         await waiter.fulfillment(of: expectations, timeout: timeout, enforceOrder: enforceOrder, file: file, line: line)
