@@ -28,7 +28,9 @@ private enum _XCTAssertion {
     case `false`
     case fail
     case throwsError
+    case throwsErrorAsync
     case noThrow
+    case noThrowAsync
 
     var name: String? {
         switch(self) {
@@ -48,7 +50,9 @@ private enum _XCTAssertion {
         case .`true`: return "XCTAssertTrue"
         case .`false`: return "XCTAssertFalse"
         case .throwsError: return "XCTAssertThrowsError"
+        case .throwsErrorAsync: return "XCTAssertThrowsErrorAsync"
         case .noThrow: return "XCTAssertNoThrow"
+        case .noThrowAsync: return "XCTAssertNoThrowAsync"
         case .fail: return nil
         }
     }
@@ -98,6 +102,28 @@ private func _XCTEvaluateAssertion(_ assertion: _XCTAssertion, message: @autoclo
         if let currentTestCase = XCTCurrentTestCase {
             currentTestCase.recordFailure(
                 withDescription: "\(result.failureDescription(assertion)) - \(message())",
+                inFile: String(describing: file),
+                atLine: Int(line),
+                expected: result.isExpected)
+        }
+    }
+}
+
+private func _XCTEvaluateAssertionAsync(_ assertion: _XCTAssertion, message: @autoclosure () async -> String, file: StaticString, line: UInt, expression: () async throws -> _XCTAssertionResult) async {
+    let result: _XCTAssertionResult
+    do {
+        result = try await expression()
+    } catch {
+        result = .unexpectedFailure(error)
+    }
+
+    switch result {
+    case .success:
+        return
+    default:
+        if let currentTestCase = XCTCurrentTestCase {
+            currentTestCase.recordFailure(
+                withDescription: "\(result.failureDescription(assertion)) - \(await message())",
                 inFile: String(describing: file),
                 atLine: Int(line),
                 expected: result.isExpected)
@@ -432,10 +458,39 @@ public func XCTAssertThrowsError<T>(_ expression: @autoclosure () throws -> T, _
     }
 }
 
+public func XCTAssertThrowsErrorAsync<T>(_ expression: @autoclosure () async throws -> T, _ message: @autoclosure () async -> String = "", file: StaticString = #file, line: UInt = #line, _ errorHandler: (_ error: Swift.Error) async -> Void = { _ in }) async {
+    let rethrowsOverload: (() async throws -> T, () async -> String, StaticString, UInt, (Swift.Error) async throws -> Void) async throws -> Void = XCTAssertThrowsErrorAsync
+
+    try? await rethrowsOverload(expression, message, file, line, errorHandler)
+}
+
+public func XCTAssertThrowsErrorAsync<T>(_ expression: @autoclosure () async throws -> T, _ message: @autoclosure () async -> String = "", file: StaticString = #file, line: UInt = #line, _ errorHandler: (_ error: Swift.Error) async throws -> Void = { _ in }) async rethrows {
+    await _XCTEvaluateAssertionAsync(.throwsErrorAsync, message: await message(), file: file, line: line) {
+        do {
+            _ = try await expression()
+            return .expectedFailure("did not throw error")
+        } catch {
+            try await errorHandler(error)
+            return .success
+        }
+    }
+}
+
 public func XCTAssertNoThrow<T>(_ expression: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
     _XCTEvaluateAssertion(.noThrow, message: message(), file: file, line: line) {
         do {
              _ = try expression()
+            return .success
+        } catch let error {
+            return .expectedFailure("threw error \"\(error)\"")
+        }
+    }
+}
+
+public func XCTAssertNoThrowAsync<T>(_ expression: @autoclosure () async throws -> T, _ message: @autoclosure () async -> String = "", file: StaticString = #file, line: UInt = #line) async {
+    await _XCTEvaluateAssertionAsync(.noThrowAsync, message: await message(), file: file, line: line) {
+        do {
+            _ = try await expression()
             return .success
         } catch let error {
             return .expectedFailure("threw error \"\(error)\"")
