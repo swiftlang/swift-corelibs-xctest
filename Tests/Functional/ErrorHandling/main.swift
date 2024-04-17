@@ -21,7 +21,14 @@ class ErrorHandling: XCTestCase {
             ("test_shouldButDoesNotThrowErrorInAssertion", test_shouldButDoesNotThrowErrorInAssertion),
             ("test_shouldThrowErrorInAssertion", test_shouldThrowErrorInAssertion),
             ("test_throwsErrorInAssertionButFailsWhenCheckingError", test_throwsErrorInAssertionButFailsWhenCheckingError),
-            
+
+            // Tests for XCTAssertThrowsErrorAsync
+            ("test_shouldRethrowErrorFromHandlerAsync", asyncTest(test_shouldRethrowErrorFromHandlerAsync)),
+            ("test_shouldNotRethrowWhenHandlerDoesNotThrowAsync", asyncTest(test_shouldNotRethrowWhenHandlerDoesNotThrowAsync)),
+            ("test_shouldButDoesNotThrowErrorInAssertionAsync", asyncTest(test_shouldButDoesNotThrowErrorInAssertionAsync)),
+            ("test_shouldThrowErrorInAssertionAsync", asyncTest(test_shouldThrowErrorInAssertionAsync)),
+            ("test_throwsErrorInAssertionButFailsWhenCheckingErrorAsync", asyncTest(test_throwsErrorInAssertionButFailsWhenCheckingErrorAsync)),
+
             // Tests for "testFoo() throws"
             ("test_canAndDoesThrowErrorFromTestMethod", test_canAndDoesThrowErrorFromTestMethod),
             ("test_canButDoesNotThrowErrorFromTestMethod", test_canButDoesNotThrowErrorFromTestMethod),
@@ -32,6 +39,10 @@ class ErrorHandling: XCTestCase {
             // Tests for XCTAssertNoThrow
             ("test_shouldNotThrowErrorDefiningSuccess", test_shouldNotThrowErrorDefiningSuccess),
             ("test_shouldThrowErrorDefiningFailure", test_shouldThrowErrorDefiningFailure),
+
+            // Tests for XCTAssertAsyncNoThrow
+            ("test_shouldNotThrowErrorDefiningSuccessAsync", asyncTest(test_shouldNotThrowErrorDefiningSuccessAsync)),
+            ("test_shouldThrowErrorDefiningFailureAsync", asyncTest(test_shouldThrowErrorDefiningFailureAsync)),
 
             // Tests for XCTUnwrap
             ("test_shouldNotThrowErrorOnUnwrapSuccess", test_shouldNotThrowErrorOnUnwrapSuccess),
@@ -51,13 +62,20 @@ class ErrorHandling: XCTestCase {
     
     func functionThatDoesNotThrowError() throws {
     }
-    
+
+    func functionThatDoesNotThrowErrorAsync() async throws {
+    }
+
     enum SomeError: Swift.Error {
         case anError(String)
         case shouldNotBeReached
     }
     
     func functionThatDoesThrowError() throws {
+        throw SomeError.anError("an error message")
+    }
+
+    func functionThatDoesThrowErrorAsync() async throws {
         throw SomeError.anError("an error message")
     }
 
@@ -118,6 +136,63 @@ class ErrorHandling: XCTestCase {
         }
     }
 
+// CHECK: Test Case 'ErrorHandling.test_shouldRethrowErrorFromHandlerAsync' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: .*[/\\]ErrorHandling[/\\]main.swift:[[@LINE+3]]: error: ErrorHandling.test_shouldRethrowErrorFromHandlerAsync : XCTAssertThrowsErrorAsync threw error "anError\("an error message"\)" -
+// CHECK: Test Case 'ErrorHandling.test_shouldRethrowErrorFromHandlerAsync' failed \(\d+\.\d+ seconds\)
+    func test_shouldRethrowErrorFromHandlerAsync() async throws {
+        try await XCTAssertThrowsErrorAsync(await functionThatDoesThrowErrorAsync()) {_ in try await functionThatDoesThrowErrorAsync() }
+    }
+
+// CHECK: Test Case 'ErrorHandling.test_shouldNotRethrowWhenHandlerDoesNotThrowAsync' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ErrorHandling.test_shouldNotRethrowWhenHandlerDoesNotThrowAsync' passed \(\d+\.\d+ seconds\)
+    func test_shouldNotRethrowWhenHandlerDoesNotThrowAsync() async throws {
+        try await XCTAssertThrowsErrorAsync(await functionThatDoesThrowErrorAsync()) {_ in try await functionThatDoesNotThrowErrorAsync() }
+    }
+
+// CHECK: Test Case 'ErrorHandling.test_shouldButDoesNotThrowErrorInAssertionAsync' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: .*[/\\]ErrorHandling[/\\]main.swift:[[@LINE+3]]: error: ErrorHandling.test_shouldButDoesNotThrowErrorInAssertionAsync : XCTAssertThrowsErrorAsync failed: did not throw error -
+// CHECK: Test Case 'ErrorHandling.test_shouldButDoesNotThrowErrorInAssertionAsync' failed \(\d+\.\d+ seconds\)
+    func test_shouldButDoesNotThrowErrorInAssertionAsync() async throws {
+        await XCTAssertThrowsErrorAsync(try await functionThatDoesNotThrowErrorAsync())
+    }
+
+// CHECK: Test Case 'ErrorHandling.test_shouldThrowErrorInAssertionAsync' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ErrorHandling.test_shouldThrowErrorInAssertionAsync' passed \(\d+\.\d+ seconds\)
+    func test_shouldThrowErrorInAssertionAsync() async throws {
+        await XCTAssertThrowsErrorAsync(try await functionThatDoesThrowErrorAsync()) { error in
+            guard let thrownError = error as? SomeError else {
+                XCTFail("Threw the wrong type of error")
+                return
+            }
+
+            switch thrownError {
+            case .anError(let message):
+                XCTAssertEqual(message, "an error message")
+            default:
+                XCTFail("Unexpected error: \(thrownError)")
+            }
+        }
+    }
+
+// CHECK: Test Case 'ErrorHandling.test_throwsErrorInAssertionButFailsWhenCheckingErrorAsync' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: .*[/\\]ErrorHandling[/\\]main.swift:[[@LINE+11]]: error: ErrorHandling.test_throwsErrorInAssertionButFailsWhenCheckingErrorAsync : XCTAssertEqual failed: \("an error message"\) is not equal to \(""\) -
+// CHECK: Test Case 'ErrorHandling.test_throwsErrorInAssertionButFailsWhenCheckingErrorAsync' failed \(\d+\.\d+ seconds\)
+    func test_throwsErrorInAssertionButFailsWhenCheckingErrorAsync() async throws {
+        await XCTAssertThrowsErrorAsync(try await functionThatDoesThrowErrorAsync()) { error in
+            guard let thrownError = error as? SomeError else {
+                XCTFail("Threw the wrong type of error")
+                return
+            }
+
+            switch thrownError {
+            case .anError(let message):
+                XCTAssertEqual(message, "")
+            default:
+                XCTFail("Unexpected error: \(thrownError)")
+            }
+        }
+    }
+
 // CHECK: Test Case 'ErrorHandling.test_canAndDoesThrowErrorFromTestMethod' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
 // CHECK: \<EXPR\>:0: error: ErrorHandling.test_canAndDoesThrowErrorFromTestMethod : threw error "anError\("an error message"\)"
 // CHECK: Test Case 'ErrorHandling.test_canAndDoesThrowErrorFromTestMethod' failed \(\d+\.\d+ seconds\)
@@ -154,6 +229,19 @@ class ErrorHandling: XCTestCase {
 // CHECK: Test Case 'ErrorHandling.test_shouldThrowErrorDefiningFailure' failed \(\d+\.\d+ seconds\)
     func test_shouldThrowErrorDefiningFailure() {
         XCTAssertNoThrow(try functionThatDoesThrowError())
+    }
+
+// CHECK: Test Case 'ErrorHandling.test_shouldNotThrowErrorDefiningSuccessAsync' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: Test Case 'ErrorHandling.test_shouldNotThrowErrorDefiningSuccessAsync' passed \(\d+\.\d+ seconds\)
+    func test_shouldNotThrowErrorDefiningSuccessAsync() async {
+        await XCTAssertNoThrowAsync(try await functionThatDoesNotThrowErrorAsync())
+    }
+
+// CHECK: Test Case 'ErrorHandling.test_shouldThrowErrorDefiningFailureAsync' started at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
+// CHECK: .*[/\\]ErrorHandling[/\\]main.swift:[[@LINE+3]]: error: ErrorHandling.test_shouldThrowErrorDefiningFailureAsync : XCTAssertNoThrowAsync failed: threw error "anError\("an error message"\)" -
+// CHECK: Test Case 'ErrorHandling.test_shouldThrowErrorDefiningFailureAsync' failed \(\d+\.\d+ seconds\)
+    func test_shouldThrowErrorDefiningFailureAsync() async {
+        await XCTAssertNoThrowAsync(try await functionThatDoesThrowErrorAsync())
     }
 
     func functionShouldReturnOptionalButThrows() throws -> String? {
@@ -293,11 +381,11 @@ class ErrorHandling: XCTestCase {
 }
 
 // CHECK: Test Suite 'ErrorHandling' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed \d+ tests, with \d+ failures \(6 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed \d+ tests, with \d+ failures \(7 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 
 XCTMain([testCase(ErrorHandling.allTests)])
 
 // CHECK: Test Suite '.*\.xctest' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed \d+ tests, with \d+ failures \(6 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed \d+ tests, with \d+ failures \(7 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
 // CHECK: Test Suite 'All tests' failed at \d+-\d+-\d+ \d+:\d+:\d+\.\d+
-// CHECK: \t Executed \d+ tests, with \d+ failures \(6 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
+// CHECK: \t Executed \d+ tests, with \d+ failures \(7 unexpected\) in \d+\.\d+ \(\d+\.\d+\) seconds
