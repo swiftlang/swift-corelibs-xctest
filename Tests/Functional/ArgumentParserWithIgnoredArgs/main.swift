@@ -18,5 +18,5 @@ class ArgumentParsingWithIgnoredArgsTestCase: XCTestCase {
     func testSuccess() { }
 }
 
-let arguments = ["main", "--testing-library=xctest", "--testing-library", "xctest", "\(String(reflecting: ArgumentParsingTestCase.self))/testSuccess", "--testing-library",]
-XCTMain([testCase(ArgumentParsingTestCase.allTests)], arguments: arguments)
+let arguments = ["main", "--testing-library=xctest", "--testing-library", "xctest", "\(String(reflecting: ArgumentParsingWithIgnoredArgsTestCase.self))/testSuccess", "--testing-library",]
+XCTMain([testCase(ArgumentParsingWithIgnoredArgsTestCase.allTests)], arguments: arguments)
