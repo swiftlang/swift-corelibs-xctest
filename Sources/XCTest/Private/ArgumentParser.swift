@@ -60,9 +60,8 @@ internal struct ArgumentParser {
         var result = [String]()
         result.reserveCapacity(arguments.count)
 
-        for i in arguments.indices {
-            let argument = arguments[i]
-
+        var iterator = arguments.makeIterator()
+        while let argument = iterator.next() {
             // Filter out any arguments of the form "--testing-library=xctest".
             if argument.starts(with: "--testing-library=") {
                 continue
@@ -70,7 +69,7 @@ internal struct ArgumentParser {
 
             // Next, filter out any split arguments ("--testing-library xctest")
             if argument == "--testing-library" {
-                i = arguments.index(after: i)
+                _ = iterator.next() // skip subsequent value
                 continue
             }
 
