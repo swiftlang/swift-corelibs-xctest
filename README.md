@@ -17,7 +17,7 @@ For general information about using XCTest, see:
 
 The Swift Package Manager integrates directly with XCTest to provide a streamlined experience for unit testing SwiftPM packages. If you are using XCTest within a SwiftPM package, unit test files are located within the package's `Tests` subdirectory, and you can build and run the full test suite in one step by running `swift test`.
 
-For more information about using XCTest with SwiftPM, see its [documentation](https://github.com/apple/swift-package-manager).
+For more information about using XCTest with SwiftPM, see its [documentation](https://github.com/swiftlang/swift-package-manager).
 
 ### Standalone Command Line Usage
 
