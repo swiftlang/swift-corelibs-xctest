@@ -21,13 +21,15 @@ if(NOT CMAKE_SYSTEM_NAME STREQUAL Darwin AND NOT DISABLE_XCTWAITER)
   find_package(Foundation CONFIG REQUIRED)
 endif()
 
-include(SwiftSupport)
 include(GNUInstallDirs)
 include(CheckLinkerFlag)
+include(PlatformInfo)
 
-if(CMAKE_SYSTEM_NAME STREQUAL Linux
-    OR CMAKE_SYSTEM_NAME STREQUAL FreeBSD
-    OR CMAKE_SYSTEM_NAME STREQUAL OpenBSD)
+option(XCTest_INSTALL_NESTED_SUBDIR "Install libraries under a platform and architecture subdirectory" NO)
+set(XCTest_INSTALL_LIBDIR "${CMAKE_INSTALL_LIBDIR}/swift$<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:_static>/${XCTest_PLATFORM_SUBDIR}$<$<BOOL:${XCTest_INSTALL_NESTED_SUBDIR}>:/${XCTest_ARCH_SUBDIR}>")
+set(XCTest_INSTALL_SWIFTMODULEDIR "${CMAKE_INSTALL_LIBDIR}/swift$<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:_static>/${XCTest_PLATFORM_SUBDIR}$<$<BOOL:${XCTest_INSTALL_NESTED_SUBDIR}>:/${XCTest_PLATFORM_SUBDIR}>")
+
+if(UNIX)
   enable_language(C)
   check_linker_flag(C "LINKER:--build-id=sha1" LINKER_SUPPORTS_BUILD_ID)
 endif()
@@ -142,14 +144,17 @@ endif()
 
 
 set_property(GLOBAL APPEND PROPERTY XCTest_EXPORTS XCTest)
-get_swift_host_arch(swift_arch)
+
+
 install(TARGETS XCTest
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/swift$<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:_static>/$<LOWER_CASE:${CMAKE_SYSTEM_NAME}>
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/swift$<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:_static>/$<LOWER_CASE:${CMAKE_SYSTEM_NAME}>
+  ARCHIVE DESTINATION ${XCTest_INSTALL_LIBDIR}
+  LIBRARY DESTINATION ${XCTest_INSTALL_LIBDIR}
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-install(FILES
-  ${CMAKE_CURRENT_BINARY_DIR}/swift/XCTest.swiftdoc
-  ${CMAKE_CURRENT_BINARY_DIR}/swift/XCTest.swiftmodule
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/swift$<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:_static>/$<LOWER_CASE:${CMAKE_SYSTEM_NAME}>/${swift_arch})
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/swift/XCTest.swiftdoc
+  DESTINATION ${XCTest_INSTALL_SWIFTMODULEDIR}/XCTest.swiftmodule
+  RENAME ${XCTest_MODULE_TRIPLE}.swiftdoc)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/swift/XCTest.swiftmodule
+  DESTINATION ${XCTest_INSTALL_SWIFTMODULEDIR}/XCTest.swiftmodule
+  RENAME ${XCTest_MODULE_TRIPLE}.swiftmodule)
 
 add_subdirectory(cmake/modules)
