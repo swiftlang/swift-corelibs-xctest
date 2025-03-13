@@ -27,7 +27,7 @@ include(PlatformInfo)
 
 option(XCTest_INSTALL_NESTED_SUBDIR "Install libraries under a platform and architecture subdirectory" NO)
 set(XCTest_INSTALL_LIBDIR "${CMAKE_INSTALL_LIBDIR}/swift$<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:_static>/${XCTest_PLATFORM_SUBDIR}$<$<BOOL:${XCTest_INSTALL_NESTED_SUBDIR}>:/${XCTest_ARCH_SUBDIR}>")
-set(XCTest_INSTALL_SWIFTMODULEDIR "${CMAKE_INSTALL_LIBDIR}/swift$<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:_static>/${XCTest_PLATFORM_SUBDIR}$<$<BOOL:${XCTest_INSTALL_NESTED_SUBDIR}>:/${XCTest_PLATFORM_SUBDIR}>")
+set(XCTest_INSTALL_SWIFTMODULEDIR "${CMAKE_INSTALL_LIBDIR}/swift$<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:_static>/${XCTest_PLATFORM_SUBDIR}")
 
 if(UNIX)
   enable_language(C)
