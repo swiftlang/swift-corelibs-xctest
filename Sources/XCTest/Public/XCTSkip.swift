@@ -60,14 +60,6 @@ public struct XCTSkip: Error {
         self.init(explanation: explanation, message: message, sourceLocation: sourceLocation)
     }
 
-    public var _code: Int {
-        106 // XCTestErrorCodeSkippedTest
-    }
-
-    public var _domain: String {
-        "com.apple.XCTestErrorDomain"
-    }
-
     public var _userInfo: AnyObject? {
         var result = [String: Any]()
 
