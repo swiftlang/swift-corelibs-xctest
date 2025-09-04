@@ -60,6 +60,32 @@ public struct XCTSkip: Error {
         self.init(explanation: explanation, message: message, sourceLocation: sourceLocation)
     }
 
+    public var _code: Int {
+        106 // XCTestErrorCodeSkippedTest
+    }
+
+    public var _domain: String {
+        "com.apple.XCTestErrorDomain"
+    }
+
+    public var _userInfo: AnyObject? {
+        var result = [String: Any]()
+
+        result["XCTestErrorUserInfoKeyMessage"] = message
+        result["XCTestErrorUserInfoKeyExplanation"] = explanation
+        result["XCTestErrorUserInfoKeySourceLocation"] = sourceLocation.map { sourceLocation -> [String: Any] in
+            // TODO: plumb fileID/filePath through the library
+            let fileName = URL(fileURLWithPath: sourceLocation.file, isDirectory: false).lastPathComponent
+            return [
+                "fileID": "<unknown>/\(fileName)",
+                "filePath": sourceLocation.file,
+                "line": Int(clamping: max(1, sourceLocation.line)),
+                "column": 1,
+            ]
+        }
+
+        return result as AnyObject
+    }
 }
 
 extension XCTSkip: XCTCustomErrorHandling {
