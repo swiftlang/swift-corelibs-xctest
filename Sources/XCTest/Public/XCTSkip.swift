@@ -63,17 +63,31 @@ public struct XCTSkip: Error {
     public var _userInfo: AnyObject? {
         var result = [String: Any]()
 
-        result["XCTestErrorUserInfoKeyMessage"] = message
-        result["XCTestErrorUserInfoKeyExplanation"] = explanation
-        result["XCTestErrorUserInfoKeySourceLocation"] = sourceLocation.map { sourceLocation -> [String: Any] in
-            // TODO: plumb fileID/filePath through the library
-            let fileName = URL(fileURLWithPath: sourceLocation.file, isDirectory: false).lastPathComponent
-            return [
-                "fileID": "<unknown>/\(fileName)",
-                "filePath": sourceLocation.file,
-                "line": Int(clamping: max(1, sourceLocation.line)),
-                "column": 1,
-            ]
+        // Construct a JSON representation of an instance of Swift Testing's
+        // SkipInfo error type. This type is not part of Swift Testing's JSON
+        // schema and is subject to change.
+        // TODO: link to Swift Testing so that we can use SkipInfo directly here
+        do {
+            var jsonObject = [String: Any]()
+            if let message {
+                jsonObject["comment"] = [
+                    "rawValue": message
+                ]
+            }
+            if let sourceLocation {
+                let fileName = URL(fileURLWithPath: sourceLocation.file, isDirectory: false).lastPathComponent
+                jsonObject["sourceContext"] = [
+                    "sourceLocation": [
+                        "fileID": "<unknown>/\(fileName)",
+                        "_filePath": sourceLocation.file,
+                        "line": Int(clamping: max(1, sourceLocation.line)),
+                        "column": 1,
+                    ]
+                ]
+            }
+            if let skipInfoJSON = try? JSONSerialization.data(withJSONObject: jsonObject, options: []) {
+                result["XCTestErrorUserInfoKeyBridgedJSONRepresentation"] = skipInfoJSON
+            }
         }
 
         return result as AnyObject
