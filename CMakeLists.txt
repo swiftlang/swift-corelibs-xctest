@@ -17,8 +17,8 @@ endif()
 option(DISABLE_XCTWAITER "Disable XCTWaiter" "${DISABLE_XCTWAITER_default}")
 
 if(NOT CMAKE_SYSTEM_NAME STREQUAL Darwin AND NOT DISABLE_XCTWAITER)
-  find_package(dispatch CONFIG REQUIRED)
-  find_package(Foundation CONFIG REQUIRED)
+  find_package(dispatch CONFIG)
+  find_package(Foundation CONFIG)
 endif()
 
 include(GNUInstallDirs)
