@@ -52,8 +52,8 @@ internal struct ArgumentParser {
 
     init(arguments: [String]) {
         self.arguments = arguments
-        for var i in arguments.dropFirst().indices {
-            let argument = arguments[i]
+        var iterator = arguments.dropFirst().makeIterator()
+        while let argument = iterator.next() {
             switch argument {
             case "--list-tests", "-l":
                 executionMode = .list(type: .humanReadable)
@@ -63,7 +63,7 @@ internal struct ArgumentParser {
                 executionMode = .help(invalidOption: nil)
             case "--testing-library":
                 // Ignore this argument, it's already been handled by the main() that called into XCTMain().
-                i = arguments.index(after: i) // skip value
+                _ = iterator.next() // skip value
             case _ where argument.starts(with: "--testing-library="):
                 // Same as above, but in the form "--testing-library=xctest".
                 break
