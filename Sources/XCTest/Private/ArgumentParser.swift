@@ -55,7 +55,7 @@ internal struct ArgumentParser {
         for var i in arguments.dropFirst().indices {
             let argument = arguments[j]
             switch argument {
-            case "--list-tests":
+            case "--list-tests", "-l":
                 executionMode = .list(type: .humanReadable)
             case "--dump-tests-json":
                 executionMode = .list(type: .json)
