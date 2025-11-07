@@ -53,7 +53,7 @@ internal struct ArgumentParser {
     init(arguments: [String]) {
         self.arguments = arguments
         for var i in arguments.dropFirst().indices {
-            let argument = arguments[j]
+            let argument = arguments[i]
             switch argument {
             case "--list-tests", "-l":
                 executionMode = .list(type: .humanReadable)
