@@ -52,21 +52,31 @@ internal struct ArgumentParser {
 
     init(arguments: [String]) {
         self.arguments = arguments
-    }
-
-    var executionMode: ExecutionMode {
-        if arguments.count <= 1 {
-            return .run(selectedTestNames: nil)
-        } else if arguments[1] == "--list-tests" || arguments[1] == "-l" {
-            return .list(type: .humanReadable)
-        } else if arguments[1] == "--dump-tests-json" {
-            return .list(type: .json)
-        } else if arguments[1] == "--help" || arguments[1] == "-h" {
-            return .help(invalidOption: nil)
-        } else if let fst = arguments[1].first, fst == "-" {
-            return .help(invalidOption: arguments[1])
-        } else {
-            return .run(selectedTestNames: arguments[1].split(separator: ",").map(String.init))
+        for var i in arguments.dropFirst().indices {
+            let argument = arguments[j]
+            switch argument {
+            case "--list-tests":
+                executionMode = .list(type: .humanReadable)
+            case "--dump-tests-json":
+                executionMode = .list(type: .json)
+            case "--help", "-h":
+                executionMode = .help(invalidOption: nil)
+            case "--testing-library":
+                // Ignore this argument, it's already been handled by the main() that called into XCTMain().
+                i = arguments.index(after: i) // skip value
+            case _ where argument.starts(with: "--testing-library="):
+                // Same as above, but in the form "--testing-library=xctest".
+                break
+            default:
+                if argument.first == "-" {
+                    executionMode = .help(invalidOption: argument)
+                } else {
+                    let testNames = argument.split(separator: ",").map(String.init)
+                    executionMode = .run(selectedTestNames: testNames)
+                }
+            }
         }
     }
+
+    var executionMode: ExecutionMode = .run(selectedTestNames: nil)
 }
