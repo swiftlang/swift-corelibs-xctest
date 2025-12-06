@@ -141,6 +141,8 @@ open class XCTestCase: XCTest {
         let allExpectations = XCTWaiter.subsystemQueue.sync { _allExpectations }
         failIfExpectationsNotWaitedFor(allExpectations)
 
+        cleanUpExpectations()
+
         testRun.stop()
         XCTCurrentTestCase = nil
     }
