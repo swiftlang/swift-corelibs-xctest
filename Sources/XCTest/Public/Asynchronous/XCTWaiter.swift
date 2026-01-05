@@ -411,6 +411,7 @@ open class XCTWaiter {
             guard case var .waiting(waitingState) = state else { return }
 
             waitingState.fulfilledExpectations.append(expectation)
+            state = .waiting(state: waitingState)
             queue_validateExpectationFulfillment(dueToTimeout: false)
         }
     }
