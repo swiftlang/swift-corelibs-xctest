@@ -76,6 +76,7 @@ public func XCTMain(
     arguments: [String] = CommandLine.arguments,
     observers: [XCTestObservation]? = nil
 ) async -> CInt {
+    print("DEBUG: ASYNC XCTMAIN START")
     // Async-version of XCTMain()
     switch XCTMainMisc(testCases, arguments: arguments, observers: observers) {
     case .exitCode(let code):
@@ -101,6 +102,7 @@ public func XCTMain(
     arguments: [String] = CommandLine.arguments,
     observers: [XCTestObservation]? = nil
 ) -> CInt {
+    print("DEBUG: SYNC XCTMAIN START")
     // Sync-version of XCTMain()
     switch XCTMainMisc(testCases, arguments: arguments, observers: observers) {
     case .exitCode(let code):
