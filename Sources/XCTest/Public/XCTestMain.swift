@@ -133,6 +133,7 @@ internal func XCTMainMisc(
     arguments: [String] = CommandLine.arguments,
     observers: [XCTestObservation]?
 ) -> TestSuiteOrExitCode {
+    Interop.Handler.install()
     let observers = observers ?? [PrintObserver()]
     let testBundle = Bundle.main
 
