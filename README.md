@@ -58,19 +58,43 @@ $ ./FooTests --dump-tests-json
 
 To contribute, you'll need to be able to build this project and run its test suite. The easiest way to do so is via the Swift build script.
 
-First, follow [the instructions in the Swift README](https://github.com/apple/swift/blob/main/README.md) to build Swift from source. Confirm you're able to build the Swift project using `utils/build-script -R`.
+First, follow [the instructions in the Swift
+README](https://github.com/apple/swift/blob/main/README.md) to build Swift from
+source. This project is only guaranteed to build with the very latest commit on
+the Swift and swift-corelibs-foundation `main` branches. You may update to the
+latest commits using the Swift `utils/update-checkout` script:
+
+```
+$ ../swift/utils/update-checkout
+```
+
+Then, choose one of the methods below to build and test.
+
+### Using CMake and Docker (recommended)
+
+You can use CMake to build the project and run tests with the local
+`build_script.py`:
+
+```
+$ docker build -t swift-corelibs-xctest-docker:latest .
+# This assumes you've cloned the entire Swift project earlier into a folder named "swift-project"
+$ docker run -it -v ../../swift-project:/swift-project -w /swift-project/swift-corelibs-xctest swift-corelibs-xctest-docker \
+      sh -c "cmake -G Ninja -B .build && cmake --build .build && \
+      ./build_script.py test \
+      --swiftc=/usr/bin/swiftc \
+      --foundation-build-dir .build/ \
+      .build/"
+```
+
+### Using the Swift Build Script
+
+Confirm you're able to build the Swift project using `utils/build-script -R`.
 
 Once you are able to build the Swift project, build XCTest and run its tests:
 
 ```
 $ cd swift-corelibs-xctest
 $ ../swift/utils/build-script --preset corelibs-xctest
-```
-
-This project is only guaranteed to build with the very latest commit on the Swift and swift-corelibs-foundation `main` branches. You may update to the latest commits using the Swift `utils/update-checkout` script:
-
-```
-$ ../swift/utils/update-checkout
 ```
 
 ### Using Xcode
@@ -81,4 +105,4 @@ However, in order to successfully build the project in Xcode, **you must use an 
 
 > If none of the toolchains available to download are recent enough to build XCTest, you may build your own toolchain by using the [`utils/build-toolchain` script](https://github.com/apple/swift/blob/main/utils/build-toolchain) in the Swift repository.
 >
-> Keep in mind that the build script invocation in "Contributing to XCTest" above will always work, regardless of which Swift toolchains you have installed. The Xcode workspace exists simply for the convenience of contributors. It is not necessary to successfully build this project in Xcode in order to contribute.
+> Keep in mind that the build script invocation in "Using the Swift Build Script" above will always work, regardless of which Swift toolchains you have installed. The Xcode workspace exists simply for the convenience of contributors. It is not necessary to successfully build this project in Xcode in order to contribute.
