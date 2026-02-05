@@ -1,4 +1,4 @@
-// swift-tools-version:4.0
+// swift-tools-version:5.9
 //
 // To build with auto-linking of the .swiftmodule use:
 // $ swift build -Xswiftc -module-link-name -Xswiftc XCTest
@@ -15,9 +15,10 @@ let package = Package(
             targets: ["XCTest"]
         )
     ],
-    dependencies: [
-    ],
+    dependencies: [],
     targets: [
-        .target(name: "XCTest", dependencies: [], path: "Sources"),
+        .target(
+            name: "XCTest", dependencies: [], path: "Sources",
+            linkerSettings: [.linkedLibrary("_TestingInterop")])
     ]
 )
