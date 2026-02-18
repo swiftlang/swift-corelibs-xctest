@@ -10,6 +10,9 @@ project(XCTest LANGUAGES Swift)
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(USE_FOUNDATION_FRAMEWORK "Use Foundation.framework on Darwin" NO)
 
+set(CMAKE_INSTALL_RPATH "$<IF:$<PLATFORM_ID:Darwin>,@loader_path/..,$ORIGIN>")
+set(CMAKE_INSTALL_REMOVE_ENVIRONMENT_RPATH YES)
+
 set(DISABLE_XCTWAITER_default NO)
 
 if(CMAKE_SYSTEM_PROCESSOR STREQUAL wasm32)
@@ -76,6 +79,7 @@ if(DISABLE_XCTWAITER)
     DISABLE_XCTWAITER)
 endif()
 
+find_package(SwiftTesting CONFIG)
 target_link_libraries(XCTest PRIVATE
   _TestingInterop)
 target_compile_definitions(XCTest PRIVATE
