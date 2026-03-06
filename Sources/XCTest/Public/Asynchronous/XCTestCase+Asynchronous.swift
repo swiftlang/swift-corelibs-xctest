@@ -113,7 +113,7 @@ public extension XCTestCase {
     ///
     /// - SeeAlso: XCTWaiter
     @available(macOS 12.0, *)
-    func fulfillment(of expectations: [XCTestExpectation], timeout: TimeInterval, enforceOrder: Bool = false, file: StaticString = #file, line: Int = #line) async {
+    nonisolated(nonsending) func fulfillment(of expectations: [XCTestExpectation], timeout: TimeInterval, enforceOrder: Bool = false, file: StaticString = #file, line: Int = #line) async {
         let waiter = XCTWaiter(delegate: self)
         await waiter.fulfillment(of: expectations, timeout: timeout, enforceOrder: enforceOrder, file: file, line: line)
 
