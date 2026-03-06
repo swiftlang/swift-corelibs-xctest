@@ -87,10 +87,7 @@ extension Interop.Handler {
 /// record an event, but the current test is being run by a different testing
 /// library.
 ///
-/// For example, when `XCTAssertEqual` fails in a Swift Testing test, it cannot
-/// directly record the `XCTIssue`. Instead, the `XCTest` library gets the
-/// current fallback handler, serializes the `XCTIssue`, and passes the result
-/// to the fallback handler.
+/// Refer to Swift Testing's source code for more info.
 ///
 /// - Parameters:
 ///     - recordJSONSchemaVersionNumber: the schema version for the JSON event.
