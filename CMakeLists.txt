@@ -1,12 +1,17 @@
 
 cmake_minimum_required(VERSION 3.15.1)
 
+add_compile_options("SHELL:$<$<COMPILE_LANGUAGE:Swift>:-Xfrontend -enable-experimental-feature -Xfrontend Extern>")
+
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
 project(XCTest LANGUAGES Swift)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(USE_FOUNDATION_FRAMEWORK "Use Foundation.framework on Darwin" NO)
+
+set(CMAKE_INSTALL_RPATH "$<IF:$<PLATFORM_ID:Darwin>,@loader_path/..,$ORIGIN>")
+set(CMAKE_INSTALL_REMOVE_ENVIRONMENT_RPATH YES)
 
 set(DISABLE_XCTWAITER_default NO)
 
@@ -48,6 +53,7 @@ add_library(XCTest
   Sources/XCTest/Private/WaiterManager.swift
   Sources/XCTest/Private/IgnoredErrors.swift
   Sources/XCTest/Private/XCTestCase.TearDownBlocksState.swift
+  Sources/XCTest/Private/Interop/InteropHandler.swift
   Sources/XCTest/Public/XCTestRun.swift
   Sources/XCTest/Public/XCTestMain.swift
   Sources/XCTest/Public/XCTestCase.swift
@@ -72,6 +78,12 @@ if(DISABLE_XCTWAITER)
   target_compile_definitions(XCTest PRIVATE
     DISABLE_XCTWAITER)
 endif()
+
+find_package(SwiftTesting CONFIG)
+target_link_libraries(XCTest PRIVATE
+  _TestingInterop)
+target_compile_definitions(XCTest PRIVATE
+  XCT_BUILD_WITH_INTEROP)
 
 if(USE_FOUNDATION_FRAMEWORK)
   target_compile_definitions(XCTest PRIVATE
