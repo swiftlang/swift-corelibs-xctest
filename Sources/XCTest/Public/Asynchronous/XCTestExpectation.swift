@@ -260,7 +260,7 @@ open class XCTestExpectation: @unchecked Sendable {
             //        expectations have completed. Similarly, this should cause an
             //        error as well.
 
-            if queue_isFulfilled, _assertForOverFulfill, let testCase = XCTCurrentTestCase {
+            if queue_isFulfilled, _assertForOverFulfill, let testCase = XCTestCase.current {
                 testCase.recordFailure(
                     description: "API violation - multiple calls made to XCTestExpectation.fulfill() for \(queue_expectationDescription).",
                     at: sourceLocation,

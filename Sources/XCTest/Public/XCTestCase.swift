@@ -11,6 +11,8 @@
 //  Base class for test cases
 //
 
+private import Synchronization
+
 /// A block with the test code to be invoked when the test runs.
 ///
 /// - Parameter testCase: the test case associated with the current test code.
@@ -23,15 +25,24 @@ public typealias XCTestCaseClosure = (XCTestCase) throws -> Void
 /// - seealso: `XCTMain`
 public typealias XCTestCaseEntry = (testCaseClass: XCTestCase.Type, allTests: [(String, XCTestCaseClosure)])
 
-// A global pointer to the currently running test case. This is required in
-// order for XCTAssert functions to report failures.
-internal var XCTCurrentTestCase: XCTestCase?
-
 /// An instance of this class represents an individual test case which can be
 /// run by the framework. This class is normally subclassed and extended with
 /// methods containing the tests to run.
 /// - seealso: `XCTMain`
 open class XCTestCase: XCTest {
+    /// Storage for ``XCTestCase/current``.
+    private static let _current = Mutex<XCTestCase?>(nil)
+
+    /// The currently-running test.
+    ///
+    /// This value is typically an instance of a _subclass_ of ``XCTestCase``
+    /// that you declare in your test target. If no test is currently running,
+    /// the value of this property is `nil`.
+    @_spi(Experimental)
+    public class var current: XCTestCase? {
+        _current.withLock { $0 }
+    }
+
     private let testClosure: XCTestCaseClosure
 
     private var skip: XCTSkip?
@@ -121,12 +132,15 @@ open class XCTestCase: XCTest {
             fatalError("Wrong XCTestRun class.")
         }
 
-        XCTCurrentTestCase = self
+        Self._current.withLock { $0 = self }
+        defer {
+            Self._current.withLock { $0 = nil }
+        }
         testRun.start()
+        defer {
+            testRun.stop()
+        }
         await _invokeTestAsync()
-
-        testRun.stop()
-        XCTCurrentTestCase = nil
     }
     #else
     open override func perform(_ run: XCTestRun) {
@@ -134,17 +148,20 @@ open class XCTestCase: XCTest {
             fatalError("Wrong XCTestRun class.")
         }
 
-        XCTCurrentTestCase = self
+        Self._current.withLock { $0 = self }
+        defer {
+            Self._current.withLock { $0 = nil }
+        }
         testRun.start()
+        defer {
+            testRun.stop()
+        }
         invokeTest()
 
         let allExpectations = XCTWaiter.subsystemQueue.sync { _allExpectations }
         failIfExpectationsNotWaitedFor(allExpectations)
 
         cleanUpExpectations()
-
-        testRun.stop()
-        XCTCurrentTestCase = nil
     }
     #endif
 
