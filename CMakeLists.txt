@@ -54,6 +54,7 @@ add_library(XCTest
   Sources/XCTest/Private/IgnoredErrors.swift
   Sources/XCTest/Private/XCTestCase.TearDownBlocksState.swift
   Sources/XCTest/Private/Interop/InteropHandler.swift
+  Sources/XCTest/Private/Interop/InteropRecord.swift
   Sources/XCTest/Public/XCTestRun.swift
   Sources/XCTest/Public/XCTestMain.swift
   Sources/XCTest/Public/XCTestCase.swift
