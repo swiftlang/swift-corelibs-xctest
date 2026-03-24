@@ -95,14 +95,117 @@ private func _XCTEvaluateAssertion(_ assertion: _XCTAssertion, message: @autoclo
     case .success:
         return
     default:
+        // XCTest assertions record failures in a few scenarios which require separate treatment.
+        //
+        // 1) Within the body of an XCTestCase test: the test case itself records the failure.
+        //
+        // 2) While Swift Testing* tests are running: the other test library records the failure.
+        // We encode the failure into an event and call the fallback event handler.
+        // (*or other test library that participates in interop)
+        //
+        // 3) Neither: recorded failure outside of test case.
+        // We drop this kind of failure since there is currently no affordance for recording it.
+        //
+        // This is timing-dependent on global XCTCurrentTestCase state.
+        // For example, the following test _may_ lose the error depending on when the task executes
+        // relative to the end of test case execution.
+        //
+        // func testDetached() {
+        //   Task.detached {
+        //     XCTFail("Might be lost")
+        //   }
+        // }
+        let description = "\(result.failureDescription(assertion)) - \(message())"
         if let currentTestCase = XCTCurrentTestCase {
             currentTestCase.recordFailure(
-                withDescription: "\(result.failureDescription(assertion)) - \(message())",
+                withDescription: description,
                 inFile: String(describing: file),
                 atLine: Int(line),
                 expected: result.isExpected)
+        } else {
+            // Handle case 2 and 3
+            _recordInteropFailure(
+                withDescription: description,
+                inFile: String(describing: file),
+                atLine: Int(line))
         }
     }
+}
+
+/// If appropriate, forward an assertion failure using the fallback event
+/// handler so it can be recorded by the active test library.
+///
+/// * Drop the failure if XCTest is the current test library.
+///
+///   This prevents us from getting into a recursive "error handling loop" or
+///   otherwise handling our own errors in an excessively roundabout manner.
+///
+///   In practise, it shouldn't be possible to get stuck here because the XCTest
+///   fallback event handler drops events if there isn't a current test case
+///   (which is the scenario in the body of _recordInteropFailure).
+///
+/// * Drop the failure if XCT_BUILD_WITH_INTEROP is not set.
+///
+/// - Parameter description: The description of the failure being reported.
+/// - Parameter filePath: The file path to the source file where the failure
+///   being reported was encountered.
+/// - Parameter lineNumber: The line number in the source file at filePath
+///   where the failure being reported was encountered.
+private func _recordInteropFailure(withDescription description: String, inFile filePath: String, atLine lineNumber: Int) {
+#if XCT_BUILD_WITH_INTEROP
+    guard let fallbackHandler = Interop.Handler.activeFallbackEventHandler else { return }
+    let isOurInstalledHandler =
+        unsafeBitCast(fallbackHandler, to: UnsafeRawPointer.self)
+        == unsafeBitCast(Interop.Handler.ourFallbackEventHandler, to: UnsafeRawPointer.self)
+    guard !isOurInstalledHandler else {
+        // The fallback event handler belongs to XCTest, so we don't want
+        // to call it on our own behalf. The issue is dropped.
+        return
+    }
+
+    let instant = {
+        let d = SuspendingClock().systemEpoch.duration(to: .now)
+        return Interop.Event.Instant(
+            absolute: d / .seconds(1),
+            since1970: Date().timeIntervalSince1970
+        )
+    }()
+
+    let sourceLocation = {
+        let fileName = (filePath as NSString).lastPathComponent
+        // Module name is not available to us, so unconditionally fill with <unknown>
+        let fileID = "<unknown>/\(fileName)"
+        return Interop.Event.Issue.SourceLocation(
+            fileID: fileID, filePath: filePath, line: lineNumber, column: 0)
+    }()
+
+    let event = Interop.Event(
+        kind: "issueRecorded",
+        instant: instant,
+        // isKnown is NOT the same as XCTest's concept of isExpected.
+        // This must always be false since the equivalent API, XCTExpectFailure,
+        // is not supported in XCTest.
+        // https://github.com/swiftlang/swift-corelibs-xctest/issues/438/
+        issue: .init(isKnown: false, sourceLocation: sourceLocation),
+        attachment: nil,
+        messages: [
+            .init(
+                symbol: "fail",
+                text: description)
+        ],
+        testId: nil,
+    )
+
+    let outputRecord = Interop.OutputRecord(payload: event)
+    do {
+        let encodedEvent = try JSONEncoder().encode(outputRecord)
+        encodedEvent.withUnsafeBytes { ptr in
+            fallbackHandler("6.3", ptr.baseAddress!, ptr.count, nil)
+        }
+    } catch {
+        print("Failed to encode event: \(error)")
+    }
+#endif
 }
 
 /// This function emits a test failure if the general `Boolean` expression passed
