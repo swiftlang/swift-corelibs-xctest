@@ -284,7 +284,7 @@ open class XCTWaiter {
             // This function operates by blocking a background thread instead of one owned by libdispatch or by the
             // Swift runtime (as used by Swift concurrency.) To ensure we use a thread owned by neither subsystem, use
             // Foundation's Thread.detachNewThread(_:).
-            Thread.detachNewThread { [self] in
+            Thread.detachNewThread { [self, expectations, timeout, enforceOrder, file, line] in
                 let result = wait(for: expectations, timeout: timeout, enforceOrder: enforceOrder, file: file, line: line)
                 continuation.resume(returning: result)
             }
