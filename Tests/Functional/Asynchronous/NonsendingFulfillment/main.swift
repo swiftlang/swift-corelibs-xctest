@@ -1,4 +1,4 @@
-// RUN: %{swiftc} %s -warn-concurrency -warnings-as-errors
+// RUN: %{swiftc} %s -o %T/NonsendingFulfillment -warn-concurrency -warnings-as-errors
 
 #if os(macOS)
     import SwiftXCTest
