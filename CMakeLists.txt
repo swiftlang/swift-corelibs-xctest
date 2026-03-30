@@ -138,12 +138,6 @@ if(ENABLE_TESTING)
 
   find_package(Python3 COMPONENTS Interpreter REQUIRED)
 
-  if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_HOST_SYSTEM_NAME STREQUAL "FreeBSD")
-    set(SWIFT_TESTING_MACRO_PATH "${XCTEST_PATH_TO_SWIFT_TESTING_MACROS_BUILD}/libTestingMacros.so")
-  elseif(CMAKE_HOST_SYSTEM_NAME STREQUAL "Windows")
-    set(SWIFT_TESTING_MACRO_PATH "${XCTEST_PATH_TO_SWIFT_TESTING_MACROS_BUILD}/TestingMacros.dll")
-  endif()
-
   add_custom_target(check-xctest
                     COMMAND
                     ${CMAKE_COMMAND} -E env
@@ -153,7 +147,7 @@ if(ENABLE_TESTING)
                       LIBDISPATCH_BUILD_DIR=${XCTEST_PATH_TO_LIBDISPATCH_BUILD}
                       LIBDISPATCH_OVERLAY_DIR=${XCTEST_PATH_TO_LIBDISPATCH_BUILD}/src/swift
                       SWIFT_TESTING_BUILD_DIR=${XCTEST_PATH_TO_SWIFT_TESTING_BUILD}
-                      SWIFT_TESTING_MACRO_PATH=${SWIFT_TESTING_MACRO_PATH}
+                      SWIFT_TESTING_MACRO_BUILD_DIR=${XCTEST_PATH_TO_SWIFT_TESTING_MACROS_BUILD}
                       SWIFT_EXEC=${CMAKE_Swift_COMPILER}
                       $<TARGET_FILE:Python3::Interpreter> ${LIT_COMMAND} -sv ${CMAKE_SOURCE_DIR}/Tests/Functional
                     COMMENT
