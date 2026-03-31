@@ -81,10 +81,12 @@ if(DISABLE_XCTWAITER)
 endif()
 
 find_package(SwiftTesting CONFIG)
-target_link_libraries(XCTest PRIVATE
-  _TestingInterop)
-target_compile_definitions(XCTest PRIVATE
-  XCT_BUILD_WITH_INTEROP)
+if(SwiftTesting_FOUND)
+  target_link_libraries(XCTest PRIVATE
+    _TestingInterop)
+  target_compile_definitions(XCTest PRIVATE
+    XCT_BUILD_WITH_INTEROP)
+endif()
 
 if(USE_FOUNDATION_FRAMEWORK)
   target_compile_definitions(XCTest PRIVATE
