@@ -123,7 +123,7 @@ typealias FallbackEventHandler =
 extension Interop.Handler {
     /// XCTest's fallback event handler, which is used to handle issues reported by other test libraries.
     /// It can only report test issues if there is an active XCTest test case.
-    static let ourFallbackEventHandler: FallbackEventHandler = {
+    fileprivate static let ourFallbackEventHandler: FallbackEventHandler = {
         recordJSONSchemaVersionNumber, recordJSONBaseAddress, recordJSONByteCount, _ in
         guard let schemaVersion = String(validatingCString: recordJSONSchemaVersionNumber),
                 schemaVersion == "6.3" else {
@@ -172,7 +172,7 @@ extension XCTestCase {
     ///
     /// - Parameter event: The event record representing a failure. This is
     ///   typically populated by a foreign test library.
-    func recordFailure(event: Interop.Event) {
+    fileprivate func recordFailure(event: Interop.Event) {
         guard event.kind == "issueRecorded", let eventIssue = event.issue else {
             Interop.Handler.debugPrint("Skipping interop for event kind \(event.kind)")
             return
@@ -194,7 +194,7 @@ extension XCTestCase {
 
         let sourceLocation = eventIssue.sourceLocation
         let filePath = sourceLocation?.filePath ?? "<unknown file>"
-        let line = sourceLocation?.line ?? -1
+        let line = sourceLocation?.line ?? 0
 
         self.recordFailure(
             withDescription: description,
