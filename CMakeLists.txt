@@ -80,12 +80,17 @@ if(DISABLE_XCTWAITER)
     DISABLE_XCTWAITER)
 endif()
 
+# This exports SwiftTesting_MACRO_PATH and SwiftTesting_BUILD_DIR
 find_package(SwiftTesting CONFIG)
 if(SwiftTesting_FOUND)
   target_link_libraries(XCTest PRIVATE
     _TestingInterop)
   target_compile_definitions(XCTest PRIVATE
     XCT_BUILD_WITH_INTEROP)
+endif()
+
+if(SwiftTesting_MACRO_PATH)
+  get_filename_component(SwiftTesting_MACRO_DIR "${SwiftTesting_MACRO_PATH}" DIRECTORY)
 endif()
 
 if(USE_FOUNDATION_FRAMEWORK)
@@ -146,8 +151,8 @@ if(ENABLE_TESTING)
                       LIBDISPATCH_SRC_DIR=${XCTEST_PATH_TO_LIBDISPATCH_SOURCE}
                       LIBDISPATCH_BUILD_DIR=${XCTEST_PATH_TO_LIBDISPATCH_BUILD}
                       LIBDISPATCH_OVERLAY_DIR=${XCTEST_PATH_TO_LIBDISPATCH_BUILD}/src/swift
-                      SWIFT_TESTING_BUILD_DIR=${XCTEST_PATH_TO_SWIFT_TESTING_BUILD}
-                      SWIFT_TESTING_MACRO_BUILD_DIR=${XCTEST_PATH_TO_SWIFT_TESTING_MACROS_BUILD}
+                      SWIFT_TESTING_BUILD_DIR=${SwiftTesting_BUILD_DIR}
+                      SWIFT_TESTING_MACRO_BUILD_DIR=${SwiftTesting_MACRO_DIR}
                       SWIFT_EXEC=${CMAKE_Swift_COMPILER}
                       $<TARGET_FILE:Python3::Interpreter> ${LIT_COMMAND} -sv ${CMAKE_SOURCE_DIR}/Tests/Functional
                     COMMENT
