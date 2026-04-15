@@ -95,13 +95,12 @@ private func _XCTEvaluateAssertion(_ assertion: _XCTAssertion, message: @autoclo
     case .success:
         return
     default:
-        if let currentTestCase = XCTCurrentTestCase {
-            currentTestCase.recordFailure(
-                withDescription: "\(result.failureDescription(assertion)) - \(message())",
-                inFile: String(describing: file),
-                atLine: Int(line),
-                expected: result.isExpected)
-        }
+        XCTestCase.current?.recordFailure(
+            withDescription: "\(result.failureDescription(assertion)) - \(message())",
+            inFile: String(describing: file),
+            atLine: Int(line),
+            expected: result.isExpected
+        )
     }
 }
 
