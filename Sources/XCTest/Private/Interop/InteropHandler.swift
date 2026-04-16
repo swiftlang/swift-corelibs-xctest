@@ -123,7 +123,7 @@ typealias FallbackEventHandler =
 extension Interop.Handler {
     /// XCTest's fallback event handler, which is used to handle issues reported by other test libraries.
     /// It can only report test issues if there is an active XCTest test case.
-    fileprivate static let ourFallbackEventHandler: FallbackEventHandler = {
+    static let ourFallbackEventHandler: FallbackEventHandler = {
         recordJSONSchemaVersionNumber, recordJSONBaseAddress, recordJSONByteCount, _ in
         guard let schemaVersion = String(validatingCString: recordJSONSchemaVersionNumber),
                 schemaVersion == "6.3" else {
