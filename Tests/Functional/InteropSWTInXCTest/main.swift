@@ -1,5 +1,5 @@
 // RUN: %{swiftc} %s -o %T/InteropSWTInXCTest
-// RUN: env XCT_EXPERIMENTAL_ENABLE_INTEROP=1 %T/InteropSWTInXCTest > %t || true
+// RUN: %T/InteropSWTInXCTest > %t || true
 // RUN: %{xctest_checker} %t %s
 
 #if os(macOS)
