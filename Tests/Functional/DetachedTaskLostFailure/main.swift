@@ -1,5 +1,5 @@
 // RUN: %{swiftc} %s -o %T/DetachedTaskLostFailure
-// RUN: env XCT_EXPERIMENTAL_ENABLE_INTEROP=1 %T/DetachedTaskLostFailure > %t || true
+// RUN: %T/DetachedTaskLostFailure > %t || true
 // RUN: %{xctest_checker} %t %s
 
 #if os(macOS)

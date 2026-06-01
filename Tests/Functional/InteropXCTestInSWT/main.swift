@@ -1,5 +1,5 @@
 // RUN: %{swiftc} %s -o %T/InteropXCTestInSWT -enable-experimental-feature Extern
-// RUN: env XCT_EXPERIMENTAL_ENABLE_INTEROP=1 %T/InteropXCTestInSWT > %t 2>&1 || true
+// RUN: %T/InteropXCTestInSWT > %t 2>&1 || true
 // RUN: %{xctest_checker} %t %s
 
 // Test that XCTFail called without an active XCTestCase forwards the failure
