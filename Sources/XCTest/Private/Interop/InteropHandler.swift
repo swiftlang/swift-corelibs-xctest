@@ -23,21 +23,6 @@
 enum Interop {}
 
 extension Interop {
-    /// Interop is an experimental feature, so users must manually opt-in.
-    enum Config {}
-}
-
-extension Interop.Config {
-    static let optInEnvName = "XCT_EXPERIMENTAL_ENABLE_INTEROP"
-    static let isEnabledAtRuntime = {
-        ProcessInfo.processInfo.environment[optInEnvName] == "1"
-    }()
-    static let isDebugPrintEnabled = {
-        ProcessInfo.processInfo.environment["XCT_EXPERIMENTAL_ENABLE_INTEROP_DEBUG"] == "1"
-    }()
-}
-
-extension Interop {
     /// Utilities for installing and getting the fallback event handler. The
     /// handler is stored in the `_TestingInterop` library, and all test
     /// libraries that participate in interop dynamically link it at runtime so
@@ -46,13 +31,6 @@ extension Interop {
 }
 
 extension Interop.Handler {
-    /// Print the message if debug printing is enabled for interop.
-    fileprivate static func debugPrint(_ message: String) {
-        if Interop.Config.isDebugPrintEnabled {
-            print(message)
-        }
-    }
-
     /// Install XCTest's fallback event handler. This should only be called
     /// if the current process is running XCTest test cases.
     ///
@@ -66,17 +44,8 @@ extension Interop.Handler {
 
     private static let _installFallbackEventHandler: Bool = {
         #if XCT_BUILD_WITH_INTEROP
-        guard Interop.Config.isEnabledAtRuntime else {
-            debugPrint("Interop: disabled because \(Interop.Config.optInEnvName) not set")
-            return false
-        }
-
-        debugPrint("Interop: installing XCTest's interop handler")
-        let ok = installer(ourFallbackEventHandler)
-        debugPrint("Interop: install \(ok ? "succeeded" : "failed! Interop is disabled")")
-        return ok
+        return installer(ourFallbackEventHandler)
         #else
-        debugPrint("Interop: disabled because this was built without XCT_BUILD_WITH_INTEROP")
         return false
         #endif
     }()
@@ -127,7 +96,6 @@ extension Interop.Handler {
         recordJSONSchemaVersionNumber, recordJSONBaseAddress, recordJSONByteCount, _ in
         guard let schemaVersion = String(validatingCString: recordJSONSchemaVersionNumber),
                 schemaVersion == "6.3" else {
-            debugPrint("Not handling event because of unsupported schema version")
             return
         }
 
@@ -140,13 +108,11 @@ extension Interop.Handler {
 
         do {
             guard let currentTestCase = XCTCurrentTestCase else {
-                debugPrint("Called without current test case")
                 return
             }
             let outputRecord = try JSONDecoder().decode(Interop.OutputRecord.self, from: jsonData)
             currentTestCase.recordFailure(event: outputRecord.payload)
         } catch {
-            debugPrint("Unable to convert json event into an output record: \(error)")
         }
     }
 
@@ -174,7 +140,6 @@ extension XCTestCase {
     ///   typically populated by a foreign test library.
     fileprivate func recordFailure(event: Interop.Event) {
         guard event.kind == "issueRecorded", let eventIssue = event.issue else {
-            Interop.Handler.debugPrint("Skipping interop for event kind \(event.kind)")
             return
         }
 
