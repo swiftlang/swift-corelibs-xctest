@@ -85,9 +85,11 @@ find_package(SwiftTesting CONFIG)
 find_package(SwiftTestingMacros CONFIG)
 if(SwiftTesting_FOUND)
   target_link_libraries(XCTest PRIVATE
-    _TestingInterop)
+    _TestingInterop
+    Testing)
   target_compile_definitions(XCTest PRIVATE
-    XCT_BUILD_WITH_INTEROP)
+    XCT_BUILD_WITH_INTEROP
+    XCT_PLACEHOLDERNAME_PLEASERENAMEBEFOREMERGE_TESTING_SPI_AVAILABLE)
 endif()
 
 if(USE_FOUNDATION_FRAMEWORK)
