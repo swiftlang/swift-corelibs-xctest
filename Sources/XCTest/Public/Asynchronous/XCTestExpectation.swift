@@ -89,7 +89,10 @@ open class XCTestExpectation: @unchecked Sendable {
 
     /// The number of times `fulfill()` must be called on the expectation in order for it
     /// to report complete fulfillment to its waiter. Default is 1.
-    /// This value must be greater than 0 and is not meaningful if combined with `isInverted`.
+    /// This value must be greater than 0. When used in combination with `isInverted`, this
+    /// value determines how many times `fulfill()` must be called before the inverted
+    /// expectation is considered fulfilled and triggers a test failure. Therefore,
+    /// `expectedFulfillmentCount` is meaningful even when `isInverted` is `true`.
     open var expectedFulfillmentCount: Int {
         get {
             return XCTWaiter.subsystemQueue.sync { queue_expectedFulfillmentCount }
