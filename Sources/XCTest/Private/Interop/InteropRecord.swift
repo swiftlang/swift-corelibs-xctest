@@ -10,6 +10,15 @@
 //  InteropRecord.swift
 //
 
+#if XCT_PLACEHOLDERNAME_PLEASERENAMEBEFOREMERGE_TESTING_SPI_AVAILABLE
+
+@_spi(ForToolsIntegrationOnly) @_implementationOnly private import Testing
+
+// Testing availability of Testing.ABI
+private let version = ABI.CurrentVersion.versionNumber
+
+#endif
+
 extension Interop {
     struct OutputRecord: Codable {
         var payload: Event
