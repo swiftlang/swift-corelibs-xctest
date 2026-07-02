@@ -15,6 +15,11 @@
 /// Expanded version of `XCTestObservation` used internally to respond to
 /// additional events not publicly exposed.
 internal protocol XCTestInternalObservation: XCTestObservation {
+    /// Called when a test case is first discovered, prior to the test suite
+    /// starting.
+    /// - Parameter testCase: The test case that was discovered.
+    func testCaseWasDiscovered(_ testCase: XCTestCase)
+
     func testCase(_ testCase: XCTestCase, wasSkippedWithDescription description: String, at sourceLocation: SourceLocation?)
 
     /// Called when a test case finishes measuring performance and has results
@@ -30,6 +35,7 @@ internal protocol XCTestInternalObservation: XCTestObservation {
 
 // All `XCInternalTestObservation` methods are optional, so empty default implementations are provided
 internal extension XCTestInternalObservation {
+    func testCaseWasDiscovered(_ testCase: XCTestCase) {}
     func testCase(_ testCase: XCTestCase, wasSkippedWithDescription description: String, at sourceLocation: SourceLocation?) {}
     func testCase(_ testCase: XCTestCase, didMeasurePerformanceResults results: String, file: StaticString, line: Int) {}
 }
