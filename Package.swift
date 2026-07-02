@@ -1,4 +1,4 @@
-// swift-tools-version:5.9
+// swift-tools-version:6.4
 //
 // To build with auto-linking of the .swiftmodule use:
 // $ swift build -Xswiftc -module-link-name -Xswiftc XCTest
@@ -19,22 +19,15 @@ let package = Package(
     targets: [
         .target(
             name: "XCTest", dependencies: [], path: "Sources",
-            swiftSettings: swiftSettings,
-            linkerSettings: linkerSettings
-        )
-    ]
+            swiftSettings: [
+              .enableExperimentalFeature("Extern"),
+              .define("XCT_BUILD_WITH_INTEROP"),
+              .define("USE_FOUNDATION_FRAMEWORK"),
+            ],
+            linkerSettings: [
+              .linkedLibrary("_TestingInterop"),
+            ]
+        ),
+    ],
+    swiftLanguageModes: [.v5]
 )
-
-// Only link and enable interop for >=6.3 since it is a new library
-#if compiler(>=6.3)
-let swiftSettings: [SwiftSetting] = [
-    .enableExperimentalFeature("Extern"),
-    .define("XCT_BUILD_WITH_INTEROP"),
-]
-let linkerSettings: [LinkerSetting] = [
-    .linkedLibrary("_TestingInterop")
-]
-#else
-let swiftSettings: [SwiftSetting] = []
-let linkerSettings: [LinkerSetting] = []
-#endif
