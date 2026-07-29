@@ -88,6 +88,11 @@ if(SwiftTesting_FOUND)
     _TestingInterop)
   target_compile_definitions(XCTest PRIVATE
     XCT_BUILD_WITH_INTEROP)
+  if(NOT BUILD_SHARED_LIBS)
+    target_compile_options(XCTest PRIVATE
+      "SHELL:-Xfrontend -public-autolink-library -Xfrontend _TestingInterop"
+      "SHELL:-Xfrontend -public-autolink-library -Xfrontend _TestingInternals")
+  endif()
 endif()
 
 if(USE_FOUNDATION_FRAMEWORK)
@@ -150,6 +155,7 @@ if(ENABLE_TESTING)
                       LIBDISPATCH_OVERLAY_DIR=${XCTEST_PATH_TO_LIBDISPATCH_BUILD}/src/swift
                       SWIFT_TESTING_BUILD_DIR=${SwiftTesting_BUILD_DIR}
                       SWIFT_TESTING_MACRO_BUILD_DIR=${SwiftTesting_MACRO_DIR}
+                      XCTEST_BUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}
                       SWIFT_EXEC=${CMAKE_Swift_COMPILER}
                       $<TARGET_FILE:Python3::Interpreter> ${LIT_COMMAND} -sv ${CMAKE_SOURCE_DIR}/Tests/Functional
                     COMMENT
