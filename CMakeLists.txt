@@ -7,6 +7,10 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
 project(XCTest LANGUAGES Swift)
 
+if(UNIX)
+  enable_language(C)
+endif()
+
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(USE_FOUNDATION_FRAMEWORK "Use Foundation.framework on Darwin" NO)
 
@@ -35,7 +39,6 @@ set(XCTest_INSTALL_LIBDIR "${CMAKE_INSTALL_LIBDIR}/swift$<$<NOT:$<BOOL:${BUILD_S
 set(XCTest_INSTALL_SWIFTMODULEDIR "${CMAKE_INSTALL_LIBDIR}/swift$<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:_static>/${XCTest_PLATFORM_SUBDIR}")
 
 if(UNIX)
-  enable_language(C)
   check_linker_flag(C "LINKER:--build-id=sha1" LINKER_SUPPORTS_BUILD_ID)
 endif()
 
@@ -88,6 +91,11 @@ if(SwiftTesting_FOUND)
     _TestingInterop)
   target_compile_definitions(XCTest PRIVATE
     XCT_BUILD_WITH_INTEROP)
+  if(NOT BUILD_SHARED_LIBS)
+    target_compile_options(XCTest PRIVATE
+      "SHELL:-Xfrontend -public-autolink-library -Xfrontend _TestingInterop"
+      "SHELL:-Xfrontend -public-autolink-library -Xfrontend _TestingInternals")
+  endif()
 endif()
 
 if(USE_FOUNDATION_FRAMEWORK)
@@ -150,6 +158,7 @@ if(ENABLE_TESTING)
                       LIBDISPATCH_OVERLAY_DIR=${XCTEST_PATH_TO_LIBDISPATCH_BUILD}/src/swift
                       SWIFT_TESTING_BUILD_DIR=${SwiftTesting_BUILD_DIR}
                       SWIFT_TESTING_MACRO_BUILD_DIR=${SwiftTesting_MACRO_DIR}
+                      XCTEST_BUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}
                       SWIFT_EXEC=${CMAKE_Swift_COMPILER}
                       $<TARGET_FILE:Python3::Interpreter> ${LIT_COMMAND} -sv ${CMAKE_SOURCE_DIR}/Tests/Functional
                     COMMENT
