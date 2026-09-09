@@ -1,6 +1,6 @@
-// RUN: %{swiftc} %s -g -o %T/TestCaseLifecycleMisuse
-// RUN: env SWIFT_BACKTRACE=enable=no %T/TestCaseLifecycleMisuse > %t || true
-// RUN: %{xctest_checker} %t %s
+// RUN: %{swiftc} %s -g -o %t.TestCaseLifecycleMisuse
+// RUN: env SWIFT_BACKTRACE=enable=no %t.TestCaseLifecycleMisuse > %t.output || true
+// RUN: %{xctest_checker} %t.output %s
 
 #if os(macOS)
     import SwiftXCTest

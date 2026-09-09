@@ -1,6 +1,6 @@
-// RUN: %{swiftc} %s -o %T/DetachedTaskLostFailure
-// RUN: %T/DetachedTaskLostFailure > %t || true
-// RUN: %{xctest_checker} %t %s
+// RUN: %{swiftc} %s -o %t.DetachedTaskLostFailure
+// RUN: %t.DetachedTaskLostFailure > %t.output || true
+// RUN: %{xctest_checker} %t.output %s
 
 #if os(macOS)
     import SwiftXCTest

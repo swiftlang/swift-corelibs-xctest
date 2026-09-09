@@ -1,6 +1,6 @@
-// RUN: %{swiftc} %s -o %T/TestCaseLifecycle
-// RUN: %T/TestCaseLifecycle > %t || true
-// RUN: %{xctest_checker} %t %s
+// RUN: %{swiftc} %s -o %t.TestCaseLifecycle
+// RUN: %t.TestCaseLifecycle > %t.output || true
+// RUN: %{xctest_checker} %t.output %s
 
 #if os(macOS)
     import SwiftXCTest

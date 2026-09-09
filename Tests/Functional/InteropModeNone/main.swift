@@ -1,6 +1,6 @@
-// RUN: %{swiftc} %s -o %T/InteropModeNone
-// RUN: env SWIFT_TESTING_XCTEST_INTEROP_MODE=none %T/InteropModeNone > %t || true
-// RUN: %{xctest_checker} %t %s
+// RUN: %{swiftc} %s -o %t.InteropModeNone
+// RUN: env SWIFT_TESTING_XCTEST_INTEROP_MODE=none %t.InteropModeNone > %t.output || true
+// RUN: %{xctest_checker} %t.output %s
 
 #if os(macOS)
     import SwiftXCTest

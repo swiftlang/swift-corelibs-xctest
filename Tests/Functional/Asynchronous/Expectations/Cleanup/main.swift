@@ -1,6 +1,6 @@
-// RUN: %{swiftc} %s -o %T/ExpectationCleanup
-// RUN: %T/ExpectationCleanup > %t || true
-// RUN: %{xctest_checker} %t %s
+// RUN: %{swiftc} %s -o %t.ExpectationCleanup
+// RUN: %t.ExpectationCleanup > %t.output || true
+// RUN: %{xctest_checker} %t.output %s
 
 #if os(macOS)
     import SwiftXCTest

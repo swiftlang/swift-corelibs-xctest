@@ -1,6 +1,6 @@
-// RUN: %{swiftc} %s -o %T/EqualityWithAccuracy
-// RUN: %T/EqualityWithAccuracy > %t || true
-// RUN: %{xctest_checker} %t %s
+// RUN: %{swiftc} %s -o %t.EqualityWithAccuracy
+// RUN: %t.EqualityWithAccuracy > %t.output || true
+// RUN: %{xctest_checker} %t.output %s
 
 #if os(macOS)
     import SwiftXCTest

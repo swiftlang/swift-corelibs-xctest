@@ -1,6 +1,6 @@
-// RUN: %{swiftc} %s -o %T/SkippingTestCase
-// RUN: %T/SkippingTestCase > %t || true
-// RUN: %{xctest_checker} %t %s
+// RUN: %{swiftc} %s -o %t.SkippingTestCase
+// RUN: %t.SkippingTestCase > %t.output || true
+// RUN: %{xctest_checker} %t.output %s
 
 #if os(macOS)
     import SwiftXCTest

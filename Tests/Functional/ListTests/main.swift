@@ -1,9 +1,9 @@
-// RUN: %{swiftc} %s -o %T/ListTests
-// RUN: %T/ListTests --list-tests > %t_list || true
-// RUN: %{xctest_checker} %t_list %s
-// RUN: %T/ListTests --dump-tests-json > %t_json || true
-// RUN: %T/ListTests --verify %t_json > %t_verify
-// RUN: %{xctest_checker} %t_verify %S/verify_json.expected
+// RUN: %{swiftc} %s -module-name ListTests -o %t.ListTests
+// RUN: %t.ListTests --list-tests > %t.list || true
+// RUN: %{xctest_checker} %t.list %s
+// RUN: %t.ListTests --dump-tests-json > %t.json || true
+// RUN: %t.ListTests --verify %t.json > %t.verify
+// RUN: %{xctest_checker} %t.verify %S/verify_json.expected
 
 #if os(macOS)
     import SwiftXCTest

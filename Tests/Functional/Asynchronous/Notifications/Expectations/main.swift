@@ -1,6 +1,6 @@
-// RUN: %{swiftc} %s -o %T/Asynchronous-Notifications
-// RUN: %T/Asynchronous-Notifications > %t || true
-// RUN: %{xctest_checker} %t %s
+// RUN: %{swiftc} %s -o %t.Asynchronous-Notifications
+// RUN: %t.Asynchronous-Notifications > %t.output || true
+// RUN: %{xctest_checker} %t.output %s
 
 #if os(macOS)
     import SwiftXCTest

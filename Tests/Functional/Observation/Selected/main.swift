@@ -1,6 +1,6 @@
-// RUN: %{swiftc} %s -o %T/Selected
-// RUN: %T/Selected Selected.ExecutedTestCase/test_executed > %t || true
-// RUN: %{xctest_checker} %t %s
+// RUN: %{swiftc} %s -module-name Selected -o %t.Selected
+// RUN: %t.Selected Selected.ExecutedTestCase/test_executed > %t.output || true
+// RUN: %{xctest_checker} %t.output %s
 
 #if os(macOS)
     import SwiftXCTest

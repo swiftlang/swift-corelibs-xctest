@@ -1,6 +1,6 @@
-// RUN: %{swiftc} %s -o %T/FailingTestSuite
-// RUN: %T/FailingTestSuite > %t || true
-// RUN: %{xctest_checker} %t %s
+// RUN: %{swiftc} %s -o %t.FailingTestSuite
+// RUN: %t.FailingTestSuite > %t.output || true
+// RUN: %{xctest_checker} %t.output %s
 
 #if os(macOS)
     import SwiftXCTest
