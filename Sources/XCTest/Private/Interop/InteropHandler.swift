@@ -19,6 +19,9 @@
 #else
     import Foundation
 #endif
+#if XCT_CAN_USE_TESTING_SPI
+@_spi(ForToolsIntegrationOnly) private import Testing
+#endif
 
 enum Interop {}
 
@@ -94,10 +97,20 @@ extension Interop.Handler {
     /// It can only report test issues if there is an active XCTest test case.
     static let ourFallbackEventHandler: FallbackEventHandler = {
         recordJSONSchemaVersionNumber, recordJSONBaseAddress, recordJSONByteCount, _ in
+        // Check that this schema version number is supported.
+        // When building for the toolchain, support ABI versions 6.3 to 6.4.
+#if XCT_CAN_USE_TESTING_SPI
+        guard
+            let schemaVersionNumber = ABI.VersionNumber(validatingCString: recordJSONSchemaVersionNumber),
+            (ABI.v6_3.versionNumber...ABI.v6_4.versionNumber).contains(schemaVersionNumber) else {
+            return
+        }
+#else
         guard let schemaVersion = String(validatingCString: recordJSONSchemaVersionNumber),
                 schemaVersion == "6.3" else {
             return
         }
+#endif
 
         // Memory is managed by the caller of the fallback event handler, so do
         // not attempt to deallocate when done.
