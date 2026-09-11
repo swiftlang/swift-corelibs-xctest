@@ -1,6 +1,6 @@
-// RUN: %{swiftc} %s -o %T/MultipleObservers
-// RUN: %T/MultipleObservers > %t || true
-// RUN: %{xctest_checker} %t %s
+// RUN: %{swiftc} %s -o %t.MultipleObservers
+// RUN: %t.MultipleObservers > %t.output || true
+// RUN: %{xctest_checker} %t.output %s
 
 #if os(macOS)
     import SwiftXCTest

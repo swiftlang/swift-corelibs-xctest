@@ -1,6 +1,6 @@
-// RUN: %{swiftc} %s -o %T/Asynchronous-Predicates-Handler
-// RUN: %T/Asynchronous-Predicates-Handler > %t || true
-// RUN: %{xctest_checker} %t %s
+// RUN: %{swiftc} %s -o %t.Asynchronous-Predicates-Handler
+// RUN: %t.Asynchronous-Predicates-Handler > %t.output || true
+// RUN: %{xctest_checker} %t.output %s
 
 #if os(macOS)
     import SwiftXCTest

@@ -1,6 +1,6 @@
-// RUN: %{swiftc} %s -o %T/All
-// RUN: %T/All > %t || true
-// RUN: %{xctest_checker} %t %s
+// RUN: %{swiftc} %s -o %t.All
+// RUN: %t.All > %t.output || true
+// RUN: %{xctest_checker} %t.output %s
 
 #if os(macOS)
     import SwiftXCTest

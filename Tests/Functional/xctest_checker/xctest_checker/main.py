@@ -32,7 +32,7 @@ def main():
             debugging the test suite. To compare the actual output of an
             executable against the expected output, you may run the following:
 
-                Tests/Functional/MyTestCase/Output/MyTestCase | \\
+                Tests/Functional/MyTestCase/Output/main.swift.tmp.MyTestCase | \\
                     %(prog)s - Tests/Functional/MyTestCase/main.swift
 
             This pipes the output from the "MyTestCase" executable into

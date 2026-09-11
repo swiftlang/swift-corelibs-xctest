@@ -1,6 +1,6 @@
-// RUN: %{swiftc} %s -o %T/Use
-// RUN: %T/Use > %t || true
-// RUN: %{xctest_checker} %t %s
+// RUN: %{swiftc} %s -o %t.Use
+// RUN: %t.Use > %t.output || true
+// RUN: %{xctest_checker} %t.output %s
 // REQUIRES: concurrency_runtime
 
 #if os(macOS)

@@ -1,6 +1,6 @@
-// RUN: %{swiftc} %s -o %T/Performance
-// RUN: %T/Performance > %t || true
-// RUN: %{xctest_checker} %t %s
+// RUN: %{swiftc} %s -o %t.Performance
+// RUN: %t.Performance > %t.output || true
+// RUN: %{xctest_checker} %t.output %s
 
 #if os(macOS)
     import SwiftXCTest

@@ -1,6 +1,6 @@
-// RUN: %{swiftc} %s -o %T/InteropSWTInXCTest
-// RUN: %T/InteropSWTInXCTest > %t || true
-// RUN: %{xctest_checker} %t %s
+// RUN: %{swiftc} %s -o %t.InteropSWTInXCTest
+// RUN: %t.InteropSWTInXCTest > %t.output || true
+// RUN: %{xctest_checker} %t.output %s
 
 #if os(macOS)
     import SwiftXCTest

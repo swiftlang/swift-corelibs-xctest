@@ -1,6 +1,6 @@
-// RUN: %{swiftc} %s -o %T/InteropXCTestInSWT -enable-experimental-feature Extern
-// RUN: %T/InteropXCTestInSWT > %t 2>&1 || true
-// RUN: %{xctest_checker} %t %s
+// RUN: %{swiftc} %s -o %t.InteropXCTestInSWT -enable-experimental-feature Extern
+// RUN: %t.InteropXCTestInSWT > %t.output 2>&1 || true
+// RUN: %{xctest_checker} %t.output %s
 
 // Test that XCTFail called without an active XCTestCase forwards the failure
 // to the installed fallback event handler (the XCTest → Swift Testing direction).

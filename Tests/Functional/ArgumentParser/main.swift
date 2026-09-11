@@ -1,5 +1,5 @@
-// RUN: %{swiftc} %s -o %T/ArgumentParser
-// RUN: %T/ArgumentParser
+// RUN: %{swiftc} %s -o %t.ArgumentParser
+// RUN: %t.ArgumentParser
 
 #if os(macOS)
     import SwiftXCTest
