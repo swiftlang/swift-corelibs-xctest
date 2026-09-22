@@ -47,6 +47,7 @@ add_library(XCTest
   Sources/XCTest/Private/XCTestInternalObservation.swift
   Sources/XCTest/Private/ObjectWrapper.swift
   Sources/XCTest/Private/PerformanceMeter.swift
+  Sources/XCTest/Private/JSONObserver.swift
   Sources/XCTest/Private/PrintObserver.swift
   Sources/XCTest/Private/ArgumentParser.swift
   Sources/XCTest/Private/SourceLocation.swift
