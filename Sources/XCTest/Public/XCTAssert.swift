@@ -153,7 +153,7 @@ private func _XCTEvaluateAssertion(_ assertion: _XCTAssertion, message: @autoclo
 ///   where the failure being reported was encountered.
 private func _recordInteropFailure(withDescription description: String, inFile filePath: String, atLine lineNumber: Int) {
 #if XCT_BUILD_WITH_INTEROP
-    guard let fallbackHandler = Interop.Handler.activeFallbackEventHandler else { return }
+    guard #available(macOS 13.0, *), let fallbackHandler = Interop.Handler.activeFallbackEventHandler else { return }
     let isOurInstalledHandler =
         unsafeBitCast(fallbackHandler, to: UnsafeRawPointer.self)
         == unsafeBitCast(Interop.Handler.ourFallbackEventHandler, to: UnsafeRawPointer.self)

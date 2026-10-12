@@ -67,6 +67,27 @@ internal struct ArgumentParser {
             case _ where argument.starts(with: "--testing-library="):
                 // Same as above, but in the form "--testing-library=xctest".
                 break
+            case "--event-stream-output-path":
+                jsonEventStreamConfiguration.filePath = iterator.next()
+            case "--event-stream-version":
+                guard let eventStreamVersion = iterator.next() else {
+                    executionMode = .help(invalidOption: argument)
+                    break
+                }
+                if eventStreamVersion.utf8.first == UInt8(ascii: "9") {
+                    // HACK: this should use Testing.ABI.VersionNumber for parsing/comparison
+                    executionMode = .help(invalidOption: argument)
+                    break
+                }
+                jsonEventStreamConfiguration.schemaVersion = eventStreamVersion
+                jsonEventStreamConfiguration.isExperimentalVersionAllowed = false
+            case "--experimental-event-stream-version":
+                guard let eventStreamVersion = iterator.next() else {
+                    executionMode = .help(invalidOption: argument)
+                    break
+                }
+                jsonEventStreamConfiguration.schemaVersion = eventStreamVersion
+                jsonEventStreamConfiguration.isExperimentalVersionAllowed = true
             default:
                 if argument.first == "-" {
                     executionMode = .help(invalidOption: argument)
@@ -79,4 +100,5 @@ internal struct ArgumentParser {
     }
 
     var executionMode: ExecutionMode = .run(selectedTestNames: nil)
+    var jsonEventStreamConfiguration: (filePath: String?, schemaVersion: String?, isExperimentalVersionAllowed: Bool) = (nil, nil, false)
 }
