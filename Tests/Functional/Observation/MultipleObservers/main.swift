@@ -2,9 +2,6 @@
 // RUN: %T/MultipleObservers > %t || true
 // RUN: %{xctest_checker} %t %s
 
-// Flaky on Windows, see rdar://191008980
-// UNSUPPORTED: OS=windows
-
 #if os(macOS)
     import SwiftXCTest
 #else
