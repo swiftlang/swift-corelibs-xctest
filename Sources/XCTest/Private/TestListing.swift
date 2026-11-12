@@ -50,6 +50,15 @@ private func moduleName(value: Any) -> String {
     return String(moduleAndType.split(separator: ".").first!)
 }
 
+extension XCTest {
+    var id: String {
+        let adjustedName = name.split(separator: ".")
+            .map(String.init)
+            .joined(separator: "/")
+        return "\(moduleName(value: self)).\(adjustedName)"
+    }
+}
+
 extension XCTestSuite: Listable {
     private var listables: [Listable] {
         return tests
@@ -87,10 +96,7 @@ extension XCTestSuite: Listable {
 
 extension XCTestCase: Listable {
     func list() -> [String] {
-        let adjustedName = name.split(separator: ".")
-            .map(String.init)
-            .joined(separator: "/")
-        return ["\(moduleName(value: self)).\(adjustedName)"]
+        [id]
     }
 
     func dictionaryRepresentation() -> NSDictionary {

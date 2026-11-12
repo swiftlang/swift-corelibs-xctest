@@ -134,10 +134,17 @@ internal func XCTMainMisc(
     observers: [XCTestObservation]?
 ) -> TestSuiteOrExitCode {
     _ = Interop.Handler.installFallbackEventHandler()
-    let observers = observers ?? [PrintObserver()]
+    var observers = observers ?? [PrintObserver()]
     let testBundle = Bundle.main
 
-    let executionMode = ArgumentParser(arguments: arguments).executionMode
+    let argumentParser = ArgumentParser(arguments: arguments)
+    let executionMode = argumentParser.executionMode
+    let jsonEventStreamConfiguration = argumentParser.jsonEventStreamConfiguration
+    if let jsonOutputPath = jsonEventStreamConfiguration.filePath,
+       let jsonVersion = jsonEventStreamConfiguration.schemaVersion,
+       #available(macOS 13.0, *) {
+        try! observers.append(JSONObserver(writingToFileAtPath: jsonOutputPath, schemaVersion: jsonVersion))
+    }
 
     // Apple XCTest behaves differently if tests have been filtered:
     // - The root `XCTestSuite` is named "Selected tests" instead of
